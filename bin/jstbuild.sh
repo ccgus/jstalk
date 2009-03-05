@@ -59,11 +59,13 @@ cd /tmp
 source ~/.bash_profile
 
 echo "doing remote checkout ($revision) upload($upload)"
-svn co $revision https://flycode.googlecode.com/svn/trunk/jstalk jstalk
+#svn co $revision https://flycode.googlecode.com/svn/trunk/jstalk jstalk
+git clone git://github.com/ccgus/jstalk.git
 
 cd /tmp/jstalk
 
-v=`svnversion -n /tmp/jstalk`
+#v=`svnversion -n /tmp/jstalk`
+v=`date "+%s"`
 
 echo setting build id
 sed -e "s/BUILDID/$v/g"  res/Info.plist > res/Info.plist.tmp

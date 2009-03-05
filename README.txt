@@ -86,6 +86,21 @@ Let us know by sending an email to gus@flyingmeat.com.
 
 
 
+Mailing list and bug reporting:
+-------------------------------
+
+Developer mailing list:
+http://groups.google.com/group/jstalk-dev
+
+Bug reporting:
+http://jstalk.lighthouseapp.com/projects/26692-jstalk/
+
+A user mailing list will pop up at some point, but we're not there yet.
+
+
+
+
+
 Here's what is currently being worked on, what's broken:
 --------------------------------------------------------
 
