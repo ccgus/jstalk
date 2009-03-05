@@ -1,0 +1,20 @@
+{
+    IBClasses = (
+        {
+            ACTIONS = {
+                buildIndex = id; 
+                search = id; 
+                selectTheThing = id; 
+                show = id; 
+                tableDoubleClick = id; 
+            }; 
+            CLASS = ACCController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {searchField = NSTextField; tableView = NSTableView; }; 
+            SUPERCLASS = NSWindowController; 
+        }, 
+        {CLASS = ACCTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }, 
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }
+    ); 
+    IBVersion = 1; 
+}

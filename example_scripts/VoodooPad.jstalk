@@ -1,0 +1,9 @@
+var VoodooPad = [JSTalk application:"VoodooPad Pro"];
+
+var firstDoc = [[VoodooPad orderedDocuments] objectAtIndex:0];
+
+print(firstDoc);
+
+indexText = [[[firstDoc pageForKey:"index"] dataAsAttributedString] string];
+
+print(indexText);

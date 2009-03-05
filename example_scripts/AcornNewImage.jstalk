@@ -1,0 +1,9 @@
+var imageURL = [NSURL URLWithString:"http://flyingmeat.com/images/fmlogo.pdf"];
+
+var image = [[[NSImage alloc] initWithContentsOfURL:imageURL] autorelease];
+
+var acorn = [JSTalk application:"Acorn"];
+
+[[acorn sharedDocumentController] newDocumentWithImageData:[image TIFFRepresentation]];
+
+

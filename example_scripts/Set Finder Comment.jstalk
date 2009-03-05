@@ -1,0 +1,8 @@
+var finder  = [SBApplication application:"Finder"];
+
+// notice that the @ is making the string an NSString instance.
+// the fileURL method is part of the JSTalk "Extras" categories
+var url  = [@"/Volumes/srv/Users/gus/Desktop/foo.pict" fileURL]
+var item = [[finder items] objectAtLocation:url];
+
+item.comment = "Hello World!";

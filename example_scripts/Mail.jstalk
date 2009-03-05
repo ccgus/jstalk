@@ -1,0 +1,22 @@
+var mail = [SBApplication application:"Mail"];
+
+var to = "someone@somewhere.com";
+var from = "someone@somewhere.com";
+var subject = "This is the subject.";
+var content = "This is the message content.\n\nIsn't it great?";
+
+var emailMessageProps = {subject:subject, content:content};
+var emailMessage = [[[mail classForScriptingClass:@"outgoing message"] alloc] initWithProperties:emailMessageProps];
+
+[[mail outgoingMessages] addObject:emailMessage];
+
+emailMessage.sender = from;
+emailMessage.visible = true;
+
+theRecipientProps = {address:from};
+theRecipient = [[[mail classForScriptingClass:@"to recipient"] alloc] initWithProperties: theRecipientProps];
+
+[[emailMessage toRecipients] addObject:theRecipient];
+
+[emailMessage send];
+
