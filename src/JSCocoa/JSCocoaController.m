@@ -2947,7 +2947,19 @@ static JSValueRef _jsCocoaObject_callUsingNSInvocation(JSContextRef ctx, id call
         
         [JSCocoaFFIArgument unboxJSValueRef:arguments[argIndex] toObject:&arg inContext:ctx];
         
-        [invocation setArgument:&arg atIndex:argIndex + 2];
+        debug(@"arg: %@", arg);
+        
+        #warning fixme - what about numbers?  This little hack won't really work for us, for floats and doubles and unsigned, etc.
+        
+        if ([arg isKindOfClass:[NSNumber class]]) {
+            NSInteger i = [arg integerValue];
+            [invocation setArgument:&i atIndex:argIndex + 2];
+        }
+        else {
+            [invocation setArgument:&arg atIndex:argIndex + 2];
+        }
+        
+        
         
         argIndex++;
     }
