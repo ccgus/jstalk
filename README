@@ -86,6 +86,19 @@ Let us know by sending an email to gus@flyingmeat.com.
 
 
 
+Here's what is currently being worked on, what's broken:
+--------------------------------------------------------
+
+- Memory leaks.  Alloc'ing big images never get released for instance.
+- JSLint crashes JSCocoa.
+- Need to add "Edit in X" feature, which uses FSEvents or something similar to watch updates on the file, for reloading it in the editor.
+- For some reason, the textview wants to scroll left and right occasionally, which is annoying.
+- NSPoints do not seem to be going across DO.  Is this just a limitation of DO?
+
+
+
+
+
 TODO:
 -----
 
