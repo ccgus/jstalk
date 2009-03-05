@@ -36,6 +36,13 @@
     NSString *port          = [NSString stringWithFormat:@"%@.JSTalk", myBundleId];
     
     _conn = [[NSConnection alloc] init];
+    // Pick your poision:
+    // "Without Independent Conversation Queueing, your app will be re-entered during upon a 2nd remote DO call if you return to the run loop"
+    // http://www.mac-developer-network.com/shows/podcasts/lnc/lnc020/
+    // "Because independent conversation queueing causes remote messages to block where they normally do not, it can cause deadlock to occur between applications."
+    // http://developer.apple.com/documentation/Cocoa/Conceptual/DistrObjects/Tasks/configuring.html#//apple_ref/doc/uid/20000766
+    // We'll go with ICQ for now.
+    [_conn setIndependentConversationQueueing:YES]; 
     [_conn setRootObject:_rootObject ? _rootObject : NSApp];
     
     if ([_conn registerName:port]) {
