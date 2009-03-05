@@ -7,8 +7,6 @@
 //
 
 #import "JSTListener.h"
-#import "JSCocoaController.h"
-#import "JSTalk.h"
 
 @interface JSTListener (Private)
 - (void)setupListener;
