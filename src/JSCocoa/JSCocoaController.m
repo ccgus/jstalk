@@ -2947,8 +2947,6 @@ static JSValueRef _jsCocoaObject_callUsingNSInvocation(JSContextRef ctx, id call
         
         [JSCocoaFFIArgument unboxJSValueRef:arguments[argIndex] toObject:&arg inContext:ctx];
         
-        debug(@"arg: %@", arg);
-        
         #warning fixme - what about numbers?  This little hack won't really work for us, for floats and doubles and unsigned, etc.
         
         if ([arg isKindOfClass:[NSNumber class]]) {
