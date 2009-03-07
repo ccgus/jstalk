@@ -147,7 +147,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [[[outputTextView textStorage] mutableString] appendFormat:@"%@\n", s];
 }
 
-- (void) jscontroller:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
     
     lineNumber -= 1;
     
@@ -181,8 +181,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
     
     JSCocoaController *jsController = [jstalk jsController];
-    
-    jsController.exceptionHandler = self;
+    jsController.delegate = self;
     
     jstalk.printController = self;
     
@@ -234,7 +233,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
     JSCocoaController *jsController = [jstalk jsController];
     
-    jsController.exceptionHandler = self;
+    jsController.delegate = self;
     
     jstalk.printController = self;
     

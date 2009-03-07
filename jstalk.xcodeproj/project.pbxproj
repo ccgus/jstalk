@@ -16,6 +16,20 @@
 		CC1322FF0F23F3C10032FEB8 /* JSTTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1322FE0F23F3C10032FEB8 /* JSTTextView.m */; };
 		CC1323850F24FF9D0032FEB8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
 		CC1324300F2504F00032FEB8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
+		CC1587900F6316B00077A4DF /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */; };
+		CC1587910F6316B00077A4DF /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */; };
+		CC1587920F6316B00077A4DF /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */; };
+		CC1587930F6316B00077A4DF /* JSCocoaLib.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587850F6316B00077A4DF /* JSCocoaLib.h */; };
+		CC1587940F6316B00077A4DF /* JSCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587860F6316B00077A4DF /* JSCocoa.h */; };
+		CC1587950F6316B00077A4DF /* class.js in Sources */ = {isa = PBXBuildFile; fileRef = CC1587870F6316B00077A4DF /* class.js */; };
+		CC1587960F6316B00077A4DF /* BridgeSupportController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587880F6316B00077A4DF /* BridgeSupportController.h */; };
+		CC1587970F6316B00077A4DF /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587890F6316B00077A4DF /* JSCocoaLib.m */; };
+		CC1587980F6316B00077A4DF /* JSCocoaPrivateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CC15878A0F6316B00077A4DF /* JSCocoaPrivateObject.h */; };
+		CC1587990F6316B00077A4DF /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC15878B0F6316B00077A4DF /* JSCocoaController.m */; };
+		CC15879A0F6316B00077A4DF /* JSCocoaController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC15878C0F6316B00077A4DF /* JSCocoaController.h */; };
+		CC15879B0F6316B00077A4DF /* JSCocoaFFIClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CC15878D0F6316B00077A4DF /* JSCocoaFFIClosure.h */; };
+		CC15879C0F6316B00077A4DF /* JSCocoaFFIArgument.h in Headers */ = {isa = PBXBuildFile; fileRef = CC15878E0F6316B00077A4DF /* JSCocoaFFIArgument.h */; };
+		CC15879D0F6316B00077A4DF /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC15878F0F6316B00077A4DF /* BridgeSupportController.m */; };
 		CC1C7D7E0F48BB2C007A2941 /* TDAlternation.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D210F48BB2C007A2941 /* TDAlternation.h */; };
 		CC1C7D7F0F48BB2C007A2941 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D220F48BB2C007A2941 /* TDAlternation.m */; };
 		CC1C7D800F48BB2C007A2941 /* TDAny.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D230F48BB2C007A2941 /* TDAny.h */; };
@@ -154,18 +168,6 @@
 		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
-		CC4143220F25257400E46669 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B92E0F1EFB6700126722 /* BridgeSupportController.m */; };
-		CC4143230F25257400E46669 /* BridgeSupportController.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B92F0F1EFB6700126722 /* BridgeSupportController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC4143240F25257500E46669 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9300F1EFB6700126722 /* JSCocoaController.m */; };
-		CC4143250F25257600E46669 /* JSCocoaController.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B9310F1EFB6700126722 /* JSCocoaController.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC4143260F25257600E46669 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9320F1EFB6700126722 /* JSCocoaFFIArgument.m */; };
-		CC4143270F25257600E46669 /* JSCocoaFFIArgument.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B9330F1EFB6700126722 /* JSCocoaFFIArgument.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC4143280F25257700E46669 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9340F1EFB6700126722 /* JSCocoaFFIClosure.m */; };
-		CC4143290F25257800E46669 /* JSCocoaFFIClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B9350F1EFB6700126722 /* JSCocoaFFIClosure.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC41432A0F25257800E46669 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9360F1EFB6700126722 /* JSCocoaPrivateObject.m */; };
-		CC41432B0F25257800E46669 /* JSCocoaPrivateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B9370F1EFB6700126722 /* JSCocoaPrivateObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC41432C0F25257900E46669 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9380F1EFB6700126722 /* JSCocoaLib.m */; };
-		CC41432D0F25257900E46669 /* JSCocoaLib.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B9390F1EFB6700126722 /* JSCocoaLib.h */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; };
 		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -175,7 +177,6 @@
 		CC4143510F25261100E46669 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC4143520F25261200E46669 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CC4143530F25261300E46669 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		CC4143570F25262700E46669 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CCC5BA930F1F209F00126722 /* class.js */; };
 		CC4143620F2527CD00E46669 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC4143660F2527E400E46669 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
@@ -190,12 +191,6 @@
 		CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */; };
 		CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
-		CC5FB7E50F1FDE7000F4ECC2 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B92E0F1EFB6700126722 /* BridgeSupportController.m */; };
-		CC5FB7E60F1FDE7100F4ECC2 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9300F1EFB6700126722 /* JSCocoaController.m */; };
-		CC5FB7E70F1FDE7200F4ECC2 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9320F1EFB6700126722 /* JSCocoaFFIArgument.m */; };
-		CC5FB7E80F1FDE7200F4ECC2 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9340F1EFB6700126722 /* JSCocoaFFIClosure.m */; };
-		CC5FB7E90F1FDE7300F4ECC2 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9360F1EFB6700126722 /* JSCocoaPrivateObject.m */; };
-		CC5FB7EA0F1FDE7400F4ECC2 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B9380F1EFB6700126722 /* JSCocoaLib.m */; };
 		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
 		CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */ = {isa = PBXBuildFile; fileRef = CC94E0510F4A616300208BE0 /* JSTalk.icns */; };
 		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; };
@@ -277,6 +272,20 @@
 		CC1322FD0F23F3C10032FEB8 /* JSTTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTTextView.h; path = src/JSTTextView.h; sourceTree = "<group>"; };
 		CC1322FE0F23F3C10032FEB8 /* JSTTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTTextView.m; path = src/JSTTextView.m; sourceTree = "<group>"; };
 		CC1323840F24FF9D0032FEB8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = jscocoa/JSCocoa/JSCocoaFFIClosure.m; sourceTree = "<group>"; };
+		CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaPrivateObject.m; path = jscocoa/JSCocoa/JSCocoaPrivateObject.m; sourceTree = "<group>"; };
+		CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIArgument.m; path = jscocoa/JSCocoa/JSCocoaFFIArgument.m; sourceTree = "<group>"; };
+		CC1587850F6316B00077A4DF /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = jscocoa/JSCocoa/JSCocoaLib.h; sourceTree = "<group>"; };
+		CC1587860F6316B00077A4DF /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = jscocoa/JSCocoa/JSCocoa.h; sourceTree = "<group>"; };
+		CC1587870F6316B00077A4DF /* class.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = class.js; path = jscocoa/JSCocoa/class.js; sourceTree = "<group>"; };
+		CC1587880F6316B00077A4DF /* BridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgeSupportController.h; path = jscocoa/JSCocoa/BridgeSupportController.h; sourceTree = "<group>"; };
+		CC1587890F6316B00077A4DF /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = jscocoa/JSCocoa/JSCocoaLib.m; sourceTree = "<group>"; };
+		CC15878A0F6316B00077A4DF /* JSCocoaPrivateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaPrivateObject.h; path = jscocoa/JSCocoa/JSCocoaPrivateObject.h; sourceTree = "<group>"; };
+		CC15878B0F6316B00077A4DF /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = jscocoa/JSCocoa/JSCocoaController.m; sourceTree = "<group>"; };
+		CC15878C0F6316B00077A4DF /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = jscocoa/JSCocoa/JSCocoaController.h; sourceTree = "<group>"; };
+		CC15878D0F6316B00077A4DF /* JSCocoaFFIClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIClosure.h; path = jscocoa/JSCocoa/JSCocoaFFIClosure.h; sourceTree = "<group>"; };
+		CC15878E0F6316B00077A4DF /* JSCocoaFFIArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIArgument.h; path = jscocoa/JSCocoa/JSCocoaFFIArgument.h; sourceTree = "<group>"; };
+		CC15878F0F6316B00077A4DF /* BridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BridgeSupportController.m; path = jscocoa/JSCocoa/BridgeSupportController.m; sourceTree = "<group>"; };
 		CC1C7D210F48BB2C007A2941 /* TDAlternation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAlternation.h; sourceTree = "<group>"; };
 		CC1C7D220F48BB2C007A2941 /* TDAlternation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAlternation.m; sourceTree = "<group>"; };
 		CC1C7D230F48BB2C007A2941 /* TDAny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAny.h; sourceTree = "<group>"; };
@@ -396,23 +405,10 @@
 		CCC5B8CC0F1EFAAA00126722 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTDocument.m; path = src/JSTDocument.m; sourceTree = "<group>"; };
 		CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTDocument.h; path = src/JSTDocument.h; sourceTree = "<group>"; };
-		CCC5B92E0F1EFB6700126722 /* BridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BridgeSupportController.m; path = src/JSCocoa/BridgeSupportController.m; sourceTree = "<group>"; };
-		CCC5B92F0F1EFB6700126722 /* BridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgeSupportController.h; path = src/JSCocoa/BridgeSupportController.h; sourceTree = "<group>"; };
-		CCC5B9300F1EFB6700126722 /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = src/JSCocoa/JSCocoaController.m; sourceTree = "<group>"; };
-		CCC5B9310F1EFB6700126722 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = src/JSCocoa/JSCocoaController.h; sourceTree = "<group>"; };
-		CCC5B9320F1EFB6700126722 /* JSCocoaFFIArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIArgument.m; path = src/JSCocoa/JSCocoaFFIArgument.m; sourceTree = "<group>"; };
-		CCC5B9330F1EFB6700126722 /* JSCocoaFFIArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIArgument.h; path = src/JSCocoa/JSCocoaFFIArgument.h; sourceTree = "<group>"; };
-		CCC5B9340F1EFB6700126722 /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = src/JSCocoa/JSCocoaFFIClosure.m; sourceTree = "<group>"; };
-		CCC5B9350F1EFB6700126722 /* JSCocoaFFIClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIClosure.h; path = src/JSCocoa/JSCocoaFFIClosure.h; sourceTree = "<group>"; };
-		CCC5B9360F1EFB6700126722 /* JSCocoaPrivateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaPrivateObject.m; path = src/JSCocoa/JSCocoaPrivateObject.m; sourceTree = "<group>"; };
-		CCC5B9370F1EFB6700126722 /* JSCocoaPrivateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaPrivateObject.h; path = src/JSCocoa/JSCocoaPrivateObject.h; sourceTree = "<group>"; };
-		CCC5B9380F1EFB6700126722 /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = src/JSCocoa/JSCocoaLib.m; sourceTree = "<group>"; };
-		CCC5B9390F1EFB6700126722 /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = src/JSCocoa/JSCocoaLib.h; sourceTree = "<group>"; };
 		CCC5B94C0F1EFC4500126722 /* JSTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTAppDelegate.h; path = src/JSTAppDelegate.h; sourceTree = "<group>"; };
 		CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTAppDelegate.m; path = src/JSTAppDelegate.m; sourceTree = "<group>"; };
 		CCC5B95A0F1EFCFE00126722 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = src/JSTListener.h; sourceTree = "<group>"; };
 		CCC5B95B0F1EFCFE00126722 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = src/JSTListener.m; sourceTree = "<group>"; };
-		CCC5BA930F1F209F00126722 /* class.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = class.js; path = src/JSCocoa/class.js; sourceTree = "<group>"; };
 		CCF68F1D0F4E3E4F00925FCA /* JSTalkDocument.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalkDocument.icns; path = res/images/JSTalkDocument.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -716,19 +712,20 @@
 		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
 			isa = PBXGroup;
 			children = (
-				CCC5BA930F1F209F00126722 /* class.js */,
-				CCC5B92E0F1EFB6700126722 /* BridgeSupportController.m */,
-				CCC5B92F0F1EFB6700126722 /* BridgeSupportController.h */,
-				CCC5B9300F1EFB6700126722 /* JSCocoaController.m */,
-				CCC5B9310F1EFB6700126722 /* JSCocoaController.h */,
-				CCC5B9320F1EFB6700126722 /* JSCocoaFFIArgument.m */,
-				CCC5B9330F1EFB6700126722 /* JSCocoaFFIArgument.h */,
-				CCC5B9340F1EFB6700126722 /* JSCocoaFFIClosure.m */,
-				CCC5B9350F1EFB6700126722 /* JSCocoaFFIClosure.h */,
-				CCC5B9360F1EFB6700126722 /* JSCocoaPrivateObject.m */,
-				CCC5B9370F1EFB6700126722 /* JSCocoaPrivateObject.h */,
-				CCC5B9380F1EFB6700126722 /* JSCocoaLib.m */,
-				CCC5B9390F1EFB6700126722 /* JSCocoaLib.h */,
+				CC1587870F6316B00077A4DF /* class.js */,
+				CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */,
+				CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */,
+				CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */,
+				CC1587850F6316B00077A4DF /* JSCocoaLib.h */,
+				CC1587860F6316B00077A4DF /* JSCocoa.h */,
+				CC1587880F6316B00077A4DF /* BridgeSupportController.h */,
+				CC1587890F6316B00077A4DF /* JSCocoaLib.m */,
+				CC15878A0F6316B00077A4DF /* JSCocoaPrivateObject.h */,
+				CC15878B0F6316B00077A4DF /* JSCocoaController.m */,
+				CC15878C0F6316B00077A4DF /* JSCocoaController.h */,
+				CC15878D0F6316B00077A4DF /* JSCocoaFFIClosure.h */,
+				CC15878E0F6316B00077A4DF /* JSCocoaFFIArgument.h */,
+				CC15878F0F6316B00077A4DF /* BridgeSupportController.m */,
 			);
 			name = JSCocoa;
 			sourceTree = "<group>";
@@ -740,12 +737,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4143230F25257400E46669 /* BridgeSupportController.h in Headers */,
-				CC4143250F25257600E46669 /* JSCocoaController.h in Headers */,
-				CC4143270F25257600E46669 /* JSCocoaFFIArgument.h in Headers */,
-				CC4143290F25257800E46669 /* JSCocoaFFIClosure.h in Headers */,
-				CC41432B0F25257800E46669 /* JSCocoaPrivateObject.h in Headers */,
-				CC41432D0F25257900E46669 /* JSCocoaLib.h in Headers */,
 				CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */,
 				CC41433B0F25259400E46669 /* JSTalk.h in Headers */,
 				CC41433D0F25259500E46669 /* JSTListener.h in Headers */,
@@ -797,6 +788,13 @@
 				CC1C7DD50F48BB2C007A2941 /* TDWord.h in Headers */,
 				CC1C7DD70F48BB2C007A2941 /* TDWordOrReservedState.h in Headers */,
 				CC1C7DD90F48BB2C007A2941 /* TDWordState.h in Headers */,
+				CC1587930F6316B00077A4DF /* JSCocoaLib.h in Headers */,
+				CC1587940F6316B00077A4DF /* JSCocoa.h in Headers */,
+				CC1587960F6316B00077A4DF /* BridgeSupportController.h in Headers */,
+				CC1587980F6316B00077A4DF /* JSCocoaPrivateObject.h in Headers */,
+				CC15879A0F6316B00077A4DF /* JSCocoaController.h in Headers */,
+				CC15879B0F6316B00077A4DF /* JSCocoaFFIClosure.h in Headers */,
+				CC15879C0F6316B00077A4DF /* JSCocoaFFIArgument.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -918,7 +916,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4143570F25262700E46669 /* class.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -951,12 +948,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC4143220F25257400E46669 /* BridgeSupportController.m in Sources */,
-				CC4143240F25257500E46669 /* JSCocoaController.m in Sources */,
-				CC4143260F25257600E46669 /* JSCocoaFFIArgument.m in Sources */,
-				CC4143280F25257700E46669 /* JSCocoaFFIClosure.m in Sources */,
-				CC41432A0F25257800E46669 /* JSCocoaPrivateObject.m in Sources */,
-				CC41432C0F25257900E46669 /* JSCocoaLib.m in Sources */,
 				CC41433C0F25259400E46669 /* JSTalk.m in Sources */,
 				CC41433E0F25259500E46669 /* JSTListener.m in Sources */,
 				CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */,
@@ -1006,6 +997,13 @@
 				CC1C7DD60F48BB2C007A2941 /* TDWord.m in Sources */,
 				CC1C7DD80F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
 				CC1C7DDA0F48BB2C007A2941 /* TDWordState.m in Sources */,
+				CC1587900F6316B00077A4DF /* JSCocoaFFIClosure.m in Sources */,
+				CC1587910F6316B00077A4DF /* JSCocoaPrivateObject.m in Sources */,
+				CC1587920F6316B00077A4DF /* JSCocoaFFIArgument.m in Sources */,
+				CC1587950F6316B00077A4DF /* class.js in Sources */,
+				CC1587970F6316B00077A4DF /* JSCocoaLib.m in Sources */,
+				CC1587990F6316B00077A4DF /* JSCocoaController.m in Sources */,
+				CC15879D0F6316B00077A4DF /* BridgeSupportController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1025,12 +1023,6 @@
 				CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */,
 				CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */,
 				CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */,
-				CC5FB7E50F1FDE7000F4ECC2 /* BridgeSupportController.m in Sources */,
-				CC5FB7E60F1FDE7100F4ECC2 /* JSCocoaController.m in Sources */,
-				CC5FB7E70F1FDE7200F4ECC2 /* JSCocoaFFIArgument.m in Sources */,
-				CC5FB7E80F1FDE7200F4ECC2 /* JSCocoaFFIClosure.m in Sources */,
-				CC5FB7E90F1FDE7300F4ECC2 /* JSCocoaPrivateObject.m in Sources */,
-				CC5FB7EA0F1FDE7400F4ECC2 /* JSCocoaLib.m in Sources */,
 				CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */,
 				CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
 				CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */,
