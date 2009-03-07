@@ -158,7 +158,7 @@
     
     JSCocoaController *jsController = [jstalk jsController];
     
-    jsController.exceptionHandler = self;
+    jsController.delegate = self;
     
     jstalk.printController = self;
     
@@ -340,7 +340,7 @@
     [[NSApp delegate] console:s];
 }
 
-- (void) jscontroller:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
     
     lineNumber -= 2;
     
