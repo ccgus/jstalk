@@ -21,7 +21,6 @@
 		CC1587920F6316B00077A4DF /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */; };
 		CC1587930F6316B00077A4DF /* JSCocoaLib.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587850F6316B00077A4DF /* JSCocoaLib.h */; };
 		CC1587940F6316B00077A4DF /* JSCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587860F6316B00077A4DF /* JSCocoa.h */; };
-		CC1587950F6316B00077A4DF /* class.js in Sources */ = {isa = PBXBuildFile; fileRef = CC1587870F6316B00077A4DF /* class.js */; };
 		CC1587960F6316B00077A4DF /* BridgeSupportController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1587880F6316B00077A4DF /* BridgeSupportController.h */; };
 		CC1587970F6316B00077A4DF /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587890F6316B00077A4DF /* JSCocoaLib.m */; };
 		CC1587980F6316B00077A4DF /* JSCocoaPrivateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CC15878A0F6316B00077A4DF /* JSCocoaPrivateObject.h */; };
@@ -168,6 +167,7 @@
 		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
+		CC27C6730F633D24005F6CB6 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CC1587870F6316B00077A4DF /* class.js */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; };
 		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -916,6 +916,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC27C6730F633D24005F6CB6 /* class.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1000,7 +1001,6 @@
 				CC1587900F6316B00077A4DF /* JSCocoaFFIClosure.m in Sources */,
 				CC1587910F6316B00077A4DF /* JSCocoaPrivateObject.m in Sources */,
 				CC1587920F6316B00077A4DF /* JSCocoaFFIArgument.m in Sources */,
-				CC1587950F6316B00077A4DF /* class.js in Sources */,
 				CC1587970F6316B00077A4DF /* JSCocoaLib.m in Sources */,
 				CC1587990F6316B00077A4DF /* JSCocoaController.m in Sources */,
 				CC15879D0F6316B00077A4DF /* BridgeSupportController.m in Sources */,
