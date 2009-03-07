@@ -168,6 +168,12 @@
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
 		CC27C6730F633D24005F6CB6 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CC1587870F6316B00077A4DF /* class.js */; };
+		CC27C67C0F633E9D005F6CB6 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */; };
+		CC27C67D0F633E9D005F6CB6 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */; };
+		CC27C67E0F633E9D005F6CB6 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */; };
+		CC27C67F0F633E9E005F6CB6 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1587890F6316B00077A4DF /* JSCocoaLib.m */; };
+		CC27C6800F633E9F005F6CB6 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC15878B0F6316B00077A4DF /* JSCocoaController.m */; };
+		CC27C6810F633EA0005F6CB6 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC15878F0F6316B00077A4DF /* BridgeSupportController.m */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; };
 		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -1070,6 +1076,12 @@
 				CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */,
 				CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
 				CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */,
+				CC27C67C0F633E9D005F6CB6 /* JSCocoaFFIClosure.m in Sources */,
+				CC27C67D0F633E9D005F6CB6 /* JSCocoaPrivateObject.m in Sources */,
+				CC27C67E0F633E9D005F6CB6 /* JSCocoaFFIArgument.m in Sources */,
+				CC27C67F0F633E9E005F6CB6 /* JSCocoaLib.m in Sources */,
+				CC27C6800F633E9F005F6CB6 /* JSCocoaController.m in Sources */,
+				CC27C6810F633EA0005F6CB6 /* BridgeSupportController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
