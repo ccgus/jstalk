@@ -1707,7 +1707,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 	// ObjC class
 	//
 	Class objCClass = NSClassFromString(propertyName);
-	if (objCClass)
+	if (objCClass && ![propertyName isEqualToString:@"Object"])
 	{
 		return	[JSCocoaController boxedJSObject:objCClass inContext:ctx];
 	}

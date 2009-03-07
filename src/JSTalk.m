@@ -42,6 +42,11 @@
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
+    if ([_jsController ctx]) {
+        JSGarbageCollect([_jsController ctx]);
+    }
+    
+    
     [_jsController release];
     _jsController = 0x00;
     
