@@ -147,7 +147,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [[[outputTextView textStorage] mutableString] appendFormat:@"%@\n", s];
 }
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     lineNumber -= 1;
     
@@ -175,6 +175,54 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         }
     }
 }
+
+//
+// NSDistantObject call using NSInvocation
+//
+- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)ctx exception:(JSValueRef*)exception
+{
+    SEL selector = NSSelectorFromString(methodName);
+	if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector))	return NULL;
+
+    NSMethodSignature *signature = [callee methodSignatureForSelector:selector];
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation setSelector:selector];
+
+    NSUInteger argIndex = 0;
+    while (argIndex < argumentCount) {
+        
+        id arg = 0x00;
+        
+        [JSCocoaFFIArgument unboxJSValueRef:arguments[argIndex] toObject:&arg inContext:ctx];
+        
+        [invocation setArgument:&arg atIndex:argIndex + 2];
+        
+        argIndex++;
+    }
+    
+    
+    [invocation invokeWithTarget:callee];
+    
+    id result = 0x00;
+    
+    const char *type = [signature methodReturnType];
+    
+    if (strcmp(type, @encode(id)) == 0) {
+        [invocation getReturnValue:&result];
+    }
+    
+    if (!result) {
+        return JSValueMakeNull(ctx);
+    }
+    
+    JSValueRef	jsReturnValue = NULL;
+    
+    [JSCocoaFFIArgument boxObject:result toJSValueRef:&jsReturnValue inContext:ctx];
+    
+    return	jsReturnValue;
+}
+
+
 
 - (void) runScript:(NSString*)s {
     
