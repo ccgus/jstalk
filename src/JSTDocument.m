@@ -94,6 +94,9 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         [splitView setAutosaveName:[self fileName]];
     }
     
+    // FIXME: make this a pref
+    [[jsTextView textStorage] setAttributes:[NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Monaco" size:10] forKey:NSFontAttributeName] range:NSMakeRange(0, [[jsTextView textStorage] length]) ];
+    
     lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[jsTextView enclosingScrollView]];
     [[jsTextView enclosingScrollView] setVerticalRulerView:lineNumberView];
     [[jsTextView enclosingScrollView] setHasHorizontalRuler:NO];
