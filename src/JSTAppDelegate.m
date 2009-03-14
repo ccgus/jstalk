@@ -7,8 +7,7 @@
 //
 
 #import "JSTAppDelegate.h"
-
-#import "JSTListener.h"
+#import "JSTalk.h"
 
 @interface JSTAppDelegate (PrivateStuff)
 - (void) restoreWorkspace;
@@ -37,7 +36,8 @@
         [self restoreWorkspace];
     }
     
-    [JSTListener listen];
+    [JSTalk setShouldLoadExtras:YES];
+    [JSTalk listen];
 }
 
 - (IBAction) showPrefs:(id)sender {

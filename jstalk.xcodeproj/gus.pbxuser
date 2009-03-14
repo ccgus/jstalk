@@ -1,0 +1,273 @@
+// !$*UTF8*$!
+{
+	2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */;
+		activeTarget = 8D15AC270486D014006FF6A4 /* JSTalk Editor */;
+		addToTargets = (
+			CC4143190F25254200E46669 /* JSTalk Framework */,
+		);
+		codeSenseManager = CCEF3F0B0F5F84B800DFCEEC /* Code sense */;
+		executables = (
+			CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */,
+			CCEF3EF80F5F849900DFCEEC /* jstalk command line */,
+			CCEF3EF90F5F849900DFCEEC /* JSTalkRunner */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					300,
+					100.20849609375,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXErrorsWarningsDataSource_TypeID,
+					PBXErrorsWarningsDataSource_MessageID,
+					PBXErrorsWarningsDataSource_LocationID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					210,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					170,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 258760313;
+			PBXWorkspaceStateSaveDate = 258760313;
+		};
+		sourceControlManager = CCEF3F0A0F5F84B800DFCEEC /* Source Control */;
+		userBuildSettings = {
+			SYMROOT = /Volumes/srv/Users/gus/builds/JSTalkBuilds;
+		};
+	};
+	8D15AC270486D014006FF6A4 /* JSTalk Editor */ = {
+		activeExec = 0;
+		executables = (
+			CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */,
+		);
+	};
+	CC1322E50F23F2380032FEB8 /* NoodleLineNumberView.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1428, 7840}}";
+			sepNavSelRange = "{1333, 1}";
+			sepNavVisRange = "{0, 2067}";
+		};
+	};
+	CC1587860F6316B00077A4DF /* JSCocoa.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1444, 998}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 168}";
+		};
+	};
+	CC1587870F6316B00077A4DF /* class.js */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {400, 9352}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 850}";
+		};
+	};
+	CC15878B0F6316B00077A4DF /* JSCocoaController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {854, 46298}}";
+			sepNavSelRange = "{91963, 7}";
+			sepNavVisRange = "{91013, 1986}";
+		};
+	};
+	CC15878C0F6316B00077A4DF /* JSCocoaController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1444, 3332}}";
+			sepNavSelRange = "{584, 12}";
+			sepNavVisRange = "{0, 1988}";
+		};
+	};
+	CC1C7D220F48BB2C007A2941 /* TDAlternation.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1537, 879}}";
+			sepNavSelRange = "{156, 10}";
+			sepNavVisRange = "{0, 696}";
+		};
+	};
+	CC4143190F25254200E46669 /* JSTalk Framework */ = {
+		activeExec = 0;
+	};
+	CC4143C00F2529F200E46669 /* JSTExtras.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 1904}}";
+			sepNavSelRange = "{2598, 109}";
+			sepNavVisRange = "{1678, 1034}";
+		};
+	};
+	CC43C0DA0F4BBA820044BA41 /* JSTalkRunner */ = {
+		activeExec = 0;
+		executables = (
+			CCEF3EF90F5F849900DFCEEC /* JSTalkRunner */,
+		);
+	};
+	CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */ = {
+		activeExec = 0;
+		executables = (
+			CCEF3EF80F5F849900DFCEEC /* jstalk command line */,
+		);
+	};
+	CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1428, 857}}";
+			sepNavSelRange = "{440, 0}";
+			sepNavVisRange = "{0, 750}";
+		};
+	};
+	CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {971, 3500}}";
+			sepNavSelRange = "{3243, 0}";
+			sepNavVisRange = "{2603, 662}";
+		};
+	};
+	CCAA40570F5DA4DF00514A5E /* fulljslint.js */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1210, 69020}}";
+			sepNavSelRange = "{35672, 0}";
+			sepNavVisRange = "{35186, 1947}";
+		};
+	};
+	CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {854, 7196}}";
+			sepNavSelRange = "{6690, 0}";
+			sepNavVisRange = "{5940, 1543}";
+		};
+	};
+	CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1428, 857}}";
+			sepNavSelRange = "{230, 10}";
+			sepNavVisRange = "{0, 1308}";
+		};
+	};
+	CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "JSTalk Editor";
+		savedGlobals = {
+		};
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	CCEF3EF80F5F849900DFCEEC /* jstalk command line */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = "jstalk command line";
+		sourceDirectories = (
+		);
+	};
+	CCEF3EF90F5F849900DFCEEC /* JSTalkRunner */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 1;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = JSTalkRunner;
+		sourceDirectories = (
+		);
+	};
+	CCEF3F0A0F5F84B800DFCEEC /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+	};
+	CCEF3F0B0F5F84B800DFCEEC /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+}
