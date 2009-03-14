@@ -11,6 +11,9 @@
 #import "JSTPreprocessor.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
+static BOOL JSTalkShouldLoadExtras = YES;
+static NSMutableArray *JSTalkExtrasList;
+
 @interface JSTalk (Private)
 - (void) print:(NSString*)s;
 @end
@@ -27,6 +30,10 @@
 
 + (void) listen {
     [JSTListener listen];
+}
+
++ (void) setShouldLoadExtras:(BOOL)b {
+    JSTalkShouldLoadExtras = b;
 }
 
 - (id) init {
@@ -53,6 +60,80 @@
     [super dealloc];
 }
 
+- (void) loadExtraAtPath:(NSString*) fullPath {
+    
+    debug(@"fullPath: %@", fullPath);
+    
+    Class pluginClass;
+    
+    @try {
+        
+        NSBundle *pluginBundle = [NSBundle bundleWithPath:fullPath];
+        if (!pluginBundle) {
+            return;
+        }
+        
+        NSString *principalClassName = [[pluginBundle infoDictionary] objectForKey:@"NSPrincipalClass"];
+        
+        if (principalClassName && NSClassFromString(principalClassName)) {
+            NSLog(@"The class %@ is already loaded, skipping the load of %@", principalClassName, fullPath);
+            return;
+        }
+        
+        NSError *err = 0x00;
+        [pluginBundle loadAndReturnError:&err];
+        
+        if (err) {
+            NSLog(@"Error loading plugin at %@", fullPath);
+            NSLog(@"%@", err);
+        }
+        else if ((pluginClass = [pluginBundle principalClass])) {
+            
+            // do we want to actually do anything with em' at this point?
+            
+        }
+        else {
+            //debug(@"Could not load the principal class of %@", fullPath);
+            //debug(@"infoDictionary: %@", [pluginBundle infoDictionary]);
+        }
+        
+    }
+    @catch (NSException * e) {
+        NSLog(@"EXCEPTION: %@: %@", [e name], e);
+    }
+    
+}
+
+- (void) loadExtras {
+    JSTalkExtrasList = [[NSMutableArray array] retain];
+    
+    NSString *appSupport = @"Library/Application Support/JSTalk/Extras";
+    NSString *appPath    = [[NSBundle mainBundle] builtInPlugInsPath];
+    NSString *sysPath    = [@"/" stringByAppendingPathComponent:appSupport];
+    NSString *userPath   = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
+    
+    debug(@"[userPath stringByDeletingLastPathComponent]: %@", [userPath stringByDeletingLastPathComponent]);
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:[userPath stringByDeletingLastPathComponent] attributes:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:userPath attributes:nil];
+    }
+    
+    
+    
+    for (NSString *folder in [NSArray arrayWithObjects:appPath, sysPath, userPath, nil]) {
+        
+        for (NSString *bundle in [[NSFileManager defaultManager] directoryContentsAtPath:folder]) {
+            
+            if (![bundle hasSuffix:@"jstalkextra"]) {
+                continue;
+            }
+            
+            [self loadExtraAtPath:[folder stringByAppendingPathComponent:bundle]];
+        }
+    }
+}
+
 - (void) pushObject:(id)obj withName:(NSString*)name inController:(JSCocoaController*)jsController {
     
     JSContextRef ctx                = [jsController ctx];
@@ -68,6 +149,10 @@
 
 
 - (void) executeString:(NSString*) str {
+    
+    if (!JSTalkExtrasList && JSTalkShouldLoadExtras) {
+        [self loadExtras];
+    }
     
     str = [JSTPreprocessor preprocessCode:str];
         

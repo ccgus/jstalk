@@ -185,9 +185,17 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 - (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)ctx exception:(JSValueRef*)exception
 {
     SEL selector = NSSelectorFromString(methodName);
-	if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector))	return NULL;
+	if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector)) {
+        return nil;
+    }
 
     NSMethodSignature *signature = [callee methodSignatureForSelector:selector];
+    
+    if (!signature) {
+        return nil;
+    }
+    
+    
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     [invocation setSelector:selector];
 

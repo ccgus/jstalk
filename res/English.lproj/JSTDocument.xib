@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100059"/>
+			<integer value="100061"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -82,13 +82,13 @@
 								</object>
 							</object>
 						</object>
-						<object class="NSSplitView" id="896996867">
+						<object class="NSSplitView" id="676761953">
 							<reference key="NSNextResponder" ref="568628114"/>
 							<int key="NSvFlags">274</int>
 							<object class="NSMutableArray" key="NSSubviews">
 								<bool key="EncodedWithXMLCoder">YES</bool>
 								<object class="NSScrollView" id="811203634">
-									<reference key="NSNextResponder" ref="896996867"/>
+									<reference key="NSNextResponder" ref="676761953"/>
 									<int key="NSvFlags">274</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -253,7 +253,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 										</object>
 									</object>
 									<string key="NSFrameSize">{584, 286}</string>
-									<reference key="NSSuperview" ref="896996867"/>
+									<reference key="NSSuperview" ref="676761953"/>
 									<reference key="NSNextKeyView" ref="579376345"/>
 									<int key="NSsFlags">528</int>
 									<reference key="NSVScroller" ref="520966896"/>
@@ -261,7 +261,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 									<reference key="NSContentView" ref="579376345"/>
 								</object>
 								<object class="NSScrollView" id="540956805">
-									<reference key="NSNextResponder" ref="896996867"/>
+									<reference key="NSNextResponder" ref="676761953"/>
 									<int key="NSvFlags">274</int>
 									<object class="NSMutableArray" key="NSSubviews">
 										<bool key="EncodedWithXMLCoder">YES</bool>
@@ -296,7 +296,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 															<string>WebURLsWithTitlesPboardType</string>
 														</object>
 													</object>
-													<string key="NSFrameSize">{584, 16}</string>
+													<string key="NSFrameSize">{584, 14}</string>
 													<reference key="NSSuperview" ref="851009619"/>
 													<object class="NSTextContainer" key="NSTextContainer" id="487822200">
 														<object class="NSLayoutManager" key="NSLayoutManager">
@@ -386,7 +386,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 										</object>
 									</object>
 									<string key="NSFrame">{{0, 295}, {584, 124}}</string>
-									<reference key="NSSuperview" ref="896996867"/>
+									<reference key="NSSuperview" ref="676761953"/>
 									<reference key="NSNextKeyView" ref="851009619"/>
 									<int key="NSsFlags">528</int>
 									<reference key="NSVScroller" ref="266994486"/>
@@ -452,6 +452,14 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 					</object>
 					<int key="connectionID">100060</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">splitView</string>
+						<reference key="source" ref="512844837"/>
+						<reference key="destination" ref="676761953"/>
+					</object>
+					<int key="connectionID">100062</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -492,7 +500,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="957211434"/>
-							<reference ref="896996867"/>
+							<reference ref="676761953"/>
 						</object>
 						<reference key="parent" ref="275939982"/>
 					</object>
@@ -518,7 +526,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100061</int>
-						<reference key="object" ref="896996867"/>
+						<reference key="object" ref="676761953"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="811203634"/>
@@ -535,7 +543,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 							<reference ref="573844881"/>
 							<reference ref="520966896"/>
 						</object>
-						<reference key="parent" ref="896996867"/>
+						<reference key="parent" ref="676761953"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100059</int>
@@ -561,7 +569,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 							<reference ref="525230253"/>
 							<reference ref="57170152"/>
 						</object>
-						<reference key="parent" ref="896996867"/>
+						<reference key="parent" ref="676761953"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">100038</int>
@@ -653,7 +661,7 @@ RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">100061</int>
+			<int key="maxID">100062</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
