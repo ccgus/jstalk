@@ -25,7 +25,7 @@ static NSMutableArray *JSTalkExtrasList;
 @synthesize jsController=_jsController;
 
 + (void) load {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    //debug(@"%s:%d", __FUNCTION__, __LINE__);
 }
 
 + (void) listen {
@@ -62,8 +62,6 @@ static NSMutableArray *JSTalkExtrasList;
 
 - (void) loadExtraAtPath:(NSString*) fullPath {
     
-    debug(@"fullPath: %@", fullPath);
-    
     Class pluginClass;
     
     @try {
@@ -97,10 +95,7 @@ static NSMutableArray *JSTalkExtrasList;
                 NSString *bridgeSupportPath = [pluginBundle pathForResource:bridgeSupportName ofType:nil];
                 
                 [[BridgeSupportController sharedController] loadBridgeSupport:bridgeSupportPath];
-                
-                debug(@"bridgeSupportPath: %@", bridgeSupportPath);
             }
-            
         }
         else {
             //debug(@"Could not load the principal class of %@", fullPath);
@@ -121,8 +116,6 @@ static NSMutableArray *JSTalkExtrasList;
     NSString *appPath    = [[NSBundle mainBundle] builtInPlugInsPath];
     NSString *sysPath    = [@"/" stringByAppendingPathComponent:appSupport];
     NSString *userPath   = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
-    
-    debug(@"[userPath stringByDeletingLastPathComponent]: %@", [userPath stringByDeletingLastPathComponent]);
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
         [[NSFileManager defaultManager] createDirectoryAtPath:[userPath stringByDeletingLastPathComponent] attributes:nil];

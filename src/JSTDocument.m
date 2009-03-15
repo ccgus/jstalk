@@ -286,41 +286,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [[[outputTextView textStorage] mutableString] setString:code];
 }
 
-- (void) jslintAction:(id)sender {
-    
-    
-    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
-    JSCocoaController *jsController = [jstalk jsController];
-    
-    jsController.delegate = self;
-    
-    jstalk.printController = self;
-    
-    [errorLabel setStringValue:@""];
-    
-    if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
-        [self clearConsole:nil];
-    }
-    
-    NSString *jslintPath = [[NSBundle mainBundle] pathForResource:@"fulljslint" ofType:@"js"];
-    
-    NSString *jslintSrc = [NSString stringWithContentsOfFile:jslintPath encoding:NSUTF8StringEncoding error:nil];
-    
-    [jsController evalJSString:jslintSrc];
-    
-    NSString *code = [JSTPreprocessor preprocessCode:[[jsTextView textStorage] string]];
-    
-    id output = [jstalk callFunctionNamed:@"JSLINT" withArguments:[NSArray arrayWithObjects:code, nil]];
-    
-    debug(@"output: %@", output);
-    
-    if (output) {
-        [[[outputTextView textStorage] mutableString] setString:output];
-    }
-    
-    
-    
-}
 
 - (void) parseCode:(id)sender {
     

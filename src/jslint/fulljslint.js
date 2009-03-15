@@ -967,7 +967,13 @@ JSLINT = function () {
                 return false;
             }
             character = 0;
+            
+            if (!lines[line].replace) {
+                return true;
+            }
+            
             s = lines[line].replace(/\t/g, tab);
+            
             at = s.search(cx);
             if (at >= 0) {
                 warningAt("Unsafe character.", line, at);

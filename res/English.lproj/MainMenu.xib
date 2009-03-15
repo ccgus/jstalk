@@ -1040,15 +1040,6 @@
 									<reference key="NSOnImage" ref="1033313550"/>
 									<reference key="NSMixedImage" ref="310636482"/>
 								</object>
-								<object class="NSMenuItem" id="880907177">
-									<reference key="NSMenu" ref="1025950516"/>
-									<string key="NSTitle">Run Through JSLint</string>
-									<string key="NSKeyEquiv">J</string>
-									<int key="NSKeyEquivModMask">1048576</int>
-									<int key="NSMnemonicLoc">2147483647</int>
-									<reference key="NSOnImage" ref="1033313550"/>
-									<reference key="NSMixedImage" ref="310636482"/>
-								</object>
 								<object class="NSMenuItem" id="541886530">
 									<reference key="NSMenu" ref="1025950516"/>
 									<string key="NSTitle">Clear Console</string>
@@ -1887,14 +1878,6 @@
 						<reference key="destination" ref="905346063"/>
 					</object>
 					<int key="connectionID">524</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">jslintAction:</string>
-						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="880907177"/>
-					</object>
-					<int key="connectionID">526</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -2803,7 +2786,6 @@
 							<reference ref="682055483"/>
 							<reference ref="247869420"/>
 							<reference ref="541886530"/>
-							<reference ref="880907177"/>
 						</object>
 						<reference key="parent" ref="96251760"/>
 					</object>
@@ -2885,11 +2867,6 @@
 						<reference key="object" ref="905346063"/>
 						<reference key="parent" ref="720053764"/>
 						<string key="objectName">8</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">525</int>
-						<reference key="object" ref="880907177"/>
-						<reference key="parent" ref="1025950516"/>
 					</object>
 				</object>
 			</object>
@@ -3101,7 +3078,6 @@
 					<string>518.IBPluginDependency</string>
 					<string>523.IBPluginDependency</string>
 					<string>523.ImportedFromIB2</string>
-					<string>525.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
 					<string>57.IBEditorWindowLastContentRect</string>
@@ -3275,7 +3251,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{402, 794}, {86, 43}}</string>
+					<string>{{701, 727}, {86, 43}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3324,7 +3300,7 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{767, 667}, {228, 103}}</string>
+					<string>{{767, 687}, {227, 83}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -3343,7 +3319,6 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<reference ref="9"/>
 					<string>{{407, 506}, {235, 183}}</string>
@@ -3509,7 +3484,7 @@
 					<string key="className">NSObject</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">src/JSCocoa/JSCocoaController.h</string>
+						<string key="minorKey">jscocoa/JSCocoa/JSCocoaController.h</string>
 					</object>
 				</object>
 			</object>

@@ -479,14 +479,15 @@
 								<string>CCC5B8BA0F1EFA9700126722</string>
 								<string>19C28FB0FE9D524F11CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
+								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>19</integer>
-									<integer>12</integer>
-									<integer>10</integer>
+									<integer>3</integer>
+									<integer>2</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -547,7 +548,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258841798.501302</real>
+	<real>258849094.15528801</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -562,10 +563,16 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CC7574C90F6D9CC6003AE279</string>
+		<string>CC7575530F6DB946003AE279</string>
+		<string>CC75754C0F6DB92F003AE279</string>
+		<string>CC75754D0F6DB92F003AE279</string>
+		<string>1C530D57069F1CE1000CFCEE</string>
 		<string>CCAD9FAA0F6863F5004295ED</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/jstalk.xcodeproj</string>
+		<string>CC75754E0F6DB92F003AE279</string>
+		<string>CC7575480F6DB92B003AE279</string>
+		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>1596 241 321 931 0 0 1920 1178 </string>
@@ -863,8 +870,8 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C530D57069F1CE1000CFCEE</string>
-				<string>CCEA86950F64817900E477D9</string>
-				<string>CCEA86960F64817900E477D9</string>
+				<string>CC7574CC0F6DAD94003AE279</string>
+				<string>CC7574CD0F6DAD94003AE279</string>
 				<string>1CDD528C0622207200134675</string>
 				<string>1CD0528E0623707200166675</string>
 			</array>
@@ -929,7 +936,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>CCCE69330F6D8CE600798CC5</string>
+				<string>CC7574CE0F6DAD94003AE279</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
@@ -1088,8 +1095,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBottomSmartGroupGIDs</key>
@@ -1151,6 +1156,8 @@
 							<string>185pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -1190,8 +1197,8 @@
 			<true/>
 			<key>TableOfContents</key>
 			<array>
-				<string>CC94BE380F6C61030094DD44</string>
-				<string>CC94BE390F6C61030094DD44</string>
+				<string>CC7575480F6DB92B003AE279</string>
+				<string>CC7575490F6DB92B003AE279</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
 				<string>1CA1AED706398EBD00589147</string>
 			</array>
@@ -1200,9 +1207,9 @@
 			<key>WindowString</key>
 			<string>81 537 744 409 0 0 1920 1178 </string>
 			<key>WindowToolGUID</key>
-			<string>CC94BE380F6C61030094DD44</string>
+			<string>CC7575480F6DB92B003AE279</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>
