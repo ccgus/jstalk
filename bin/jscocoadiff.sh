@@ -12,3 +12,8 @@ for f in *.m  *.h; do
 done
 
 
+for f in *.m  *.h; do
+    echo cp $FORK_SRC_DIR/JSCocoa/$f $SRC_DIR/jscocoa/JSCocoa/.
+done
+
+
