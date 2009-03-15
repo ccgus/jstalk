@@ -14,6 +14,30 @@
 			CCEF3EF90F5F849900DFCEEC /* JSTalkRunner */,
 		);
 		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					198,
+					20,
+					99,
+					99,
+					29,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
 			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
 				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
 				PBXFileTableDataSourceColumnSortingKey = PBXErrorsWarningsDataSource_LocationID;
@@ -72,8 +96,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 258760313;
-			PBXWorkspaceStateSaveDate = 258760313;
+			PBXPerProjectTemplateStateSaveDate = 258841624;
+			PBXWorkspaceStateSaveDate = 258841624;
 		};
 		sourceControlManager = CCEF3F0A0F5F84B800DFCEEC /* Source Control */;
 		userBuildSettings = {
@@ -107,6 +131,13 @@
 			sepNavVisRange = "{0, 850}";
 		};
 	};
+	CC1587880F6316B00077A4DF /* BridgeSupportController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
+			sepNavSelRange = "{411, 17}";
+			sepNavVisRange = "{0, 827}";
+		};
+	};
 	CC15878B0F6316B00077A4DF /* JSCocoaController.m */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {854, 46298}}";
@@ -116,9 +147,9 @@
 	};
 	CC15878C0F6316B00077A4DF /* JSCocoaController.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1444, 3332}}";
-			sepNavSelRange = "{584, 12}";
-			sepNavVisRange = "{0, 1988}";
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 3780}}";
+			sepNavSelRange = "{1197, 0}";
+			sepNavVisRange = "{0, 1910}";
 		};
 	};
 	CC1C7D220F48BB2C007A2941 /* TDAlternation.m */ = {
@@ -152,16 +183,16 @@
 	};
 	CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1428, 857}}";
-			sepNavSelRange = "{440, 0}";
-			sepNavVisRange = "{0, 750}";
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
+			sepNavSelRange = "{717, 19}";
+			sepNavVisRange = "{0, 787}";
 		};
 	};
 	CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {971, 3500}}";
-			sepNavSelRange = "{3243, 0}";
-			sepNavVisRange = "{2603, 662}";
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 3822}}";
+			sepNavSelRange = "{2534, 0}";
+			sepNavVisRange = "{1214, 2547}";
 		};
 	};
 	CCAA40570F5DA4DF00514A5E /* fulljslint.js */ = {
@@ -173,9 +204,9 @@
 	};
 	CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {854, 7196}}";
-			sepNavSelRange = "{6690, 0}";
-			sepNavVisRange = "{5940, 1543}";
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 7406}}";
+			sepNavSelRange = "{187, 18}";
+			sepNavVisRange = "{0, 2433}";
 		};
 	};
 	CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {
@@ -183,6 +214,13 @@
 			sepNavIntBoundsRect = "{{0, 0}, {1428, 857}}";
 			sepNavSelRange = "{230, 10}";
 			sepNavVisRange = "{0, 1308}";
+		};
+	};
+	CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 1162}}";
+			sepNavSelRange = "{973, 19}";
+			sepNavVisRange = "{0, 1693}";
 		};
 	};
 	CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */ = {
