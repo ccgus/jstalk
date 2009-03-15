@@ -91,6 +91,16 @@ static NSMutableArray *JSTalkExtrasList;
             
             // do we want to actually do anything with em' at this point?
             
+            NSString *bridgeSupportName = [[pluginBundle infoDictionary] objectForKey:@"BridgeSuportFileName"];
+            
+            if (bridgeSupportName) {
+                NSString *bridgeSupportPath = [pluginBundle pathForResource:bridgeSupportName ofType:nil];
+                
+                [[BridgeSupportController sharedController] loadBridgeSupport:bridgeSupportPath];
+                
+                debug(@"bridgeSupportPath: %@", bridgeSupportPath);
+            }
+            
         }
         else {
             //debug(@"Could not load the principal class of %@", fullPath);
