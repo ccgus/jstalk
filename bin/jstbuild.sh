@@ -109,6 +109,14 @@ if [ $? != 0 ]; then
 fi
 
 
+cd /tmp/jstalk/extras/fmdbextra
+xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target fmdbextra
+if [ $? != 0 ]; then
+    echo "****** Bad build for fmdb extra ********"
+    exit
+fi
+
+
 
 if [ ! -d  ~/cvsbuilds ]; then
     mkdir ~/cvsbuilds
@@ -125,10 +133,12 @@ mv "JSTalk Editor.app" JSTalkFoo/.
 cp -R JSTalk.framework JSTalkFoo/.
 cp -R /tmp/jstalk/README.txt JSTalkFoo/.
 cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
+cp -R /tmp/jstalk/extras/fmdbextra/fmdb.jstalk JSTalkFoo/examples/.
 
 mkdir JSTalkFoo/extras
-mv JSTalk.acplugin JSTalkFoo/extras/.
-mv JSTalk.vpplugin JSTalkFoo/extras/.
+mv JSTalk.acplugin  JSTalkFoo/extras/.
+mv JSTalk.vpplugin  JSTalkFoo/extras/.
+mv FMDB.jstalkextra JSTalkFoo/extras/.
 
 
 mv JSTalkFoo JSTalk

@@ -1,0 +1,32 @@
+// make sure FMDB.jstalkextra is installed in your ~/Library/Application Support/JSTalk/Extras/ folder first.
+// otherwise, this script isn't going to work so well.
+
+var dbPath = "/tmp/jstalk.sqlite";
+
+var db = [FMDatabase databaseWithPath: dbPath];
+if (![db open]) {
+    print("Could not open database");
+}
+
+[db executeUpdate:"create table test (a text, b text, c integer, d double, e double)"];
+
+[db beginTransaction];
+var i = 0;
+while (i++ < 20) {
+    db.executeUpdate_("insert into test (a, b, c, d, e) values (?, ?, ?, ?, ?)" ,
+        @"hi'", // look!  I put in a ', and I'm not escaping it!
+        "Hello",
+        i,
+        [NSDate date],
+        2.2);
+}
+[db commit];
+
+var rs = db.executeQuery_("select rowid,* from test where a = ?", "hi'");
+
+while ([rs next]) {
+    print([rs stringForColumn:"rowid"] + " " + [rs stringForColumn:"a"] + " " + [rs stringForColumnIndex:2] + " " + [rs dateForColumn:"d"]);
+}
+
+[db close];
+
