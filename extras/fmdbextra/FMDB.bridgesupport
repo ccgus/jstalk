@@ -1,0 +1,104 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='0.9'>
+<depends_on path='/System/Library/Frameworks/Foundation.framework'/>
+<depends_on path='/System/Library/Frameworks/AppKit.framework'/>
+<depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
+<class name='FMDatabase'>
+<method selector='beginDeferredTransaction'>
+<retval type='B'/>
+</method>
+<method selector='beginTransaction'>
+<retval type='B'/>
+</method>
+<method variadic='true' selector='boolForQuery:'>
+<retval type='B'/>
+</method>
+<method selector='checkedOut'>
+<retval type='B'/>
+</method>
+<method selector='commit'>
+<retval type='B'/>
+</method>
+<method selector='crashOnErrors'>
+<retval type='B'/>
+</method>
+<method variadic='true' selector='dataForQuery:'/>
+<method variadic='true' selector='doubleForQuery:'/>
+<method variadic='true' selector='executeQuery:'/>
+<method variadic='true' selector='executeUpdate:'>
+<retval type='B'/>
+</method>
+<method selector='executeUpdate:arguments:'>
+<retval type='B'/>
+</method>
+<method selector='goodConnection'>
+<retval type='B'/>
+</method>
+<method selector='hadError'>
+<retval type='B'/>
+</method>
+<method selector='inTransaction'>
+<retval type='B'/>
+</method>
+<method selector='inUse'>
+<retval type='B'/>
+</method>
+<method variadic='true' selector='intForQuery:'/>
+<method selector='logsErrors'>
+<retval type='B'/>
+</method>
+<method variadic='true' selector='longForQuery:'/>
+<method selector='open'>
+<retval type='B'/>
+</method>
+<method selector='rekey:'>
+<retval type='B'/>
+</method>
+<method selector='rollback'>
+<retval type='B'/>
+</method>
+<method selector='setCheckedOut:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setCrashOnErrors:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setInTransaction:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setInUse:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setKey:'>
+<retval type='B'/>
+</method>
+<method selector='setLogsErrors:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setShouldCacheStatements:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setTraceExecution:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='shouldCacheStatements'>
+<retval type='B'/>
+</method>
+<method variadic='true' selector='stringForQuery:'/>
+<method selector='traceExecution'>
+<retval type='B'/>
+</method>
+</class>
+<class name='FMResultSet'>
+<method selector='boolForColumn:'>
+<retval type='B'/>
+</method>
+<method selector='boolForColumnIndex:'>
+<retval type='B'/>
+</method>
+<method selector='next'>
+<retval type='B'/>
+</method>
+</class>
+</signatures>
