@@ -1,0 +1,31 @@
+var windows  = [[SBApplication application:"Finder"] windows];
+
+if ([windows count] > 0) {
+    
+    // from SBObject:
+    // get() "Forces evaluation of the receiver, causing the real object to be returned immediately."
+    var win = windows[0].get();
+    var target = win.target().get();
+    var url = [NSURL URLWithString:[target URL]];
+    var path = [url path].replace("%20", " ");
+    
+    var date = new Date();
+    
+    var folderName = date.getFullYear() + "." + date.getMonth() + "." + date.getDate();
+    
+    print(folderName);
+    
+    var finalPath = path + '/' + folderName;
+    
+    [[NSFileManager defaultManager] createDirectoryAtPath: finalPath attributes:nil];
+    
+    
+    //var terminal = [SBApplication application:"Terminal"];
+    
+    //[terminal activate];
+    
+    //[terminal doScript:"cd '" + [url path] + "'" in:nil];
+}
+else {
+    print("There's no window open")
+}

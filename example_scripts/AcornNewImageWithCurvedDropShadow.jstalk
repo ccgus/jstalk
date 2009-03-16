@@ -68,3 +68,4 @@ image.drawAtPoint_fromRect_operation_fraction_(NSMakePoint(whiteBorderWidth, ima
 [newImage unlockFocus];
 
 [[acorn sharedDocumentController] newDocumentWithImageData:[newImage TIFFRepresentation]];
+

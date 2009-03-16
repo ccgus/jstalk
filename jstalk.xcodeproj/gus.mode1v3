@@ -546,7 +546,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258859236.71999699</real>
+	<real>258859555.95375299</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -568,8 +568,8 @@
 		<string>CCAD9FAA0F6863F5004295ED</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>CC7576560F6DDEAA003AE279</string>
-		<string>/Volumes/srv/Users/gus/Projects/jstalk/jstalk.xcodeproj</string>
 		<string>CC7575890F6DC428003AE279</string>
+		<string>/Volumes/srv/Users/gus/Projects/jstalk/jstalk.xcodeproj</string>
 		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
