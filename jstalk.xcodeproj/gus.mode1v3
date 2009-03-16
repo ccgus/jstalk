@@ -276,7 +276,7 @@
 							<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 							<array>
 								<real>22</real>
-								<real>295</real>
+								<real>744</real>
 							</array>
 							<key>PBXSmartGroupTreeModuleColumnsKey_v4</key>
 							<array>
@@ -291,20 +291,25 @@
 								<string>2A37F4AAFDCFA73011CA2CEA</string>
 								<string>CC43C0CE0F4BBA520044BA41</string>
 								<string>CC0EC3380F2274730094F69D</string>
-								<string>CCC5B92C0F1EFB5900126722</string>
+								<string>2A37F4B8FDCFA73011CA2CEA</string>
+								<string>CCC5B8BA0F1EFA9700126722</string>
+								<string>CCC5B8BE0F1EFA9700126722</string>
+								<string>2A37F4C3FDCFA73011CA2CEA</string>
 								<string>19C28FB0FE9D524F11CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
+								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>44</integer>
-									<integer>41</integer>
+									<integer>8</integer>
+									<integer>1</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {0, 0}}</string>
+							<string>{{0, 0}, {766, 872}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -316,19 +321,19 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {334, 890}}</string>
+						<string>{{0, 0}, {783, 890}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>TargetStatusColumn</string>
 							<real>22</real>
 							<string>MainColumn</string>
-							<real>295</real>
+							<real>744</real>
 						</array>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
 					<key>Proportion</key>
-					<string>334pt</string>
+					<string>783pt</string>
 				</dict>
 				<dict>
 					<key>Dock</key>
@@ -358,7 +363,7 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {449, 551}}</string>
+								<string>{{0, 0}, {0, 551}}</string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -376,7 +381,7 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 556}, {449, 334}}</string>
+								<string>{{0, 556}, {0, 334}}</string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
@@ -430,8 +435,6 @@
 			<key>Layout</key>
 			<array>
 				<dict>
-					<key>BecomeActive</key>
-					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -472,10 +475,10 @@
 								<string>2A37F4AAFDCFA73011CA2CEA</string>
 								<string>CC43C0CE0F4BBA520044BA41</string>
 								<string>CC0EC3380F2274730094F69D</string>
-								<string>CCC5B92C0F1EFB5900126722</string>
 								<string>2A37F4B8FDCFA73011CA2CEA</string>
 								<string>CCC5B8BA0F1EFA9700126722</string>
 								<string>CCC5B8BE0F1EFA9700126722</string>
+								<string>2A37F4C3FDCFA73011CA2CEA</string>
 								<string>19C28FB0FE9D524F11CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
 								<string>1C37FAAC04509CD000000102</string>
@@ -484,13 +487,13 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>32</integer>
 									<integer>8</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 335}, {304, 872}}</string>
+							<string>{{0, 0}, {304, 872}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -511,7 +514,7 @@
 							<real>282</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>1596 241 321 931 0 0 1920 1178 </string>
+						<string>1591 241 321 931 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -546,7 +549,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258861584.80115801</real>
+	<real>258865973.06917101</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -561,17 +564,19 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>CC7576EC0F6DFB35003AE279</string>
 		<string>CC7575480F6DB92B003AE279</string>
 		<string>CC75754C0F6DB92F003AE279</string>
 		<string>CC75754D0F6DB92F003AE279</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>CCAD9FAA0F6863F5004295ED</string>
 		<string>1CD10A99069EF8BA00B06720</string>
+		<string>1C78EAAD065D492600B07095</string>
+		<string>CC7576ED0F6DFB35003AE279</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/jstalk.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>1596 241 321 931 0 0 1920 1178 </string>
+	<string>1591 241 321 931 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -808,7 +813,7 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CDD528C0622207200134675</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>&lt;No Editor&gt;</string>
+										<string>JSTDocument.m</string>
 										<key>StatusBarVisibility</key>
 										<true/>
 									</dict>
@@ -942,7 +947,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

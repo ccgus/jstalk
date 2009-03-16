@@ -60,7 +60,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					210,
+					10,
 					20,
 					48,
 					43,
@@ -82,7 +82,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					170,
+					10,
 					60,
 					20,
 					48,
@@ -314,6 +314,8 @@
 			CC75767A0F6DE223003AE279 /* PBXTextBookmark */ = CC75767A0F6DE223003AE279 /* PBXTextBookmark */;
 			CC75767B0F6DEA0A003AE279 /* PBXTextBookmark */ = CC75767B0F6DEA0A003AE279 /* PBXTextBookmark */;
 			CC75767D0F6DEA0E003AE279 /* PBXTextBookmark */ = CC75767D0F6DEA0E003AE279 /* PBXTextBookmark */;
+			CC7576E80F6DFB23003AE279 /* PBXTextBookmark */ = CC7576E80F6DFB23003AE279 /* PBXTextBookmark */;
+			CC7576EA0F6DFB2E003AE279 /* PBXTextBookmark */ = CC7576EA0F6DFB2E003AE279 /* PBXTextBookmark */;
 		};
 		sourceControlManager = CCEF3F0A0F5F84B800DFCEEC /* Source Control */;
 		userBuildSettings = {
@@ -2552,6 +2554,37 @@
 		vrLen = 372;
 		vrLoc = 142;
 	};
+	CC7576B20F6DF3B7003AE279 /* JSTFileWatcher.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
+			sepNavSelRange = "{472, 58}";
+			sepNavVisRange = "{0, 536}";
+		};
+	};
+	CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1105, 1134}}";
+			sepNavSelRange = "{818, 0}";
+			sepNavVisRange = "{205, 1831}";
+		};
+	};
+	CC7576E80F6DFB23003AE279 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */;
+		rLen = 0;
+		rLoc = 264;
+		rType = 0;
+	};
+	CC7576EA0F6DFB2E003AE279 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */;
+		name = "JSTDocument.m: 14";
+		rLen = 0;
+		rLoc = 264;
+		rType = 0;
+		vrLen = 359;
+		vrLoc = 0;
+	};
 	CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
@@ -2575,23 +2608,30 @@
 	};
 	CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {847, 7490}}";
-			sepNavSelRange = "{14224, 0}";
-			sepNavVisRange = "{13298, 2232}";
+			sepNavIntBoundsRect = "{{0, 0}, {1140, 7868}}";
+			sepNavSelRange = "{264, 0}";
+			sepNavVisRange = "{0, 359}";
 		};
 	};
 	CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
-			sepNavSelRange = "{309, 10}";
-			sepNavVisRange = "{0, 1308}";
+			sepNavIntBoundsRect = "{{0, 0}, {1105, 965}}";
+			sepNavSelRange = "{271, 0}";
+			sepNavVisRange = "{0, 1449}";
+		};
+	};
+	CCC5B94C0F1EFC4500126722 /* JSTAppDelegate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1105, 965}}";
+			sepNavSelRange = "{228, 11}";
+			sepNavVisRange = "{0, 339}";
 		};
 	};
 	CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1219, 1162}}";
-			sepNavSelRange = "{973, 19}";
-			sepNavVisRange = "{0, 1693}";
+			sepNavIntBoundsRect = "{{0, 0}, {1105, 2100}}";
+			sepNavSelRange = "{2310, 92}";
+			sepNavVisRange = "{1849, 2028}";
 		};
 	};
 	CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */ = {

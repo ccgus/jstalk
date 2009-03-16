@@ -12,8 +12,6 @@
 #import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
 
-static void fsevents_callback(FSEventStreamRef streamRef, void *clientCallBackInfo, int numEvents, const char *const eventPaths[], const FSEventStreamEventFlags *eventMasks, const uint64_t *eventIDs);
-
 @implementation JSTDocument
 @synthesize tokenizer=_tokenizer;
 @synthesize keywords=_keywords;
