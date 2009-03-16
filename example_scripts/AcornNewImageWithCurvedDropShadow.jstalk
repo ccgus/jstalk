@@ -1,3 +1,4 @@
+
 var acorn = [JSTalk application:"Acorn"];
 var doc = [[acorn orderedDocuments] objectAtIndex:0];
 var image = [[[NSImage alloc] initWithData:[doc dataRepresentationOfType:"public.png"]] autorelease];
@@ -29,43 +30,42 @@ var shadowOffset = NSMakeSize(0, -(yOffset + 5));
 shadow.set()
 
 // make a curved path, at the bottom of our image.
-bezierPath = NSBezierPath.bezierPath()
+bezierPath = NSBezierPath.bezierPath();
 
-bezierPath.moveToPoint_(NSMakePoint(xOffset, 40 + yOffset))
-bezierPath.lineToPoint_(NSMakePoint(extent.size.width - (xOffset) + doubleBorderWidth, 40 + yOffset))
-bezierPath.lineToPoint_(NSMakePoint(extent.size.width - (xOffset) + doubleBorderWidth, 10 + yOffset))
+[bezierPath moveToPoint:NSMakePoint(xOffset, 40 + yOffset)];
+[bezierPath lineToPoint:NSMakePoint(extent.size.width - (xOffset) + doubleBorderWidth, 40 + yOffset)];
+[bezierPath lineToPoint:NSMakePoint(extent.size.width - (xOffset) + doubleBorderWidth, 10 + yOffset)];
 
-bezierPath.curveToPoint_controlPoint1_controlPoint2_(NSMakePoint(newSize.width / 2, curveHeight + yOffset),
-                                                     NSMakePoint(extent.size.width - (xOffset), 10 + yOffset),
-                                                     NSMakePoint(newSize.width *.75, curveHeight + yOffset))
+[bezierPath curveToPoint:NSMakePoint(newSize.width / 2, curveHeight + yOffset)
+           controlPoint1:NSMakePoint(extent.size.width - (xOffset), 10 + yOffset)
+           controlPoint2:NSMakePoint(newSize.width *.75, curveHeight + yOffset)];
 
-bezierPath.curveToPoint_controlPoint1_controlPoint2_(NSMakePoint(xOffset, 10 + yOffset),
-                                                     NSMakePoint(newSize.width *.25, curveHeight + yOffset),
-                                                     NSMakePoint(xOffset, 10 + yOffset))
+[bezierPath curveToPoint:NSMakePoint(xOffset, 10 + yOffset)
+           controlPoint1:NSMakePoint(newSize.width *.25, curveHeight + yOffset)
+           controlPoint2:NSMakePoint(xOffset, 10 + yOffset)];
 
-print(bezierPath);
-
-bezierPath.fill()
+[bezierPath fill];
 
 // get rid of our shadow
-NSGraphicsContext.currentContext().restoreGraphicsState()
+[[NSGraphicsContext currentContext] restoreGraphicsState];
 
 // draw a white border
-NSColor.whiteColor().set()
-NSBezierPath.bezierPathWithRect_(NSMakeRect(0, imageYOffset, newSize.width, extent.size.height + whiteBorderWidth * 2)).fill()
-
+[[NSColor whiteColor] set];
+[[NSBezierPath bezierPathWithRect:NSMakeRect(0, imageYOffset, newSize.width, extent.size.height + whiteBorderWidth * 2)] fill];
 
 // draw our gray border around the white border
-NSColor.lightGrayColor().set()
-NSBezierPath.bezierPathWithRect_(NSMakeRect(.5, imageYOffset + .5 , newSize.width - 1, (extent.size.height - 1) + (whiteBorderWidth * 2))).stroke()
+[[NSColor lightGrayColor] set];
+[[NSBezierPath bezierPathWithRect:NSMakeRect(.5, imageYOffset + .5 , newSize.width - 1, (extent.size.height - 1) + (whiteBorderWidth * 2))] stroke];
 
 // NSImage takes into account dpi of the image.  So we force it's size, to avoid small images.
 [image setSize: extent.size];
 
 // draw our image
-image.drawAtPoint_fromRect_operation_fraction_(NSMakePoint(whiteBorderWidth, imageYOffset + whiteBorderWidth), NSMakeRect(0, 0, extent.size.width, extent.size.height), NSCompositeCopy, 1)
+[image drawAtPoint:NSMakePoint(whiteBorderWidth, imageYOffset + whiteBorderWidth)
+          fromRect:NSMakeRect(0, 0, extent.size.width, extent.size.height)
+         operation:NSCompositeCopy
+          fraction:1];
 
 [newImage unlockFocus];
 
 [[acorn sharedDocumentController] newDocumentWithImageData:[newImage TIFFRepresentation]];
-
