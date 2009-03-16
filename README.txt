@@ -26,7 +26,7 @@ Why not do something more modern?  Why not add scripting support the Cocoa way? 
 
 a) Come up with an object model for your application, using standard Cocoa classes.  In many cases this is already done, by virtue of writing a maintainable application.
 
-b) Expose a "root" object to JSTalk, via Distributed Objects.  In most cases, this will just be NSApplication.  If choose to use the JSTalk framework, it's just one line of code:  [JSTalk listen];
+b) Expose a "root" object to JSTalk, via Distributed Objects.  In most cases, this will just be NSApplication.  If you choose to use the JSTalk framework, it's just one line of code:  [JSTalk listen];
 
 c) Document what methods, properties, and objects you support.  There's no magic xml files to fill out!
 
@@ -43,7 +43,7 @@ JSTalk is built on top of Apple's JavaScriptCore, the same JavaScript engine tha
 
 JSTalk also includes a bridge which lets you access Apple's Cocoa frameworks from JavaScript.  This means you have a ton wonderful classes and functions you can use in addition to the standard JavaScript library.
 
-JSTalk also adds a preprocessor to make using the Cocoa frameworks friendlier.  Since Cocoa is written in Objective-C, you get a different syntax that what you'd normally encounter in JavaScript for calling methods.  For example, here's some typical Cocoa code for writing a string to a file:
+JSTalk also adds a preprocessor to make using the Cocoa frameworks friendlier.  Since Cocoa is written in Objective-C, you get a different syntax than what you'd normally encounter in JavaScript for calling methods.  For example, here's some typical Cocoa code for writing a string to a file:
 
 NSString *someContent = @"Hello World!";
 NSString *path = @"/tmp/foo.txt";
@@ -77,6 +77,20 @@ Although this is great to have, it's not the same as an application natively sup
 
 
 
+
+JSTalk Extras
+-------------
+
+Aka, loadable bundles which add functionality to JSTalk, via helper classes, wrappers, and categories.
+
+JSTalk comes with some standard helper categories (which you can currently find in JSTalkExtras.m), but it will also look in your ~/Library/Application Support/JSTalk/Extras/ folder, and load any .jstalkextra bundles it sees.  You can turn this off in your application if you don't like that idea, via [JSTalk setShouldLoadExtras:NO];
+
+There are two examples with JSTalk, one that just adds a category cocoa's string class: - [NSString reversedString].  The other example is "FMDB.jstalkextra", which loads the FMDB Sqlite classes, for use in JSTalk.  This allows you to use sqlite to create, insert, update, etc, sql tables from JSTalk.
+
+
+
+
+
 But it doesn't do X:
 --------------------
 
@@ -104,11 +118,11 @@ A user mailing list will pop up at some point, but we're not there yet.
 Here's what is currently being worked on, what's broken:
 --------------------------------------------------------
 
-- Memory leaks.  Alloc'ing big images never get released for instance.
-- JSLint crashes JSCocoa.
-- Need to add "Edit in X" feature, which uses FSEvents or something similar to watch updates on the file, for reloading it in the editor.
-- For some reason, the textview wants to scroll left and right occasionally, which is annoying.
-- NSPoints do not seem to be going across DO.  Is this just a limitation of DO?
+- No PPC support.  The main reason is I don't have a testable PPC box lying around, but in theory it should work.
+
+- The preprocessor isn't perfect, and it screws up on some code.  For instance:
+[NSFullUserName() lowercaseString];
+Doesn't preprocess correctly.  To find out if your script is being preprocessed incorrectly, just use the Script->Preprocess menu item to see what it spits out.
 
 
 
@@ -118,10 +132,7 @@ TODO:
 -----
 
 Nicer editing features.
-An "Edit in External Editor" command, so you can use BBEdit or whatever to edit your script.
-The loading of ".jstalkextra" bundles.  This would be a collection of classes that JSTalk would load, which adds additional functionality to the standard Cocoa classes.  Think helper classes and categories.
 A debugger would be killer.
-JSLint built into it.
 
 
 

@@ -191,13 +191,14 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 	if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector)) {
         return nil;
     }
-
+    
     NSMethodSignature *signature = [callee methodSignatureForSelector:selector];
     
     if (!signature) {
         return nil;
     }
     
+    // we need to do all this for NSDistantObject , since JSCocoa doesn't handle it natively.
     
     NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
     [invocation setSelector:selector];
@@ -209,7 +210,47 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         
         [JSCocoaFFIArgument unboxJSValueRef:arguments[argIndex] toObject:&arg inContext:ctx];
         
-        [invocation setArgument:&arg atIndex:argIndex + 2];
+        if ([arg isKindOfClass:[NSNumber class]]) {
+            
+            const char *type = [signature getArgumentTypeAtIndex:argIndex + 2];
+            
+            if (strcmp(type, @encode(BOOL)) == 0) {
+                BOOL b = [arg boolValue];
+                [invocation setArgument:&b atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(unsigned int)) == 0) {
+                unsigned int i = [arg unsignedIntValue];
+                [invocation setArgument:&i atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(int)) == 0) {
+                int i = [arg intValue];
+                [invocation setArgument:&i atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(unsigned long)) == 0) {
+                unsigned long l = [arg unsignedLongValue];
+                [invocation setArgument:&l atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(long)) == 0) {
+                long l = [arg longValue];
+                [invocation setArgument:&l atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(float)) == 0) {
+                float f = [arg floatValue];
+                [invocation setArgument:&f atIndex:argIndex + 2];
+            }
+            else if (strcmp(type, @encode(double)) == 0) {
+                double d = [arg doubleValue];
+                [invocation setArgument:&d atIndex:argIndex + 2];
+            }
+            else { // just do int for all else.
+                int i = [arg intValue];
+                [invocation setArgument:&i atIndex:argIndex + 2];
+            }
+            
+        }
+        else {
+            [invocation setArgument:&arg atIndex:argIndex + 2];
+        }
         
         argIndex++;
     }
