@@ -12,8 +12,6 @@
 #import "TDWhitespaceState.h"
 #import "TDCommentState.h"
 
-#warning var name = [NSFullUserName() lowercaseString]; fails
-
 @implementation JSTPreprocessor
 
 + (NSString*) preprocessForObjCStrings:(NSString*)sourceString {
@@ -22,7 +20,7 @@
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
     
     tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-    tokenizer.commentState.reportsCommentTokens = YES;
+    tokenizer.commentState.reportsCommentTokens = NO;
     
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = 0x00;
@@ -57,7 +55,7 @@
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
     
     tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-    tokenizer.commentState.reportsCommentTokens = YES;
+    tokenizer.commentState.reportsCommentTokens = NO;
     
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = nil;
@@ -190,14 +188,30 @@
         if ([_lastString length]) {
             //debug(@"adding %@ to current args", _lastString);
             [_currentArgument appendString:_lastString];
+            [_args addObject:_currentArgument];
+            self.lastString = 0x00;
         }
         
-        [_currentArgument appendString:[aSymbol description]];
+        [_args addObject:[aSymbol description]];
         
-        self.lastString = 0x00;
+        self.currentArgument = [NSMutableString string];
         
         return;
     }
+    
+    if ([aSymbol isEqualToString:@","]) {
+        
+        if ([_lastString length]) {
+            [_currentArgument appendString:_lastString];
+            [_args addObject:_currentArgument];
+            self.lastString = 0x00;
+        }
+        
+        self.currentArgument = [NSMutableString string];
+        
+        return;
+    }
+    
     
     // sanity check.
     if (![aSymbol isKindOfClass:[NSString class]]) {
@@ -220,16 +234,13 @@
             [_args addObject:_currentArgument];
         }
         
-        
         self.currentArgument = [NSMutableString string];
         
         return;
     }
     
-    if ([aSymbol isEqualToString:@","]) {
-        // vargs, meh.
-        return;
-    }
+    
+    
     
     if (_lastString) {
         [_currentArgument appendString:_lastString];
@@ -240,12 +251,19 @@
 
 - (NSString*) description {
     
+    if (![_selector length]) {
+        // ... whoops, was it an array call?
+        return [NSString stringWithFormat:@"[%@]", _target];
+    }
+    
     if ([_lastString length]) {
         [_currentArgument appendString:_lastString];
+        self.lastString = 0x00;
     }
     
     if ([_currentArgument length]) {
         [_args addObject:_currentArgument];
+        self.currentArgument = 0x00;
     }
     
     

@@ -31,6 +31,9 @@
     NSString *_lastString;
     NSMutableString *_selector;
     NSMutableString *_currentArgument;
+    
+    NSUInteger _parentCount;
+    
 }
 
 @property (retain) NSMutableArray *args;
