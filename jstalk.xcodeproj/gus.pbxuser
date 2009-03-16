@@ -5,7 +5,7 @@
 		activeExecutable = CCEF3EF70F5F849900DFCEEC /* JSTalk Editor */;
 		activeTarget = 8D15AC270486D014006FF6A4 /* JSTalk Editor */;
 		addToTargets = (
-			CC4143190F25254200E46669 /* JSTalk Framework */,
+			8D15AC270486D014006FF6A4 /* JSTalk Editor */,
 		);
 		breakpoints = (
 			CC7575500F6DB941003AE279 /* -[NSException raise] */,
@@ -312,6 +312,8 @@
 			CC7576780F6DE223003AE279 /* PBXTextBookmark */ = CC7576780F6DE223003AE279 /* PBXTextBookmark */;
 			CC7576790F6DE223003AE279 /* PBXTextBookmark */ = CC7576790F6DE223003AE279 /* PBXTextBookmark */;
 			CC75767A0F6DE223003AE279 /* PBXTextBookmark */ = CC75767A0F6DE223003AE279 /* PBXTextBookmark */;
+			CC75767B0F6DEA0A003AE279 /* PBXTextBookmark */ = CC75767B0F6DEA0A003AE279 /* PBXTextBookmark */;
+			CC75767D0F6DEA0E003AE279 /* PBXTextBookmark */ = CC75767D0F6DEA0E003AE279 /* PBXTextBookmark */;
 		};
 		sourceControlManager = CCEF3F0A0F5F84B800DFCEEC /* Source Control */;
 		userBuildSettings = {
@@ -698,7 +700,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		location = CoreFoundation;
-		modificationTime = 258849784.966211;
+		modificationTime = 258862630.399372;
 		state = 1;
 		symbolName = "-[NSException raise]";
 	};
@@ -2530,11 +2532,31 @@
 		vrLen = 372;
 		vrLoc = 142;
 	};
+	CC75767B0F6DEA0A003AE279 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */;
+		name = "JSTPreprocessor.m: 15";
+		rLen = 0;
+		rLoc = 272;
+		rType = 0;
+		vrLen = 372;
+		vrLoc = 142;
+	};
+	CC75767D0F6DEA0E003AE279 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */;
+		name = "JSTPreprocessor.m: 15";
+		rLen = 0;
+		rLoc = 272;
+		rType = 0;
+		vrLen = 372;
+		vrLoc = 142;
+	};
 	CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
-			sepNavSelRange = "{454, 9}";
-			sepNavVisRange = "{0, 810}";
+			sepNavSelRange = "{524, 12}";
+			sepNavVisRange = "{0, 849}";
 		};
 	};
 	CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */ = {
@@ -2553,15 +2575,15 @@
 	};
 	CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1219, 7518}}";
-			sepNavSelRange = "{9103, 0}";
-			sepNavVisRange = "{8613, 1885}";
+			sepNavIntBoundsRect = "{{0, 0}, {847, 7490}}";
+			sepNavSelRange = "{14224, 0}";
+			sepNavVisRange = "{13298, 2232}";
 		};
 	};
 	CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1219, 943}}";
-			sepNavSelRange = "{590, 0}";
+			sepNavSelRange = "{309, 10}";
 			sepNavVisRange = "{0, 1308}";
 		};
 	};

@@ -12,6 +12,7 @@
 @interface JSTAppDelegate (PrivateStuff)
 - (void) restoreWorkspace;
 - (void) saveWorkspace;
+- (void) loadExternalEditorPrefs;
 @end
 
 @implementation JSTAppDelegate
@@ -24,6 +25,7 @@
     
     [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"rememberWorkspace"];
     [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"clearConsoleOnRun"];
+    [defaultValues setObject:@"com.apple.xcode"            forKey:@"externalEditor"];
     
     [defaults registerDefaults: defaultValues];
     [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:defaultValues];
@@ -41,6 +43,8 @@
 }
 
 - (IBAction) showPrefs:(id)sender {
+    
+    [self loadExternalEditorPrefs];
     
     if (![prefsWindow isVisible]) {
         [prefsWindow center];
@@ -76,6 +80,70 @@
     
     [[NSUserDefaults standardUserDefaults] setObject:openDocs forKey:@"workspaceOpenDocuments"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+
+- (void) loadExternalEditorPrefs {
+    
+    NSString *editorId = [[NSUserDefaults standardUserDefaults] objectForKey:@"externalEditor"];
+    
+    NSWorkspace *ws     = [NSWorkspace sharedWorkspace];
+    NSString *appPath   = [ws absolutePathForAppBundleWithIdentifier:editorId];
+    NSString *appName   = nil;
+    
+    if (appPath) {
+        
+        NSBundle *appBundle  = [NSBundle bundleWithPath:appPath];
+        NSString *bundleName = [appBundle objectForInfoDictionaryKey:@"CFBundleName"];
+        
+        if (bundleName) {
+            appName = bundleName;
+        }
+    }
+    
+    if (!appName) {
+        appName = @"Unknown";
+    }
+    
+    [externalEditorField setStringValue:appName];
+}
+
+- (void)openPanelDidEndForExternalEditor:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
+    if (returnCode) {
+        
+        NSString *path = [sheet filename];
+        
+        NSBundle *appBundle = [NSBundle bundleWithPath:path];
+        NSString *bundleId  = [appBundle bundleIdentifier];
+        
+        if (!bundleId) {
+            NSBeep();
+            NSLog(@"Could not load the bundle info for %@", bundleId);
+            return;
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setObject:bundleId forKey:@"externalEditor"];
+        
+        [self loadExternalEditorPrefs];
+        
+    }
+}
+
+- (void) chooseExternalEditor:(id)sender {
+    
+    NSOpenPanel *p = [NSOpenPanel openPanel];
+    
+    [p setCanChooseFiles:YES];
+    [p setCanChooseDirectories:NO];
+    [p setAllowsMultipleSelection:NO];
+    
+    [p beginSheetForDirectory:@"/Applications"
+                         file:nil
+                        types:[NSArray arrayWithObjects:@"app", @"APPL", nil]
+               modalForWindow:prefsWindow
+                modalDelegate:self
+               didEndSelector:@selector(openPanelDidEndForExternalEditor:returnCode:contextInfo:)
+                  contextInfo:nil];
 }
 
 @end

@@ -546,7 +546,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258859555.95375299</real>
+	<real>258861584.80115801</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -565,12 +565,10 @@
 		<string>CC75754C0F6DB92F003AE279</string>
 		<string>CC75754D0F6DB92F003AE279</string>
 		<string>1C530D57069F1CE1000CFCEE</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>CCAD9FAA0F6863F5004295ED</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>CC7576560F6DDEAA003AE279</string>
-		<string>CC7575890F6DC428003AE279</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/jstalk.xcodeproj</string>
-		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>1596 241 321 931 0 0 1920 1178 </string>
@@ -594,7 +592,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>JSTPreprocessor.m</string>
+								<string>&lt;No Editor&gt;</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -944,7 +942,7 @@
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>Identifier</key>

@@ -11,6 +11,9 @@
 
 @interface JSTAppDelegate : NSObject {
     IBOutlet NSPanel *prefsWindow;
+    IBOutlet NSTextField *externalEditorField;
 }
+
+- (void) chooseExternalEditor:(id)sender;
 
 @end

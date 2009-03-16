@@ -12,10 +12,12 @@
 #import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
 
+static void fsevents_callback(FSEventStreamRef streamRef, void *clientCallBackInfo, int numEvents, const char *const eventPaths[], const FSEventStreamEventFlags *eventMasks, const uint64_t *eventIDs);
 
 @implementation JSTDocument
 @synthesize tokenizer=_tokenizer;
 @synthesize keywords=_keywords;
+@synthesize externalEditorFileWatcher=_externalEditorFileWatcher;
 
 - (id)init {
     self = [super init];
@@ -64,6 +66,9 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     
     [_keywords release];
     _keywords = 0x00;
+    
+    [_externalEditorFileWatcher release];
+    _externalEditorFileWatcher = 0x00;
     
     [super dealloc];
 }
@@ -387,6 +392,71 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     
 }
 
+- (void) externalEditorAction:(id)sender {
+    
+    if (_externalEditorFileWatcher) {
+        /// wait, what?  Should we care?
+        [_externalEditorFileWatcher release];
+        _externalEditorFileWatcher = 0x00;
+    }
+    
+    if (![self fileURL]) {
+        [self saveDocument:self];
+        return;
+    }
+    
+    [self saveDocument:self];
+    
+    /*
+    // get a unique name for the file.
+    CFUUIDRef uuid = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = (NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuid);
+    CFRelease(uuid);
+    [uuidString autorelease];
+    
+    // write it all out.
+    NSString *fileName      = [NSString stringWithFormat:@"%@.jstalk", [uuidString lowercaseString]];
+    NSString *fileLocation  = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
+    NSURL *fileURL          = [NSURL fileURLWithPath:fileLocation];
+    NSError *err            = 0x00;
+    
+    [[[jsTextView textStorage] string] writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&err];
+    */
+    
+    // find our external editor to do some editing.
+    NSString *externalEditorBundleId = [[NSUserDefaults standardUserDefaults] objectForKey:@"externalEditor"];
+    NSString *appPath   = [[NSWorkspace sharedWorkspace] absolutePathForAppBundleWithIdentifier:externalEditorBundleId];
+    
+    if (!appPath) {
+        NSLog(@"Could not find the app path for %@", externalEditorBundleId);
+        NSBeep();
+        return;
+    }
+    
+    // setup our watcher.
+    self.externalEditorFileWatcher = [JSTFileWatcher fileWatcherWithPath:[self fileName] delegate:self];
+    
+    // and away we go.
+    [[NSWorkspace sharedWorkspace] openFile:[self fileName] withApplication:appPath];
+}
+
+- (void) fileWatcherDidRecieveFSEvent:(JSTFileWatcher*)fw {
+    
+    NSString *path = [fw path];
+    
+    NSError *err = 0x00;
+    NSString *src = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:path] encoding:NSUTF8StringEncoding error:&err];
+    
+    if (err) {
+        NSBeep();
+        NSLog(@"err: %@", err);
+        return;
+    }
+    
+    if (src) {
+        [[[jsTextView textStorage] mutableString] setString:src];
+    }
+}
 
 
 - (NSToolbarItem *)toolbar:(NSToolbar *)toolbar

@@ -11,6 +11,7 @@
 #import "MarkerLineNumberView.h"
 #import "JSTTextView.h"
 #import "TDParseKit.h"
+#import "JSTFileWatcher.h"
 
 @interface JSTDocument : NSDocument {
     IBOutlet JSTTextView *jsTextView;
@@ -24,11 +25,13 @@
     NSDictionary *_keywords;
     
     NSMutableDictionary *_toolbarItems;
+    
+    JSTFileWatcher *_externalEditorFileWatcher;
 }
 
 @property (retain) TDTokenizer *tokenizer;
 @property (retain) NSDictionary *keywords;
-
+@property (retain) JSTFileWatcher *externalEditorFileWatcher;
 
 - (void) executeScript:(id)sender;
 - (void) parseCode:(id)sender;
