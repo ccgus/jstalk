@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+
+			<!-- This is ignored by Cocoa on Mac OS 10.5 because there's an LSItemContentTypes entry. We'll take it out someday when we drop 10.4 compatibility. -->
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>sketch2</string>
+			</array>
+
+			<!-- These are required on 10.4 but optional on 10.5. They don't mean much on 10.5 though because their values are the same as the corresponding values in the com.apple.sketch2 declaration down below. We'll take them out someday when we drop 10.4 compatibility. -->
+			<key>CFBundleTypeIconFile</key>
+			<string>Draw2File</string>
+			<key>CFBundleTypeName</key>
+			<string>Apple Sketch document</string>
+
+			<!-- This has the exact same meaning in 10.4 and 10.5. -->
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+
+			<!-- This is ignored by Cocoa on 10.4 because support for UTIs is new in 10.5. LaunchServices parses it on 10.4 but it doesn't make much of a difference. -->
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.apple.sketch2</string>
+			</array>
+
+			<!-- This has the exact same meaning in 10.4 and 10.5. -->
+			<key>NSDocumentClass</key>
+			<string>SKTDocument</string>
+
+			<!-- This is ignored by Cocoa on 10.5 because there's an LSItemContentTypes entry. We'll take it out someday when we drop 10.4 compatibility. -->
+			<key>NSExportableAs</key>
+			<array>
+				<string>NSPDFPboardType</string>
+				<string>NSTIFFPboardType</string>
+			</array>
+
+			<!-- This is ignored by Cocoa on 10.4 because support for UTIs is new in 10.5. -->
+			<key>NSExportableTypes</key>
+			<array>
+				<string>com.adobe.pdf</string>
+				<string>public.tiff</string>
+			</array>
+
+		</dict>
+
+		<!-- These are never ignored but they're not useful on Mac OS 10.5 because the UTI-identified types mentioned in NSExportableTypes are used instead. We'll take them out someday when we drop 10.4 compatibility. -->
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pdf</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>NSPDFPboardType</string>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>tiff</string>
+				<string>tif</string>
+			</array>
+			<key>CFBundleTypeName</key>
+			<string>NSTIFFPboardType</string>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+		</dict>
+
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>Sketch</string>
+	<key>CFBundleIconFile</key>
+	<string>Draw2App</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.apple.CocoaExamples.Sketch</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>2.0</string>
+	<key>CFBundleSignature</key>
+	<string>sktc</string>
+	<key>CFBundleVersion</key>
+	<string>48.1</string>
+	<key>NSAppleScriptEnabled</key>
+	<string>YES</string>
+	<key>NSMainNibFile</key>
+	<string>Draw2</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>OSAScriptingDefinition</key>
+	<string>Sketch.sdef</string>
+
+	<!-- This is ignored by Cocoa on 10.4 because support for UTIs is new in 10.5. LaunchServices parses it on 10.4 but it doesn't make much of a difference. -->
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeDescription</key>
+			<string>Apple Sketch document</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+			</array>
+			<key>UTTypeIconFile</key>
+			<string>Draw2File</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.apple.sketch2</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>sketch2</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+
+</dict>
+</plist>

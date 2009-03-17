@@ -1,0 +1,13 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {selectToolAction = id; }; 
+            CLASS = SKTToolPaletteController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {toolButtons = id; }; 
+            SUPERCLASS = NSWindowController; 
+        }
+    ); 
+    IBVersion = 1; 
+}

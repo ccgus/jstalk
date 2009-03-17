@@ -1,0 +1,19 @@
+// this script requires the use of jstalk-sketch, in the extras folder.
+
+var sketch = [JSTalk application:"Sketch"];
+
+var doc = [[sketch orderedDocuments] objectAtIndex:0];
+
+var rectangle = [doc makeNewBox];
+
+[rectangle setWidth:100];
+[rectangle setHeight:100];
+[rectangle setXPosition:100];
+[rectangle setYPosition:100];
+
+/*
+tell application "Sketch"	tell document 1		set o to make new box		set width of o to 100		set height of o to 100		set stroke thickness of o to 10	end tellend tell
+*/
+
+
+

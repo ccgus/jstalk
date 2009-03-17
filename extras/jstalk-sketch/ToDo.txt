@@ -1,0 +1,22 @@
+To do / Issues
+
+Sooner
+
+- More ruler support (markers for selected graphics)
+- Graphics subclasses: Arcs, Polygons, Scribbles, File Attachments?
+- Groups
+- Lock/unlock
+- Multi-selection inspector
+- Line joins, line caps, fill rules
+- Arrows (need a way to determine which end of a line gets the arrow if you only want one)
+- Keyboard modification of mouse (constraints on sizing, moving, creating)
+
+- Might want to make a graphic know its parent instead of its document when Groups come along?
+
+Later
+
+- Multi-view documents
+- More dynamic inspector (type of inspector varies with selected graphic)
+- Dynamically loadable graphics
+- Dynamically loadable tools
+- Dynamic drawing effects/graphic attributes
