@@ -65,6 +65,29 @@ var path = @"/tmp/foo.txt"
 
 
 
+
+Give me an example
+------------------
+Here's an AppleScript example, for adding a new rectangle object to a sketch document:
+
+tell application "Sketch"	tell document 1		set o to make new box		set width of o to 100		set height of o to 100		set stroke thickness of o to 10	end tellend tell
+
+
+And here's how you do it with JSTalk, using a doctored version of Sketch(6 lines of code, + the JSTalk framework):
+
+var sketch = [JSTalk application:"Sketch"];
+var doc = [sketch orderedDocuments][0]
+var rectangle = [doc makeNewBox];
+
+[rectangle setWidth:100];
+[rectangle setHeight:100];
+[rectangle setXPosition:100];
+[rectangle setYPosition:100];
+
+
+
+
+
 But no apps out there currently support JSTalk!
 -----------------------------------------------
 

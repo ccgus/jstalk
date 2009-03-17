@@ -1,9 +1,7 @@
 // this script requires the use of jstalk-sketch, in the extras folder.
 
 var sketch = [JSTalk application:"Sketch"];
-
-var doc = [[sketch orderedDocuments] objectAtIndex:0];
-
+var doc = [sketch orderedDocuments][0]
 var rectangle = [doc makeNewBox];
 
 [rectangle setWidth:100];
