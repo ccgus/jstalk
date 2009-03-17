@@ -110,6 +110,8 @@ JSTalk comes with some standard helper categories (which you can currently find 
 
 There are two examples with JSTalk, one that just adds a category cocoa's string class: - [NSString reversedString].  The other example is "FMDB.jstalkextra", which loads the FMDB Sqlite classes, for use in JSTalk.  This allows you to use sqlite to create, insert, update, etc, sql tables from JSTalk.
 
+I'm thinking of changing the extension for these bundles from .jstalkextra, to something like .jxtra or .jstalkx.  Let me know if you have any good ideas!
+
 
 
 
