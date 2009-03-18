@@ -182,6 +182,23 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     }
 }
 
+
+//
+// JSCocoa : handle setting with callMethod
+//	object.width = 100
+//	-> 
+//	[object setWidth:100]
+//
+- (BOOL) JSCocoa:(JSCocoaController*)controller setProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
+{
+	NSString*	setterName = [NSString stringWithFormat:@"set%@%@:", 
+										[[propertyName substringWithRange:NSMakeRange(0,1)] capitalizedString], 
+										[propertyName substringWithRange:NSMakeRange(1, [propertyName length]-1)]];
+	[self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:ctx exception:exception];
+	return	YES;
+}
+
+
 //
 // NSDistantObject call using NSInvocation
 //
