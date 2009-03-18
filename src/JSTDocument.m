@@ -183,6 +183,10 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 }
 
 
+//#define JSPROPERTY_SUPPORT
+
+#ifdef JSPROPERTY_SUPPORT
+
 //
 // JSCocoa : handle setting with callMethod
 //	object.width = 100
@@ -191,13 +195,19 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 //
 - (BOOL) JSCocoa:(JSCocoaController*)controller setProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 {
+    // FIXME: this doesn't actually work with objc properties, and we can't always rely that this method will exist either...
+    // it should probably be moved up into the JSCocoa layer.
+    
 	NSString*	setterName = [NSString stringWithFormat:@"set%@%@:", 
 										[[propertyName substringWithRange:NSMakeRange(0,1)] capitalizedString], 
 										[propertyName substringWithRange:NSMakeRange(1, [propertyName length]-1)]];
-	[self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:ctx exception:exception];
-	return	YES;
+	
+    [self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:ctx exception:exception];
+	
+    return	YES;
 }
 
+#endif
 
 //
 // NSDistantObject call using NSInvocation
