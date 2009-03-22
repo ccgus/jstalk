@@ -85,6 +85,18 @@ var rectangle = [doc makeNewBox];
 [rectangle setYPosition:100];
 
 
+If you aren't a fan of the optional bracket syntax, you can also write the script this way:
+
+var sketch = JSTalk.application_("Sketch");
+var doc = sketch.orderedDocuments()[0]
+var rectangle = doc.makeNewBox();
+
+rectangle.setWidth_(100);
+rectangle.setHeight_(100);
+rectangle.setXPosition_(100);
+rectangle.setYPosition_(100);
+
+
 
 
 

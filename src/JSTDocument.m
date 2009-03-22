@@ -183,9 +183,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 }
 
 
-//#define JSPROPERTY_SUPPORT
-
-#ifdef JSPROPERTY_SUPPORT
 
 //
 // JSCocoa : handle setting with callMethod
@@ -202,12 +199,12 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 										[[propertyName substringWithRange:NSMakeRange(0,1)] capitalizedString], 
 										[propertyName substringWithRange:NSMakeRange(1, [propertyName length]-1)]];
 	
-    [self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:ctx exception:exception];
+    if ([self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:ctx exception:exception]) {
+        return YES;
+    }
 	
-    return	YES;
+    return	NO;
 }
-
-#endif
 
 //
 // NSDistantObject call using NSInvocation

@@ -8,7 +8,7 @@
 
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 #import <Cocoa/Cocoa.h>
-#import <JavascriptCore/JavascriptCore.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 #endif
 #import <mach-o/dyld.h>
 #import <dlfcn.h>
@@ -60,6 +60,7 @@
 
 - (void)setObject:(id)o;
 - (void)setObjectNoRetain:(id)o;
+- (BOOL)retainObject;
 - (id)object;
 
 - (void)setMethod:(Method)m;

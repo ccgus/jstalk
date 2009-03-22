@@ -17,3 +17,12 @@ for f in *.m  *.h; do
 done
 
 
+echo ========================
+echo or the other way around.
+echo ========================
+
+for f in *.m  *.h; do
+    echo cp $SRC_DIR/jscocoa/JSCocoa/$f $FORK_SRC_DIR/JSCocoa/.
+done
+
+

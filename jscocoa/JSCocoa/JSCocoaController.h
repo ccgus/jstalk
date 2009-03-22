@@ -7,7 +7,7 @@
 //
 #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 #import <Cocoa/Cocoa.h>
-#import <JavascriptCore/JavascriptCore.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 #define MACOSX
 #import <ffi/ffi.h>
 #endif
@@ -90,7 +90,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 + (BOOL)addInstanceMethod:(NSString*)methodName class:(Class)class jsFunction:(JSValueRefAndContextRef)valueAndContext encoding:(char*)encoding;
 
 // Tests
-- (BOOL)runTests:(NSString*)path;
+- (int)runTests:(NSString*)path;
 
 //
 // Autorelease pool

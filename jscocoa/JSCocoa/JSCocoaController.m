@@ -25,7 +25,7 @@ static	bool		jsCocoaObject_deleteProperty(JSContextRef, JSObjectRef, JSStringRef
 static	void		jsCocoaObject_getPropertyNames(JSContextRef, JSObjectRef, JSPropertyNameAccumulatorRef);
 static	JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef, JSObjectRef, size_t, const JSValueRef [], JSValueRef*);
 static	JSValueRef	jsCocoaObject_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception);
-static	JSValueRef	_jsCocoaObject_callUsingNSInvocation(JSContextRef ctx, id callee, NSString *methodName, size_t argumentCount, JSValueRef arguments[]);
+//static	JSValueRef	_jsCocoaObject_callUsingNSInvocation(JSContextRef ctx, id callee, NSString *methodName, size_t argumentCount, JSValueRef arguments[]);
 
 // valueOf() is called by Javascript on objects, eg someObject + ' someString'
 static	JSValueRef	valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception);
@@ -62,6 +62,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 @end
 
 @implementation JSCocoaController
+
+
 
 @synthesize delegate=_delegate;
 
@@ -135,7 +137,6 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	if (!OSXObjectClass)
 		OSXObjectClass = JSClassCreate(&OSXObjectDefinition);
 
-
 	//
 	// Private object, used for holding references to objects, classes, function names, structs
 	//
@@ -198,9 +199,9 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	controllerCount--;
 	if (controllerCount == 0)
 	{
-		JSClassRelease(OSXObjectClass);
-		JSClassRelease(jsCocoaObjectClass);
-		JSClassRelease(hashObjectClass);
+		if (OSXObjectClass)		JSClassRelease(OSXObjectClass);
+		if (jsCocoaObjectClass)	JSClassRelease(jsCocoaObjectClass);
+		if (hashObjectClass)	JSClassRelease(hashObjectClass);
 
 		[sharedInstanceStats release];
 		[closureHash release];
@@ -1048,12 +1049,12 @@ static id JSCocoaSingleton = NULL;
 	JSPropertyNameArrayRelease(jsNames);
 
 	// We'll save the matching selector in this key
-	id key = [NSMutableString stringWithFormat:@"%@-", class];
+	id key = [NSMutableString stringWithFormat:@"%@-%@", class, methodName];
 	id sortedNames = [names sortedArrayUsingSelector:@selector(caseInsensitiveCompare:)];
 	for (id n in sortedNames)	[key appendString:n];
 	key = [key lowercaseString];
 	
-	// ##todo : actually cache the sel !
+	// Check if this selector already has a match
 	id existingSelector = [splitCallCache objectForKey:key];
 	if (existingSelector)
 	{
@@ -1078,7 +1079,6 @@ static id JSCocoaSingleton = NULL;
 		{
 			Method m = methods[i];
 			id name = [NSStringFromSelector(method_getName(m)) lowercaseString];
-
 			// Is this selector's length the same as the one we're searching ?
 			if ([name length] == targetSelectorLength)
 			{
@@ -1105,6 +1105,7 @@ static id JSCocoaSingleton = NULL;
 //						NSLog(@"split call found %s", method_getName(m));
 
 						// Store in split call cache
+//						NSLog(@"caching selector=%@ for key=%@", selector, key);
 						[splitCallCache setObject:selector forKey:key];
 
 						free(methods);
@@ -1232,6 +1233,9 @@ static id JSCocoaSingleton = NULL;
 	// As boxed objects are JSObjectRef not derived from NSObject, we box them in an ObjC object.
 	//
 	
+//	NSLog(@"boxing %x", o);
+//	NSLog(@"boxing %@", o);
+	
 	// Box the ObjC object in a JSObjectRef
 	JSObjectRef jsObject = [self jsCocoaPrivateObjectInContext:ctx];
 	JSCocoaPrivateObject* private = JSObjectGetPrivate(jsObject);
@@ -1246,6 +1250,7 @@ static id JSCocoaSingleton = NULL;
 	[boxedObjects setValue:value forKey:key];
 	[value release];
 	return	jsObject;
+
 }
 
 
@@ -1255,14 +1260,17 @@ static id JSCocoaSingleton = NULL;
 	id value = [boxedObjects valueForKey:key];
 	if (!value)
 	{
-		NSLog(@"downBoxedJSObjectCount: without an up !");
-		NSLog(@"downBoxedJSObjectCount: %@ %x", [o class], o);
+		// Now done is finalize
+//		NSLog(@"downBoxedJSObjectCount: without an up ! non inserted in boxedObjects");
+//		NSLog(@"downBoxedJSObjectCount: %@ %@ %x", [o class], o == [o class] ? @"ISCLASS" : @"", o);
+//		NSLog(@"downBoxedJSObjectCount: %@", o);
 		return;
 	}
 //	NSLog(@"downusage %@ (rc=%d) %d", o, [o retainCount], [value usageCount]);
 //	if (count == 0)
 	{
 //		NSLog(@"CLEAN %@ (%@ rc=%d)", o, value, [value retainCount]);
+NSLog(@"cleaned remove");
 		[boxedObjects removeObjectForKey:key];
 //		NSLog(@"CLEANED ? %x", [boxedObjects valueForKey:key]);
 	}
@@ -1374,7 +1382,7 @@ static id JSCocoaSingleton = NULL;
 
 
 #pragma mark Tests
-- (BOOL)runTests:(NSString*)path
+- (int)runTests:(NSString*)path
 {
 #if defined(TARGET_OS_IPHONE)
 #elif defined(TARGET_IPHONE_SIMULATOR)
@@ -1384,8 +1392,9 @@ static id JSCocoaSingleton = NULL;
 	files = [files filteredArrayUsingPredicate:predicate]; 
 //	NSLog(@"files=%@", files);
 
-	if ([files count] == 0)	return	[JSCocoaController logAndSay:@"no test files found"], NO;
+	if ([files count] == 0)	return	[JSCocoaController logAndSay:@"no test files found"], 0;
 	
+	int count = 0;
 	for (id file in files)
 	{
 		id filePath = [NSString stringWithFormat:@"%@/%@", path, file];
@@ -1398,10 +1407,11 @@ static id JSCocoaSingleton = NULL;
 			[JSCocoaController logAndSay:error];
 			return NO;
 		}
+		count ++;
 		[self garbageCollect];
 	}
 #endif	
-	return	YES;
+	return	count;
 }
 
 #pragma mark Autorelease pool
@@ -2012,6 +2022,37 @@ static void jsCocoaObject_finalize(JSObjectRef object)
 	// if dealloc is overloaded, releasing now will trigger JS code and fail
 	// As we're being called by GC, KJS might assert() in operationInProgress == NoOperation
 	id private = JSObjectGetPrivate(object);
+
+	//
+	// If a boxed object is being destroyed, remove it from the cache
+	//
+	id boxedObject = [private object]; 
+	if (boxedObject)
+	{
+		id key = [NSString stringWithFormat:@"%x", boxedObject];
+		id existingBoxedObject = [boxedObjects objectForKey:key];
+//		NSLog(@"EXISTING %@", existingBoxedObject);
+		if (existingBoxedObject)
+		{
+//		NSLog(@"++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//		NSLog(@"++++++++++++++++++++++++++++++++++++++++++++++++++++");
+//		NSLog(@"%@", boxedObjects);
+//		NSLog(@"----------------------------------------------------");
+//		NSLog(@"----------------------------------------------------");
+			[boxedObjects removeObjectForKey:key];
+//		NSLog(@"%@", boxedObjects);
+//		NSLog(@"****************************************************");
+//		NSLog(@"****************************************************");
+		}
+		else
+		{
+//			BOOL retainObject = [private retainObject];
+//			NSLog(@"finalizing an UNBOXED object (retain=%d)", retainObject);
+			// This will crash if object is not retained
+//			if (retainObject) NSLog(@"finalizing an UNBOXED %@", [boxedObject class]);
+		}
+	}
+	
 //	NSLog(@"FINALIZING JSOBJECTREF %x holding %@", object, private);
 	// Immediate release if dealloc is not overloaded
 	[private release];
@@ -2019,6 +2060,7 @@ static void jsCocoaObject_finalize(JSObjectRef object)
 	// Mark internal object as collectable
 	[[NSGarbageCollector defaultCollector] enableCollectorForPointer:private];
 #endif
+
 }
 
 
@@ -2867,6 +2909,10 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	struct		objc_super _super;
 	void*		superPointer;
 	
+	
+//	id	outArguments = NULL;
+	
+	
 	// Total number of arguments to ffi_call
 	int	effectiveArgumentCount = argumentCount + (callingObjC ? 2 : 0);
 	if (effectiveArgumentCount > 0)
@@ -2933,6 +2979,8 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 					{
 						if (![(JSCocoaOutArgument*)unboxed mateWithJSCocoaFFIArgument:arg])	return	throwException(ctx, exception, [NSString stringWithFormat:@"Pointer argument %@ not handled", [arg pointerTypeEncoding]]), NULL;
 						shouldConvert = NO;
+//						if (outArguments == nil) outArguments = [NSMutableArray new];
+//						[outArguments addObject:unboxed];
 					}
 					if (unboxed && [unboxed isKindOfClass:[JSCocoaMemoryBuffer class]])
 					{
@@ -2955,6 +3003,9 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 			values[idx]		= [arg storage];
 		}
 	}
+	
+//	if (outArguments)
+//		[[NSGarbageCollector defaultCollector] disable];
 
 	// Get return value holder
 	id returnValue = [argumentEncodings objectAtIndex:0];
@@ -2970,6 +3021,13 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 		if ([returnValue ffi_type] == &ffi_type_void)	storage = NULL;
 //		log_ffi_call(&cif, values, callAddress);
 		ffi_call(&cif, callAddress, storage, values);
+	}
+
+//	if (outArguments)
+	{
+//		for (id arg in outArguments)			[arg outJSValueRefInContext:ctx];
+//		[[NSGarbageCollector defaultCollector] enable];
+//		[[NSGarbageCollector defaultCollector] collectExhaustively];
 	}
 	
 	if (effectiveArgumentCount > 0)	
@@ -3197,26 +3255,31 @@ static void throwException(JSContextRef ctx, JSValueRef* exception, NSString* re
 		if (isSpeaking)	system([[NSString stringWithFormat:@"say \"%@\" &", reason] UTF8String]);
 	}
 
-	// Gather call stack
-	JSStringRef scriptJS = JSStringCreateWithUTF8CString("return dumpCallStack()");
-	JSObjectRef fn = JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 0, NULL);
-	JSValueRef result = JSObjectCallAsFunction(ctx, fn, NULL, 0, NULL, NULL);
-	JSStringRelease(scriptJS);
-
-	// Convert call stack to string
-	JSStringRef resultStringJS = JSValueToStringCopy(ctx, result, NULL);
-	NSString* callStack = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
-	JSStringRelease(resultStringJS);
-	[NSMakeCollectable(callStack) autorelease];
-
-	// Append call stack to exception
-	if ([callStack length])
-		reason = [NSString stringWithFormat:@"%@\n%@", reason, callStack];
+	// Convert exception to string
 	JSStringRef jsName = JSStringCreateWithUTF8CString([reason UTF8String]);
 	JSValueRef jsString = JSValueMakeString(ctx, jsName);
 	JSStringRelease(jsName);
-	
-//	*exception	= jsString;
+
+
+	// Gather call stack
+	JSValueRef	callStackException = NULL;
+	JSStringRef scriptJS = JSStringCreateWithUTF8CString("return dumpCallStack()");
+	JSObjectRef fn = JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 0, NULL);
+	JSValueRef result = JSObjectCallAsFunction(ctx, fn, NULL, 0, NULL, &callStackException);
+	JSStringRelease(scriptJS);
+	if (!callStackException)
+	{
+		// Convert call stack to string
+		JSStringRef resultStringJS = JSValueToStringCopy(ctx, result, NULL);
+		NSString* callStack = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
+		JSStringRelease(resultStringJS);
+		[NSMakeCollectable(callStack) autorelease];
+
+		// Append call stack to exception
+		if ([callStack length])
+			reason = [NSString stringWithFormat:@"%@\n%@", reason, callStack];
+	}
+
 	// Convert to object to allow JavascriptCore to add line and sourceURL
 	*exception	= JSValueToObject(ctx, jsString, NULL);
 }
@@ -3297,13 +3360,14 @@ id	JSLocalizedString(id stringName, id firstArg, ...)
 - (id)description
 {
 	id boxedObject = [(JSCocoaPrivateObject*)JSObjectGetPrivate(jsObject) object];
-	return [NSString stringWithFormat:@"<%@: %x holding %@ %@: %x (retainCount=%d)>",
+	id retainCount = [NSGarbageCollector defaultCollector] ? @"Running GC" : [NSString stringWithFormat:@"%d", [boxedObject retainCount]];
+	return [NSString stringWithFormat:@"<%@: %x holding %@ %@: %x (retainCount=%@)>",
 				[self class], 
 				self, 
 				((id)self == (id)[self class]) ? @"Class" : @"",
 				[boxedObject class],
 				boxedObject,
-				[boxedObject retainCount]];
+				retainCount];
 }
 
 @end

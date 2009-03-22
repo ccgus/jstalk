@@ -9,6 +9,7 @@ var rectangle = [doc makeNewBox];
 [rectangle setXPosition:100];
 [rectangle setYPosition:100];
 
+
 /*
 tell application "Sketch"	tell document 1		set o to make new box		set width of o to 100		set height of o to 100		set stroke thickness of o to 10	end tellend tell
 */
