@@ -11,8 +11,8 @@
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		CC41A1D10F5E17920055DBC7 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */; };
 		CC6080580EA410F400A1244C /* JavaScriptPluginEnabler.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */; };
-		CCF127A90F5CB73D00CE0A63 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF127A80F5CB73D00CE0A63 /* JSTalk.framework */; };
-		CCF127B10F5CB74F00CE0A63 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCF127A80F5CB73D00CE0A63 /* JSTalk.framework */; };
+		CCCFE0C70F834718005161C9 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
+		CCCFE0D30F83471E005161C9 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -22,7 +22,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CCF127B10F5CB74F00CE0A63 /* JSTalk.framework in Copy Frameworks */,
+				CCCFE0D30F83471E005161C9 /* JSTalk.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,7 +40,7 @@
 		CC6080560EA410F400A1244C /* JavaScriptPluginEnabler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler.h; sourceTree = "<group>"; };
 		CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JavaScriptPluginEnabler.m; sourceTree = "<group>"; };
 		CC6080590EA410FC00A1244C /* JavaScriptPluginEnabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler_Prefix.pch; sourceTree = "<group>"; };
-		CCF127A80F5CB73D00CE0A63 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
+		CCCFE0C60F834718005161C9 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -50,8 +50,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				CCF127A90F5CB73D00CE0A63 /* JSTalk.framework in Frameworks */,
 				CC41A1D10F5E17920055DBC7 /* VPPlugin.framework in Frameworks */,
+				CCCFE0C70F834718005161C9 /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCCFE0C60F834718005161C9 /* JSTalk.framework */,
 				CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */,
-				CCF127A80F5CB73D00CE0A63 /* JSTalk.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -218,6 +218,7 @@
 					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
 					"\"$(SRCROOT)/../../../../../builds/Release\"",
 					"\"$(SRCROOT)\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -249,6 +250,7 @@
 					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
 					"\"$(SRCROOT)/../../../../../builds/Release\"",
 					"\"$(SRCROOT)\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

@@ -1,3 +1,8 @@
+/*
+ Not only does this plugin load up the JSTalk Listener, so we can talk to Acorn via JSTalk, it also adds support for JavaScript Plugins, via Acorn's plugin API.
+ */
+
+
 #import "JSEnablerPlugIn.h"
 #import "ACPlugin.h"
 #import <JSTalk/JSTalk.h>
@@ -14,14 +19,15 @@
     return [[[self alloc] init] autorelease];
 }
 
-- (void) willRegister:(id<ACPluginManager>)pluginManager {
-    [self findJSCocoaScriptsForPluginManager:pluginManager];
-}
 
 - (void) didRegister {
     
-    // this guy openes up a port to listen for outside JSTalk commands commands
+    // this guy openes up a Distributed Objects port to listen for outside JSTalk commands commands
     [JSTalk listen];
+}
+
+- (void) willRegister:(id<ACPluginManager>)pluginManager {
+    [self findJSCocoaScriptsForPluginManager:pluginManager];
 }
 
 - (void) findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager {
@@ -36,7 +42,7 @@
     
     for (NSString *fileName in [fm contentsOfDirectoryAtPath:pluginDir error:nil]) {
         
-        if (!([fileName hasSuffix:@".js"] || [fileName hasSuffix:@".jscocoa"])) {
+        if (!([fileName hasSuffix:@".js"] || [fileName hasSuffix:@".jscocoa"] || [fileName hasSuffix:@".jstalk"])) {
             continue;
         }
         
@@ -49,8 +55,6 @@
                                userObject:[pluginDir stringByAppendingPathComponent:fileName]];
     }
 }
-
-
 
 
 
@@ -69,6 +73,14 @@
     
     [jstalk executeString:theJavaScript];
     
+    /*
+    Our script should look, at least a little bit like this:
+    function main(image) {
+        // do fancy image stuff
+        return image;
+    }
+    */
+    
     JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, nil];
     
     // Hurray?
@@ -86,12 +98,6 @@
 }
 
 @end
-
-
-
-
-
-
 
 
 

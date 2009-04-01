@@ -13,8 +13,8 @@
 		CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */; };
 		CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */; };
 		CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */ = {isa = PBXBuildFile; fileRef = CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */; };
-		CC9BB7E30F5CD8C300CB9478 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC9BB7E20F5CD8C300CB9478 /* JSTalk.framework */; };
-		CC9BB7E60F5CD8C800CB9478 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC9BB7E20F5CD8C300CB9478 /* JSTalk.framework */; };
+		CCCFE0F70F83489E005161C9 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0F60F83489E005161C9 /* JSTalk.framework */; };
+		CCCFE0FC0F8348A2005161C9 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0F60F83489E005161C9 /* JSTalk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CC9BB7E60F5CD8C800CB9478 /* JSTalk.framework in Copy Frameworks */,
+				CCCFE0FC0F8348A2005161C9 /* JSTalk.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -45,7 +45,7 @@
 		CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEnablerPlugIn.m; sourceTree = "<group>"; };
 		CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsenabler_Prefix.pch; sourceTree = "<group>"; };
 		CC726DF80F156BE500EB02AF /* ACPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPlugin.h; sourceTree = "<group>"; };
-		CC9BB7E20F5CD8C300CB9478 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
+		CCCFE0F60F83489E005161C9 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +58,7 @@
 				CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */,
 				CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */,
 				CC0EC5DA0F22A21A0094F69D /* ScriptingBridge.framework in Frameworks */,
-				CC9BB7E30F5CD8C300CB9478 /* JSTalk.framework in Frameworks */,
+				CCCFE0F70F83489E005161C9 /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +80,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				CC9BB7E20F5CD8C300CB9478 /* JSTalk.framework */,
+				CCCFE0F60F83489E005161C9 /* JSTalk.framework */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
 				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
 			);
@@ -229,6 +229,7 @@
 					"\"$(SRCROOT)/../../build\"",
 					"\"$(SRCROOT)/../../dist\"",
 					"\"$(SRCROOT)/../../../../../builds/Release\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -265,6 +266,7 @@
 					"\"$(SRCROOT)/../../build\"",
 					"\"$(SRCROOT)/../../dist\"",
 					"\"$(SRCROOT)/../../../../../builds/Release\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;

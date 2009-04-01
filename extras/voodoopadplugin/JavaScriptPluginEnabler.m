@@ -1,10 +1,6 @@
-//
-//  SketchPageController.m
-//  SketchPage
-//
-//  Created by August Mueller on 4/21/08.
-//  Copyright 2008 Flying Meat Inc. All rights reserved.
-//
+/*
+Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooPad via JSTalk, it also adds support for JavaScript Plugins, via VP's plugin API.
+*/
 
 #import "JavaScriptPluginEnabler.h"
 
@@ -24,27 +20,10 @@
 
 @interface JavaScriptPluginEnabler (Private)
 - (NSDictionary*) propertiesFromScriptAtPath:(NSString*)path;
-- (void) runPluginViaAppleScript:(id)windowController userObject:(id)userObject properties:(NSDictionary*)asProperties;
 @end
 
 @implementation JavaScriptPluginEnabler
 
-@synthesize scriptsData=_scriptsData;
-
-- (void)dealloc {
-	[_scriptsData release];
-	[super dealloc];
-}
-
-
-- (id)init {
-	self = [super init];
-    if (self) {
-        [self setScriptsData:[NSMutableDictionary dictionary]];
-    }
-    
-	return self;
-}
 
 - (void) didRegister {
     
@@ -340,9 +319,9 @@
     [[NSApp delegate] console:s];
 }
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber {
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
-    lineNumber -= 2;
+    lineNumber -= 1;
     
     if (!error) {
         return;
@@ -368,10 +347,6 @@
         }
     }
 }
-
-
-
-
 
 
 @end
