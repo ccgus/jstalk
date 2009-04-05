@@ -13,7 +13,7 @@ if ([windows count] > 0) {
     
     [terminal activate];
     
-    [terminal doScript:"cd '" + [url path] + "'" in:nil];
+    [terminal doScript:"cd '" + path + "'" in:nil];
 }
 else {
     print("There's no window open")
