@@ -45,8 +45,45 @@
     }
 }
 
+// Mimic BBEdit's option-delete behavior, which is THE WAY IT SHOULD BE DONE
 
-
+- (void) deleteWordForward:(id)sender {
+    
+    NSRange r = [self selectedRange];
+    NSUInteger textLength = [[self textStorage] length];
+    
+    if (r.length || (NSMaxRange(r) >= textLength)) {
+        [super deleteWordForward:sender];
+        return;
+    }
+    
+    // delete the whitespace forward.
+    
+    NSRange paraRange = [self selectionRangeForProposedRange:r granularity:NSSelectByParagraph];
+    
+    NSUInteger diff = r.location - paraRange.location;
+    
+    paraRange.location += diff;
+    paraRange.length   -= diff;
+    
+    NSString *foo = [[[self textStorage] string] substringWithRange:paraRange];
+    
+    NSUInteger len = 0;
+    while ([foo characterAtIndex:len] == ' ' && len < paraRange.length) {
+        len++;
+    }
+    
+    if (!len) {
+        [super deleteWordForward:sender];
+        return;
+    }
+    
+    r.length = len;
+    
+    if ([self shouldChangeTextInRange:r replacementString:@""]) { // auto undo.
+        [self replaceCharactersInRange:r withString:@""];
+    }
+}
 
 
 
