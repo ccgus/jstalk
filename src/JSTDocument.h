@@ -27,11 +27,15 @@
     NSMutableDictionary *_toolbarItems;
     
     JSTFileWatcher *_externalEditorFileWatcher;
+    
+    NSDictionary *_previousOutputTypingAttributes;
 }
 
 @property (retain) TDTokenizer *tokenizer;
 @property (retain) NSDictionary *keywords;
 @property (retain) JSTFileWatcher *externalEditorFileWatcher;
+@property (retain) NSDictionary *previousOutputTypingAttributes;
+
 
 - (void) executeScript:(id)sender;
 - (void) parseCode:(id)sender;

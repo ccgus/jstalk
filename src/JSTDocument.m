@@ -16,6 +16,7 @@
 @synthesize tokenizer=_tokenizer;
 @synthesize keywords=_keywords;
 @synthesize externalEditorFileWatcher=_externalEditorFileWatcher;
+@synthesize previousOutputTypingAttributes=_previousOutputTypingAttributes;
 
 - (id)init {
     self = [super init];
@@ -106,8 +107,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [[jsTextView enclosingScrollView] setHasVerticalRuler:YES];
     [[jsTextView enclosingScrollView] setRulersVisible:YES];
     
-    [outputTextView setTypingAttributes:[jsTextView typingAttributes]];
-    
     [[jsTextView textStorage] setDelegate:self];
     [self parseCode:nil];
     
@@ -150,7 +149,17 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 }
 
 - (void) print:(NSString*)s {
+    
+    BOOL needToSetAtts = [[outputTextView textStorage] length] == 0;
+    
     [[[outputTextView textStorage] mutableString] appendFormat:@"%@\n", s];
+    
+    if (needToSetAtts) {
+        [[outputTextView textStorage] setAttributes:_previousOutputTypingAttributes range:NSMakeRange(0, [[outputTextView textStorage] length])];
+        // this doesn't always work:
+        // [outputTextView setTypingAttributes:_previousOutputTypingAttributes];
+    }
+    
 }
 
 - (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
@@ -325,7 +334,13 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [self runScript:[[jsTextView textStorage] string]];
 }
 
-- (void) clearConsole:(id)sender { 
+- (void) clearConsole:(id)sender {
+    
+    // NSTextView hates it when there is no string to store attributes on, and -[outputTextView typingAttributes] doesn't always work.
+    if ([[outputTextView textStorage] length]) {
+        self.previousOutputTypingAttributes = [[outputTextView textStorage] attributesAtIndex:0 effectiveRange:nil];
+    }
+    
     [[[outputTextView textStorage] mutableString] setString:@""];
 }
 
@@ -352,6 +367,10 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     NSString *code = [JSTPreprocessor preprocessCode:[[jsTextView textStorage] string]];
     
     [[[outputTextView textStorage] mutableString] setString:code];
+    
+    if (_previousOutputTypingAttributes) {
+        [outputTextView setTypingAttributes:_previousOutputTypingAttributes];
+    }
 }
 
 
