@@ -69,6 +69,9 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [_externalEditorFileWatcher release];
     _externalEditorFileWatcher = 0x00;
     
+    [_previousOutputTypingAttributes release];
+    _previousOutputTypingAttributes = 0x00;
+    
     [super dealloc];
 }
 
