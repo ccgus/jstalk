@@ -27,6 +27,7 @@
 	typeEncoding	= 0;
 	isReturnValue	= NO;
 	ownsStorage		= YES;
+	isOutArgument	= NO;
 	
 	structureTypeEncoding	= nil;
 	structureType.elements	= NULL;
@@ -61,7 +62,10 @@
 	[super finalize];
 }
 
-
+- (NSString*)description
+{
+	return	[NSString stringWithFormat:@"JSCocoaFFIArgument %x typeEncoding=%c isReturnValue=%d storage=%x", self, typeEncoding, isReturnValue, ptr];
+}
 
 #pragma mark Getters / Setters
 
@@ -71,6 +75,19 @@
 - (void)setIsReturnValue:(BOOL)v
 {
 	isReturnValue = v;
+}
+- (BOOL)isReturnValue
+{
+	return	isReturnValue;
+}
+
+- (void)setIsOutArgument:(BOOL)v
+{
+	isOutArgument = v;
+}
+- (BOOL)isOutArgument
+{
+	return	isOutArgument;
 }
 
 - (char)typeEncoding
@@ -166,7 +183,7 @@
 
 - (void*)allocateStorage
 {
-	if (!typeEncoding)	return	NULL;
+	if (!typeEncoding)	return	NSLog(@"No type encoding set in %@", self), NULL;
 
 	// NO ! will destroy structureTypeEncoding
 //	[self cleanUp];
@@ -195,7 +212,8 @@
 		if (isReturnValue && size < minimalReturnSize)	size = minimalReturnSize;
 		ptr = malloc(size);
 	}
-//	NSLog(@"Allocated size=%d %x for object %@", size, ptr, self);
+//	NSLog(@"Allocated size=%d (%x) for object %@", size, ptr, self);
+	
 	return	ptr;
 }
 
@@ -228,13 +246,20 @@
 	}
 	
 	// Type o : return writable address
-	if (pointerTypeEncoding)
+//	if (pointerTypeEncoding)
+	if (isOutArgument)
 	{
 		return &ptr;
 	}
 
 	return ptr;
 }
+
+- (void**)rawStoragePointer
+{
+	return	ptr;
+}
+
 
 
 + (void)alignPtr:(void**)ptr accordingToEncoding:(char)encoding
@@ -530,6 +555,9 @@
 /*
 
 	*value MUST be NULL to be receive allocated JSValue
+
+	The given pointer is advanced in place : its value will change after the call.
+	Pass a writeable pointer whose original value you don't care about.
 	
 */
 + (int)structureToJSValueRef:(JSValueRef*)value inContext:(JSContextRef)ctx fromCString:(char*)c fromStorage:(void**)ptr
@@ -927,6 +955,7 @@ typedef	struct { char a; BOOL b;		} struct_C_BOOL;
 //
 + (BOOL)unboxJSValueRef:(JSValueRef)value toObject:(id*)o inContext:(JSContextRef)ctx
 {
+//	if (!o)	return NSLog(@"unboxJSValueRef called with null"), NO;
 	/*
 		Boxing
 		

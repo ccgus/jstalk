@@ -195,7 +195,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 }
 
 
-
+/*
 //
 // JSCocoa : handle setting with callMethod
 //	object.width = 100
@@ -312,7 +312,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     
     return	jsReturnValue;
 }
-
+*/
 
 
 - (void) runScript:(NSString*)s {

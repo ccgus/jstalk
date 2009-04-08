@@ -23,11 +23,12 @@
 
 	void*		ptr;
 
-	BOOL		isReturnValue;
 	ffi_type	structureType;
 	
 	id			customData;
+	BOOL		isReturnValue;
 	BOOL		ownsStorage;
+	BOOL		isOutArgument;
 }
 
 - (void)setTypeEncoding:(char)encoding;
@@ -67,13 +68,16 @@
 - (void*)allocateStorage;
 - (void*)allocatePointerStorage;
 - (void**)storage;
+- (void**)rawStoragePointer;
 - (char)typeEncoding;
 - (NSString*)structureTypeEncoding;
 - (id)pointerTypeEncoding;
 
 
 - (void)setIsReturnValue:(BOOL)v;
-//- (void)setCustomData:(id)data;
+- (BOOL)isReturnValue;
+- (void)setIsOutArgument:(BOOL)v;
+- (BOOL)isOutArgument;
 
 - (BOOL)fromJSValueRef:(JSValueRef)value inContext:(JSContextRef)ctx;
 - (BOOL)toJSValueRef:(JSValueRef*)value inContext:(JSContextRef)ctx;

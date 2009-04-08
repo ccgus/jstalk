@@ -1,4 +1,9 @@
 
+	// ObjC
+	var nil = null
+	var	YES	= true
+	var NO	= false
+	
 	function	log(str)	{	JSCocoaController.log('' + str)	}
 	
 	function	dumpHash(o)	{	var str = ''; for (var i in o) str += i + '=' + o[i] + '\n'; return str }
@@ -7,12 +12,12 @@
 //	var jsc = JSCocoaController.hasSharedController ? JSCocoaController.sharedController : null
 	var jsc = __jsc__
 
-	/*
-		
-		Pretty print of ObjC type encodings
-		http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/Articles/chapter_13_section_9.html#//apple_ref/doc/uid/TP30001163-CH9-113054
-		
-	*/
+	//
+	//	
+	//	Pretty print of ObjC type encodings
+	//	http://developer.apple.com/documentation/Cocoa/Conceptual/ObjectiveC/Articles/chapter_13_section_9.html#//apple_ref/doc/uid/TP30001163-CH9-113054
+	//	
+	//
 
 
 	var encodings = { 	
@@ -36,6 +41,9 @@
 		,'undef'		: '?'
 		,'pointer'		: '^'
 		,'charpointer'	: '*'
+		
+		,'BOOL'			: 'B'
+		,'NSInteger'	: 'i'
 	}
 	var reverseEncodings = {}
 	for (var e in encodings) reverseEncodings[encodings[e]] = e
@@ -44,7 +52,7 @@
 	function	objc_unary_encoding(encoding)
 	{
 		// Structure arg
-		if (encoding.indexOf(' ') != -1)
+		if (encoding.indexOf(' ') != -1 && encoding.indexOf(' *') == -1)
 		{
 			var structureName = encoding.split(' ')[1]
 			var structureEncoding = JSCocoaFFIArgument.structureFullTypeEncodingFromStructureName(structureName)
@@ -69,6 +77,15 @@
 				if (match)
 				{
 					var className = match[1]
+					
+					//
+					// this[className]['class'] == this[className]
+					//	can only work if each object is boxed only once : 
+					//	both expressions will return the same object, comparing one object to itself
+					//	-> true
+					//
+					//	BUT if both expressions each use their own box, comparison will come negative
+					//
 					if (className in this && this[className]['class'] == this[className])	return '@'
 				}
 				// Structure ?
@@ -94,33 +111,33 @@
 
 
 
-	/*
-		
-		Define a class deriving from an ObjC class
-		
-		defineClass('ChildClass < ParentClass', 
-			,'overloadedMethod:' :
-							function (sel)
-							{
-								var r = this.Super(arguments)
-								testClassOverload = true
-								return	r
-							}
-			,'newMethod:' :
-							['id', 'id', function (o)  // encoding + function
-							{
-								testAdd = true
-								return o
-							}]
-			,'myOutlet' : 'IBOutlet'
-			,'myAction' : ['IBAction', 
-							function (sender)
-							{
-							}]
-						
-		})
-
-	*/
+	//
+	//	
+	//	Define a class deriving from an ObjC class
+	//	
+	//	defineClass('ChildClass < ParentClass', 
+	//		,'overloadedMethod:' :
+	//						function (sel)
+	//						{
+	//							var r = this.Super(arguments)
+	//							testClassOverload = true
+	//							return	r
+	//						}
+	//		,'newMethod:' :
+	//						['id', 'id', function (o)  // encoding + function
+	//						{
+	//							testAdd = true
+	//							return o
+	//						}]
+	//		,'myOutlet' : 'IBOutlet'
+	//		,'myAction' : ['IBAction', 
+	//						function (sender)
+	//						{
+	//						}]
+	//					
+	//	})
+	//
+	//
 
 	function	defineClass(inherit, methods)
 	{
@@ -318,13 +335,6 @@
 		//
 		for (var method in h.methods)
 		{
-/*		
-			if (h.methods[method].type == 'class method')
-			{
-				log('skipping class method ' + method)
-				continue
-			}
-*/			
 //			log('method.type=' + h.methods[method].type + ' ' + method)
 			var isInstanceMethod = parentClass.instancesRespondToSelector(method)
 			var isOverload = parentClass.respondsToSelector(method) || isInstanceMethod
@@ -587,6 +597,9 @@
 			
 			// Replace actions
 			script = script.replace(/^\s*IBAction\s+(\w+)($|\s*)\(?(\w+)?\)?/gm, expandJSMacros_ReplaceActions)
+
+			// Replace js functions
+			script = script.replace(/^\s*js\s+function\s+(\w+)(.*)$/gm, expandJSMacros_ReplaceJSFunctions)
 			
 //			log('****************')
 //			log('\n' + script)
@@ -634,6 +647,11 @@
 		paramName = paramName || 'sender'
 		return	'IBAction(\'' + actionName + '\').fn = function (' + paramName + ')'
 	}
+
+	function	expandJSMacros_ReplaceJSFunctions(r, functionName, arguments)
+	{
+		return	'JSFunction(\'' + functionName + '\').fn = function ' + arguments
+	}
 	
 	//
 	// Localization
@@ -651,7 +669,7 @@
 		if (typeof r != 'function')	return	r
 
 		// Arguments are function arguments minus the first one (stringName)
-		var args = [];		for (var i=1; i<arguments.length; i++) /*log(i + '=' + arguments[i]),*/ args.push(arguments[i])
+		var args = [];		for (var i=1; i<arguments.length; i++) args.push(arguments[i])
 		return	r.apply(null, args)
 	}
 	function	registerLocalizedStrings(strings)

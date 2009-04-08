@@ -167,6 +167,12 @@ static CGFloat SKTGraphicHandleHalfWidth = 6.0f / 2.0f;
     [self setBounds:bounds];
 }
 
+- (void)setSize:(NSSize)size
+{
+	[self setWidth:size.width];
+	[self setHeight:size.height];
+}
+
 
 #pragma mark *** Convenience ***
 
