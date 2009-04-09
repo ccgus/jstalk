@@ -8,7 +8,7 @@
 		<string key="IBDocument.HIToolboxVersion">353.00</string>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="100059"/>
+			<integer value="100061"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -123,20 +123,14 @@
 															<string>WebURLsWithTitlesPboardType</string>
 														</object>
 													</object>
-													<string key="NSFrameSize">{584, 238}</string>
+													<string key="NSFrameSize">{584, 42}</string>
 													<reference key="NSSuperview" ref="579376345"/>
 													<object class="NSTextContainer" key="NSTextContainer" id="843780999">
 														<object class="NSLayoutManager" key="NSLayoutManager">
 															<object class="NSTextStorage" key="NSTextStorage">
 																<object class="NSMutableString" key="NSString">
-																	<bytes key="NS.bytes">dmFyIHNrZXRjaCA9IFtKU1RhbGsgYXBwbGljYXRpb246IlNrZXRjaCJdOwp2YXIgZG9jID0gW3NrZXRj
-aCBvcmRlcmVkRG9jdW1lbnRzXVswXQp2YXIgcmVjdGFuZ2xlID0gW2RvYyBtYWtlTmV3Qm94XTsKClty
-ZWN0YW5nbGUgc2V0V2lkdGg6MTAwXTsKW3JlY3RhbmdsZSBzZXRIZWlnaHQ6MTAwXTsKW3JlY3Rhbmds
-ZSBzZXRYUG9zaXRpb246MTAwXTsKW3JlY3RhbmdsZSBzZXRZUG9zaXRpb246MTAwXTsKcmVjdGFuZ2xl
-LndpZHRoID0gMjAwCnByaW50KHJlY3RhbmdsZS53aWR0aCgpKQpyZWN0YW5nbGUuc2l6ZSA9IG5ldyBO
-U1NpemUoMjUwLCAxNTApCnZhciB3ID0gc2tldGNoLndpbmRvd3MoKVswXQpwcmludCgndz0nICsgdy5m
-cmFtZSgpKQp3LmZyYW1lT3JpZ2luID0gbmV3IE5TUG9pbnQoMTAwLCAxMDApCnByaW50KCd3PScgKyB3
-LmZyYW1lKCkpCgo</bytes>
+																	<bytes key="NS.bytes">dmFyIG1lc3NhZ2UgPSAiSGVsbG8gV29ybGQhIjsKCltbSlNUYWxrIGFwcGxpY2F0aW9uOiJKU1RhbGsg
+RWRpdG9yIl0gZGlzcGxheURpYWxvZzptZXNzYWdlXTs</bytes>
 																</object>
 																<object class="NSDictionary" key="NSAttributes">
 																	<bool key="EncodedWithXMLCoder">YES</bool>
@@ -147,14 +141,52 @@ LmZyYW1lKCkpCgo</bytes>
 																	</object>
 																	<object class="NSMutableArray" key="dict.values">
 																		<bool key="EncodedWithXMLCoder">YES</bool>
-																		<object class="NSFont">
-																			<string key="NSName">Helvetica</string>
-																			<double key="NSSize">1.200000e+01</double>
+																		<object class="NSFont" id="155459336">
+																			<string key="NSName">Monaco</string>
+																			<double key="NSSize">1.000000e+01</double>
 																			<int key="NSfFlags">16</int>
 																		</object>
 																		<object class="NSParagraphStyle">
 																			<int key="NSAlignment">4</int>
-																			<nil key="NSTabStops"/>
+																			<object class="NSArray" key="NSTabStops">
+																				<bool key="EncodedWithXMLCoder">YES</bool>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">2.800000e+01</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">5.600000e+01</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">8.400000e+01</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">1.120000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">1.400000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">1.680000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">1.960000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">2.240000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">2.520000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">2.800000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">3.080000e+02</double>
+																				</object>
+																				<object class="NSTextTab">
+																					<double key="NSLocation">3.360000e+02</double>
+																				</object>
+																			</object>
 																		</object>
 																	</object>
 																</object>
@@ -322,11 +354,7 @@ LmZyYW1lKCkpCgo</bytes>
 																		</object>
 																		<object class="NSMutableArray" key="dict.values">
 																			<bool key="EncodedWithXMLCoder">YES</bool>
-																			<object class="NSFont" id="155459336">
-																				<string key="NSName">Monaco</string>
-																				<double key="NSSize">1.000000e+01</double>
-																				<int key="NSfFlags">16</int>
-																			</object>
+																			<reference ref="155459336"/>
 																			<integer value="0" id="8"/>
 																			<object class="NSParagraphStyle">
 																				<int key="NSAlignment">4</int>
@@ -700,8 +728,8 @@ LmZyYW1lKCkpCgo</bytes>
 					<string>JSTTextView</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{391, 292}, {584, 452}}</string>
-					<string>{{391, 292}, {584, 452}}</string>
+					<string>{{485, 378}, {584, 452}}</string>
+					<string>{{485, 378}, {584, 452}}</string>
 					<reference ref="9"/>
 					<string>{{201, 387}, {507, 413}}</string>
 					<reference ref="9"/>

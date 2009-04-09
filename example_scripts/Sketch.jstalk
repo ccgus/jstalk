@@ -4,8 +4,7 @@ var sketch = [JSTalk application:"Sketch"];
 var doc = [sketch orderedDocuments][0]
 var rectangle = [doc makeNewBox];
 
-[rectangle setWidth:100];
-[rectangle setHeight:100];
+[rectangle setSize:NSMakeSize(100, 100)];
 [rectangle setXPosition:100];
 [rectangle setYPosition:100];
 
