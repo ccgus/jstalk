@@ -38,7 +38,7 @@
         [self restoreWorkspace];
     }
     
-    [JSTalk setShouldLoadExtras:YES];
+    [JSTalk setShouldLoadJSTPlugins:YES];
     [JSTalk listen];
 }
 

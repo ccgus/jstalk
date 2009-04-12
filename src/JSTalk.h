@@ -26,7 +26,7 @@
 - (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
 + (void) listen;
-+ (void) setShouldLoadExtras:(BOOL)b;
++ (void) setShouldLoadJSTPlugins:(BOOL)b;
 + (id) application:(NSString*)app;
 
 @end

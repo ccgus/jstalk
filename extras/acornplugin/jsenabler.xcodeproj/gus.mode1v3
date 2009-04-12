@@ -481,15 +481,14 @@
 								<string>1058C7ACFEA557BF11CA2CBB</string>
 								<string>19C28FB8FE9D52D311CA2CBB</string>
 								<string>1C37FBAC04509CD000000102</string>
-								<string>CCCFE0FE0F83492C005161C9</string>
-								<string>CCCFE0FF0F83492C005161C9</string>
 								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
+									<integer>3</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -534,7 +533,7 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CCCFE1000F83492C005161C9</string>
+				<string>CCD46E4D0F928A9F004DF671</string>
 				<string>11E0B1FE06471DED0097A5F4</string>
 			</array>
 			<key>ToolbarConfiguration</key>
@@ -550,7 +549,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>260262188.43326101</real>
+	<real>261261976.46967199</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -565,9 +564,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CCC7E6100ECA3D78001F3E02</string>
-		<string>1CD10A99069EF8BA00B06720</string>
-		<string>CCCFE1010F83492C005161C9</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/extras/acornplugin/jsenabler.xcodeproj</string>
 	</array>
 	<key>WindowString</key>

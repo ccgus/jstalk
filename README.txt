@@ -70,7 +70,14 @@ Give me an example
 ------------------
 Here's an AppleScript example, for adding a new rectangle object to a sketch document:
 
-tell application "Sketch"	tell document 1		set o to make new box		set width of o to 100		set height of o to 100		set stroke thickness of o to 10	end tellend tell
+tell application "Sketch"
+	tell document 1
+		set o to make new box
+		set width of o to 100
+		set height of o to 100
+		set stroke thickness of o to 10
+	end tell
+end tell
 
 
 And here's how you do it with JSTalk, using a doctored version of Sketch(6 lines of code, + the JSTalk framework):
@@ -113,16 +120,14 @@ Although this is great to have, it's not the same as an application natively sup
 
 
 
-JSTalk Extras
--------------
+JSTalk Plugins
+--------------
 
 Aka, loadable bundles which add functionality to JSTalk, via helper classes, wrappers, and categories.
 
-JSTalk comes with some standard helper categories (which you can currently find in JSTalkExtras.m), but it will also look in your ~/Library/Application Support/JSTalk/Extras/ folder, and load any .jstalkextra bundles it sees.  You can turn this off in your application if you don't like that idea, via [JSTalk setShouldLoadExtras:NO];
+JSTalk comes with some standard helper categories (which you can currently find in JSTalkExtras.m), but it will also look in your ~/Library/Application Support/JSTalk/Plug-ins/ folder, and load any .jstplugin bundles it sees.  You can turn this off in your application if you don't like that idea, via [JSTalk setShouldLoadJSTPlugins:NO];
 
-There are two examples with JSTalk, one that just adds a category cocoa's string class: - [NSString reversedString].  The other example is "FMDB.jstalkextra", which loads the FMDB Sqlite classes, for use in JSTalk.  This allows you to use sqlite to create, insert, update, etc, sql tables from JSTalk.
-
-I'm thinking of changing the extension for these bundles from .jstalkextra, to something like .jxtra or .jstalkx.  Let me know if you have any good ideas!
+There are two examples with JSTalk, one that just adds a category cocoa's string class: - [NSString reversedString].  The other example is "FMDB.jstplugin", which loads the FMDB SQLite classes, for use in JSTalk.  This allows you to use sqlite to create, insert, update, etc, sql tables from JSTalk.
 
 
 

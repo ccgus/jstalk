@@ -11,8 +11,8 @@
 #import "JSTPreprocessor.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
-static BOOL JSTalkShouldLoadExtras = YES;
-static NSMutableArray *JSTalkExtrasList;
+static BOOL JSTalkShouldLoadJSTPlugins = YES;
+static NSMutableArray *JSTalkPluginList;
 
 @interface JSTalk (Private)
 - (void) print:(NSString*)s;
@@ -33,7 +33,11 @@ static NSMutableArray *JSTalkExtrasList;
 }
 
 + (void) setShouldLoadExtras:(BOOL)b {
-    JSTalkShouldLoadExtras = b;
+    JSTalkShouldLoadJSTPlugins = b;
+}
+
++ (void) setShouldLoadJSTPlugins:(BOOL)b {
+    JSTalkShouldLoadJSTPlugins = b;
 }
 
 - (id) init {
@@ -109,8 +113,8 @@ static NSMutableArray *JSTalkExtrasList;
     
 }
 
-- (void) loadExtras {
-    JSTalkExtrasList = [[NSMutableArray array] retain];
+- (void) loadPlugins {
+    JSTalkPluginList = [[NSMutableArray array] retain];
     
     NSString *appSupport = @"Library/Application Support/JSTalk/Plug-ins";
     NSString *appPath    = [[NSBundle mainBundle] builtInPlugInsPath];
@@ -151,8 +155,8 @@ static NSMutableArray *JSTalkExtrasList;
 
 - (void) executeString:(NSString*) str {
     
-    if (!JSTalkExtrasList && JSTalkShouldLoadExtras) {
-        [self loadExtras];
+    if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
+        [self loadPlugins];
     }
     
     str = [JSTPreprocessor preprocessCode:str];
