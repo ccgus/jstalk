@@ -80,25 +80,29 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     return @"JSTDocument";
 }
 
+- (void) readFromFile:(NSURL*)fileURL {
+    
+    NSError *err = 0x00;
+    NSString *src = [NSString stringWithContentsOfURL:[self fileURL] encoding:NSUTF8StringEncoding error:&err];
+    
+    if (err) {
+        NSBeep();
+        NSLog(@"err: %@", err);
+    }
+    
+    if (src) {
+        [[[jsTextView textStorage] mutableString] setString:src];
+    }
+    
+    [[[[self windowControllers] objectAtIndex:0] window] setFrameAutosaveName:[self fileName]];
+    [splitView setAutosaveName:[self fileName]];
+}
+
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController {
     [super windowControllerDidLoadNib:aController];
     
     if ([self fileURL]) {
-        
-        NSError *err = 0x00;
-        NSString *src = [NSString stringWithContentsOfURL:[self fileURL] encoding:NSUTF8StringEncoding error:&err];
-        
-        if (err) {
-            NSBeep();
-            NSLog(@"err: %@", err);
-        }
-        
-        if (src) {
-            [[[jsTextView textStorage] mutableString] setString:src];
-        }
-        
-        [[aController window] setFrameAutosaveName:[self fileName]];
-        [splitView setAutosaveName:[self fileName]];
+        [self readFromFile:[self fileURL]];
     }
     
     // FIXME: make this a pref
@@ -144,9 +148,20 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 
 - (BOOL)readFromData:(NSData *)data ofType:(NSString *)typeName error:(NSError **)outError {
     
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     if ( outError != NULL ) {
 		*outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
 	}
+    
+    // our data is loaded up from windowControllerDidLoadNib, as well as here.
+    // revert to saved will call readFromData:, and we'll check and see if we have
+    // a UI element to put our file in, and then revert it to what's saved on disk.
+    // does that make sense?  prolly not.
+    
+    if (jsTextView && [self fileURL]) {
+        [self readFromFile:[self fileURL]];
+    }
     
     return YES;
 }

@@ -499,9 +499,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>11</integer>
-									<integer>9</integer>
-									<integer>0</integer>
+									<integer>23</integer>
+									<integer>22</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -545,7 +544,7 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>CCCE69460F6D8E0800798CC5</string>
+				<string>CC912A630F92883700789B97</string>
 				<string>11E0B1FE06471DED0097A5F4</string>
 			</array>
 			<key>ToolbarConfiguration</key>
@@ -561,7 +560,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>258838024.52610001</real>
+	<real>261261581.00360301</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -577,7 +576,6 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>CC94BF220F6C62CB0094DD44</string>
-		<string>CCCE69470F6D8E0800798CC5</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/extras/fmdbextra/fmdbextra.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -624,7 +622,7 @@
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
-								<string>{{0, 292}, {870, 130}}</string>
+								<string>{{0, 264}, {870, 158}}</string>
 								<key>PBXProjectModuleGUID</key>
 								<string>XCMainBuildResultsModuleGUID</string>
 								<key>PBXProjectModuleLabel</key>
@@ -662,7 +660,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>CC94BF220F6C62CB0094DD44</string>
-				<string>CCCE69260F6D8C8300798CC5</string>
+				<string>CC912A640F92883700789B97</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

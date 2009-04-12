@@ -29,7 +29,7 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		32DBCF630370AF2F00C91783 /* fmdbextra_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fmdbextra_Prefix.pch; sourceTree = "<group>"; };
-		8D5B49B6048680CD000E48DA /* FMDB.jstalkextra */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMDB.jstalkextra; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B6048680CD000E48DA /* FMDB.jstplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMDB.jstplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC94BE8F0F6C62B10094DD44 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		CC94BE900F6C62B10094DD44 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
@@ -134,7 +134,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D5B49B6048680CD000E48DA /* FMDB.jstalkextra */,
+				8D5B49B6048680CD000E48DA /* FMDB.jstplugin */,
 				CC94BF480F6D88F50094DD44 /* fmdbbs.framework */,
 			);
 			name = Products;
@@ -179,7 +179,7 @@
 			name = fmdbextra;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = fmdbextra;
-			productReference = 8D5B49B6048680CD000E48DA /* FMDB.jstalkextra */;
+			productReference = 8D5B49B6048680CD000E48DA /* FMDB.jstplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 		CC94BF470F6D88F50094DD44 /* fmdbbs */ = {
@@ -287,7 +287,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = FMDB;
-				WRAPPER_EXTENSION = jstalkextra;
+				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Debug;
 		};
@@ -303,7 +303,7 @@
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
 				PRODUCT_NAME = FMDB;
-				WRAPPER_EXTENSION = jstalkextra;
+				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Release;
 		};

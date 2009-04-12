@@ -112,7 +112,7 @@ static NSMutableArray *JSTalkExtrasList;
 - (void) loadExtras {
     JSTalkExtrasList = [[NSMutableArray array] retain];
     
-    NSString *appSupport = @"Library/Application Support/JSTalk/Extras";
+    NSString *appSupport = @"Library/Application Support/JSTalk/Plug-ins";
     NSString *appPath    = [[NSBundle mainBundle] builtInPlugInsPath];
     NSString *sysPath    = [@"/" stringByAppendingPathComponent:appSupport];
     NSString *userPath   = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
@@ -122,13 +122,11 @@ static NSMutableArray *JSTalkExtrasList;
         [[NSFileManager defaultManager] createDirectoryAtPath:userPath attributes:nil];
     }
     
-    
-    
     for (NSString *folder in [NSArray arrayWithObjects:appPath, sysPath, userPath, nil]) {
         
         for (NSString *bundle in [[NSFileManager defaultManager] directoryContentsAtPath:folder]) {
             
-            if (![bundle hasSuffix:@"jstalkextra"]) {
+            if (!([bundle hasSuffix:@".jstplugin"])) {
                 continue;
             }
             
