@@ -138,7 +138,7 @@ cp -R /tmp/jstalk/extras/fmdbextra/fmdb.jstalk JSTalkFoo/examples/.
 mkdir JSTalkFoo/extras
 mv JSTalk.acplugin  JSTalkFoo/extras/.
 mv JSTalk.vpplugin  JSTalkFoo/extras/.
-mv FMDB.jstalkextra JSTalkFoo/extras/.
+mv FMDB.jstplugin   JSTalkFoo/extras/.
 
 
 mv JSTalkFoo JSTalk
