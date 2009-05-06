@@ -13,8 +13,9 @@ def application(appName):
     appBundle = NSBundle.bundleWithPath_(appPath)
     bundleId  = appBundle.bundleIdentifier()
     
-    
-    NSWorkspace.sharedWorkspace().launchAppWithBundleIdentifier_options_additionalEventParamDescriptor_launchIdentifier_(bundleId, NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync, None, None)
+    runningApps = NSWorkspace.sharedWorkspace().launchedApplications().valueForKey_("NSApplicationBundleIdentifier")
+    if not bundleId in runningApps:
+        NSWorkspace.sharedWorkspace().launchAppWithBundleIdentifier_options_additionalEventParamDescriptor_launchIdentifier_(bundleId, NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync, None, None)
     
     port = bundleId + ".JSTalk"
     

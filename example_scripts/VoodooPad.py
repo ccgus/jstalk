@@ -1,6 +1,6 @@
 import JSTalk
 
-vp = JSTalk.application("VoodooPad Pro")
+vp = JSTalk.application("VoodooPad")
 
 print(vp)
 

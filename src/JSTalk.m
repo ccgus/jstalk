@@ -242,11 +242,17 @@ static NSMutableArray *JSTalkPluginList;
     NSBundle *appBundle = [NSBundle bundleWithPath:appPath];
     NSString *bundleId  = [appBundle bundleIdentifier];
     
+    
     // make sure it's running
-    [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId
-                                                         options:NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync
-                                  additionalEventParamDescriptor:nil
-                                                launchIdentifier:nil];
+	NSArray *runningApps = [[[NSWorkspace sharedWorkspace] launchedApplications] valueForKey:@"NSApplicationBundleIdentifier"];
+    
+	if (![runningApps containsObject:bundleId]) {
+        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId
+                                                             options:NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync
+                                      additionalEventParamDescriptor:nil
+                                                    launchIdentifier:nil];
+    }
+    
     
     return [self applicationOnPort:[NSString stringWithFormat:@"%@.JSTalk", bundleId]];
 }

@@ -94,14 +94,14 @@ buildTarget "JSTalk Editor"
 
 
 
-cd /tmp/jstalk/extras/acornplugin
+cd /tmp/jstalk/plugins/acornplugin
 xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
     echo "****** Bad build for acorn plugin ********"
     exit
 fi
 
-cd /tmp/jstalk/extras/voodoopadplugin
+cd /tmp/jstalk/plugins/voodoopadplugin
 xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
     echo "****** Bad build for vp plugin ********"
@@ -109,7 +109,7 @@ if [ $? != 0 ]; then
 fi
 
 
-cd /tmp/jstalk/extras/fmdbextra
+cd /tmp/jstalk/plugins/sqlite-fmdb-jstplugin
 xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target fmdbextra
 if [ $? != 0 ]; then
     echo "****** Bad build for fmdb extra ********"
@@ -133,13 +133,14 @@ mv "JSTalk Editor.app" JSTalkFoo/.
 cp -R JSTalk.framework JSTalkFoo/.
 cp -R /tmp/jstalk/README.txt JSTalkFoo/.
 cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
-cp -R /tmp/jstalk/extras/fmdbextra/fmdb.jstalk JSTalkFoo/examples/.
+cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
-mkdir JSTalkFoo/extras
-mv JSTalk.acplugin  JSTalkFoo/extras/.
-mv JSTalk.vpplugin  JSTalkFoo/extras/.
-mv FMDB.jstplugin   JSTalkFoo/extras/.
+mkdir JSTalkFoo/plugins
+mv JSTalk.acplugin  JSTalkFoo/plugins/.
+mv JSTalk.vpplugin  JSTalkFoo/plugins/.
+mv FMDB.jstplugin   JSTalkFoo/plugins/.
 
+cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
 
 mv JSTalkFoo JSTalk
 
