@@ -59,7 +59,6 @@
     
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = nil;
-    TDToken *lastToken              = nil;
     BOOL lastWasWord                = NO;
     NSUInteger bracketCount         = 0;
     JSTPObjcCall *currentObjcCall   = 0x00;
@@ -114,8 +113,6 @@
         }
         
         lastWasWord = tok.isWord;
-        
-        lastToken = tok;
     }
     
     return buffer;
