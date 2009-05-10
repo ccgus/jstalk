@@ -7,10 +7,16 @@
 //
 
 #import "JSTDocument.h"
+#import "JSTAppDelegate.h"
 #import "JSTListener.h"
 #import "JSTalk.h"
 #import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
+
+@interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
+- (void) updateFont:(id)sender;
+@end
+
 
 @implementation JSTDocument
 @synthesize tokenizer=_tokenizer;
@@ -52,7 +58,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     NSString *path = @"/tmp/foo.txt";
     [[someContent dataUsingEncoding:NSUTF8StringEncoding] writeToFile:path atomically:YES];
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFont:) name:@"JSTFontChangeNotification" object:nil];
     
     return self;
 }
@@ -132,6 +138,8 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [[splitView window] setContentBorderThickness:NSMinY([splitView frame]) forEdge:NSMinYEdge];
     
     [errorLabel setStringValue:@""];
+    
+    [self updateFont:nil];
     
 }
 
@@ -369,6 +377,14 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     [savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"app"]];
     
     [savePanel beginSheetForDirectory:nil file:appName modalForWindow:[splitView window] modalDelegate:self didEndSelector:@selector(savePanelDidEndForApplicationSave:returnCode:contextInfo:) contextInfo:nil];
+    
+}
+
+- (void) updateFont:(id)sender {
+    
+    [[jsTextView textStorage] addAttribute:NSFontAttributeName value:[[NSApp delegate] defaultEditorFont] range:NSMakeRange(0, [[jsTextView textStorage] length])];
+    [[outputTextView textStorage] addAttribute:NSFontAttributeName value:[[NSApp delegate] defaultEditorFont] range:NSMakeRange(0, [[outputTextView textStorage] length])];
+    
     
 }
 

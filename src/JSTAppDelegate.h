@@ -12,8 +12,13 @@
 @interface JSTAppDelegate : NSObject {
     IBOutlet NSPanel *prefsWindow;
     IBOutlet NSTextField *externalEditorField;
+    IBOutlet NSTextField *prefsFontField;
 }
 
 - (void) chooseExternalEditor:(id)sender;
+- (void) prefsChoosefont:(id)sender;
+
+- (NSFont*) defaultEditorFont;
+- (void) setDefaultEditorFont:(NSFont*)f;
 
 @end
