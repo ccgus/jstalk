@@ -233,7 +233,12 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         [self clearConsole:nil];
     }
     
-    [jstalk executeString:s];
+    id result = [jstalk executeString:s];
+    
+    if (result) {
+        [self print:[result description]];
+    }
+        
 }
 
 - (void) executeScript:(id)sender { 

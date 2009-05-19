@@ -153,7 +153,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-- (void) executeString:(NSString*) str {
+- (id) executeString:(NSString*) str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
         [self loadPlugins];
@@ -163,9 +163,12 @@ static NSMutableArray *JSTalkPluginList;
         
     [self pushObject:self withName:@"jstalk" inController:_jsController];
     
+    JSValueRef resultRef = 0x00;
+    id resultObj = 0x00;
+    
     @try {
         [_jsController setUseAutoCall:NO];
-        [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+        resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -174,6 +177,12 @@ static NSMutableArray *JSTalkPluginList;
     @finally {
         //
     }
+    
+    if (resultRef) {
+        [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
+    }
+    
+    return resultObj;
 }
 
 - (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {

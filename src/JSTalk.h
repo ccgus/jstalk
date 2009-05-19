@@ -19,7 +19,7 @@
 @property (assign) id errorController;
 @property (retain) JSCocoaController *jsController;
 
-- (void) executeString:(NSString*) str;
+- (id) executeString:(NSString*) str;
 - (void) pushObject:(id)obj withName:(NSString*)name inController:(JSCocoaController*)jsController;
 
 - (JSCocoaController*) jsController;

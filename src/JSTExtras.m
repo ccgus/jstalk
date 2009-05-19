@@ -130,6 +130,131 @@
 @end
 
 
+@implementation NSApplication (JSTRandomCrap)
+
++ (NSDictionary*) JSTAXStuff {
+    
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    
+    
+    AXUIElementRef uiElement = AXUIElementCreateSystemWide();
+    
+    CFTypeRef focusedUIElement = 0x00;
+	
+	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
+    
+    if (focusedUIElement) {
+        
+        NSArray* attributeNames;
+        AXUIElementCopyAttributeNames(focusedUIElement, (CFArrayRef *)&attributeNames);
+        
+        for (NSString *attName in attributeNames) {
+            
+            CFTypeRef attValue;
+            
+            AXError error = AXUIElementCopyAttributeValue(focusedUIElement, (CFStringRef)attName, &attValue);
+            if (!error) {
+                
+                if ((AXValueGetType(attValue) == kAXValueCGPointType)) {
+                    NSPoint p;
+                    AXValueGetValue(attValue, kAXValueCGPointType, &p);
+                    [d setObject:[NSValue valueWithPoint:p] forKey:attName];
+                }
+                else if ((AXValueGetType(attValue) == kAXValueCGSizeType)) {
+                    NSSize s;
+                    AXValueGetValue(attValue, kAXValueCGSizeType, &s);
+                    [d setObject:[NSValue valueWithSize:s] forKey:attName];
+                }
+                else if ((AXValueGetType(attValue) == kAXValueCGRectType)) {
+                    NSRect r;
+                    AXValueGetValue(attValue, kAXValueCGRectType, &r);
+                    [d setObject:[NSValue valueWithRect:r] forKey:attName];
+                }
+                else if ((AXValueGetType(attValue) == kAXValueCFRangeType)) {
+                    NSRange r;
+                    AXValueGetValue(attValue, kAXValueCFRangeType, &r);
+                    [d setObject:[NSValue valueWithRange:r] forKey:attName];
+                }
+                else {
+                    [d setObject:(id)attValue forKey:attName];
+                }
+                
+                CFRelease(attValue);
+            }
+            
+        }
+        
+        if (attributeNames) {
+            CFRelease(attributeNames);
+        }
+        
+        CFRelease(focusedUIElement);
+    }
+    else if (error) {
+        NSLog(@"Could not get AXFocusedUIElement");
+    }
+    
+    
+    CFRelease(uiElement);
+    
+    return d;
+    
+}
+
++ (void) JSTAXSetSelectedTextAttributeOnFocusedElement:(NSString*)s {
+    AXUIElementRef uiElement = AXUIElementCreateSystemWide();
+    
+    CFTypeRef focusedUIElement = 0x00;
+	
+	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
+    
+    if (focusedUIElement) {
+        
+        AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextAttribute, s);
+        
+        CFRelease(focusedUIElement);
+    }
+    else if (error) {
+        NSLog(@"Could not get AXFocusedUIElement");
+    }
+    
+    CFRelease(uiElement);
+}
+
++ (void) JSTAXSetSelectedTextRangeAttributeOnFocusedElement:(NSRange)range {
+    AXUIElementRef uiElement = AXUIElementCreateSystemWide();
+    
+    CFTypeRef focusedUIElement = 0x00;
+	
+	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
+    
+    if (focusedUIElement) {
+        
+        //sscanf( [[_attributeValueTextField stringValue] cString], "pos=%ld len=%ld", &(range.location), &(range.length) );
+        AXValueRef valueRef = AXValueCreate( kAXValueCFRangeType, (const void *)&range );
+        if (valueRef) {
+            AXError setError = AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextRangeAttribute, valueRef );
+            
+            
+            if (setError) {
+                debug(@"error setting the range (%d)", setError);
+            }
+            
+            CFRelease( valueRef );
+        }
+        
+        
+        CFRelease(focusedUIElement);
+    }
+    else if (error) {
+        NSLog(@"Could not get AXFocusedUIElement");
+    }
+    
+    CFRelease(uiElement);
+}
+
+@end
+
 
 
 
