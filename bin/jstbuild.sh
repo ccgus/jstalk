@@ -41,7 +41,7 @@ if [ "$echoversion" != "" ]; then
 fi
 
 
-xcodebuild=/usr/bin/xcodebuild
+xcodebuild=/Developer/usr/bin/xcodebuild
 
 
 buildDate=`/bin/date +"%Y.%m.%d.%H"`
@@ -95,14 +95,14 @@ buildTarget "JSTalk Editor"
 
 
 cd /tmp/jstalk/plugins/acornplugin
-xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
     echo "****** Bad build for acorn plugin ********"
     exit
 fi
 
 cd /tmp/jstalk/plugins/voodoopadplugin
-xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
     echo "****** Bad build for vp plugin ********"
     exit
@@ -110,7 +110,7 @@ fi
 
 
 cd /tmp/jstalk/plugins/sqlite-fmdb-jstplugin
-xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target fmdbextra
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target fmdbextra
 if [ $? != 0 ]; then
     echo "****** Bad build for fmdb extra ********"
     exit
