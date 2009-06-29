@@ -18,13 +18,6 @@ if ([windows count] > 0) {
     var finalPath = path + '/' + folderName;
     
     [[NSFileManager defaultManager] createDirectoryAtPath: finalPath attributes:nil];
-    
-    
-    //var terminal = [SBApplication application:"Terminal"];
-    
-    //[terminal activate];
-    
-    //[terminal doScript:"cd '" + [url path] + "'" in:nil];
 }
 else {
     print("There's no window open")

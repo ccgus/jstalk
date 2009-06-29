@@ -1,19 +1,19 @@
-var windows  = [[SBApplication application:"Finder"] windows];
+var windows  = SBApplication.application_("Finder").windows();
 
-if ([windows count] > 0) {
+if (windows.count() > 0) {
     
     // from SBObject:
     // get() "Forces evaluation of the receiver, causing the real object to be returned immediately."
     var win = windows[0].get();
     var target = win.target().get();
-    var url = [NSURL URLWithString:[target URL]];
-    var path = [url path].replace("%20", " ");
+    var url = NSURL.URLWithString_(target.URL());
+    var path = url.path().replace("%20", " ");
     
-    var terminal = [SBApplication application:"Terminal"];
+    var terminal = SBApplication.application_("Terminal");
     
-    [terminal activate];
+    terminal.activate();
     
-    [terminal doScript:"cd '" + path + "'" in:nil];
+    terminal.doScript_in_("cd '" + path + "'", nil);
 }
 else {
     print("There's no window open")

@@ -1,4 +1,4 @@
-var mail = [SBApplication application:"Mail"];
+var mail = SBApplication.application_("Mail");
 
 var to = "someone@somewhere.com";
 var from = "someone@somewhere.com";
@@ -6,17 +6,17 @@ var subject = "This is the subject.";
 var content = "This is the message content.\n\nIsn't it great?";
 
 var emailMessageProps = {subject:subject, content:content};
-var emailMessage = [[[mail classForScriptingClass:@"outgoing message"] alloc] initWithProperties:emailMessageProps];
+var emailMessage = mail.classForScriptingClass_("outgoing message").alloc().initWithProperties_(emailMessageProps);
 
-[[mail outgoingMessages] addObject:emailMessage];
+mail.outgoingMessages().addObject_(emailMessage);
 
 emailMessage.sender = from;
 emailMessage.visible = true;
 
 theRecipientProps = {address:from};
-theRecipient = [[[mail classForScriptingClass:@"to recipient"] alloc] initWithProperties: theRecipientProps];
+theRecipient = mail.classForScriptingClass_("to recipient").alloc().initWithProperties_(theRecipientProps);
 
-[[emailMessage toRecipients] addObject:theRecipient];
+emailMessage.toRecipients().addObject_(theRecipient);
 
-[emailMessage send];
+emailMessage.send();
 

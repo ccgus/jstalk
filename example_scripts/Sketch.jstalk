@@ -1,13 +1,12 @@
 // this script requires the use of jstalk-sketch, in the extras folder.
 
-var sketch = [JSTalk application:"Sketch"];
-var doc = [sketch orderedDocuments][0]
-var rectangle = [doc makeNewBox];
+var sketch = JSTalk.application_("Sketch");
+var doc = sketch.orderedDocuments()[0]
+var rectangle = doc.makeNewBox();
 
-[rectangle setSize:NSMakeSize(100, 100)];
-[rectangle setXPosition:100];
-[rectangle setYPosition:100];
-
+rectangle.setSize_(NSMakeSize(100, 100));
+rectangle.setXPosition_(100);
+rectangle.setYPosition_(100);
 
 /*
 tell application "Sketch"	tell document 1		set o to make new box		set width of o to 100		set height of o to 100		set stroke thickness of o to 10	end tellend tell

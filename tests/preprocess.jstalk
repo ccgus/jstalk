@@ -50,7 +50,7 @@ addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
 
 addTest('print([NSString stringWithString:@"a"+"b"])',
         'print(NSString.stringWithString_(NSString.stringWithString_("a")+"b"))');
-        
+
 addTest('[NSFullUserName() lowercaseString];',
         'NSFullUserName().lowercaseString();');
 

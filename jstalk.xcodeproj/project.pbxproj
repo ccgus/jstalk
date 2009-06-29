@@ -712,20 +712,20 @@
 		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
 			isa = PBXGroup;
 			children = (
-				CC1587870F6316B00077A4DF /* class.js */,
-				CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */,
-				CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */,
-				CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */,
-				CC1587850F6316B00077A4DF /* JSCocoaLib.h */,
-				CC1587860F6316B00077A4DF /* JSCocoa.h */,
 				CC1587880F6316B00077A4DF /* BridgeSupportController.h */,
+				CC15878F0F6316B00077A4DF /* BridgeSupportController.m */,
+				CC1587870F6316B00077A4DF /* class.js */,
+				CC1587860F6316B00077A4DF /* JSCocoa.h */,
+				CC15878C0F6316B00077A4DF /* JSCocoaController.h */,
+				CC15878B0F6316B00077A4DF /* JSCocoaController.m */,
+				CC15878E0F6316B00077A4DF /* JSCocoaFFIArgument.h */,
+				CC1587840F6316B00077A4DF /* JSCocoaFFIArgument.m */,
+				CC15878D0F6316B00077A4DF /* JSCocoaFFIClosure.h */,
+				CC1587820F6316B00077A4DF /* JSCocoaFFIClosure.m */,
+				CC1587850F6316B00077A4DF /* JSCocoaLib.h */,
 				CC1587890F6316B00077A4DF /* JSCocoaLib.m */,
 				CC15878A0F6316B00077A4DF /* JSCocoaPrivateObject.h */,
-				CC15878B0F6316B00077A4DF /* JSCocoaController.m */,
-				CC15878C0F6316B00077A4DF /* JSCocoaController.h */,
-				CC15878D0F6316B00077A4DF /* JSCocoaFFIClosure.h */,
-				CC15878E0F6316B00077A4DF /* JSCocoaFFIArgument.h */,
-				CC15878F0F6316B00077A4DF /* BridgeSupportController.m */,
+				CC1587830F6316B00077A4DF /* JSCocoaPrivateObject.m */,
 			);
 			name = JSCocoa;
 			sourceTree = "<group>";

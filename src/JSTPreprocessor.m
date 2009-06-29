@@ -241,14 +241,13 @@
     BOOL useMsgSend = NO;
     
     if (useMsgSend) {
-        NSMutableString *ret = [NSMutableString stringWithFormat:@"jstalk_msgsend(%@, '%@'", target, selector];
+        NSMutableString *ret = [NSMutableString stringWithFormat:@"JSTalk.msgSend_selector_args_(%@, '%@', [", target, selector];
         
         if ([methodArgs count]) {
-            [ret appendString:@", "];
             [ret appendString:[methodArgs componentsJoinedByString:@", "]];
         }
         
-        [ret appendString:@")"];
+        [ret appendString:@"])"];
         
         return ret;
     }

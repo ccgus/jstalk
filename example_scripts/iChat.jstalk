@@ -1,2 +1,2 @@
 
-[[SBApplication application:"iChat"] setStatusMessage:"Happy (funball)"];
+SBApplication.application_("iChat").setStatusMessage_("Happy (funball)");

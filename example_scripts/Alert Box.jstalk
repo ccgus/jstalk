@@ -1,6 +1,6 @@
-var jst = [JSTalk application:"JSTalk Editor"];
+var jst = JSTalk.application_("JSTalk Editor");
 
-if ([jst displayDialog:"Hello" withTitle:@"What?"] == NSOKButton) {
+if (jst.displayDialog_withTitle_("Hello", "What?") == NSOKButton) {
     print("woo");
 }
 
