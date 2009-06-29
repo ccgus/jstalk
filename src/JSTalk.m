@@ -212,6 +212,10 @@ static NSMutableArray *JSTalkPluginList;
         [_printController print:s];
     }
     else {
+        if (![s isKindOfClass:[NSString class]]) {
+            s = [s description];
+        }
+        
         printf("%s\n", [s UTF8String]);
     }
 }

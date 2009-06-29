@@ -19,34 +19,19 @@
 
 
 
-
-
-@interface JSTPObjcCall : NSObject {
+@interface JSTPSymbolGroup : NSObject {
     
+    unichar _openSymbol;
     NSMutableArray *_args;
-    
-    JSTPObjcCall *_parent;
-    
-    NSString *_target;
-    NSString *_lastString;
-    NSMutableString *_selector;
-    NSMutableString *_currentArgument;
-    
-    NSUInteger _parentCount;
+    JSTPSymbolGroup *_parent;
     
 }
 
 @property (retain) NSMutableArray *args;
-@property (retain) NSMutableString *selector;
-@property (retain) NSString *target;
-@property (retain) NSString *lastString;
-@property (retain) NSMutableString *currentArgument;
-@property (assign) JSTPObjcCall *parent;
+@property (retain) JSTPSymbolGroup *parent;
 
-- (void) addSymbol:(id)whatever;
+- (void) addSymbol:(id)aSymbol;
 
 @end
-
-
 
 

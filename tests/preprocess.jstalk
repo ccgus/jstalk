@@ -1,0 +1,73 @@
+var count = 1;
+var tests = new Array();
+
+var process = function (a, b) {
+    
+    //print("running test " + count);
+    
+    a = [JSTPreprocessor preprocessCode:a];
+    
+    if (a != b) {
+        NSBeep();
+        print("Failure for test " + count);
+        print(a + "\nshould be equal to:\n" + b);
+        return false;
+    }
+    
+    print("Success for test " + count);
+    
+    count++;
+    
+    return true;
+}
+
+var addTest = function (a, b) {
+    tests.push(new Array(a, b));
+}
+
+print("Staring preprocessing tests.")
+
+addTest('print([4 - 5, b]);',
+        'print([4 - 5, b]);');
+
+addTest('print([a, b]);',
+        'print([a,b]);');
+        
+addTest('[db executeUpdate:"insert into foo values (?, ?, ?)",\n   1, // comment!\n   @"Hello",\n   [NSDate date]];',
+        'db.executeUpdate_("insert into foo values (?, ?, ?)",1,NSString.stringWithString_("Hello"),NSDate.date());');
+
+addTest('[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];',
+        'db.executeUpdate_("insert into foo values (?, ?)",1,"Hello");');
+
+addTest('var acorn = [JSTalk application:"Acorn"];',
+        'var acorn = JSTalk.application_("Acorn");');
+
+addTest('print([]);',
+        'print([]);');
+
+addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
+        'fo.doSomething_in_(" a " + b.fun() + " c ", nil);');
+        
+addTest('[NSFullUserName() lowercaseString];',
+        'NSFullUserName().lowercaseString();');
+
+
+
+var stopOnFirstFail = false;
+var shouldContinue = true;
+var len = tests.length;
+var idx = 0;
+while (shouldContinue && idx < len) {
+    var a = tests[idx][0];
+    var b = tests[idx][1];
+    
+    shouldContinue = process(a, b);
+    
+    shouldContinue = stopOnFirstFail ? shouldContinue : true;
+    
+    idx++;
+}
+
+print("Done");
+
+// what about "foo ? bar : xyz" ?  Yea, gotta fix that.
