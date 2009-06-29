@@ -47,6 +47,9 @@ addTest('print([]);',
 
 addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
         'fo.doSomething_in_(" a " + b.fun() + " c ", nil);');
+
+addTest('print([NSString stringWithString:@"a"+"b"])',
+        'print(NSString.stringWithString_(NSString.stringWithString_("a")+"b"))');
         
 addTest('[NSFullUserName() lowercaseString];',
         'NSFullUserName().lowercaseString();');
