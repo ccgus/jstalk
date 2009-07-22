@@ -1,0 +1,1 @@
+[[GTMScriptRunner runner] run:'ls;echo "hello world";pwd'];
