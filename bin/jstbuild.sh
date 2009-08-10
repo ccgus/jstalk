@@ -139,6 +139,7 @@ mkdir JSTalkFoo/plugins
 mv JSTalk.acplugin  JSTalkFoo/plugins/.
 mv JSTalk.vpplugin  JSTalkFoo/plugins/.
 mv FMDB.jstplugin   JSTalkFoo/plugins/.
+mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
 cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
 
