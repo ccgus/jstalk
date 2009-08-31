@@ -485,8 +485,9 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>20</integer>
-									<integer>19</integer>
+									<integer>18</integer>
+									<integer>17</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -511,7 +512,7 @@
 							<real>261</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>1620 257 300 838 0 0 1920 1178 </string>
+						<string>1591 261 300 838 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -548,7 +549,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>271562376.54483902</real>
+	<real>271563074.826231</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -567,7 +568,7 @@
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/plugins/acornplugin/jsenabler.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>1620 257 300 838 0 0 1920 1178 </string>
+	<string>1591 261 300 838 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -597,7 +598,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1018, 101}}</string>
 								<key>RubberWindowFrame</key>
-								<string>48 387 1018 572 0 0 1920 1178 </string>
+								<string>159 306 1018 572 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
@@ -623,7 +624,7 @@
 								<key>Frame</key>
 								<string>{{0, 106}, {1018, 425}}</string>
 								<key>RubberWindowFrame</key>
-								<string>48 387 1018 572 0 0 1920 1178 </string>
+								<string>159 306 1018 572 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXBuildResultsModule</string>
@@ -653,7 +654,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.buildV3</string>
 			<key>WindowString</key>
-			<string>48 387 1018 572 0 0 1920 1178 </string>
+			<string>159 306 1018 572 0 0 1920 1178 </string>
 			<key>WindowToolGUID</key>
 			<string>CCC7E6100ECA3D78001F3E02</string>
 			<key>WindowToolIsVisible</key>

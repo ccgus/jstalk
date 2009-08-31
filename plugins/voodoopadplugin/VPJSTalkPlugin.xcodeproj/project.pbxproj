@@ -34,7 +34,7 @@
 		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		8D5B49B6048680CD000E48DA /* JavaScriptPluginEnabler.vpplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JavaScriptPluginEnabler.vpplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSTalk.vpplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VPPlugin.framework; sourceTree = "<group>"; };
 		CC6080560EA410F400A1244C /* JavaScriptPluginEnabler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler.h; sourceTree = "<group>"; };
@@ -120,7 +120,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D5B49B6048680CD000E48DA /* JavaScriptPluginEnabler.vpplugin */,
+				8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,9 +136,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D5B49AC048680CD000E48DA /* JavaScriptPluginEnabler */ = {
+		8D5B49AC048680CD000E48DA /* JSTalk */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JavaScriptPluginEnabler" */;
+			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JSTalk" */;
 			buildPhases = (
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
@@ -149,10 +149,10 @@
 			);
 			dependencies = (
 			);
-			name = JavaScriptPluginEnabler;
+			name = JSTalk;
 			productInstallPath = "$(HOME)/Library/Bundles";
 			productName = SketchPage;
-			productReference = 8D5B49B6048680CD000E48DA /* JavaScriptPluginEnabler.vpplugin */;
+			productReference = 8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -167,7 +167,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D5B49AC048680CD000E48DA /* JavaScriptPluginEnabler */,
+				8D5B49AC048680CD000E48DA /* JSTalk */,
 			);
 		};
 /* End PBXProject section */
@@ -233,7 +233,7 @@
 					"-undefined",
 					dynamic_lookup,
 				);
-				PRODUCT_NAME = JavaScriptPluginEnabler;
+				PRODUCT_NAME = JSTalk;
 				WRAPPER_EXTENSION = vpplugin;
 			};
 			name = Debug;
@@ -242,7 +242,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				ARCHS = (
+					x86_64,
+					i386,
+				);
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -297,7 +300,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JavaScriptPluginEnabler" */ = {
+		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JSTalk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB913B08733D840010E9CD /* Debug */,

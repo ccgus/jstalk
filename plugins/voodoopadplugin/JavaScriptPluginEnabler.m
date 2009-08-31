@@ -42,25 +42,25 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
         [self registerScript:filePath];
     }
     
-    [[self pluginManager] addPluginsMenuTitle:@"Run Page as JavaScript"
-                           withSuperMenuTitle:@"JavaScript"
+    [[self pluginManager] addPluginsMenuTitle:@"Run Page as JSTalk"
+                           withSuperMenuTitle:@"JSTalk"
                                        target:self
                                        action:@selector(handleRunAsJavaScript:)
                                 keyEquivalent:@";"
                     keyEquivalentModifierMask:NSCommandKeyMask | NSControlKeyMask];
     
-    [[self pluginManager] addPluginsMenuTitle:[NSString stringWithFormat:@"Save Page as JavaScript Plugin%C", 0x2026]
-                           withSuperMenuTitle:@"JavaScript"
+    [[self pluginManager] addPluginsMenuTitle:[NSString stringWithFormat:@"Save Page as JSTalk Plugin%C", 0x2026]
+                           withSuperMenuTitle:@"JSTalk"
                                        target:self
                                        action:@selector(handleSaveAsJavaScript:)
                                 keyEquivalent:@""
                     keyEquivalentModifierMask:0];
     
-    [[self pluginManager] registerPluginAppleScriptName:@"JavaScript Script"
+    [[self pluginManager] registerPluginAppleScriptName:@"JSTalk Script"
                                                  target:self
                                                  action:@selector(runScriptAction:)];
     
-    [[self pluginManager] registerEventRunner:self forLanguage:@"JavaScript"];
+    [[self pluginManager] registerEventRunner:self forLanguage:@"JSTalk"];
     
     
     // this guy openes up a port to listen for outside JSTalk commands commands
@@ -101,12 +101,12 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
         return;
     }
     
-    NSString *name = [NSString stringWithFormat:@"%@.js", displayName];
+    NSString *name = [NSString stringWithFormat:@"%@.jstalk", displayName];
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     
     [savePanel setPrompt:NSLocalizedString(@"Save", @"Save")];
-    [savePanel setTitle:NSLocalizedString(@"Save as JavaScript Plugin", @"Save as JavaScript Plugin")];
+    [savePanel setTitle:NSLocalizedString(@"Save as JSTalk Plugin", @"Save as JSTalk Plugin")];
     
     [savePanel beginSheetForDirectory:[self scriptsDir] 
                                  file:name
@@ -114,6 +114,23 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
                         modalDelegate:self
                        didEndSelector:@selector(savePanelDidEndForSaveAsJavaScript:returnCode:contextInfo:)
                           contextInfo:windowController];
+}
+
+- (void) runScript:(NSString*)script withWindowController:(id<VPPluginWindowController>)windowController {
+    
+    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
+    
+    [jstalk pushObject:windowController withName:@"windowController" inController:[jstalk jsController]];
+    [jstalk pushObject:[windowController document] withName:@"document" inController:[jstalk jsController]];
+    
+    JSCocoaController *jsController = [jstalk jsController];
+    
+    jsController.delegate = self;
+    
+    jstalk.printController = self;
+    
+    [jstalk executeString:script];
+    
 }
 
 - (void) handleRunAsJavaScript:(id<VPPluginWindowController>)windowController {
@@ -132,16 +149,7 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
         [[windowController textView] setSelectedRange:r];
     }
     
-    
-    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
-    
-    JSCocoaController *jsController = [jstalk jsController];
-    
-    jsController.delegate = self;
-    
-    jstalk.printController = self;
-    
-    [jstalk executeString:buffer];
+    [self runScript:buffer withWindowController:windowController];
     
     _nonRetainedCurrentTextView = 0x00;
     
@@ -151,13 +159,23 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
 
 - (void) handleRunScript:(id<VPPluginWindowController>)windowController userObject:(id)userObject {
     // todo
+    
+    NSError *err = 0x00;
+    NSString *script = [NSString stringWithContentsOfFile:userObject encoding:NSUTF8StringEncoding error:&err];
+    
+    if (!script) {
+        NSLog(@"Could not read script: %@", err);
+        return;
+    }
+    
+    [self runScript:script withWindowController:windowController];
 }
 
 
 
 - (NSDictionary*) propertiesFromScriptAtPath:(NSString*)path {
     
-    NSMutableString *s = [NSMutableString stringWithContentsOfFile:path];
+    NSMutableString *s = [NSMutableString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     if (!s) {
         return nil;
     }
@@ -182,28 +200,28 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
             break;
         }
         else if ([line hasPrefix:VPLanguageKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 lang = [[line substringFromIndex:eqIdx+1]
                         stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             }
         }
         else if ([line hasPrefix:VPScriptMenuTitleKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 menuTitle = [[line substringFromIndex:eqIdx+1]
                              stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             }
         }
         else if ([line hasPrefix:VPScriptSuperMenuTitleKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 superMenuTitle = [[line substringFromIndex:eqIdx+1]
                                   stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             }
         }
         else if ([line hasPrefix:VPBackgroundThreadKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 
                 NSString *junk = [[line substringFromIndex:eqIdx+1] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -211,14 +229,14 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
             }
         }
         else if ([line hasPrefix:VPShortcutKeyKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 shortcutKey = [[line substringFromIndex:eqIdx+1]
                                stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
             }
         }
         else if ([line hasPrefix:VPShortcutMaskKey]) {
-            int eqIdx = [line rangeOfString:@"="].location;
+            NSInteger eqIdx = [line rangeOfString:@"="].location;
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 NSString *junk = [[line substringFromIndex:eqIdx+1]
                                   stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -244,11 +262,7 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
     if (lang) {
         [d setObject:lang forKey:VPLanguageKey];
     }
-    else if ([[path lowercaseString] hasSuffix:@".js"]) {
-        [d setObject:@"javascript" forKey:VPLanguageKey];
-        [d setObject:@"JavaScript" forKey:VPScriptSuperMenuTitleKey];
-        [d setObject:[[path lastPathComponent] stringByDeletingPathExtension] forKey:VPScriptMenuTitleKey];
-    }
+    
     if (menuTitle) {
         [d setObject:menuTitle forKey:VPScriptMenuTitleKey];
     }
@@ -267,7 +281,7 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
 
 - (void) registerScript:(NSString*)scriptPath {
     
-    NSMutableString *s = [NSMutableString stringWithContentsOfFile:scriptPath];
+    NSMutableString *s = [NSMutableString stringWithContentsOfFile:scriptPath encoding:NSUTF8StringEncoding error:nil];
     if (!s) {
         return;
     }
@@ -275,17 +289,18 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
     id <VPPluginManager> pluginManager  = [self pluginManager];
     NSDictionary *scriptProperties      = [self propertiesFromScriptAtPath:scriptPath];
     
-    if (![scriptProperties objectForKey:VPLanguageKey] || ![@"javascript" isEqualToString:[scriptProperties objectForKey:VPLanguageKey]]) {
-        // we dont' handle anything but javascript right now.
+    if (!([scriptPath hasSuffix:@".jstalk"] || [scriptPath hasSuffix:@".jscocoa"] || [scriptPath hasSuffix:@".javascript"] || [scriptPath hasSuffix:@".js"])){
         return;
     }
     
     NSString *menuTitle                 = [scriptProperties objectForKey:VPScriptMenuTitleKey];
-    menuTitle                           = menuTitle ? menuTitle : [scriptPath lastPathComponent];
+    menuTitle                           = menuTitle ? menuTitle : [[scriptPath lastPathComponent] stringByDeletingPathExtension];
     NSString *shortcutKey               = [scriptProperties objectForKey:VPShortcutKeyKey];
     shortcutKey                         = shortcutKey ? shortcutKey : @"";
     NSString *superMenuTitle            = [scriptProperties objectForKey:VPScriptSuperMenuTitleKey];
     int shortcutMask                    = [[scriptProperties objectForKey:VPShortcutMaskKey] intValue];
+    
+    superMenuTitle = superMenuTitle ? superMenuTitle : @"JSTalk";
     
     [pluginManager addPluginsMenuTitle:menuTitle
                     withSuperMenuTitle:superMenuTitle
@@ -333,17 +348,20 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
     else {
         [self print:[NSString stringWithFormat:@"Line %d, %@", lineNumber, error]];
         
-        NSUInteger lineIdx = 0;
-        NSRange lineRange  = NSMakeRange(0, 0);
-        
-        while (lineIdx < lineNumber) {
+        if (_nonRetainedCurrentTextView) {
             
-            lineRange = [[[_nonRetainedCurrentTextView textStorage] string] lineRangeForRange:NSMakeRange(NSMaxRange(lineRange), 0)];
-            lineIdx++;
-        }
-        
-        if (lineRange.length) {
-            [_nonRetainedCurrentTextView showFindIndicatorForRange:lineRange];
+            NSUInteger lineIdx = 0;
+            NSRange lineRange  = NSMakeRange(0, 0);
+            
+            while (lineIdx < lineNumber) {
+                
+                lineRange = [[[_nonRetainedCurrentTextView textStorage] string] lineRangeForRange:NSMakeRange(NSMaxRange(lineRange), 0)];
+                lineIdx++;
+            }
+            
+            if (lineRange.length) {
+                [_nonRetainedCurrentTextView showFindIndicatorForRange:lineRange];
+            }
         }
     }
 }
