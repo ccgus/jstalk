@@ -50,8 +50,30 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 271562346;
-			PBXWorkspaceStateSaveDate = 271562346;
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					10,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 273623944;
+			PBXWorkspaceStateSaveDate = 273623944;
 		};
 		sourceControlManager = CCC7E60A0ECA3C50001F3E02 /* Source Control */;
 		userBuildSettings = {
@@ -69,9 +91,9 @@
 	};
 	CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {973, 1456}}";
-			sepNavSelRange = "{2352, 0}";
-			sepNavVisRange = "{0, 2231}";
+			sepNavIntBoundsRect = "{{0, 0}, {1418, 1560}}";
+			sepNavSelRange = "{1557, 0}";
+			sepNavVisRange = "{1066, 2027}";
 		};
 	};
 	CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {
