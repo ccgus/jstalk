@@ -30,7 +30,7 @@
 	<key>CFBundleIconFile</key>
 	<string>JSTalk.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.flyingmeat.JSTalkEditor</string>
+	<string>org.jstalk.JSTalkEditor</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -47,5 +47,29 @@
 	<string>NSApplication</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.5</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.netscape.javascript-source</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>JSTalk JavaScript Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.jstalk.jstalk-source</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://www.jstalk.org</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>jstalk</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>application/x-jstalk</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

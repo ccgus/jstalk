@@ -540,7 +540,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>273375084.49501503</real>
+	<real>273389466.69155502</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -559,10 +559,7 @@
 		<string>CC7FD256104B58850020ECAB</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>CCCFE0BB0F834505005161C9</string>
-		<string>CC7FD224104B58680020ECAB</string>
-		<string>CC7FD26B104B58CA0020ECAB</string>
 		<string>1C78EAAD065D492600B07095</string>
-		<string>CC7FD2C2104B5A880020ECAB</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/plugins/voodoopadplugin/VPJSTalkPlugin.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -912,7 +909,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {1386, 524}}</string>
 								<key>RubberWindowFrame</key>
-								<string>-1300 526 1386 565 -1600 0 1600 1200 </string>
+								<string>-1386 526 1386 565 -1600 0 1600 1200 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
@@ -941,7 +938,7 @@
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>-1300 526 1386 565 -1600 0 1600 1200 </string>
+			<string>-1386 526 1386 565 -1600 0 1600 1200 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>
