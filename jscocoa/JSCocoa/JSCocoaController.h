@@ -25,13 +25,20 @@ struct	JSValueRefAndContextRef
 };
 typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
+#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+#import "iPhone/ffi.h"
+#import "iPhone/BurksPool.h"
+#endif
+
+
 //
 // JSCocoaController
 //
 @interface JSCocoaController : NSObject {
 
 	JSGlobalContextRef	ctx;
-    id _delegate;
+    id					_delegate;
+	BOOL				useSafeDealloc;
 }
 
 @property (assign) id delegate;
@@ -49,14 +56,23 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 - (BOOL)evalJSFile:(NSString*)path toJSValueRef:(JSValueRef*)returnValue;
 - (JSValueRef)evalJSString:(NSString*)script;
 - (JSValueRef)evalJSString:(NSString*)script withScriptURL:(NSString*)url;
-+ (BOOL)isMaybeSplitCall:(NSString*)start forClass:(id)class;
 - (JSValueRef)callJSFunction:(JSValueRef)function withArguments:(NSArray*)arguments;
 - (JSValueRef)callJSFunctionNamed:(NSString*)functionName withArguments:arguments, ... NS_REQUIRES_NIL_TERMINATION;
-- (id)unboxJSValueRef:(JSValueRef)jsValue;
+- (JSValueRef)callJSFunctionNamed:(NSString*)functionName withArgumentsArray:(NSArray*)arguments;
+- (JSObjectRef)JSFunctionNamed:(NSString*)functionName;
 - (BOOL)hasJSFunctionNamed:(NSString*)functionName;
 - (BOOL)setObject:(id)object withName:(id)name;
 - (BOOL)setObject:(id)object withName:(id)name attributes:(JSPropertyAttributes)attributes;
 - (BOOL)removeObjectWithName:(id)name;
+// Get ObjC and raw values from Javascript
+- (id)unboxJSValueRef:(JSValueRef)jsValue;
+- (BOOL)toBool:(JSValueRef)value;
+- (double)toDouble:(JSValueRef)value;
+- (int)toInt:(JSValueRef)value;
+- (NSString*)toString:(JSValueRef)value;
+// Wrapper for unboxJSValueRef
+- (id)toObject:(JSValueRef)value;
+
 
 //
 // Framework
@@ -92,6 +108,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 // Tests
 - (int)runTests:(NSString*)path;
+- (int)runTests:(NSString*)path withSelector:(SEL)sel;
 
 //
 // Autorelease pool
@@ -119,6 +136,8 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 - (BOOL)useAutoCall;
 - (void)setUseAutoCall:(BOOL)b;
+- (BOOL)useSafeDealloc;
+- (void)setUseSafeDealloc:(BOOL)b;
 
 - (const char*)typeEncodingOfMethod:(NSString*)methodName class:(NSString*)className;
 
@@ -136,6 +155,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 //
 @interface NSObject (JSCocoaControllerDelegateMethods)
 - (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+- (void) safeDealloc;
 
 //
 // Getting
@@ -209,7 +229,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 @end
 
 //
-// Boxed object cache : holds one JSObjectRef for each reference to a pointer
+// Boxed object cache : holds one JSObjectRef for each reference to a pointer to an ObjC object
 //
 @interface BoxedJSObject : NSObject {
 	JSObjectRef	jsObject;

@@ -42,7 +42,7 @@
 	[super dealloc];
 }
 
-- (void)setRuleThickness:(float)thickness
+- (void)setRuleThickness:(CGFloat)thickness
 {
 	[super setRuleThickness:thickness];
 	
@@ -96,7 +96,7 @@
 - (void)mouseDown:(NSEvent *)theEvent
 {
 	NSPoint					location;
-	unsigned				line;
+	NSUInteger				line;
 	
 	location = [self convertPoint:[theEvent locationInWindow] fromView:nil];
 	line = [self lineNumberForLocation:location.y];

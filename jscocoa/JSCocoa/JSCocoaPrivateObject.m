@@ -22,6 +22,7 @@
 	isAutoCall	= NO;
 	jsValue		= NULL;
 	retainObject	= YES;
+	retainContext	= NO;
 	rawPointer	= NULL;
 	ctx			= NULL;
 	
@@ -46,6 +47,8 @@
 		JSValueUnprotect(ctx, jsValue);
 		[JSCocoaController downJSValueProtectCount];
 	}
+	if (retainContext)
+		JSGlobalContextRelease((JSGlobalContextRef)ctx);
 	
 	// Release properties
 	[type release];
@@ -120,22 +123,58 @@
 	return	jsValue;
 }
 
+- (JSContextRef)ctx
+{
+	return	ctx;
+}
+
+
+- (void)setExternalJSValueRef:(JSValueRef)v ctx:(JSContextRef)c
+{
+	if (!v)	
+	{
+		jsValue = 0;
+		return;
+	}
+	jsValue = v;
+	ctx		= c;
+	JSValueProtect(ctx, jsValue);
+	JSGlobalContextRetain((JSGlobalContextRef)c);
+	retainContext = YES;
+	[JSCocoaController upJSValueProtectCount];
+}
+
 
 - (void*)rawPointer	
 {
 	return	rawPointer;
 }
-- (void)setRawPointer:(void*)rp
+- (void)setRawPointer:(void*)rp encoding:(id)encoding
 {
 	rawPointer = rp;
+//	NSLog(@"RAWPOINTER=%@", encoding);
+	declaredType = encoding;
+	[declaredType retain];
 }
 
+- (id)rawPointerEncoding
+{
+	return	declaredType;
+}
+
+
+- (id)description
+{
+	id extra = @"";
+	if ([type isEqualToString:@"rawPointer"]) extra = [NSString stringWithFormat:@" (%x) %@", rawPointer, declaredType];
+	return [NSString stringWithFormat:@"<%@: %x holding %@%@>",
+				[self class], 
+				self, 
+				type,
+				extra
+				];
+}
+
+
 @end
-
-
-
-
-
-
-
 
