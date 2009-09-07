@@ -116,8 +116,6 @@ if [ $? != 0 ]; then
     exit
 fi
 
-
-
 if [ ! -d  ~/cvsbuilds ]; then
     mkdir ~/cvsbuilds
 fi
@@ -136,9 +134,9 @@ cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
 cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
 mkdir JSTalkFoo/plugins
-mv JSTalk.acplugin  JSTalkFoo/plugins/.
-mv JSTalk.vpplugin  JSTalkFoo/plugins/.
-mv FMDB.jstplugin   JSTalkFoo/plugins/.
+cp -r JSTalk.acplugin  JSTalkFoo/plugins/.
+cp -r JSTalk.vpplugin  JSTalkFoo/plugins/.
+cp -r FMDB.jstplugin   JSTalkFoo/plugins/.
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
 cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.

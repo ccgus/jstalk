@@ -3,6 +3,7 @@
 	089C1669FE841209C02AAC07 /* Project object */ = {
 		activeBuildConfigurationName = Release;
 		activeExecutable = CC726DCF0F156B2500EB02AF /* Acorn */;
+		activeSDKPreference = macosx10.6;
 		activeTarget = 8D5B49AC048680CD000E48DA /* JSTalk */;
 		addToTargets = (
 			8D5B49AC048680CD000E48DA /* JSTalk */,
@@ -72,8 +73,8 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 273984185;
-			PBXWorkspaceStateSaveDate = 273984185;
+			PBXPerProjectTemplateStateSaveDate = 273987047;
+			PBXWorkspaceStateSaveDate = 273987047;
 		};
 		sourceControlManager = CCC7E60A0ECA3C50001F3E02 /* Source Control */;
 		userBuildSettings = {
