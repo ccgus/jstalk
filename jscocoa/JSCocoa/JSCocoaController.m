@@ -110,10 +110,9 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //
 // Init
 //
-- (id)init
+- (id)initWithGlobalContext:(JSGlobalContextRef)_ctx
 {
-
-//	NSLog(@"JSCocoa : %x spawning", self);
+//	NSLog(@"JSCocoa : %x spawning with context %x", self, _ctx);
 	self	= [super init];
 	controllerCount++;
 
@@ -173,7 +172,22 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	//
 	// Start context
 	//
-	ctx = JSGlobalContextCreate(OSXObjectClass);
+	if (!_ctx)
+	{
+		ctx = JSGlobalContextCreate(OSXObjectClass);
+	}
+	else
+	{
+		ctx = _ctx;
+		JSGlobalContextRetain(ctx);
+		
+		JSObjectRef o = JSObjectMake(ctx, OSXObjectClass, NULL);
+		// Set a global var named 'OSX' which will fulfill the usual role of JSCocoa's global object
+		JSStringRef	jsName = JSStringCreateWithUTF8CString("OSX");
+		JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, o, kJSPropertyAttributeDontDelete, NULL);
+		JSStringRelease(jsName);
+		
+	}
 
 	// Create a reference to ourselves, and make it read only, don't enum, don't delete
 	[self setObject:self withName:@"__jsc__" attributes:kJSPropertyAttributeReadOnly|kJSPropertyAttributeDontEnum|kJSPropertyAttributeDontDelete];
@@ -220,9 +234,16 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	// (If called during dealloc, this would mean executing JS code during JS GC, which is not possible)
 	// useSafeDealloc will be turned to NO upon JSCocoaController dealloc
 	useSafeDealloc = YES;
-
+	
 	return	self;
 }
+
+- (id)init
+{
+	id o = [self initWithGlobalContext:nil];
+	return	o;
+}
+
 
 //
 // Dealloc
@@ -336,6 +357,26 @@ static id JSCocoaSingleton = NULL;
 	if ([NSGarbageCollector defaultCollector])	NSLog(@"***Running with ObjC Garbage Collection***");
 #endif
 }
+// Report what we're running on
++ (NSString*)runningArchitecture
+{
+#if defined(__ppc__)
+	return @"PPC";
+#elif defined(__ppc64__)
+	return @"PPC64";
+#elif defined(__i386__) 
+	return @"i386";
+#elif defined(__x86_64__) 
+	return @"x86_64";
+#elif TARGET_OS_IPHONE && !TARGET_IPHONE_SIMULATOR
+	return @"iPhone";
+#elif TARGET_OS_IPHONE && TARGET_IPHONE_SIMULATOR
+	return @"iPhone Simulator";
+#else
+	return @"unknown architecture";
+#endif
+}
+
 
 #pragma mark Script evaluation
 
@@ -936,7 +977,12 @@ static id JSCocoaSingleton = NULL;
 		BOOL	isReturnValue = [[child name] isEqualToString:@"retval"];
 		if ([[child name] isEqualToString:@"arg"] || isReturnValue)
 		{
+#if __LP64__	
+			id typeEncoding = [[child attributeForName:@"type64"] stringValue];
+			if (!typeEncoding)	typeEncoding = [[child attributeForName:@"type"] stringValue];
+#else
 			id typeEncoding = [[child attributeForName:@"type"] stringValue];
+#endif			
 			char typeEncodingChar = [typeEncoding UTF8String][0];
 		
 			id argumentEncoding = [[JSCocoaFFIArgument alloc] init];
@@ -1655,8 +1701,8 @@ static id JSCocoaSingleton = NULL;
 - (int)runTests:(NSString*)path withSelector:(SEL)sel
 {
 	int count = 0;
-#if defined(TARGET_OS_IPHONE)
-#elif defined(TARGET_IPHONE_SIMULATOR)
+#if TARGET_OS_IPHONE
+#elif TARGET_IPHONE_SIMULATOR
 #else
 	id files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
 	id predicate = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[c] '.js'"];
@@ -1808,10 +1854,15 @@ int	liveInstanceCount	= 0;
 + (void)logInstanceStats
 {
 	id allKeys = [sharedInstanceStats allKeys];
-	NSLog(@"====instanceStats : %d classes spawned %d live instances (%d since launch, %d dead)====", [allKeys count], liveInstanceCount, fullInstanceCount, fullInstanceCount-liveInstanceCount);
+	NSLog(@"====instanceStats : %d classes spawned %d instances since launch, %d dead, %d alive====", [allKeys count], fullInstanceCount, fullInstanceCount-liveInstanceCount, liveInstanceCount);
 	for (id key in allKeys)		
 		NSLog(@"%@=%d", key, [[sharedInstanceStats objectForKey:key] intValue]);
 	if ([allKeys count])	NSLog(@"====");
+}
++ (void)logBoxedObjects
+{
+	NSLog(@"====%d boxedObjects====", [[boxedObjects allKeys] count]);
+	NSLog(@"%@", boxedObjects);
 }
 
 #pragma mark Distant Object Handling (DO)
@@ -2225,9 +2276,10 @@ int	liveInstanceCount	= 0;
 // Dealloc : unprotect js hash
 - (void)deallocAndCleanupJS
 {
+//	NSLog(@"***deallocing %@", self);
 	JSObjectRef hash = NULL;
 	object_getInstanceVariable(self, "__jsHash", (void**)&hash);
-	if (hash)	
+	if (hash)
 	{
 		id jsc = NULL;
 		object_getInstanceVariable(self, "__jsCocoaController", (void**)&jsc);
@@ -2447,6 +2499,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 		else
 		if ([type isEqualToString:@"constant"])
 		{
+			// ##fix : NSZeroPoint, NSZeroRect, NSZeroSize would need special (struct) + type64 handling
 			// Check if constant's declared_type is NSString*
 			id declared_type = [[xmlDocument rootElement] attributeForName:@"declared_type"];
 			if (!declared_type)	declared_type = [[xmlDocument rootElement] attributeForName:@"type"];
@@ -2476,7 +2529,12 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 		{
 			// Check if constant's declared_type is NSString*
 			id value = [[xmlDocument rootElement] attributeForName:@"value"];
-			if (!value)	return	NSLog(@"(OSX_getPropertyCallback) %@ enum has no value set", propertyName), NULL;
+			if (!value)	
+			{
+				value = [[xmlDocument rootElement] attributeForName:@"value64"];
+				if (!value)
+					return	NSLog(@"(OSX_getPropertyCallback) %@ enum has no value set", propertyName), NULL;
+			}
 
 			// Try parsing value
 			double doubleValue = 0;
@@ -2504,7 +2562,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 
 
 //
-// From PyObjC : when to call objc_msgSendStret, for structure return
+// From PyObjC : when to call objc_msgSend_stret, for structure return
 //		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
 //
 BOOL	isUsingStret(id argumentEncodings)
@@ -2542,6 +2600,27 @@ BOOL	isUsingStret(id argumentEncodings)
 				return	YES;
 			}
 		return	NO;				
+}
+
+//
+//	Return the correct objc_msgSend* variety according to encodings
+//
+void*	getObjCCallAddress(id argumentEncodings)
+{
+	BOOL	usingStret	= isUsingStret(argumentEncodings);
+	void*	callAddress	= objc_msgSend;
+	if (usingStret)	callAddress = objc_msgSend_stret;
+
+
+#if __i386__ // || TARGET_OS_IPHONE no, iPhone uses objc_msgSend
+	char returnEncoding = [[argumentEncodings objectAtIndex:0] typeEncoding];
+	if (returnEncoding == 'f' || returnEncoding == 'd')
+	{
+		callAddress = objc_msgSend_fpret;
+	}
+#endif
+
+	return	callAddress;
 }
 
 //
@@ -2705,10 +2784,8 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
 	{
 		id structDescription = nil;
 		id self = [JSCocoaController controllerFromContext:ctx];
-
 		if ([self hasJSFunctionNamed:@"describeStruct"])
 		{
-
 			JSStringRef scriptJS = JSStringCreateWithUTF8CString("return describeStruct(arguments[0])");
 			JSObjectRef fn = JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 1, NULL);
 			JSValueRef jsValue = JSObjectCallAsFunction(ctx, fn, NULL, 1, (JSValueRef*)&thisObject, NULL);
@@ -2718,7 +2795,6 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
 		}
 		
 		toString = [NSString stringWithFormat:@"<%@ %@>", thisPrivateObject.structureName, structDescription];
-
 	}
 
 	// Convert to string and return
@@ -2984,17 +3060,11 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 					return	NULL;
 				}
 				
-
 				// Extract arguments
-				const char* typeEncoding = method_getTypeEncoding(method);
-				id argumentEncodings = [JSCocoaController parseObjCMethodEncoding:typeEncoding];
-				//
-				// From PyObjC : when to call objc_msgSendStret, for structure return
-				//		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
-				//
-				BOOL	usingStret = isUsingStret(argumentEncodings);
-				void* callAddress = objc_msgSend;
-				if (usingStret)	callAddress = objc_msgSend_stret;
+				const char* typeEncoding	= method_getTypeEncoding(method);
+				id argumentEncodings		= [JSCocoaController parseObjCMethodEncoding:typeEncoding];
+				// Call address
+				void* callAddress			= getObjCCallAddress(argumentEncodings);
 				
 				//
 				// ffi data
@@ -3017,7 +3087,7 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 				// Allocate return value storage if it's a pointer
 				if ([returnValue typeEncoding] == '^')
 					[returnValue allocateStorage];
-				
+
 				// Setup ffi
 				ffi_status prep_status	= ffi_prep_cif(&cif, FFI_DEFAULT_ABI, 2, [returnValue ffi_type], args);
 				//
@@ -3371,13 +3441,8 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 			id argumentEncodings = [JSCocoaController parseObjCMethodEncoding:typeEncoding];
 			if ([[argumentEncodings objectAtIndex:0] typeEncoding] != 'v')	return	throwException(ctx, exception, [NSString stringWithFormat:@"(in setter) %@ must return void", setterName]), false;
 
-			//
-			// From PyObjC : when to call objc_msgSendStret, for structure return
-			//		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
-			//
-			BOOL	usingStret = isUsingStret(argumentEncodings);
-			void* callAddress = objc_msgSend;
-			if (usingStret)	callAddress = objc_msgSend_stret;
+			// Call address
+			void* callAddress = getObjCCallAddress(argumentEncodings);
 			
 			//
 			// ffi data
@@ -3665,14 +3730,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 		callAddressArgumentCount = [argumentEncodings count]-3;
 
 		// Get call address
-		callAddress = objc_msgSend;
-
-		//
-		// From PyObjC : when to call objc_msgSendStret, for structure return
-		//		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
-		//
-		BOOL	usingStret = isUsingStret(argumentEncodings);
-		if (usingStret)	callAddress = objc_msgSend_stret;
+		callAddress = getObjCCallAddress(argumentEncodings);
 	}
 
 	//
@@ -3865,7 +3923,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	// Return now if our function returns void
 	// Return null as a JSValueRef to avoid crashing
 	if ([returnValue ffi_type] == &ffi_type_void)	return	JSValueMakeNull(ctx);
-	
+
 	// Else, convert return value
 	JSValueRef	jsReturnValue = NULL;
 	BOOL converted = [returnValue toJSValueRef:&jsReturnValue inContext:ctx];
@@ -4056,7 +4114,13 @@ static JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef ctx, JSObjectRef
 	// Get structure type
 	id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:privateObject.xml options:0 error:nil];
 	id rootElement = [xmlDocument rootElement];
+//	id structureType = [[rootElement attributeForName:@"type"] stringValue];
+#if __LP64__	
+	id structureType = [[rootElement attributeForName:@"type64"] stringValue];
+	if (!structureType)	structureType = [[rootElement attributeForName:@"type"] stringValue];
+#else
 	id structureType = [[rootElement attributeForName:@"type"] stringValue];
+#endif			
 	[xmlDocument release];
 	id fullStructureType = [JSCocoaFFIArgument structureFullTypeEncodingFromStructureTypeEncoding:structureType];
 	if (!fullStructureType)	return throwException(ctx, exception, @"Calling constructor on a non struct"), NULL;

@@ -26,7 +26,7 @@ struct	JSValueRefAndContextRef
 typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-#import "iPhone/ffi.h"
+#import "iPhone/libffi/ffi.h"
 #import "iPhone/BurksPool.h"
 #endif
 
@@ -43,11 +43,14 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 @property (assign) id delegate;
 
+- (id)init;
+- (id)initWithGlobalContext:(JSGlobalContextRef)ctx;
 + (id)sharedController;
 + (id)controllerFromContext:(JSContextRef)ctx;
 + (BOOL)hasSharedController;
 - (JSGlobalContextRef)ctx;
 + (void)hazardReport;
++ (NSString*)runningArchitecture;
 
 //
 // Evaluation
@@ -96,6 +99,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 + (void)logInstanceStats;
 - (id)instanceStats;
++ (void)logBoxedObjects;
 
 //
 // Class handling
@@ -140,6 +144,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 - (void)setUseSafeDealloc:(BOOL)b;
 
 - (const char*)typeEncodingOfMethod:(NSString*)methodName class:(NSString*)className;
++ (const char*)typeEncodingOfMethod:(NSString*)methodName class:(NSString*)className;
 
 
 
@@ -249,7 +254,7 @@ id	JSLocalizedString(id stringName, id firstArg, ...) NS_REQUIRES_NIL_TERMINATIO
 
 
 //
-// From PyObjC : when to call objc_msgSendStret, for structure return
+// From PyObjC : when to call objc_msgSend_stret, for structure return
 //		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
 //
 

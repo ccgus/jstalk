@@ -10,5 +10,13 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef __LP64__
+    printf("__LP64__!\n");
+    
+    printf("%ld\n", sizeof(NSRect));
+    
+#endif
+
     return NSApplicationMain(argc, (const char **) argv);
 }
+

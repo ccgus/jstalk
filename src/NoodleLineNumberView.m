@@ -184,9 +184,9 @@
     [self setNeedsDisplay:YES];
 }
 
-- (unsigned)lineNumberForLocation:(float)location
+- (NSInteger)lineNumberForLocation:(float)location
 {
-	unsigned		line, count, index, rectCount, i;
+	NSUInteger		line, count, index, rectCount, i;
 	NSRectArray		rects;
 	NSRect			visibleRect;
 	NSLayoutManager	*layoutManager;
@@ -244,7 +244,7 @@
     
     if ([view isKindOfClass:[NSTextView class]])
     {
-        unsigned        index, numberOfLines, stringLength, lineEnd, contentEnd;
+        NSUInteger        index, numberOfLines, stringLength, lineEnd, contentEnd;
         NSString        *text;
         float         oldThickness, newThickness;
         
@@ -338,7 +338,7 @@
 				nil];
 }
 
-- (float)requiredThickness
+- (CGFloat)requiredThickness
 {
     unsigned			lineCount, digits, i;
     NSMutableString     *sampleString;
@@ -387,7 +387,7 @@
         NSRect					visibleRect, markerRect;
         NSRange					range, glyphRange, nullRange;
         NSString				*text, *labelText;
-        unsigned				rectCount, index, line, count;
+        NSUInteger				rectCount, index, line, count;
         NSRectArray				rects;
         float					ypos, yinset;
         NSDictionary			*textAttributes, *currentTextAttributes;

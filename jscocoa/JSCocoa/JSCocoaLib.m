@@ -193,12 +193,11 @@
 {
 	char	typeEncoding = [self typeAtIndex:index];
 	void*	pointedValue = [self pointerForIndex:index];
-
+//NSLog(@"JSCocoaMemoryBuffer.setValue at %d", index);
 	[JSCocoaFFIArgument fromJSValueRef:jsValue inContext:ctx typeEncoding:typeEncoding fullTypeEncoding:nil fromStorage:pointedValue];
 	return	YES;
 }
 
 
-
-
 @end
+

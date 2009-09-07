@@ -50,7 +50,9 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 	//
 	// A strange crash reporting ??? as the source address is a deleted closure being called (happens with the bindings mechanism)
 	//
+#if !TARGET_OS_IPHONE
 	if (munmap(closure, sizeof(closure)) == -1)	NSLog(@"ffi closure munmap failed");
+#endif
 }
 - (void)dealloc
 {
@@ -67,7 +69,11 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 
 - (void*)functionPointer
 {
+#if !TARGET_OS_IPHONE
 	return	closure;
+#else
+	return	NULL;
+#endif
 }
 
 
@@ -77,6 +83,7 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 //
 - (IMP)setJSFunction:(JSValueRef)fn inContext:(JSContextRef)context argumentEncodings:(NSMutableArray*)argumentEncodings objC:(BOOL)objC
 {
+#if !TARGET_OS_IPHONE
 	if ([argumentEncodings count] == 0)	return NULL;
 	
 	encodings = argumentEncodings;
@@ -124,6 +131,9 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 	[JSCocoaController upJSValueProtectCount];
 	
 	return	(IMP)closure;
+#else
+	return	NULL;
+#endif
 }
 
 

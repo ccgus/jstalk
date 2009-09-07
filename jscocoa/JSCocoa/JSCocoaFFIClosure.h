@@ -15,7 +15,7 @@
 #import "JSCocoaFFIArgument.h"
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-#import "iPhone/ffi.h"
+#import "iPhone/libffi/ffi.h"
 #endif
 
 
@@ -26,7 +26,9 @@
 	JSContextRef	ctx;
 
 	ffi_cif			cif;
+#if !TARGET_OS_IPHONE
 	ffi_closure*	closure;
+#endif
 	ffi_type**		argTypes;
 	
 	NSMutableArray*	encodings;
