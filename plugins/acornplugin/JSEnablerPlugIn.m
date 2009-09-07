@@ -47,7 +47,7 @@
         }
         
         [pluginManager addFilterMenuTitle:[fileName stringByDeletingPathExtension]
-                       withSuperMenuTitle:@"" //@"JSTalk"
+                       withSuperMenuTitle:nil //@"JSTalk"
                                    target:self
                                    action:@selector(executeScriptForImage:scriptPath:)
                             keyEquivalent:@""
