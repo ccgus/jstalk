@@ -484,8 +484,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>3</integer>
-									<integer>1</integer>
+									<integer>18</integer>
+									<integer>17</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -511,7 +511,7 @@
 							<real>261</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>1540 331 300 838 0 0 1920 1178 </string>
+						<string>1537 335 300 838 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -548,7 +548,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>273623967.46073598</real>
+	<real>273625775.21972501</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -563,12 +563,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CC189CDF104F2B9F002A4069</string>
 		<string>CCC7E6100ECA3D78001F3E02</string>
 		<string>/Volumes/srv/Users/gus/Projects/jstalk/plugins/acornplugin/jsenabler.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>1540 331 300 838 0 0 1920 1178 </string>
+	<string>1537 335 300 838 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -606,6 +605,8 @@
 							<string>101pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
