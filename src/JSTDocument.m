@@ -54,10 +54,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         
     }
     
-    NSString *someContent = @"Hello World!";
-    NSString *path = @"/tmp/foo.txt";
-    [[someContent dataUsingEncoding:NSUTF8StringEncoding] writeToFile:path atomically:YES];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFont:) name:@"JSTFontChangeNotification" object:nil];
     
     return self;
