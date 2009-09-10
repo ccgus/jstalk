@@ -59,12 +59,10 @@ cd /tmp
 source ~/.bash_profile
 
 echo "doing remote checkout ($revision) upload($upload)"
-#svn co $revision https://flycode.googlecode.com/svn/trunk/jstalk jstalk
 git clone git://github.com/ccgus/jstalk.git
 
 cd /tmp/jstalk
 
-#v=`svnversion -n /tmp/jstalk`
 v=`date "+%s"`
 
 echo setting build id
@@ -115,6 +113,16 @@ if [ $? != 0 ]; then
     echo "****** Bad build for fmdb extra ********"
     exit
 fi
+
+cd /tmp/jstalk/automator/
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target JSTAutomator
+if [ $? != 0 ]; then
+    echo "****** Bad build for automator action ********"
+    exit
+fi
+
+mkdir -p /tmp/jstalk/build/Release/JSTalk\ Editor.app/Contents/Library/Automator
+mv /tmp/jstalk/build/Release/JSTalk.action /tmp/jstalk/build/Release/JSTalk\ Editor.app/Contents/Library/Automator/.
 
 if [ ! -d  ~/cvsbuilds ]; then
     mkdir ~/cvsbuilds

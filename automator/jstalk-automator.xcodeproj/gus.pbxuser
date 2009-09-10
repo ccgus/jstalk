@@ -1,7 +1,7 @@
 // !$*UTF8*$!
 {
 	089C1669FE841209C02AAC07 /* Project object */ = {
-		activeBuildConfigurationName = Debug;
+		activeBuildConfigurationName = Release;
 		activeExecutable = 658A2E03067AB99300421F51 /* Automator */;
 		activeTarget = 8D5B49AC048680CD000E48DA /* JSTAutomator */;
 		addToTargets = (

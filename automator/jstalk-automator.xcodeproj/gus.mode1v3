@@ -477,6 +477,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
+									<integer>15</integer>
+									<integer>14</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -500,7 +502,7 @@
 							<real>283</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>1502 463 300 709 0 0 1920 1178 </string>
+						<string>1300 453 300 709 0 0 1920 1178 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
@@ -537,7 +539,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>274304913.40956801</real>
+	<real>274305627.44200099</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -552,16 +554,15 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>CC8BC3F110598F91008A3BFC</string>
 		<string>CC8BC3E910598F3D008A3BFC</string>
 		<string>CC8BC3EA10598F3D008A3BFC</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>/Volumes/srv/Users/gus/Projects/jstalk/automator/jstalk-automator.xcodeproj</string>
 		<string>CC9AF1570F60D3A900F0F00B</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>/Volumes/srv/Users/gus/Projects/jstalk/automator/jstalk-automator.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>1502 463 300 709 0 0 1920 1178 </string>
+	<string>1300 453 300 709 0 0 1920 1178 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
@@ -651,7 +652,7 @@
 			<key>WindowToolGUID</key>
 			<string>CC9AF1570F60D3A900F0F00B</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

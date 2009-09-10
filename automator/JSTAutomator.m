@@ -12,30 +12,55 @@
 
 @implementation JSTAutomator
 
+- (void) setupJSTalkEnv:(JSTalk *)jstalk {
+    JSCocoaController *jsController = [jstalk jsController];
+    jsController.delegate = self;
+    jstalk.printController = self;
+    
+}
+
+- (void) print:(NSString*)s {
+    NSLog(@"%@", s);
+}
 
 - (id)runWithInput:(id)input fromAction:(AMAction *)anAction error:(NSDictionary **)errorInfo {
 	// Add your code here, returning the data to be passed to the next action.
 	
-    NSLog(@"input: %@", input);
-    NSLog(@"anAction: %@", anAction);
-    
     id result = 0x00;
     
     NSString *script = [[self parameters] objectForKey:@"script"];
     
+    NSLog(@"script: %@", script);
+    
     if (script) {
-        JSTalk *t = [[[JSTalk alloc] init] autorelease];
-        [t executeString:script];
-        result = [t callFunctionNamed:@"run" withArguments:[NSArray arrayWithObjects:input, nil]];
+        JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
+        [self setupJSTalkEnv:jstalk];
+        
+        [jstalk executeString:script];
+        result = [jstalk callFunctionNamed:@"run" withArguments:[NSArray arrayWithObjects:input, [self parameters], nil]];
+        
+        NSLog(@"result: %@", result);
+        
     }
     
     
-	return input;
+	return result;
 }
+
+
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+    
+    lineNumber -= 1;
+    
+    NSLog(@"Error on line %d, %@", lineNumber, error);
+    
+}
+
 
 - (void) runScript:(id)sender {
     
     JSTalk *t = [[[JSTalk alloc] init] autorelease];
+    [self setupJSTalkEnv:t];
     [t executeString:[[scriptView textStorage] string]];
     id result = [t callFunctionNamed:@"run" withArguments:[NSArray array]];
     (void) result;
