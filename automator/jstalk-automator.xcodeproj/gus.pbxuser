@@ -65,9 +65,9 @@
 	};
 	089C167EFE841241C02AAC07 /* English */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1210, 955}}";
-			sepNavSelRange = "{61, 0}";
-			sepNavVisRange = "{0, 1548}";
+			sepNavIntBoundsRect = "{{0, 0}, {1675, 878}}";
+			sepNavSelRange = "{565, 0}";
+			sepNavVisRange = "{0, 906}";
 		};
 	};
 	32DBCF630370AF2F00C91783 /* JSTAutomator_Prefix.pch */ = {
@@ -86,9 +86,9 @@
 	};
 	65181750067A8D39005BD953 /* JSTAutomator.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1210, 955}}";
-			sepNavSelRange = "{687, 90}";
-			sepNavVisRange = "{0, 1063}";
+			sepNavIntBoundsRect = "{{0, 0}, {1675, 1065}}";
+			sepNavSelRange = "{767, 0}";
+			sepNavVisRange = "{190, 1465}";
 		};
 	};
 	658A2DCF067AB96600421F51 /* Source Control */ = {
