@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>JSTalk</title>
+		
+		<style type="text/css">
+		
+		body {
+		  background-color: #eee;
+		  margin: 0;
+		  padding: 0px;
+          font-family: "Lucida Grande", Verdana, Arial, sans-serif;
+		}
+		
+        #mainBack {
+            margin: 0 auto;
+            position: relative;
+            background-color: #fff;
+            width: 800px;
+        }
+
+        #main {
+            border-right: 1px solid #aaa;
+            border-left: 1px solid #aaa;
+            background-color: #fff;
+            padding-top: 30px;
+        }
+
+        .headList {
+            padding-top: 5px;
+            padding-left: 20px;
+            color: #444;
+            font-size: 11px;
+        }
+        
+        .headList b {
+            padding-bottom: 5px;
+            color: #000;
+        }
+        .headList a {
+            text-decoration: none;
+            color: #444;
+        }
+        
+        .headList a:hover {
+            text-decoration: underline;
+            color: blue;
+        }
+        
+        .codeSample {
+            background-color: #eee;
+        }
+    
+        </style>
+
+	</head>
+	
+	<body>
+	
+	<div id="mainBack"  style="border-top: 0px;">
+	
+		<div id="main">
+        <center>
+        <img src="images/jstalk-banner.png" alt="JSTalk" /><br/>
+        
+        </center>
+        
+        </center>
+        
+        <div style="padding: 40px; padding-top: 10px;">
+        
+        <table border="0">
+        <tr>
+            <td valign="middle" style="width: 58px;">
+                <a href="/download/JSTalkPreview.zip"><img src="images/jstalkdisk.png" alt="Download JSTalk" width="58" height="77" border="0"></a>
+            </td>
+            <td class="headList" align="left">
+                
+                <a href="/download/JSTalkPreview.zip" style="color: black; font-weight: bold; text-decoration: underline;">Free download, version 1.0b</a><br/>
+                Requires Mac OS X 10.5 or later, works great on 10.6.<br/>
+            </td>
+        </tr>
+    </table>
+    
+    <center>
+    	<img src="images/sepbar.png" alt="this is a separator" />
+    </center>
+    <br/>
+        JSTalk is a scripting language built on top of JavaScript, with a bridge to Apple's Cocoa libraries.  You can use it to communicate with other applications just like AppleScript does, but without the AppleScript.<br/><br/>
+
+        If you're a programmer, you're going to want to visit the git repository: <a href="http://github.com/ccgus/jstalk/tree/master">http://github.com/ccgus/jstalk/tree/master</a>.<br/>
+        If you just want to use JSTalk, you'll want to download the JSTalk Editor, and samples: <a href="http://www.flyingmeat.com/download/latest/JSTalkPreview.zip">JSTalkPreview.zip</a><br/><br/>
+        
+        <strong>How does JSTalk (the language) work?</strong><br/>
+
+        JSTalk is built on top of Apple's JavaScriptCore, the same JavaScript engine that powers Safari. So when you write in JSTalk, you are really writing JavaScript.<br/><br/>
+
+        JSTalk also includes a bridge which lets you access Apple's Cocoa frameworks from JavaScript. This means you have a ton wonderful classes and functions you can use in addition to the standard JavaScript library.<br/><br/>
+
+        JSTalk also adds a preprocessor to make using the Cocoa frameworks friendlier. Since Cocoa is written in Objective-C, you get a different syntax than what you'd normally encounter in JavaScript for calling methods. For example, here's some typical Cocoa code for writing a string to a file:<br/>
+
+    <pre style="background-color: #eee;">NSString *someContent = @"Hello World!";
+NSString *path = @"/tmp/foo.txt";
+[[someContent dataUsingEncoding:NSUTF8StringEncoding] writeToFile:path atomically:YES];</pre>
+
+And here is how it would normally look in a bridged scripting language:
+
+    <pre style="background-color: #eee;">var someContent = NSString.stringWithString_("Hello World!")
+var path = "/tmp/foo.txt"
+someContent.dataUsingEncoding_(NSUTF8StringEncoding).writeToFile_atomically_(path, true)</pre>
+
+This is a valid script in JSTalk, but it doesn't look very nice. For instance, there are lots of underscores in the method names, and you don't get the nested message passing like you do in Objective-C. To fix this quandary, JSTalk adds a light preprocessor which will allow you to use Objective-C message syntax like so:
+
+    <pre style="background-color: #eee;">var someContent = @"Hello World!"
+var path = @"/tmp/foo.txt"
+[[someContent dataUsingEncoding:NSUTF8StringEncoding] writeToFile:path atomically:true]</pre>
+<br/>
+
+
+<strong>Give me an example</strong><br/>
+
+Here's an AppleScript example, for adding a new rectangle object to a sketch document:
+
+<pre class="codeSample">tell application "Sketch"
+  tell document 1
+    set o to make new box
+    set width of o to 100
+    set height of o to 100
+    set stroke thickness of o to 10
+  end tell
+end tell</pre>
+
+And here's how you do it with JSTalk, using a doctored version of Sketch (6 lines of code, + the JSTalk framework):
+
+<pre class="codeSample">var sketch = [JSTalk application:"Sketch"];
+var doc = [sketch orderedDocuments][0]
+var rectangle = [doc makeNewBox];
+
+[rectangle setWidth:100];
+[rectangle setHeight:100];
+[rectangle setXPosition:100];
+[rectangle setYPosition:100];</pre>
+
+
+If you aren't a fan of the optional bracket syntax, you can also write the script this way:
+
+<pre class="codeSample">var sketch = JSTalk.application_("Sketch");
+var doc = sketch.orderedDocuments()[0]
+var rectangle = doc.makeNewBox();
+
+rectangle.setWidth_(100);
+rectangle.setHeight_(100);
+rectangle.setXPosition_(100);
+rectangle.setYPosition_(100);</pre>
+<br/>
+
+
+<strong>But no apps out there currently support JSTalk!</strong><br/>
+
+Applications can also be scripted using Cocoa's Script Bridge class, SBApplication. Here's an example:
+
+<pre class="codeSample">[[SBApplication application:"iChat"] setStatusMessage:"Happy (funball)"];</pre>
+
+Although this is great to have, it's not the same as an application natively support JSTalk over DO. Anything more than simple tasks using SBApplication tends to be a little more than difficult.
+<br/><br/>
+
+
+<strong>JSTalk Plugins</strong><br/>
+Aka, loadable bundles which add functionality to JSTalk, via helper classes, wrappers, and categories.<br/><br/>
+
+JSTalk comes with some standard helper categories (which you can currently find in JSTalkExtras.m), but it will also look in your ~/Library/Application Support/JSTalk/Plug-ins/ folder, and load any .jstplugin bundles it sees. You can turn this off in your application if you don't like that idea, via [JSTalk setShouldLoadJSTPlugins:NO];<br/><br/>
+
+There are two examples with JSTalk, one that just adds a category cocoa's string class: - [NSString reversedString]. The other example is "FMDB.jstplugin", which loads the FMDB SQLite classes, for use in JSTalk. This allows you to use sqlite to create, insert, update, etc, sql tables from JSTalk.<br/><br/>
+
+
+
+<strong>But it doesn't do X:</strong><br/>
+Let us know by sending an email to gus@flyingmeat.com
+<br/><br/>
+
+<strong>Mailing list and bug reporting:</strong>
+
+- Developer mailing list: <a href="http://groups.google.com/group/jstalk-dev">http://groups.google.com/group/jstalk-dev</a>
+- Bug reporting: <a href="http://jstalk.lighthouseapp.com/projects/26692-jstalk/">http://jstalk.lighthouseapp.com/projects/26692-jstalk/</a><br/><br>
+
+<strong>Credits:</strong><br/>
+As said earlier, JSTalk is a blend of existing technologies, and has very little original code in it. Here's what it uses:<br/>
+
+- JSTalk Icon, from Brad Ellis.<br/>
+- JavaScriptCore, from Apple and the WebKit team.<br/>
+- <a href="http://inexdo.com/JSCocoa">JSCocoa</a>, from Patrick Geiller.<br/>
+- <a href="http://ditchnet.org/tdparsekit/">TDParseKit</a>, from Todd Ditchendorf.<br/>
+- <a href="http://www.noodlesoft.com/blog/2008/10/05/displaying-line-numbers-with-nstextview/">NoodleLineNumberView</a>, from Paul Kim / Noodlesoft.<br/>
+- <a href="http://www.lorax.com/FreeStuff/TextExtras.html">TextExtras</a>, from Mike Ferris.<br/>
+
+        
+        </div>
+        
+        
+		
+		</div> <!-- main -->
+	</div> <!-- mainBack -->
+	
+		
+	</body>
+</html>
