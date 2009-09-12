@@ -165,7 +165,7 @@ cp JSTalk.zip $v-JSTalk.zip
 if [ $upload == 1 ]; then
     echo uploading to server...
     
-    downloadDir=private
+    downloadDir=latest
     
     scp ~/cvsbuilds/JSTalk.zip gus@elvis.mu.org:~/fm/download/$downloadDir/JSTalkPreview.zip
     #scp /tmp/jstalk/res/jstalkupdate.xml gus@elvis.mu.org:~/fm/download/$downloadDir/.

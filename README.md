@@ -11,7 +11,7 @@ And finally, JSTalk is open source. So if there is something wrong, or it's not 
 
 Here's the git repository: <http://github.com/ccgus/jstalk/tree/master>
 
-You can also download JSTalk binaries: <http://www.flyingmeat.com/download/private/JSTalkPreview.zip>
+You can also download JSTalk binaries: <http://www.flyingmeat.com/download/latest/JSTalkPreview.zip>
 
 
 
