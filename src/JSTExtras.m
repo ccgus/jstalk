@@ -26,6 +26,8 @@
         return nil;
     }
     
+    debug(@"doc: %@", doc);
+    
     return doc;
 }
 
