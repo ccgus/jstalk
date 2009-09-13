@@ -51,12 +51,13 @@ static NSMutableArray *JSTalkPluginList;
 
 
 - (void)dealloc {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if ([_jsController ctx]) {
         JSGarbageCollect([_jsController ctx]);
     }
-    
     
     [_jsController release];
     _jsController = 0x00;
@@ -152,6 +153,16 @@ static NSMutableArray *JSTalkPluginList;
     JSStringRelease(jsName);  
 }
 
+- (void) deleteObjectWithName:(NSString*)name inController:(JSCocoaController*)jsController {
+    
+    JSContextRef ctx                = [jsController ctx];
+    JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
+
+    JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, NULL);
+    
+    JSStringRelease(jsName);  
+}
+
 
 - (id) executeString:(NSString*) str {
     
@@ -180,6 +191,13 @@ static NSMutableArray *JSTalkPluginList;
     
     if (resultRef) {
         [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
+    }
+    
+    [self deleteObjectWithName:@"jstalk" inController:_jsController];
+    
+    // this will free up the reference to ourself
+    if ([_jsController ctx]) {
+        JSGarbageCollect([_jsController ctx]);
     }
     
     return resultObj;
@@ -274,6 +292,5 @@ static NSMutableArray *JSTalkPluginList;
 + (id) proxyForApp:(NSString*)app {
     return [self application:app];
 }
-
 
 @end

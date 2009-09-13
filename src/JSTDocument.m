@@ -216,24 +216,39 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
 
 - (void) runScript:(NSString*)s {
     
-    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
-    
-    JSCocoaController *jsController = [jstalk jsController];
-    jsController.delegate = self;
-    
-    jstalk.printController = self;
-    
-    [errorLabel setStringValue:@""];
-    
-    if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
-        [self clearConsole:nil];
+    @try {
+        
+        
+        JSTalk *jstalk = [[JSTalk alloc] init];
+        
+        JSCocoaController *jsController = [jstalk jsController];
+        jsController.delegate = self;
+        
+        jstalk.printController = self;
+        
+        [errorLabel setStringValue:@""];
+        
+        if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
+            [self clearConsole:nil];
+        }
+        
+        id result = [jstalk executeString:s];
+        
+        if (result) {
+            [self print:[result description]];
+        }
+        
+        [jstalk release];
+        
+    }
+    @catch (NSException * e) {
+        [self print:[e reason]];
+    }
+    @finally {
+        // um.?
     }
     
-    id result = [jstalk executeString:s];
-    
-    if (result) {
-        [self print:[result description]];
-    }
+    debug(@"all done");
         
 }
 

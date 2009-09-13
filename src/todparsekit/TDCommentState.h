@@ -16,7 +16,7 @@
 /*!
     @class      TDCommentState
     @brief      This state will either delegate to a comment-handling state, or return a <tt>TDSymbol</tt> token with just the first char in it.
-    @details    By default, C and C++ style comments. (<tt>//</tt> to end of line and <tt>/* &0x002A;/</tt>)
+    @details    By default, C and C++ style comments. (<tt>//</tt> to end of line and <tt> &0x002A;/</tt>)
 */
 @interface TDCommentState : TDTokenizerState {
     TDSymbolRootNode *rootNode;
@@ -42,7 +42,7 @@
 
 /*!
     @brief      Adds the given strings as a multi-line comment start and end markers. both may be multi-char
-    @details    <tt>start</tt> and <tt>end</tt> may be different strings. e.g. <tt>/*</tt> and <tt>&0x002A;/</tt>. Also, the actual comment may or may not be multi-line.
+    @details    <tt>start</tt> and <tt>end</tt> may be different strings. e.g. <tt></tt> and <tt>&0x002A;/</tt>. Also, the actual comment may or may not be multi-line.
     @param      start a single- or multi-character symbol that should be recognized as the start of a multi-line comment
     @param      end a single- or multi-character symbol that should be recognized as the end of a multi-line comment that began with <tt>start</tt>
 */

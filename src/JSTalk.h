@@ -21,6 +21,7 @@
 
 - (id) executeString:(NSString*) str;
 - (void) pushObject:(id)obj withName:(NSString*)name inController:(JSCocoaController*)jsController;
+- (void) deleteObjectWithName:(NSString*)name inController:(JSCocoaController*)jsController;
 
 - (JSCocoaController*) jsController;
 - (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
