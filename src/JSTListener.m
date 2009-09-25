@@ -30,6 +30,11 @@
     [[self sharedListener] setupListener];
 }
 
++ (void) listenWithRootObject:(id)rootObject; {
+    ((JSTListener*)[self sharedListener]).rootObject = rootObject;
+    [self listen];
+}
+
 
 - (void) setupListener {
     NSString *myBundleId    = [[NSBundle mainBundle] bundleIdentifier];
