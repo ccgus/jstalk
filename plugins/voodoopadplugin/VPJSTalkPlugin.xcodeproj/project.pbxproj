@@ -13,6 +13,14 @@
 		CC6080580EA410F400A1244C /* JavaScriptPluginEnabler.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */; };
 		CCCFE0C70F834718005161C9 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
 		CCCFE0D30F83471E005161C9 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
+		CCFFD604108417BA006522F8 /* VPJSTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD603108417BA006522F8 /* VPJSTViewController.m */; };
+		CCFFD622108418E3006522F8 /* JSTalkEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD621108418E3006522F8 /* JSTalkEditView.xib */; };
+		CCFFD64910841986006522F8 /* JSTTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD64210841986006522F8 /* JSTTextView.m */; };
+		CCFFD64A10841986006522F8 /* MarkerLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD64410841986006522F8 /* MarkerLineNumberView.m */; };
+		CCFFD64B10841986006522F8 /* NoodleLineNumberMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD64610841986006522F8 /* NoodleLineNumberMarker.m */; };
+		CCFFD64C10841986006522F8 /* NoodleLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD64810841986006522F8 /* NoodleLineNumberView.m */; };
+		CCFFD68E10841BEE006522F8 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD68D10841BEE006522F8 /* Clear.tiff */; };
+		CCFFD69010841BF1006522F8 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD68F10841BF1006522F8 /* Play.tiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +49,20 @@
 		CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JavaScriptPluginEnabler.m; sourceTree = "<group>"; };
 		CC6080590EA410FC00A1244C /* JavaScriptPluginEnabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler_Prefix.pch; sourceTree = "<group>"; };
 		CCCFE0C60F834718005161C9 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
+		CCFFD602108417BA006522F8 /* VPJSTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPJSTViewController.h; sourceTree = "<group>"; };
+		CCFFD603108417BA006522F8 /* VPJSTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPJSTViewController.m; sourceTree = "<group>"; };
+		CCFFD621108418E3006522F8 /* JSTalkEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JSTalkEditView.xib; sourceTree = "<group>"; };
+		CCFFD64110841986006522F8 /* JSTTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTTextView.h; path = ../../src/JSTTextView.h; sourceTree = SOURCE_ROOT; };
+		CCFFD64210841986006522F8 /* JSTTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTTextView.m; path = ../../src/JSTTextView.m; sourceTree = SOURCE_ROOT; };
+		CCFFD64310841986006522F8 /* MarkerLineNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkerLineNumberView.h; path = ../../src/MarkerLineNumberView.h; sourceTree = SOURCE_ROOT; };
+		CCFFD64410841986006522F8 /* MarkerLineNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MarkerLineNumberView.m; path = ../../src/MarkerLineNumberView.m; sourceTree = SOURCE_ROOT; };
+		CCFFD64510841986006522F8 /* NoodleLineNumberMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoodleLineNumberMarker.h; path = ../../src/NoodleLineNumberMarker.h; sourceTree = SOURCE_ROOT; };
+		CCFFD64610841986006522F8 /* NoodleLineNumberMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoodleLineNumberMarker.m; path = ../../src/NoodleLineNumberMarker.m; sourceTree = SOURCE_ROOT; };
+		CCFFD64710841986006522F8 /* NoodleLineNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoodleLineNumberView.h; path = ../../src/NoodleLineNumberView.h; sourceTree = SOURCE_ROOT; };
+		CCFFD64810841986006522F8 /* NoodleLineNumberView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NoodleLineNumberView.m; path = ../../src/NoodleLineNumberView.m; sourceTree = SOURCE_ROOT; };
+		CCFFD68D10841BEE006522F8 /* Clear.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Clear.tiff; path = ../../res/images/Clear.tiff; sourceTree = SOURCE_ROOT; };
+		CCFFD68F10841BF1006522F8 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = ../../res/images/Play.tiff; sourceTree = SOURCE_ROOT; };
+		CCFFD7CA1084236D006522F8 /* TDParseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDParseKit.h; path = ../../src/todparsekit/TDParseKit.h; sourceTree = SOURCE_ROOT; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -61,6 +83,7 @@
 		089C166AFE841209C02AAC07 /* SketchPage */ = {
 			isa = PBXGroup;
 			children = (
+				CCFFD64010841986006522F8 /* UIWidgets */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
@@ -82,6 +105,9 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CCFFD68D10841BEE006522F8 /* Clear.tiff */,
+				CCFFD68F10841BF1006522F8 /* Play.tiff */,
+				CCFFD621108418E3006522F8 /* JSTalkEditView.xib */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -93,6 +119,8 @@
 			children = (
 				CC6080560EA410F400A1244C /* JavaScriptPluginEnabler.h */,
 				CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */,
+				CCFFD602108417BA006522F8 /* VPJSTViewController.h */,
+				CCFFD603108417BA006522F8 /* VPJSTViewController.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -131,6 +159,22 @@
 				CC6080590EA410FC00A1244C /* JavaScriptPluginEnabler_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		CCFFD64010841986006522F8 /* UIWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				CCFFD7CA1084236D006522F8 /* TDParseKit.h */,
+				CCFFD64110841986006522F8 /* JSTTextView.h */,
+				CCFFD64210841986006522F8 /* JSTTextView.m */,
+				CCFFD64310841986006522F8 /* MarkerLineNumberView.h */,
+				CCFFD64410841986006522F8 /* MarkerLineNumberView.m */,
+				CCFFD64510841986006522F8 /* NoodleLineNumberMarker.h */,
+				CCFFD64610841986006522F8 /* NoodleLineNumberMarker.m */,
+				CCFFD64710841986006522F8 /* NoodleLineNumberView.h */,
+				CCFFD64810841986006522F8 /* NoodleLineNumberView.m */,
+			);
+			name = UIWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -178,6 +222,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				CCFFD622108418E3006522F8 /* JSTalkEditView.xib in Resources */,
+				CCFFD68E10841BEE006522F8 /* Clear.tiff in Resources */,
+				CCFFD69010841BF1006522F8 /* Play.tiff in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -189,6 +236,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC6080580EA410F400A1244C /* JavaScriptPluginEnabler.m in Sources */,
+				CCFFD604108417BA006522F8 /* VPJSTViewController.m in Sources */,
+				CCFFD64910841986006522F8 /* JSTTextView.m in Sources */,
+				CCFFD64A10841986006522F8 /* MarkerLineNumberView.m in Sources */,
+				CCFFD64B10841986006522F8 /* NoodleLineNumberMarker.m in Sources */,
+				CCFFD64C10841986006522F8 /* NoodleLineNumberView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

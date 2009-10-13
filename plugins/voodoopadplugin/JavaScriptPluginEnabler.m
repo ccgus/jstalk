@@ -13,6 +13,8 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
 #define VPShortcutMaskKey @"VPShortcutMask"
 #define VPBackgroundThreadKey @"VPBackgroundThread"
 
+JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
+
 @interface NSObject (VPAppDelegateExtrase)
 - (void) console:(NSString*)s;
 @end
@@ -26,6 +28,8 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
 
 
 - (void) didRegister {
+
+    JavaScriptPluginEnablerGlobalHACKHACKHACK = self;
     
     NSString *scriptsDir = [self scriptsDir];
     if (!scriptsDir) {
@@ -366,5 +370,8 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
     }
 }
 
+- (BOOL) validateAction:(SEL)anAction forPageType:(NSString*)pageType userObject:(id)userObject {
+    return YES;
+}
 
 @end
