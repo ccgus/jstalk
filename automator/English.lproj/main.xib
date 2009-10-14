@@ -494,7 +494,7 @@ ZSAqLwogICAgCglyZXR1cm4gaW5wdXQ7Cn0</bytes>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
 						<string key="NS.key.0">scriptView</string>
-						<string key="NS.object.0">NSTextView</string>
+						<string key="NS.object.0">JSTTextView</string>
 					</object>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
@@ -522,6 +522,14 @@ ZSAqLwogICAgCglyZXR1cm4gaW5wdXQ7Cn0</bytes>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBFrameworkSource</string>
 						<string key="minorKey">Automator.framework/Headers/AMBundleAction.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">JSTTextView</string>
+					<string key="superclassName">NSTextView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBFrameworkSource</string>
+						<string key="minorKey">JSTalk.framework/Headers/JSTTextView.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
