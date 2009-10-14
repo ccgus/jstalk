@@ -9,6 +9,7 @@
 #import "JSTTextView.h"
 #import "MarkerLineNumberView.h"
 #import "TDParseKit.h"
+#import "NoodleLineNumberView.h"
 
 @interface JSTTextView (Private)
 - (void) setupLineView;

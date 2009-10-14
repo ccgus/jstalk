@@ -10,7 +10,7 @@
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC0EC3290F226F550094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC0EC32A0F226F550094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
-		CC0FEEE21086740F008FF7DD /* JSTTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1322FD0F23F3C10032FEB8 /* JSTTextView.h */; };
+		CC0FEEE21086740F008FF7DD /* JSTTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1322FD0F23F3C10032FEB8 /* JSTTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC0FEEE31086740F008FF7DD /* JSTTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1322FE0F23F3C10032FEB8 /* JSTTextView.m */; };
 		CC0FEEE410867410008FF7DD /* MarkerLineNumberView.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1322E20F23F2380032FEB8 /* MarkerLineNumberView.h */; };
 		CC0FEEE510867410008FF7DD /* MarkerLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1322E40F23F2380032FEB8 /* MarkerLineNumberView.m */; };

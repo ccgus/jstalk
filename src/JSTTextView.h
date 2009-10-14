@@ -7,7 +7,6 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "NoodleLineNumberView.h"
 
 @class NoodleLineNumberView;
 

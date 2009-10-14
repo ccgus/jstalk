@@ -8,9 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <Automator/AMBundleAction.h>
+#import <JSTalk/JSTTextView.h>
+@class JSTTextView;
 
 @interface JSTAutomator : AMBundleAction  {
-    IBOutlet NSTextView *scriptView;
+    IBOutlet JSTTextView *scriptView;
 }
 
 - (void) runScript:(id)sender;
