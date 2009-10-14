@@ -4,7 +4,7 @@
 <depends_on path='/System/Library/Frameworks/Foundation.framework'/>
 <depends_on path='/System/Library/Frameworks/AppKit.framework'/>
 <depends_on path='/System/Library/Frameworks/CoreFoundation.framework'/>
-<class name='FMDatabase'>
+<class name='JSTDatabase'>
 <method selector='beginDeferredTransaction'>
 <retval type='B'/>
 </method>
@@ -32,6 +32,9 @@
 <method selector='executeUpdate:arguments:'>
 <retval type='B'/>
 </method>
+<method selector='executeUpdate:withArgumentsInArray:'>
+<retval type='B'/>
+</method>
 <method selector='goodConnection'>
 <retval type='B'/>
 </method>
@@ -50,6 +53,9 @@
 </method>
 <method variadic='true' selector='longForQuery:'/>
 <method selector='open'>
+<retval type='B'/>
+</method>
+<method selector='openWithFlags:'>
 <retval type='B'/>
 </method>
 <method selector='rekey:'>
@@ -86,15 +92,27 @@
 <retval type='B'/>
 </method>
 <method variadic='true' selector='stringForQuery:'/>
+<method selector='tableExists:'>
+<retval type='B'/>
+</method>
 <method selector='traceExecution'>
 <retval type='B'/>
 </method>
 </class>
-<class name='FMResultSet'>
+<class name='JSTResultSet'>
 <method selector='boolForColumn:'>
 <retval type='B'/>
 </method>
 <method selector='boolForColumnIndex:'>
+<retval type='B'/>
+</method>
+<method selector='columnIndexIsNull:'>
+<retval type='B'/>
+</method>
+<method selector='columnIsNull:'>
+<retval type='B'/>
+</method>
+<method selector='hasAnotherRow'>
 <retval type='B'/>
 </method>
 <method selector='next'>

@@ -2,7 +2,7 @@
 #import "sqlite3.h"
 #import "FMResultSet.h"
 
-@interface FMDatabase : NSObject 
+@interface JSTDatabase : NSObject 
 {
 	sqlite3*    db;
 	NSString*   databasePath;
@@ -22,6 +22,9 @@
 - (id)initWithPath:(NSString*)inPath;
 
 - (BOOL) open;
+#if SQLITE_VERSION_NUMBER >= 3005000
+- (BOOL) openWithFlags:(int)flags;
+#endif
 - (void) close;
 - (BOOL) goodConnection;
 - (void) clearCachedStatements;

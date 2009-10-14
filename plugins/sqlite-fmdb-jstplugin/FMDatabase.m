@@ -1,10 +1,10 @@
 #import "FMDatabase.h"
 #import "unistd.h"
 
-@implementation FMDatabase
+@implementation JSTDatabase
 
 + (id)databaseWithPath:(NSString*)aPath {
-    return [[[FMDatabase alloc] initWithPath:aPath] autorelease];
+    return [[[self alloc] initWithPath:aPath] autorelease];
 }
 
 - (id)initWithPath:(NSString*)aPath {
@@ -43,7 +43,7 @@
 }
 
 - (BOOL) open {
-	int err = sqlite3_open( [databasePath fileSystemRepresentation], &db );
+	int err = sqlite3_open([databasePath fileSystemRepresentation], &db );
 	if(err != SQLITE_OK) {
         NSLog(@"error opening!: %d", err);
 		return NO;
@@ -51,6 +51,18 @@
 	
 	return YES;
 }
+
+#if SQLITE_VERSION_NUMBER >= 3005000
+- (BOOL) openWithFlags:(int)flags {
+    int err = sqlite3_open_v2([databasePath fileSystemRepresentation], &db, flags, NULL /* Name of VFS module to use */);
+	if(err != SQLITE_OK) {
+		NSLog(@"error opening!: %d", err);
+		return NO;
+	}
+	return YES;
+}
+#endif
+
 
 - (void) close {
     
@@ -148,7 +160,7 @@
         return NO;
     }
     
-    FMResultSet *rs = [self executeQuery:@"select name from sqlite_master where type='table'"];
+    JSTResultSet *rs = [self executeQuery:@"select name from sqlite_master where type='table'"];
     
     if (rs) {
         [rs close];
@@ -159,10 +171,10 @@
 }
 
 - (void) compainAboutInUse {
-    NSLog(@"The FMDatabase %@ is currently in use.", self);
+    NSLog(@"The JSTDatabase %@ is currently in use.", self);
     
     if (crashOnErrors) {
-        NSAssert1(false, @"The FMDatabase %@ is currently in use.", self);
+        NSAssert1(false, @"The JSTDatabase %@ is currently in use.", self);
     }
 }
 
@@ -171,7 +183,9 @@
 }
 
 - (BOOL) hadError {
-    return ([self lastErrorCode] != SQLITE_OK);
+    int lastErrCode = [self lastErrorCode];
+    
+    return (lastErrCode > SQLITE_OK && lastErrCode < SQLITE_ROW);
 }
 
 - (int) lastErrorCode {
@@ -241,7 +255,7 @@
     
     [self setInUse:YES];
     
-    FMResultSet *rs = nil;
+    JSTResultSet *rs = nil;
     
     int rc                  = 0x00;;
     sqlite3_stmt *pStmt     = 0x00;;
@@ -262,7 +276,7 @@
     if (!pStmt) {
         do {
             retry   = NO;
-            rc      = sqlite3_prepare(db, [sql UTF8String], -1, &pStmt, 0);
+            rc      = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
             
             if (SQLITE_BUSY == rc) {
                 retry = YES;
@@ -283,9 +297,9 @@
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
                     if (crashOnErrors) {
-#ifdef __BIG_ENDIAN__
-                        asm{ trap };
-#endif
+//#if defined(__BIG_ENDIAN__) && !TARGET_IPHONE_SIMULATOR
+//                        asm{ trap };
+//#endif
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
                 }
@@ -334,7 +348,7 @@
     }
     
     // the statement gets close in rs's dealloc or [rs close];
-    rs = [FMResultSet resultSetWithStatement:statement usingParentDatabase:self];
+    rs = [JSTResultSet resultSetWithStatement:statement usingParentDatabase:self];
     [rs setQuery:sql];
     
     statement.useCount = statement.useCount + 1;
@@ -386,7 +400,7 @@
         
         do {
             retry   = NO;
-            rc      = sqlite3_prepare(db, [sql UTF8String], -1, &pStmt, 0);
+            rc      = sqlite3_prepare_v2(db, [sql UTF8String], -1, &pStmt, 0);
             if (SQLITE_BUSY == rc) {
                 retry = YES;
                 usleep(20);
@@ -406,9 +420,9 @@
                     NSLog(@"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     NSLog(@"DB Query: %@", sql);
                     if (crashOnErrors) {
-#ifdef __BIG_ENDIAN__
-                        asm{ trap };
-#endif
+//#if defined(__BIG_ENDIAN__) && !TARGET_IPHONE_SIMULATOR
+//                        asm{ trap };
+//#endif
                         NSAssert2(false, @"DB Error: %d \"%@\"", [self lastErrorCode], [self lastErrorMessage]);
                     }
                 }

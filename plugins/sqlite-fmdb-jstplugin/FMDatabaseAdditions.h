@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@interface FMDatabase (FMDatabaseAdditions)
+@interface JSTDatabase (JSTDatabaseAdditions)
 
 
 - (int) intForQuery:(NSString*)objs, ...;
@@ -20,5 +20,11 @@
 // Notice that there's no dataNoCopyForQuery:.
 // That would be a bad idea, because we close out the result set, and then what
 // happens to the data that we just didn't copy?  Who knows, not I.
+
+- (id)executeQuery:(NSString *)sql withArgumentsInArray:(NSArray *)arguments;
+- (BOOL) executeUpdate:(NSString*)sql withArgumentsInArray:(NSArray *)arguments;
+
+- (BOOL) tableExists:(NSString*)tableName;
+- (JSTResultSet*) getDataBaseSchema:(NSString*)tableName;
 
 @end

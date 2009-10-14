@@ -3,7 +3,7 @@
 
 var dbPath = "/tmp/jstalk.sqlite";
 
-var db = [FMDatabase databaseWithPath:dbPath];
+var db = [JSTDatabase databaseWithPath:dbPath];
 if (![db open]) {
     print("Could not open database");
 }

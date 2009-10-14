@@ -1,11 +1,11 @@
 #import <Foundation/Foundation.h>
 #import "sqlite3.h"
 
-@class FMDatabase;
+@class JSTDatabase;
 @class FMStatement;
 
-@interface FMResultSet : NSObject {
-    FMDatabase *parentDB;
+@interface JSTResultSet : NSObject {
+    JSTDatabase *parentDB;
     FMStatement *statement;
     
     NSString *query;
@@ -14,7 +14,7 @@
 }
 
 
-+ (id) resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(FMDatabase*)aDB;
++ (id) resultSetWithStatement:(FMStatement *)statement usingParentDatabase:(JSTDatabase*)aDB;
 
 - (void) close;
 
@@ -24,9 +24,13 @@
 - (FMStatement *)statement;
 - (void)setStatement:(FMStatement *)value;
 
-- (void)setParentDB:(FMDatabase *)newDb;
+- (void)setParentDB:(JSTDatabase *)newDb;
 
 - (BOOL) next;
+- (BOOL) hasAnotherRow;
+
+- (int) columnIndexForName:(NSString*)columnName;
+- (NSString*) columnNameForIndex:(int)index;
 
 - (int) intForColumn:(NSString*)columnName;
 - (int) intForColumnIndex:(int)columnIdx;
@@ -52,6 +56,9 @@
 - (NSData*) dataForColumn:(NSString*)columnName;
 - (NSData*) dataForColumnIndex:(int)columnIdx;
 
+- (const unsigned char *) UTF8StringForColumnIndex:(int)columnIdx;
+- (const unsigned char *) UTF8StringForColumnName:(NSString*)columnName;
+
 /*
 If you are going to use this data after you iterate over the next row, or after you close the
 result set, make sure to make a copy of the data first (or just use dataForColumn:/dataForColumnIndex:)
@@ -59,6 +66,9 @@ If you don't, you're going to be in a world of hurt when you try and use the dat
 */
 - (NSData*) dataNoCopyForColumn:(NSString*)columnName;
 - (NSData*) dataNoCopyForColumnIndex:(int)columnIdx;
+
+- (BOOL) columnIndexIsNull:(int)columnIdx;
+- (BOOL) columnIsNull:(NSString*)columnName;
 
 - (void) kvcMagic:(id)object;
 
