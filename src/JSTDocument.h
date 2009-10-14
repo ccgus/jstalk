@@ -8,9 +8,7 @@
 
 
 #import <Cocoa/Cocoa.h>
-#import "MarkerLineNumberView.h"
 #import "JSTTextView.h"
-#import "TDParseKit.h"
 #import "JSTFileWatcher.h"
 
 @interface JSTDocument : NSDocument {
@@ -19,10 +17,9 @@
     IBOutlet NSSplitView *splitView;
     IBOutlet NSTextField *errorLabel;
     
-	NoodleLineNumberView	*lineNumberView;
-    TDTokenizer *_tokenizer;
-    
-    NSDictionary *_keywords;
+	//NoodleLineNumberView	*lineNumberView;
+    //TDTokenizer *_tokenizer;
+    //NSDictionary *_keywords;
     
     NSMutableDictionary *_toolbarItems;
     
@@ -31,14 +28,12 @@
     NSDictionary *_previousOutputTypingAttributes;
 }
 
-@property (retain) TDTokenizer *tokenizer;
 @property (retain) NSDictionary *keywords;
 @property (retain) JSTFileWatcher *externalEditorFileWatcher;
 @property (retain) NSDictionary *previousOutputTypingAttributes;
 
 
 - (void) executeScript:(id)sender;
-- (void) parseCode:(id)sender;
 - (void) clearConsole:(id)sender;
 
 @end

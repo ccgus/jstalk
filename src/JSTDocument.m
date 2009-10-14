@@ -19,54 +19,22 @@
 
 
 @implementation JSTDocument
-@synthesize tokenizer=_tokenizer;
 @synthesize keywords=_keywords;
 @synthesize externalEditorFileWatcher=_externalEditorFileWatcher;
 @synthesize previousOutputTypingAttributes=_previousOutputTypingAttributes;
 
 - (id)init {
     self = [super init];
-    if (self) {
-        self.tokenizer = [[[TDTokenizer alloc] init] autorelease];
-        /*
-var s = "break case catch continue default delete do else finally for function if in instanceof new return switch this throw try typeof var void while with abstract boolean byte char class const debugger double enum export extends final float goto implements import int interface long native package private protected public short static super synchronized throws transient volatile null true false nil"
-
-words = s.split(" ")
-var i = 0;
-list = ""
-while (i < words.length) {
-    list = list + '@"' + words[i] + '", ';
-    i++
-}
-
-print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
-        */
-        
-        NSArray *blueWords = [NSArray arrayWithObjects:@"break", @"case", @"catch", @"continue", @"default", @"delete", @"do", @"else", @"finally", @"for", @"function", @"if", @"in", @"instanceof", @"new", @"return", @"switch", @"this", @"throw", @"try", @"typeof", @"var", @"void", @"while", @"with", @"abstract", @"boolean", @"byte", @"char", @"class", @"const", @"debugger", @"double", @"enum", @"export", @"extends", @"final", @"float", @"goto", @"implements", @"import", @"int", @"interface", @"long", @"native", @"package", @"private", @"protected", @"public", @"short", @"static", @"super", @"synchronized", @"throws", @"transient", @"volatile", @"null", @"true", @"false", @"nil",  nil];
-        
-        NSMutableDictionary *keywords = [NSMutableDictionary dictionary];
-        
-        for (NSString *word in blueWords) {
-            [keywords setObject:[NSColor blueColor] forKey:word];
-        }
-        
-        self.keywords = keywords;
-        
-    }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFont:) name:@"JSTFontChangeNotification" object:nil];
+    if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFont:) name:@"JSTFontChangeNotification" object:nil];
+    }
     
     return self;
 }
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_tokenizer release];
-    _tokenizer = 0x00;
-    
-    [_keywords release];
-    _keywords = 0x00;
     
     [_externalEditorFileWatcher release];
     _externalEditorFileWatcher = 0x00;
@@ -106,18 +74,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     if ([self fileURL]) {
         [self readFromFile:[self fileURL]];
     }
-    
-    // FIXME: make this a pref
-    [[jsTextView textStorage] setAttributes:[NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Monaco" size:10] forKey:NSFontAttributeName] range:NSMakeRange(0, [[jsTextView textStorage] length]) ];
-    
-    lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[jsTextView enclosingScrollView]];
-    [[jsTextView enclosingScrollView] setVerticalRulerView:lineNumberView];
-    [[jsTextView enclosingScrollView] setHasHorizontalRuler:NO];
-    [[jsTextView enclosingScrollView] setHasVerticalRuler:YES];
-    [[jsTextView enclosingScrollView] setRulersVisible:YES];
-    
-    [[jsTextView textStorage] setDelegate:self];
-    [self parseCode:nil];
     
     NSToolbar *toolbar  = [[[NSToolbar alloc] initWithIdentifier:@"JSTalkDocument"] autorelease];
     _toolbarItems       = [[NSMutableDictionary dictionary] retain];
@@ -280,10 +236,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     
 }
 
-- (void) textStorageDidProcessEditing:(NSNotification *)note {
-    [self parseCode:nil];
-}
-
 - (void) preprocessCodeAction:(id)sender {
     
     NSString *code = [JSTPreprocessor preprocessCode:[[jsTextView textStorage] string]];
@@ -295,55 +247,6 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
     }
 }
 
-
-- (void) parseCode:(id)sender {
-    
-    // we should really do substrings...
-    
-    NSString *sourceString = [[jsTextView textStorage] string];
-    TDTokenizer *tokenizer = [TDTokenizer tokenizerWithString:sourceString];
-    
-    tokenizer.commentState.reportsCommentTokens = YES;
-    tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-    
-    TDToken *eof = [TDToken EOFToken];
-    TDToken *tok = nil;
-    
-    [[jsTextView textStorage] beginEditing];
-    
-    NSUInteger sourceLoc = 0;
-    
-    while ((tok = [tokenizer nextToken]) != eof) {
-        
-        NSColor *fontColor = [NSColor blackColor];
-    
-        if (tok.quotedString) {
-            fontColor = [NSColor darkGrayColor];
-        }
-        else if (tok.isNumber) {
-            fontColor = [NSColor blueColor];
-        }
-        else if (tok.isComment) {
-            fontColor = [NSColor redColor];
-        }
-        else if (tok.isWord) {
-            NSColor *c = [_keywords objectForKey:[tok stringValue]];
-            fontColor = c ? c : fontColor;
-        }
-            
-        NSUInteger strLen = [[tok stringValue] length];
-        
-        if (fontColor) {
-            [[jsTextView textStorage] addAttribute:NSForegroundColorAttributeName value:fontColor range:NSMakeRange(sourceLoc, strLen)];
-        }
-        
-        sourceLoc += strLen;
-    }
-    
-    
-    [[jsTextView textStorage] endEditing];
-    
-}
 
 - (void)savePanelDidEndForApplicationSave:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     
@@ -445,7 +348,7 @@ print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
         return;
     }
     
-    // setup our watcher.
+    // setup our watcher.0
     self.externalEditorFileWatcher = [JSTFileWatcher fileWatcherWithPath:[self fileName] delegate:self];
     
     // and away we go.

@@ -73,7 +73,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
 
 
-@synthesize delegate=_delegate;
+@synthesize delegate=_delegate, useSafeDealloc, useSplitCall, useJSLint;
 
 	// Given a jsFunction, retrieve its closure (jsFunction's pointer address is used as key)
 	static	id	closureHash;
@@ -204,6 +204,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 #endif
 
 	// Load class kit
+	id lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
+	if ([[NSFileManager defaultManager] fileExistsAtPath:lintPath])	[self evalJSFile:lintPath];
 	id classKitPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"class" ofType:@"js"];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:classKitPath])	[self evalJSFile:classKitPath];
 
@@ -233,8 +235,12 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	// JSCocoa registers 'safeDealloc' in place of 'dealloc' and calls it in the next run loop cycle. 
 	// (If called during dealloc, this would mean executing JS code during JS GC, which is not possible)
 	// useSafeDealloc will be turned to NO upon JSCocoaController dealloc
-	useSafeDealloc = YES;
-	
+	useSafeDealloc	= YES;
+	// Yep !
+	useJSLint		= YES;
+	// ObjJ syntax renders split call moot
+	useSplitCall	= NO;
+
 	return	self;
 }
 
@@ -384,8 +390,9 @@ static id JSCocoaSingleton = NULL;
 {
 #if defined(__ppc__)
 	return @"PPC";
-#elif defined(__ppc64__)
-	return @"PPC64";
+// Unsupported
+//#elif defined(__ppc64__)
+//	return @"PPC64";
 #elif defined(__i386__) 
 	return @"i386";
 #elif defined(__x86_64__) 
@@ -405,7 +412,7 @@ static id JSCocoaSingleton = NULL;
 //
 // Evaluate a file
 // 
-- (BOOL)evalJSFile:(NSString*)path toJSValueRef:(JSValueRef*)returnValue withLintex:(BOOL)withLintex
+- (BOOL)evalJSFile:(NSString*)path toJSValueRef:(JSValueRef*)returnValue
 {
 	NSError*	error;
 	id script = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
@@ -420,12 +427,11 @@ static id JSCocoaSingleton = NULL;
 	// Normal path, with macro expansion for class definitions
 	// OR
 	// Lintex path
-	id functionName = withLintex ? @"lintex" : @"expandJSMacros";
+	id functionName = @"expandJSMacros";
 
-	// Expand macros or lintex
+	// Expand macros
 	BOOL hasFunction = [self hasJSFunctionNamed:functionName];
-	if (!hasFunction && [functionName isEqualToString:@"lintex"])	NSLog(@"lintex function not found to process %@", path);
-	if (hasFunction)
+	if (hasFunction && useJSLint)
 	{
 		id expandedScript = [self unboxJSValueRef:[self callJSFunctionNamed:functionName withArguments:script, nil]];
 		// Bail if expansion failed
@@ -433,6 +439,8 @@ static id JSCocoaSingleton = NULL;
 			return NSLog(@"%@ expansion failed on %@ (%@)", functionName, path, expandedScript), NO;
 
 		script = expandedScript;
+//		NSLog(@"===================================================================================");
+//		NSLog(@"%@", expandedScript);
 	}
 
 	//
@@ -465,11 +473,6 @@ static id JSCocoaSingleton = NULL;
 	return	YES;
 }
 
-- (BOOL)evalJSFile:(NSString*)path toJSValueRef:(JSValueRef*)returnValue
-{
-	return	[self evalJSFile:path toJSValueRef:returnValue withLintex:NO];
-}
-
 
 //
 // Evaluate a file, without caring about return result
@@ -477,11 +480,6 @@ static id JSCocoaSingleton = NULL;
 - (BOOL)evalJSFile:(NSString*)path
 {
 	return	[self evalJSFile:path toJSValueRef:nil];
-}
-
-- (BOOL)evalJSFileWithLintex:(NSString*)path
-{
-	return	[self evalJSFile:path toJSValueRef:nil withLintex:YES];
 }
 
 //
@@ -808,6 +806,14 @@ static id JSCocoaSingleton = NULL;
 	return	o;
 }
 
+//
+// Autocall
+//	Allow calling zero arg methods without parens
+//
+//	NSWorkspace.sharedWorkspace
+//		instead of
+//		NSWorkspace.sharedWorkspace()
+//
 - (BOOL)useAutoCall
 {
 	return	useAutoCall;
@@ -816,16 +822,6 @@ static id JSCocoaSingleton = NULL;
 {
 	useAutoCall = b;
 }
-
-- (BOOL)useSafeDealloc
-{
-	return	useSafeDealloc;
-}
-- (void)setUseSafeDealloc:(BOOL)b
-{
-	useSafeDealloc = b;
-}
-
 
 - (JSGlobalContextRef)ctx
 {
@@ -848,36 +844,6 @@ static id JSCocoaSingleton = NULL;
 + (void)ensureJSValueIsObjectAfterInstanceAutocall:(JSValueRef)jsValue inContext:(JSContextRef)ctx;
 {
 	NSLog(@"***For zero arg instance, use obj.instance() instead of obj.instance***");
-/*	
-	// It's an instance if it has a property 'thisObject', holding the class name
-	// value is an object holding the method name, 'instance' - its only use is storing 'thisObject'
-	JSObjectRef jsObject = JSValueToObject(ctx, jsValue, NULL);
-
-	JSStringRef name = JSStringCreateWithUTF8CString("thisObject");
-	BOOL hasProperty =  JSObjectHasProperty(ctx, jsObject, name);
-	JSValueRef thisObjectValue = JSObjectGetProperty(ctx, jsObject, name, NULL);
-	if (hasProperty)	JSObjectDeleteProperty(ctx, jsObject, name, NULL);
-	JSStringRelease(name);
-	
-	if (!hasProperty)	return;
-
-	// Returning NULL will crash
-	if (!thisObjectValue)	return;
-	JSObjectRef thisObject = JSValueToObject(ctx, thisObjectValue, NULL);
-	if (!thisObject)		return;
-	JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(thisObject);
-	if (!thisObject)		return;
-
-	NSLog(@"Instance autocall on class %@", [privateObject object]);
-
-	// Create new instance and patch it into object
-	id newInstance = [[[privateObject object] alloc] init];
-	JSCocoaPrivateObject* instanceObject = JSObjectGetPrivate(jsObject);
-	instanceObject.type = @"@";
-	[instanceObject setObject:newInstance];
-	// Make JS object sole owner
-	[newInstance release];
-*/	
 }
 
 //
@@ -1295,15 +1261,21 @@ static id JSCocoaSingleton = NULL;
 {
 	// Always add method to existing class to make sure we're swizzling this class' method and not the parent's.
 	// Courtesy of Jonathan 'Wolf' Rentzsch's JRSwizzle http://github.com/rentzsch/jrswizzle/tree/master
-	SEL origSel_			= NSSelectorFromString(methodName);
-	Method origMethod		= class_getInstanceMethod(class, origSel_);
-	if (!origMethod)		return	NSLog(@"Method does not exist in instance swizzle %@.%@", class, methodName), NO;
+	SEL origSel_				= NSSelectorFromString(methodName);
+	Method origMethod			= class_getInstanceMethod(class, origSel_);
+	if (!origMethod)			return	NSLog(@"Method does not exist in instance swizzle %@.%@", class, methodName), NO;
 
 	// Prefix method name with "original"
-	id originalMethodName	= [NSString stringWithFormat:@"%@%@", OriginalMethodPrefix, methodName];
-	SEL altSel_				= NSSelectorFromString(originalMethodName);
+	id originalMethodName		= [NSString stringWithFormat:@"%@%@", OriginalMethodPrefix, methodName];
+	SEL altSel_					= NSSelectorFromString(originalMethodName);
+
+	// If method is already swizzled, reswizzle it to reset the class. 
+	// addMethod: will overwrite our first swizzled method, which is what we want.
+	if ([class instancesRespondToSelector:altSel_])	
+		method_exchangeImplementations(class_getInstanceMethod(class, origSel_), class_getInstanceMethod(class, altSel_));
+
 	BOOL b = [self addMethod:originalMethodName class:class jsFunction:valueAndContext encoding:(char*)method_getTypeEncoding(origMethod)];
-	if (!b)					return NO;
+	if (!b)						return NO;
 
 	class_addMethod(class, origSel_, class_getMethodImplementation(class, origSel_), method_getTypeEncoding(origMethod));
 	
@@ -1317,15 +1289,21 @@ static id JSCocoaSingleton = NULL;
 
 	// Always add method to existing class to make sure we're swizzling this class' method and not the parent's.
 	// Courtesy of Jonathan 'Wolf' Rentzsch's JRSwizzle http://github.com/rentzsch/jrswizzle/tree/master
-	SEL origSel_			= NSSelectorFromString(methodName);
-	Method origMethod		= class_getClassMethod(class, origSel_);
-	if (!origMethod)		return	NSLog(@"Method does not exist in class swizzle %@.%@", class, methodName), NO;
+	SEL origSel_				= NSSelectorFromString(methodName);
+	Method origMethod			= class_getClassMethod(class, origSel_);
+	if (!origMethod)			return	NSLog(@"Method does not exist in class swizzle %@.%@", class, methodName), NO;
 
 	// Prefix method name with "original"
-	id originalMethodName	= [NSString stringWithFormat:@"%@%@", OriginalMethodPrefix, methodName];
-	SEL altSel_				= NSSelectorFromString(originalMethodName);
+	id originalMethodName		= [NSString stringWithFormat:@"%@%@", OriginalMethodPrefix, methodName];
+	SEL altSel_					= NSSelectorFromString(originalMethodName);
+
+	// If method is already swizzled, reswizzle it to reset the class. 
+	// addMethod: will overwrite our first swizzled method, which is what we want.
+	if ([class respondsToSelector:altSel_])	
+		method_exchangeImplementations(class_getInstanceMethod(class, origSel_), class_getInstanceMethod(class, altSel_));
+
 	BOOL b = [self addMethod:originalMethodName class:class jsFunction:valueAndContext encoding:(char*)method_getTypeEncoding(origMethod)];
-	if (!b)					return NO;
+	if (!b)						return NO;
 
 	class_addMethod(class, origSel_, class_getMethodImplementation(class, origSel_), method_getTypeEncoding(origMethod));
 	
@@ -1497,25 +1475,37 @@ static id JSCocoaSingleton = NULL;
 #pragma mark Variadic call
 - (BOOL)isMethodVariadic:(id)methodName class:(id)class
 {
-	id className = [class description];
-	id xml = [[BridgeSupportController sharedController] queryName:className];
-	if (!xml)	return NSLog(@"isMethodVariadic for %@ called on unknown BridgeSupport class %@", methodName, class), NO;
+	// Go up the class tree until we find a variadic method or exhaust superclasses
+	while (class)
+	{
+		id className = [class description];
+		id xml = [[BridgeSupportController sharedController] queryName:className];
+		// Go up if this class has no description
+		if (!xml)	
+		{
+			class = [class superclass];
+			continue;
+		}
+//NSLog(@"variadic %@ xml=%@", methodName, xml);
+		// Get XML definition
+		id error;
+		// Clang will report a leak here, but NSXMLDocument auto releases itself if it fails loading
+		id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
+		if (error)	return	NSLog(@"(isMethodVariadic:class:) malformed xml while getting method %@ of class %@ : %@", methodName, class, error), NO;
+			
+		// Query method
+		id xpath = [NSString stringWithFormat:@"*[@selector=\"%@\" and @variadic=\"true\"]", methodName];
+		id nodes = [[xmlDocument rootElement] nodesForXPath:xpath error:&error];
+		if (error)	NSLog(@"isMethodVariadic:error: %@", error);
 
-	// Get XML definition
-	id error;
-	// Clang will report a leak here, but NSXMLDocument auto releases itself if it fails loading
-	id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
-	if (error)	return	NSLog(@"(isMethodVariadic:class:) malformed xml while getting method %@ of class %@ : %@", methodName, class, error), NO;
+		// It's a variadic method if XPath returned one result
+		BOOL	isVariadic = [nodes count] == 1;
+		[xmlDocument release];
+		if (isVariadic)	return YES;
 		
-	// Query method
-	id xpath = [NSString stringWithFormat:@"*[@selector=\"%@\" and @variadic=\"true\"]", methodName];
-	id nodes = [[xmlDocument rootElement] nodesForXPath:xpath error:&error];
-	if (error)	NSLog(@"isMethodVariadic:error: %@", error);
-
-	// It's a variadic method if XPath returned one result
-	BOOL	isVariadic = [nodes count] == 1;
-	[xmlDocument release];
-	return	isVariadic;
+		class = [class superclass];
+	}
+	return	NO;
 }
 
 - (BOOL)isFunctionVariadic:(id)functionName
@@ -1729,6 +1719,9 @@ static id JSCocoaSingleton = NULL;
 	id files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:path error:nil];
 	id predicate = [NSPredicate predicateWithFormat:@"SELF ENDSWITH[c] '.js'"];
 	files = [files filteredArrayUsingPredicate:predicate]; 
+	
+	// Execute in test order, not finder order
+	files = [files sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 //	NSLog(@"files=%@", files);
 
 	if ([files count] == 0)	return	[JSCocoaController logAndSay:@"no test files found"], 0;
@@ -1887,11 +1880,45 @@ int	liveInstanceCount	= 0;
 	NSLog(@"%@", boxedObjects);
 }
 
-#pragma mark Distant Object Handling (DO)
-//
-// Distant object handling, courtesy of Gus Mueller
-//
-//
+#pragma mark Class inspection
++ (id)rootclasses
+{
+	return [JSCocoaLib rootclasses];
+}
++ (id)classes
+{
+	return [JSCocoaLib classes];
+}
++ (id)protocols
+{
+	return [JSCocoaLib protocols];
+}
++ (id)imageNames
+{
+	return [JSCocoaLib imageNames];
+}
++ (id)methods
+{
+	return [JSCocoaLib methods];
+}
++ (id)runtimeReport
+{
+	return [JSCocoaLib runtimeReport];
+}
++ (id)explainMethodEncoding:(id)encoding
+{
+	id argumentEncodings	= [JSCocoaController parseObjCMethodEncoding:[encoding UTF8String]];
+	id explication			= [NSMutableArray array];
+	for (id arg in argumentEncodings)
+		[explication addObject:[arg typeDescription]
+		];
+	
+	return	explication;
+}
+
+
+
+
 // JSCocoa : handle setting with callMethod
 //	object.width = 100
 //	-> 
@@ -1906,17 +1933,17 @@ int	liveInstanceCount	= 0;
 										[[propertyName substringWithRange:NSMakeRange(0,1)] capitalizedString], 
 										[propertyName substringWithRange:NSMakeRange(1, [propertyName length]-1)]];
 	
-    if ([self JSCocoa:controller callMethod:setterName ofObject:object argumentCount:1 arguments:&value inContext:localCtx exception:exception]) {
+    if ([self JSCocoa:controller callMethod:setterName ofObject:object privateObject:nil argumentCount:1 arguments:&value inContext:localCtx exception:exception]) {
         return YES;
     }
 	
     return	NO;
 }
-
+#pragma mark Distant Object Handling (DO)
 //
 // NSDistantObject call using NSInvocation
 //
-- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception
+- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSCocoaPrivateObject*)thisPrivateObject argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception
 {
     SEL selector = NSSelectorFromString(methodName);
 	if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector)) {
@@ -2010,8 +2037,19 @@ int	liveInstanceCount	= 0;
         [invocation invokeWithTarget:callee];
     }
     @catch (NSException * e) {
-        NSLog(@"Exception calling %@: %@", callee, [e reason]);
-        return JSValueMakeNull(localCtx);
+        NSLog(@"Exception while calling %@. %@", methodName, [e reason]);
+        
+        if ([[e reason] isEqualToString:@"connection went invalid while waiting for a reply"]) {
+            // whoops?
+            // also, how do we not look for some funky localized string here?
+            // also also, can we now make whatever is pointing to this value, nil?
+            
+            if (thisPrivateObject) {
+                NSLog(@"Connection terminated, removing reference to object");
+                thisPrivateObject.object = [NSNull null];
+                [thisPrivateObject setJSValueRef:JSValueMakeNull(localCtx) ctx:localCtx];
+            }
+        }
     }
 
 /*    
@@ -2322,6 +2360,7 @@ int	liveInstanceCount	= 0;
 }
 
 // Finalize - same as dealloc
+static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
 - (void)finalize
 {
 	JSObjectRef hash = NULL;
@@ -2341,6 +2380,7 @@ int	liveInstanceCount	= 0;
 	objc_msgSendSuper(&superData, @selector(finalize));
 	
 	// Ignore warning about missing [super finalize] as the call IS made via objc_msgSendSuper
+	if (__warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper)	[super finalize];
 }
 
 
@@ -2570,6 +2610,16 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 			return	JSValueMakeNumber(ctx, doubleValue);
 		}
 	}
+
+	// Describe ourselves
+	if ([propertyName isEqualToString:@"toString"])
+	{
+		JSStringRef scriptJS = JSStringCreateWithUTF8CString("return '(JSCocoa global object)'");
+		JSObjectRef fn = JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 1, NULL);
+		JSStringRelease(scriptJS);
+		return	fn;
+	}
+
 	return	NULL;
 }
 
@@ -2875,7 +2925,7 @@ static void jsCocoaObject_finalize(JSObjectRef object)
 						if ([jsc useSafeDealloc])
 							[jsc performSelector:@selector(safeDeallocInstance:) withObject:boxedObject afterDelay:0];
 					}
-					else	NSLog(@"safeDealloc could not find the context attached to %@.%x - allocate this object with instance(), or add a Javascript variable to it (obj.hello = 'world')", [boxedObject class], boxedObject);
+					else	NSLog(@"safeDealloc could not find the context attached to %@.%x - allocate this object with instance, or add a Javascript variable to it (obj.hello = 'world')", [boxedObject class], boxedObject);
 				}
 				
 			}
@@ -2914,9 +2964,6 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 	NSString*	propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
 	[NSMakeCollectable(propertyName) autorelease];
 	
-	// Autocall instance
-	if ([propertyName isEqualToString:@"thisObject"])	return	NULL;
-	
 	JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
 //	NSLog(@"Asking for property %@ %@(%@)", propertyName, privateObject, privateObject.type);
 
@@ -2949,7 +2996,7 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 			}
 		}
 
-		// Special case for NSMutableArray get
+		// Special case for NSMutableArray get and Javascript array methods
 		if ([privateObject.object isKindOfClass:[NSArray class]])
 		{
 			id array	= privateObject.object;
@@ -2969,6 +3016,33 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 			
 			// If we have 'length', switch it to 'count'
 			if ([propertyName isEqualToString:@"length"])	propertyName = @"count";
+		
+			// NSArray bridge
+			id callee	= [privateObject object];
+			SEL sel		= NSSelectorFromString(propertyName);
+			if ([propertyName rangeOfString:@":"].location == NSNotFound && ![callee respondsToSelector:sel]
+				&& ![propertyName isEqualToString:@"valueOf"] 
+				&& ![propertyName isEqualToString:@"toString"] 
+			)
+			{
+				id script				= [NSString stringWithFormat:@"return Array.prototype.%@", propertyName];
+				JSStringRef scriptJS	= JSStringCreateWithUTF8CString([script UTF8String]);
+				JSObjectRef fn			= JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 1, NULL);
+				JSValueRef result		= JSObjectCallAsFunction(ctx, fn, NULL, 0, NULL, NULL);
+				JSStringRelease(scriptJS);
+				BOOL isJavascriptArrayMethod =  result ? !JSValueIsUndefined(ctx, result) : NO;
+
+				// Return the packaged Javascript function
+				if (isJavascriptArrayMethod)
+				{
+//					NSLog(@"*** array method : %@", propertyName);
+					JSObjectRef o = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
+					JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+					private.type = @"jsFunction";
+					[private setJSValueRef:result ctx:ctx];
+					return	o;
+				}
+			}
 		}
 		
 		
@@ -3035,8 +3109,11 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 		{
 			id callee	= [privateObject object];
 			SEL sel		= NSSelectorFromString(propertyName);
+			
+			BOOL isInstanceCall = [propertyName isEqualToString:@"instance"];
+			
 			// Go for zero arg call
-			if ([propertyName rangeOfString:@":"].location == NSNotFound && [callee respondsToSelector:sel])
+			if ([propertyName rangeOfString:@":"].location == NSNotFound && ([callee respondsToSelector:sel] || isInstanceCall))
 			{
 				//
 				// Delegate canCallMethod, callMethod
@@ -3054,12 +3131,28 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 						}
 					}
 					// Check if delegate handles calling
-					if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:argumentCount:arguments:inContext:exception:)])
+					if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
 					{
-						JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:propertyName ofObject:callee argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+						JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
 						if (delegateCall)	
 							return	delegateCall;
 					}
+				}
+
+				// instance
+				if (isInstanceCall)
+				{
+					// Manually call and box our object
+					id class	= [callee class];
+					id instance	= [[class alloc] init];
+					JSValueRef	returnValue;
+					[JSCocoaFFIArgument boxObject:instance toJSValueRef:&returnValue inContext:ctx];
+					// Release it, making the javascript box the sole retainer
+					// Nulling all references to this object will release the instance during Javascript GC					
+					JSCocoaPrivateObject* private = JSObjectGetPrivate(JSValueToObject(ctx, returnValue, NULL));
+					[private.object release];
+					
+					return	returnValue;
 				}
 
 				// Special case for alloc : objects 
@@ -3080,7 +3173,7 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 				// If we didn't find a method, try Distant Object
 				if (!method)
 				{
-					JSValueRef res = [jsc JSCocoa:jsc callMethod:propertyName ofObject:callee argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+					JSValueRef res = [jsc JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
 					if (res)	return	res;
 								
 					throwException(ctx, exception, [NSString stringWithFormat:@"Could not get property[%@ %@]", callee, propertyName]);
@@ -3170,7 +3263,7 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 			&& ![methodName isEqualToString:@"valueOf"] 
 			&& ![methodName isEqualToString:@"Super"]
 			&& ![methodName isEqualToString:@"Original"]
-			&& ![methodName isEqualToString:@"instance"])
+/*			&& ![methodName isEqualToString:@"instance"]*/)
 		{
 			if ([methodName rangeOfString:@"_"].location != NSNotFound)
 				[methodName replaceOccurrencesOfString:@"_" withString:@":" options:0 range:NSMakeRange(0, [methodName length])];
@@ -3179,6 +3272,20 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 
 			if (![callee respondsToSelector:NSSelectorFromString(methodName)])
 			{
+				// Instance check
+				if ([methodName hasPrefix:@"instance"])
+				{
+					id initMethodName = [NSString stringWithFormat:@"init%@", [methodName substringFromIndex:8]];
+					if ([callee instancesRespondToSelector:NSSelectorFromString(initMethodName)])
+					{
+						JSObjectRef o = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
+						JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+						private.type = @"method";
+						private.methodName = methodName;
+						return o;
+					}
+				}
+			
 				//
 				// This may be a JS function
 				//
@@ -3228,13 +3335,6 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
 		private.type = @"method";
 		private.methodName = methodName;
 
-		// Special case for instance : setup a valueOf callback calling instance
-		if ([callee class] == callee && [propertyName isEqualToString:@"instance"])
-		{
-			JSStringRef jsName = JSStringCreateWithUTF8CString("thisObject");
-			JSObjectSetProperty(ctx, o, jsName, object, JSCocoaInternalAttribute, NULL);
-			JSStringRelease(jsName);
-		}
 		return	o;
 	}
 	
@@ -3408,7 +3508,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 		
 		// Can't use capitalizedString on the whole string as it will transform 
 		//			myValue 
-		// to		Myvalue (therby destroying camel letters)
+		// to		Myvalue (thereby destroying camel letters)
 		// we want	MyValue
 //		NSString*	setterName = [NSString stringWithFormat:@"set%@:", [propertyName capitalizedString]];
 		// Capitalize only first letter
@@ -3443,7 +3543,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 				// Check if delegate handles calling
 				if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:argumentCount:arguments:inContext:exception:)])
 				{
-					JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:setterName ofObject:callee argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+					JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:setterName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
 					if (delegateCall)	return	!!delegateCall;
 				}
 			}
@@ -3546,7 +3646,6 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 	// Special case for autocall : allow current js object to receive a custom valueOf method that will handle autocall
 	// And a thisObject property holding class for instance autocall
 	if ([propertyName isEqualToString:@"valueOf"])		return	false;
-	if ([propertyName isEqualToString:@"thisObject"])	return	false;
 	// Allow general setting on structs
 	if ([privateObject.type isEqualToString:@"struct"])	return	false;
 
@@ -3642,6 +3741,8 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	BOOL	callingObjC = NO;
 	// Structure return (objc_msgSend_stret)
 	BOOL	usingStret	= NO;
+	// Calling instance... , replaced with init... and released, making the js object sole owner
+	BOOL	callingInstance	= NO;
 
 
 	// Get delegate
@@ -3677,20 +3778,21 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 				}
 			}
 			// Check if delegate handles calling
-			if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:argumentCount:arguments:inContext:exception:)])
+			if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
 			{
-				JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:methodName ofObject:callee argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
+				JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:methodName ofObject:callee privateObject:thisPrivateObject argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
 				if (delegateCall)	return	delegateCall;
 			}
 		}
 
 		// Instance call
+/*
 		if ([callee class] == callee && [methodName isEqualToString:@"instance"])
 		{
 			if (argumentCount > 1)	return	throwException(ctx, exception, @"Invalid argument count in instance call : must be 0 or 1"), NULL;
 			return	[callee instanceWithContext:ctx argumentCount:argumentCount arguments:arguments exception:exception];
 		}
-
+*/
 		// Check selector
 		if (![callee respondsToSelector:NSSelectorFromString(methodName)])
 		{
@@ -3699,7 +3801,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 			//	set( { value : '5', forKey : 'hello' } )
 			//	-> setValue:forKey:
 			//
-			if (![callee respondsToSelector:NSSelectorFromString(methodName)])
+			if ([jsc useSplitCall])
 			{
 				id			splitMethodName		= privateObject.methodName;
 				id class = [callee class];
@@ -3719,34 +3821,48 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 		Method method = class_getInstanceMethod([callee class], NSSelectorFromString(methodName));
 		if (!method)	method = class_getClassMethod([callee class], NSSelectorFromString(methodName));
 
-		// If we didn't find a method, try treating object as Javascript string, then try Distant Object
-		if (!method)	
+		// If we didn't find a method, try an instance call, then try treating object as Javascript string, then try Distant Object
+		if (!method)
 		{
-			// (First) Last chance before exception : try treating callee a Javascript string
-			if ([callee isKindOfClass:[NSString class]])
+			// Instance Check
+			if ([methodName hasPrefix:@"instance"])
 			{
-				id script = [NSString stringWithFormat:@"String.prototype.%@", methodName];
-				JSStringRef	jsScript = JSStringCreateWithUTF8CString([script UTF8String]);
-				JSValueRef result = JSEvaluateScript(ctx, jsScript, NULL, NULL, 1, NULL);
-				JSStringRelease(jsScript);
-				if (result && JSValueGetType(ctx, result) == kJSTypeObject)
-				{
-					JSStringRef string = JSStringCreateWithCFString((CFStringRef)callee);
-					JSValueRef stringValue = JSValueMakeString(ctx, string);
-					JSStringRelease(string);
-
-					JSObjectRef functionObject = JSValueToObject(ctx, result, NULL);
-					JSObjectRef jsThisObject = JSValueToObject(ctx, stringValue, NULL);
-					JSValueRef r =	JSObjectCallAsFunction(ctx, functionObject, jsThisObject, argumentCount, arguments, NULL);
-					return	r;
-				}
+				id initMethodName = [NSString stringWithFormat:@"init%@", [methodName substringFromIndex:8]];
+				id class		= [callee class];
+				method			= class_getInstanceMethod(class, NSSelectorFromString(initMethodName));
+				methodName		= initMethodName;
+				callee			= [class alloc];
+				callingInstance	= YES;
 			}
 			
-			// Last chance before exception : try calling DO
-			JSValueRef res = [jsc JSCocoa:jsc callMethod:methodName ofObject:callee argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
-			if (res)	return	res;
-			
-			return	throwException(ctx, exception, [NSString stringWithFormat:@"jsCocoaObject_callAsFunction : method %@ not found", methodName]), NULL;
+			if (!method)
+			{
+				// (First) Last chance before exception : try treating callee as a Javascript string
+				if ([callee isKindOfClass:[NSString class]])
+				{
+					id script = [NSString stringWithFormat:@"String.prototype.%@", methodName];
+					JSStringRef	jsScript = JSStringCreateWithUTF8CString([script UTF8String]);
+					JSValueRef result = JSEvaluateScript(ctx, jsScript, NULL, NULL, 1, NULL);
+					JSStringRelease(jsScript);
+					if (result && JSValueGetType(ctx, result) == kJSTypeObject)
+					{
+						JSStringRef string = JSStringCreateWithCFString((CFStringRef)callee);
+						JSValueRef stringValue = JSValueMakeString(ctx, string);
+						JSStringRelease(string);
+
+						JSObjectRef functionObject = JSValueToObject(ctx, result, NULL);
+						JSObjectRef jsThisObject = JSValueToObject(ctx, stringValue, NULL);
+						JSValueRef r =	JSObjectCallAsFunction(ctx, functionObject, jsThisObject, argumentCount, arguments, NULL);
+						return	r;
+					}
+				}
+				
+				// Last chance before exception : try calling DO
+				JSValueRef res = [jsc JSCocoa:jsc callMethod:methodName ofObject:callee privateObject:thisPrivateObject argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
+				if (res)	return	res;
+				
+				return	throwException(ctx, exception, [NSString stringWithFormat:@"jsCocoaObject_callAsFunction : method %@ not found", methodName]), NULL;
+			}
 		}
 		
 		// Extract arguments
@@ -3798,6 +3914,8 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	//	we may have a variadic call
 	//
 	BOOL isVariadic = NO;
+	// Possibly account for a missing terminating NULL in ObjC variadic method
+	BOOL sugarCheckVariadic = NO;
 	if (callAddressArgumentCount != argumentCount)	
 	{
 		if (methodName)		isVariadic = [[JSCocoaController controllerFromContext:ctx] isMethodVariadic:methodName class:[callee class]];
@@ -3807,6 +3925,14 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 		if (!isVariadic)
 		{
 			return	throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,	callAddressArgumentCount, argumentCount]), NULL;
+		}
+		
+		// Sugar check : if last object is not NULL, account for it
+		if (isVariadic && callingObjC && argumentCount && !JSValueIsNull(ctx, arguments[argumentCount-1]))
+		{
+			// Will be tested during argument conversion
+			sugarCheckVariadic = YES;
+			argumentCount++;
 		}
 	}
 
@@ -3858,7 +3984,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 //				NSLog(@"superClass=%@ (old=%@) (%@) function=%x", superSelectorClass, [callee superclass], [callee class], function);
 			}
 		}
-	
+
 		// Setup arguments, unboxing or converting data
 		for (i=0; i<argumentCount; i++, idx++)
 		{
@@ -3874,7 +4000,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 				arg		= [argumentEncodings objectAtIndex:idx+1];
 
 			// Convert argument
-			JSValueRef			jsValue	= arguments[i];
+			JSValueRef			jsValue	= sugarCheckVariadic && i == argumentCount-1 ? JSValueMakeNull(ctx) : arguments[i];
 			BOOL	shouldConvert = YES;
 			// Check type o modifiers
 			if ([arg typeEncoding] == '^')
@@ -3921,7 +4047,6 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	// Get return value holder
 	id returnValue = [argumentEncodings objectAtIndex:0];
 	
-	
 	// Allocate return value storage if it's a pointer
 	if ([returnValue typeEncoding] == '^')
 		[returnValue allocateStorage];
@@ -3955,6 +4080,14 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	JSValueRef	jsReturnValue = NULL;
 	BOOL converted = [returnValue toJSValueRef:&jsReturnValue inContext:ctx];
 	if (!converted)	return	throwException(ctx, exception, [NSString stringWithFormat:@"Return value not converted in %@", methodName?methodName:functionName]), NULL;
+	
+	// Instance call : release object to make js object sole owner
+	if (callingInstance)
+	{
+		JSCocoaPrivateObject* private = JSObjectGetPrivate(JSValueToObject(ctx, jsReturnValue, NULL));
+		[private.object release];
+	}
+
 	
 	return	jsReturnValue;
 }
@@ -4031,85 +4164,91 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
 			return	o;
 		}
 	}
+
 	// Javascript custom methods
-	if ([privateObject.methodName isEqualToString:@"toString"] || [privateObject.methodName isEqualToString:@"valueOf"])
+	id methodName = privateObject.methodName;
+	// Possible optimization if more custom methods are handled
+//	if ([customCallPaths valueForKey:methodName])
 	{
-		JSValueRef jsValue = valueOfCallback(ctx, function, thisObject, 0, NULL, NULL);
-		if ([privateObject.methodName isEqualToString:@"toString"])	
+		if ([methodName isEqualToString:@"toString"] || [methodName isEqualToString:@"valueOf"])
 		{
-			JSStringRef str = JSValueToStringCopy(ctx, jsValue, NULL);
-			JSValueRef ret = JSValueMakeString(ctx, str);
-			JSStringRelease(str);
-			return ret;
+			JSValueRef jsValue = valueOfCallback(ctx, function, thisObject, 0, NULL, NULL);
+			if ([privateObject.methodName isEqualToString:@"toString"])	
+			{
+				JSStringRef str = JSValueToStringCopy(ctx, jsValue, NULL);
+				JSValueRef ret = JSValueMakeString(ctx, str);
+				JSStringRelease(str);
+				return ret;
+			}
+			return	jsValue;
 		}
-		return	jsValue;
-	}
-	
-	//
-	// Super/Swizzled handling : get method name and move js arguments to C array
-	//
-	//	call this.Super(arguments) to call parent method
-	//	call this.Original(arguments) to call swizzled method
-	//
-	if ([privateObject.methodName isEqualToString:@"Super"] || [privateObject.methodName isEqualToString:@"Original"])
-	{
-		id methodName = privateObject.methodName;
-		BOOL callingSwizzled = [methodName isEqualToString:@"Original"];
-		if (argumentCount != 1)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ wants one argument array", methodName]), NULL;
+		
+		//
+		// Super/Swizzled handling : get method name and move js arguments to C array
+		//
+		//	call this.Super(arguments) to call parent method
+		//	call this.Original(arguments) to call swizzled method
+		//
+		if ([methodName isEqualToString:@"Super"] || [methodName isEqualToString:@"Original"])
+		{
+			id methodName = privateObject.methodName;
+			BOOL callingSwizzled = [methodName isEqualToString:@"Original"];
+			if (argumentCount != 1)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ wants one argument array", methodName]), NULL;
 
-		// Get argument object
-		JSObjectRef argumentObject = JSValueToObject(ctx, arguments[0], NULL);
-		
-		// Get argument count
-		JSStringRef	jsLengthName = JSStringCreateWithUTF8CString("length");
-		JSValueRef	jsLength = JSObjectGetProperty(ctx, argumentObject, jsLengthName, NULL);
-		JSStringRelease(jsLengthName);
-		if (JSValueGetType(ctx, jsLength) != kJSTypeNumber)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ has no arguments", methodName]), NULL;
-		
-		int i, superArgumentCount = (int)JSValueToNumber(ctx, jsLength, NULL);
-		if (superArgumentCount)
-		{
-			superArguments = malloc(sizeof(JSValueRef)*superArgumentCount);
-			for (i=0; i<superArgumentCount; i++)
-				superArguments[i] = JSObjectGetPropertyAtIndex(ctx, argumentObject, i, NULL);
-		}
+			// Get argument object
+			JSObjectRef argumentObject = JSValueToObject(ctx, arguments[0], NULL);
+			
+			// Get argument count
+			JSStringRef	jsLengthName = JSStringCreateWithUTF8CString("length");
+			JSValueRef	jsLength = JSObjectGetProperty(ctx, argumentObject, jsLengthName, NULL);
+			JSStringRelease(jsLengthName);
+			if (JSValueGetType(ctx, jsLength) != kJSTypeNumber)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ has no arguments", methodName]), NULL;
+			
+			int i, superArgumentCount = (int)JSValueToNumber(ctx, jsLength, NULL);
+			if (superArgumentCount)
+			{
+				superArguments = malloc(sizeof(JSValueRef)*superArgumentCount);
+				for (i=0; i<superArgumentCount; i++)
+					superArguments[i] = JSObjectGetPropertyAtIndex(ctx, argumentObject, i, NULL);
+			}
 
-		argumentCount = superArgumentCount;
-		
-		// Get method name and associated class (need class for obj_msgSendSuper)
-		JSStringRef	jsCalleeName = JSStringCreateWithUTF8CString("callee");
-		JSValueRef	jsCalleeValue = JSObjectGetProperty(ctx, argumentObject, jsCalleeName, NULL);
-		JSStringRelease(jsCalleeName);
-		JSObjectRef jsCallee = JSValueToObject(ctx, jsCalleeValue, NULL);
-		superSelector = [[JSCocoaController controllerFromContext:ctx] selectorForJSFunction:jsCallee];
-		if (!superSelector)	
-		{
-			if (superArguments)		free(superArguments);
-			if (callingSwizzled)	return	throwException(ctx, exception, @"Original couldn't find swizzled method"), NULL;
-			return	throwException(ctx, exception, @"Super couldn't find parent method"), NULL;
-		}
-		superSelectorClass = [[[JSCocoaController controllerFromContext:ctx] classForJSFunction:jsCallee] superclass];
-		
-		// Swizzled handling : we're just changing the selector
-		if (callingSwizzled)
-		{
-			if (![superSelector hasPrefix:OriginalMethodPrefix])
+			argumentCount = superArgumentCount;
+			
+			// Get method name and associated class (need class for obj_msgSendSuper)
+			JSStringRef	jsCalleeName = JSStringCreateWithUTF8CString("callee");
+			JSValueRef	jsCalleeValue = JSObjectGetProperty(ctx, argumentObject, jsCalleeName, NULL);
+			JSStringRelease(jsCalleeName);
+			JSObjectRef jsCallee = JSValueToObject(ctx, jsCalleeValue, NULL);
+			superSelector = [[JSCocoaController controllerFromContext:ctx] selectorForJSFunction:jsCallee];
+			if (!superSelector)	
 			{
 				if (superArguments)		free(superArguments);
-				return	throwException(ctx, exception, [NSString stringWithFormat:@"Original called on a non swizzled method (%@)", superSelector]), NULL;
+				if (callingSwizzled)	return	throwException(ctx, exception, @"Original couldn't find swizzled method"), NULL;
+				return	throwException(ctx, exception, @"Super couldn't find parent method"), NULL;
 			}
-			function = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-			JSCocoaPrivateObject* private = JSObjectGetPrivate(function);
-			private.type		= @"method";
-			private.methodName	= superSelector;
+			superSelectorClass = [[[JSCocoaController controllerFromContext:ctx] classForJSFunction:jsCallee] superclass];
 			
-			superSelector		= NULL;
-			superSelectorClass	= NULL;
+			// Swizzled handling : we're just changing the selector
+			if (callingSwizzled)
+			{
+				if (![superSelector hasPrefix:OriginalMethodPrefix])
+				{
+					if (superArguments)		free(superArguments);
+					return	throwException(ctx, exception, [NSString stringWithFormat:@"Original called on a non swizzled method (%@)", superSelector]), NULL;
+				}
+				function = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
+				JSCocoaPrivateObject* private = JSObjectGetPrivate(function);
+				private.type		= @"method";
+				private.methodName	= superSelector;
+				
+				superSelector		= NULL;
+				superSelectorClass	= NULL;
+			}
+			
+			// Don't call NSObject's safeDealloc as it doesn't exist
+			if ([superSelector isEqualToString:@"safeDealloc"] && superSelectorClass == [NSObject class])
+				return	JSValueMakeUndefined(ctx);
 		}
-		
-		// Don't call NSObject's safeDealloc as it doesn't exist
-		if ([superSelector isEqualToString:@"safeDealloc"] && superSelectorClass == [NSObject class])
-			return	JSValueMakeUndefined(ctx);
 	}
 
 	JSValueRef* functionArguments	= superArguments ? superArguments : (JSValueRef*)arguments;
@@ -4212,12 +4351,6 @@ static void throwException(JSContextRef ctx, JSValueRef* exception, NSString* re
 		if (isSpeaking)	system([[NSString stringWithFormat:@"say \"%@\" &", reason] UTF8String]);
 	}
 
-	// Convert exception to string
-	JSStringRef jsName = JSStringCreateWithUTF8CString([reason UTF8String]);
-	JSValueRef jsString = JSValueMakeString(ctx, jsName);
-	JSStringRelease(jsName);
-
-
 	// Gather call stack
 	JSValueRef	callStackException = NULL;
 	JSStringRef scriptJS = JSStringCreateWithUTF8CString("return dumpCallStack()");
@@ -4236,6 +4369,11 @@ static void throwException(JSContextRef ctx, JSValueRef* exception, NSString* re
 		if ([callStack length])
 			reason = [NSString stringWithFormat:@"%@\n%@", reason, callStack];
 	}
+
+	// Convert exception to string
+	JSStringRef jsName = JSStringCreateWithUTF8CString([reason UTF8String]);
+	JSValueRef jsString = JSValueMakeString(ctx, jsName);
+	JSStringRelease(jsName);
 
 	// Convert to object to allow JavascriptCore to add line and sourceURL
 	*exception	= JSValueToObject(ctx, jsString, NULL);

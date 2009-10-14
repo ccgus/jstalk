@@ -52,3 +52,47 @@
 - (int)typeCount;
 
 @end
+
+
+@interface JSCocoaLib : NSObject
+
++ (id)rootclasses;
++ (id)classes;
++ (id)protocols;
++ (id)imageNames;
++ (id)methods;
++ (id)runtimeReport;
+
+@end
+
+
+
+@interface NSObject(ClassWalker)
++ (id)__classImage;
+- (id)__classImage;
++ (id)__derivationPath;
+- (id)__derivationPath;
++ (int)__derivationLevel;
+- (int)__derivationLevel;
++ (id)__ownMethods;
+- (id)__ownMethods;
++ (id)__methods;
+- (id)__methods;
++ (id)__subclasses;
+- (id)__subclasses;
++ (id)__subclassTree;
+- (id)__subclassTree;
++ (id)__ownIvars;
+- (id)__ownIvars;
++ (id)__ivars;
+- (id)__ivars;
++ (id)__ownProperties;
+- (id)__ownProperties;
++ (id)__properties;
+- (id)__properties;
++ (id)__ownProtocols;
+- (id)__ownProtocols;
++ (id)__protocols;
+- (id)__protocols;
+
+@end

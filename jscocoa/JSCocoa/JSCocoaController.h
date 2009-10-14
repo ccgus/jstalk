@@ -38,10 +38,33 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 	JSGlobalContextRef	ctx;
     id					_delegate;
+
+	//
+	// Safe dealloc
+	//	- (void)dealloc cannot be overloaded as it is called during JS GC, which forbids new JS code execution.
+	//	As the js dealloc method cannot be called, safe dealloc allows it to be executed during the next run loop cycle
+	//	NOTE : upon destroying a JSCocoaController, safe dealloc is disabled
+	//
 	BOOL				useSafeDealloc;
+
+	//
+	// Split call
+	//	Allows calling multi param ObjC messages with a jQuery-like syntax.
+	//
+	//	obj.do({ this : 'hello', andThat : 'world' })
+	//		instead of
+	//		obj.dothis_andThat_('hello', 'world')
+	//
+	BOOL				useSplitCall;
+
+	// JSLint : used for ObjJ syntax, class syntax, return if
+	BOOL				useJSLint;
 }
 
 @property (assign) id delegate;
+@property BOOL useSafeDealloc;
+@property BOOL useSplitCall;
+@property BOOL useJSLint;
 
 - (id)init;
 - (id)initWithGlobalContext:(JSGlobalContextRef)ctx;
@@ -102,6 +125,17 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 + (void)logBoxedObjects;
 
 //
+// Class inspection (shortcuts to JSCocoaLib)
+//
++ (id)rootclasses;
++ (id)classes;
++ (id)protocols;
++ (id)imageNames;
++ (id)methods;
++ (id)runtimeReport;
++ (id)explainMethodEncoding:(id)encoding;
+
+//
 // Class handling
 //
 + (BOOL)overloadInstanceMethod:(NSString*)methodName class:(Class)class jsFunction:(JSValueRefAndContextRef)valueAndContext;
@@ -140,8 +174,6 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 
 - (BOOL)useAutoCall;
 - (void)setUseAutoCall:(BOOL)b;
-- (BOOL)useSafeDealloc;
-- (void)setUseSafeDealloc:(BOOL)b;
 
 - (const char*)typeEncodingOfMethod:(NSString*)methodName class:(NSString*)className;
 + (const char*)typeEncodingOfMethod:(NSString*)methodName class:(NSString*)className;
@@ -193,7 +225,7 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 // Custom handler for calling
 //	Return YES to indicate you handled calling
 //	Return NO to let JSCocoa handle calling
-- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)object argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
+- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSCocoaPrivateObject*)thisPrivateObject argumentCount:(int)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception;
 
 //
 // Getting global properties (classes, structures, C function names, enums via OSXObject_getProperty)

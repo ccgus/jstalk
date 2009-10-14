@@ -7,12 +7,161 @@
 //
 
 #import "JSTTextView.h"
+#import "MarkerLineNumberView.h"
+#import "TDParseKit.h"
+
+@interface JSTTextView (Private)
+- (void) setupLineView;
+@end
 
 
 @implementation JSTTextView
 
-- (void)awakeFromNib {
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidChangeSelection:) name:NSTextViewDidChangeSelectionNotification object:self];
+@synthesize keywords=_keywords;
+
+
+- (id)initWithFrame:(NSRect)frameRect textContainer:(NSTextContainer *)container {
+    
+	self = [super initWithFrame:frameRect textContainer:container];
+    
+	if (self != nil) {
+        [self performSelector:@selector(setupLineViewAndStuff) withObject:nil afterDelay:0];
+    }
+    
+    return self;
+}
+
+- (id) initWithCoder:(NSCoder *)aDecoder {
+    
+    self = [super initWithCoder:aDecoder];
+	if (self != nil) {
+        // what's the right way to do this?
+        [self performSelector:@selector(setupLineViewAndStuff) withObject:nil afterDelay:0];
+    }
+    
+    return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    [_lineNumberView release];
+    
+    [super dealloc];
+}
+
+
+- (void) setupLineViewAndStuff {
+    
+    _lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
+    [[self enclosingScrollView] setVerticalRulerView:_lineNumberView];
+    [[self enclosingScrollView] setHasHorizontalRuler:NO];
+    [[self enclosingScrollView] setHasVerticalRuler:YES];
+    [[self enclosingScrollView] setRulersVisible:YES];
+    
+    [[self textStorage] setDelegate:self];
+    
+    /*
+     var s = "break case catch continue default delete do else finally for function if in instanceof new return switch this throw try typeof var void while with abstract boolean byte char class const debugger double enum export extends final float goto implements import int interface long native package private protected public short static super synchronized throws transient volatile null true false nil"
+     
+     words = s.split(" ")
+     var i = 0;
+     list = ""
+     while (i < words.length) {
+     list = list + '@"' + words[i] + '", ';
+     i++
+     }
+     
+     print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
+     */
+    
+    NSArray *blueWords = [NSArray arrayWithObjects:@"break", @"case", @"catch", @"continue", @"default", @"delete", @"do", @"else", @"finally", @"for", @"function", @"if", @"in", @"instanceof", @"new", @"return", @"switch", @"this", @"throw", @"try", @"typeof", @"var", @"void", @"while", @"with", @"abstract", @"boolean", @"byte", @"char", @"class", @"const", @"debugger", @"double", @"enum", @"export", @"extends", @"final", @"float", @"goto", @"implements", @"import", @"int", @"interface", @"long", @"native", @"package", @"private", @"protected", @"public", @"short", @"static", @"super", @"synchronized", @"throws", @"transient", @"volatile", @"null", @"true", @"false", @"nil",  nil];
+    
+    NSMutableDictionary *keywords = [NSMutableDictionary dictionary];
+    
+    for (NSString *word in blueWords) {
+        [keywords setObject:[NSColor blueColor] forKey:word];
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewDidChangeSelection:) name:NSTextViewDidChangeSelectionNotification object:self];
+
+    
+    self.keywords = keywords;
+    
+    
+    [self parseCode:nil];
+    
+}
+
+
+
+
+
+
+- (void) parseCode:(id)sender {
+    
+    // we should really do substrings...
+    
+    NSString *sourceString = [[self textStorage] string];
+    TDTokenizer *tokenizer = [TDTokenizer tokenizerWithString:sourceString];
+    
+    tokenizer.commentState.reportsCommentTokens = YES;
+    tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
+    
+    TDToken *eof = [TDToken EOFToken];
+    TDToken *tok = nil;
+    
+    [[self textStorage] beginEditing];
+    
+    NSUInteger sourceLoc = 0;
+    
+    while ((tok = [tokenizer nextToken]) != eof) {
+        
+        NSColor *fontColor = [NSColor blackColor];
+        
+        if (tok.quotedString) {
+            fontColor = [NSColor darkGrayColor];
+        }
+        else if (tok.isNumber) {
+            fontColor = [NSColor blueColor];
+        }
+        else if (tok.isComment) {
+            fontColor = [NSColor redColor];
+        }
+        else if (tok.isWord) {
+            NSColor *c = [_keywords objectForKey:[tok stringValue]];
+            fontColor = c ? c : fontColor;
+        }
+        
+        NSUInteger strLen = [[tok stringValue] length];
+        
+        if (fontColor) {
+            [[self textStorage] addAttribute:NSForegroundColorAttributeName value:fontColor range:NSMakeRange(sourceLoc, strLen)];
+        }
+        
+        sourceLoc += strLen;
+    }
+    
+    
+    [[self textStorage] endEditing];
+    
+}
+
+
+
+- (void) textStorageDidProcessEditing:(NSNotification *)note {
+    [self parseCode:nil];
+}
+
+
+
+
+
+
+
+
+- (NSArray *) writablePasteboardTypes {
+    return [[super writablePasteboardTypes] arrayByAddingObject:NSRTFPboardType];
 }
 
 - (void) insertTab:(id)sender {

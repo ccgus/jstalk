@@ -7,10 +7,18 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "NoodleLineNumberView.h"
 
+@class NoodleLineNumberView;
 
 @interface JSTTextView : NSTextView {
-
+    NoodleLineNumberView	*_lineNumberView;
+    NSDictionary *_keywords;
 }
+
+
+@property (retain) NSDictionary *keywords;
+
+- (void) parseCode:(id)sender;
 
 @end
