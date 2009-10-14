@@ -28,7 +28,6 @@
     NSDictionary *_previousOutputTypingAttributes;
 }
 
-@property (retain) NSDictionary *keywords;
 @property (retain) JSTFileWatcher *externalEditorFileWatcher;
 @property (retain) NSDictionary *previousOutputTypingAttributes;
 

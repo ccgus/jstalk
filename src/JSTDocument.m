@@ -19,7 +19,6 @@
 
 
 @implementation JSTDocument
-@synthesize keywords=_keywords;
 @synthesize externalEditorFileWatcher=_externalEditorFileWatcher;
 @synthesize previousOutputTypingAttributes=_previousOutputTypingAttributes;
 
