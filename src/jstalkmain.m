@@ -2,6 +2,26 @@
 #import "JSTListener.h"
 #import "JSTalk.h"
 
+
+@interface JSCErrorHandler : NSObject {
+    
+}
+@end
+
+@implementation JSCErrorHandler
+
+- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+    
+    NSLog(@"Error line %d, %@", lineNumber, error);
+    
+    exit(1);
+}
+
+
+@end
+
+
+
 int main(int argc, char *argv[]) {
     
     if (argc < 2) {
@@ -15,7 +35,14 @@ int main(int argc, char *argv[]) {
                                             encoding:NSUTF8StringEncoding
                                                error:nil];
     
+    JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
+    
     JSTalk *t = [[[JSTalk alloc] init] autorelease];
+    
+    JSCocoaController *jsController = [t jsController];
+    jsController.delegate = eh;
+    
+    [t.env setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
     
     if ([s hasPrefix:@"#!"]) {
         
@@ -29,4 +56,6 @@ int main(int argc, char *argv[]) {
     [t executeString:s];
     
     [pool release];
+    
+    return 0;
 }

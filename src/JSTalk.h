@@ -13,15 +13,17 @@
     id _printController;
     id _errorController;
     JSCocoaController *_jsController;
+    NSMutableDictionary *_env;
 }
 
 @property (assign) id printController;
 @property (assign) id errorController;
 @property (retain) JSCocoaController *jsController;
+@property (retain) NSMutableDictionary *env;
 
 - (id) executeString:(NSString*) str;
-- (void) pushObject:(id)obj withName:(NSString*)name inController:(JSCocoaController*)jsController;
-- (void) deleteObjectWithName:(NSString*)name inController:(JSCocoaController*)jsController;
+- (void) pushObject:(id)obj withName:(NSString*)name;
+- (void) deleteObjectWithName:(NSString*)name;
 
 - (JSCocoaController*) jsController;
 - (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;

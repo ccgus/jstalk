@@ -7,7 +7,16 @@
 //
 
 #import "JSTExtras.h"
+#import "JSTalk.h"
 #import <ScriptingBridge/ScriptingBridge.h>
+
+@implementation JSTalk (JSTExtras)
+
+- (void) exit:(int)termCode {
+    exit(termCode);
+}
+
+@end
 
 @implementation NSApplication (JSTExtras)
 

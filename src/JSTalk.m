@@ -23,6 +23,7 @@ static NSMutableArray *JSTalkPluginList;
 @synthesize printController=_printController;
 @synthesize errorController=_errorController;
 @synthesize jsController=_jsController;
+@synthesize env=_env;
 
 + (void) load {
     //debug(@"%s:%d", __FUNCTION__, __LINE__);
@@ -44,6 +45,7 @@ static NSMutableArray *JSTalkPluginList;
 	self = [super init];
 	if (self != nil) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
+        self.env = [NSMutableDictionary dictionary];
 	}
     
 	return self;
@@ -51,7 +53,6 @@ static NSMutableArray *JSTalkPluginList;
 
 
 - (void)dealloc {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
@@ -61,6 +62,9 @@ static NSMutableArray *JSTalkPluginList;
     
     [_jsController release];
     _jsController = 0x00;
+    
+    [_env release];
+    _env = 0x00;
     
     [super dealloc];
 }
@@ -140,9 +144,9 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
-- (void) pushObject:(id)obj withName:(NSString*)name inController:(JSCocoaController*)jsController {
+- (void) pushObject:(id)obj withName:(NSString*)name  {
     
-    JSContextRef ctx                = [jsController ctx];
+    JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
     JSObjectRef jsObject            = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
     JSCocoaPrivateObject *private   = JSObjectGetPrivate(jsObject);
@@ -153,9 +157,9 @@ static NSMutableArray *JSTalkPluginList;
     JSStringRelease(jsName);  
 }
 
-- (void) deleteObjectWithName:(NSString*)name inController:(JSCocoaController*)jsController {
+- (void) deleteObjectWithName:(NSString*)name {
     
-    JSContextRef ctx                = [jsController ctx];
+    JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
 
     JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, NULL);
@@ -171,8 +175,8 @@ static NSMutableArray *JSTalkPluginList;
     }
     
     str = [JSTPreprocessor preprocessCode:str];
-        
-    [self pushObject:self withName:@"jstalk" inController:_jsController];
+    
+    [self pushObject:self withName:@"jstalk"];
     
     JSValueRef resultRef = 0x00;
     id resultObj = 0x00;
@@ -193,7 +197,7 @@ static NSMutableArray *JSTalkPluginList;
         [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
     
-    [self deleteObjectWithName:@"jstalk" inController:_jsController];
+    [self deleteObjectWithName:@"jstalk"];
     
     // this will free up the reference to ourself
     if ([_jsController ctx]) {

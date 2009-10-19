@@ -173,7 +173,6 @@
     
     @try {
         
-        
         JSTalk *jstalk = [[JSTalk alloc] init];
         
         JSCocoaController *jsController = [jstalk jsController];
@@ -182,6 +181,10 @@
         jstalk.printController = self;
         
         [errorLabel setStringValue:@""];
+        
+        if ([self fileURL]) {
+            [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
+        }
         
         if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
             [self clearConsole:nil];

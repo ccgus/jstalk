@@ -239,6 +239,13 @@
 			remoteGlobalIDString = CC4143190F25254200E46669;
 			remoteInfo = "JSTalk Framework";
 		};
+		CC77FDCE10879C8D00323EE7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CC5FB7C10F1FDCCC00F4ECC2;
+			remoteInfo = "jstalk command line";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -823,6 +830,7 @@
 			dependencies = (
 				CC5064E60F4A164D00F4A952 /* PBXTargetDependency */,
 				CC43C12A0F4BBE750044BA41 /* PBXTargetDependency */,
+				CC77FDCF10879C8D00323EE7 /* PBXTargetDependency */,
 			);
 			name = "JSTalk Editor";
 			productInstallPath = "$(HOME)/Applications";
@@ -1104,6 +1112,11 @@
 			isa = PBXTargetDependency;
 			target = CC4143190F25254200E46669 /* JSTalk Framework */;
 			targetProxy = CC5064E50F4A164D00F4A952 /* PBXContainerItemProxy */;
+		};
+		CC77FDCF10879C8D00323EE7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */;
+			targetProxy = CC77FDCE10879C8D00323EE7 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
