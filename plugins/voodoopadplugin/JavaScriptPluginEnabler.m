@@ -84,8 +84,6 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 - (BOOL) handleURL:(NSString*)theURL {
     
-    debug(@"theURL: %@", theURL);
-    
     if ([theURL hasPrefix:@"jstalk:"]) {
         theURL = [theURL substringWithRange:NSMakeRange(7, [theURL length] - 7)];
     }
