@@ -66,6 +66,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
     [[self pluginManager] registerEventRunner:self forLanguage:@"JSTalk"];
     
+    [[self pluginManager] registerURLHandler:self];
     
     // this guy openes up a port to listen for outside JSTalk commands commands
     [JSTalk listen];
@@ -76,6 +77,46 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     return NO;
 }
 
+- (BOOL) canHandleURL:(NSString*)theUrl {
+    return [theUrl hasPrefix:@"jstalk:"] || [theUrl hasPrefix:@"javascript:"];
+}
+
+
+- (BOOL) handleURL:(NSString*)theURL {
+    
+    debug(@"theURL: %@", theURL);
+    
+    if ([theURL hasPrefix:@"jstalk:"]) {
+        theURL = [theURL substringWithRange:NSMakeRange(7, [theURL length] - 7)];
+    }
+    else if ([theURL hasPrefix:@"javascript:"]) {
+        theURL = [theURL substringWithRange:NSMakeRange(11, [theURL length] - 11)];
+    }
+    else {
+        // ...?
+        return NO;
+    }
+    
+    NSWindowController *wc = 0x00;
+    NSDocument *currentDoc = [[NSDocumentController sharedDocumentController] currentDocument];
+    
+    // let's see if we can figure out what the current window controller is.
+    if (currentDoc && [[currentDoc windowControllers] count]) {
+        NSWindowController *currentWindowController = [[currentDoc windowControllers] objectAtIndex:0];
+        
+        // we're really just making an educated guess as to this being the right window controller.  I'm assuming someone's clicking on 
+        // a link.
+        if ([[currentWindowController window] isMainWindow]) {
+            wc = currentWindowController;
+        }
+    }
+    
+    NSString *theSource = [theURL stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    [self runScript:theSource withWindowController:(id)wc];
+    
+    return YES;
+}
 
 - (void)savePanelDidEndForSaveAsJavaScript:(NSSavePanel *)savePanel
                          returnCode:(int)returnCode
@@ -124,8 +165,8 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
     
-    [jstalk pushObject:windowController withName:@"windowController" inController:[jstalk jsController]];
-    [jstalk pushObject:[windowController document] withName:@"document" inController:[jstalk jsController]];
+    [jstalk pushObject:windowController withName:@"windowController"];
+    [jstalk pushObject:[windowController document] withName:@"document"];
     
     JSCocoaController *jsController = [jstalk jsController];
     
