@@ -3,7 +3,7 @@
 
 
 
-@interface JavaScriptPluginEnabler :  VPPlugin <VPEventRunner>  {
+@interface JavaScriptPluginEnabler :  VPPlugin <VPEventRunner,VPURLHandler>  {
     NSTextView *_nonRetainedCurrentTextView;
 }
 
@@ -11,6 +11,7 @@
 - (void) registerScript:(NSString*)scriptPath;
 
 - (void) handleRunAsJavaScript:(id<VPPluginWindowController>)windowController;
+- (void) runScript:(NSString*)script withWindowController:(id<VPPluginWindowController>)windowController;
 
 @end
 
