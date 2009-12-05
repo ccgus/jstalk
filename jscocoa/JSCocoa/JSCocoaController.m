@@ -180,13 +180,11 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	{
 		ctx = _ctx;
 		JSGlobalContextRetain(ctx);
-		
 		JSObjectRef o = JSObjectMake(ctx, OSXObjectClass, NULL);
 		// Set a global var named 'OSX' which will fulfill the usual role of JSCocoa's global object
 		JSStringRef	jsName = JSStringCreateWithUTF8CString("OSX");
 		JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, o, kJSPropertyAttributeDontDelete, NULL);
-		JSStringRelease(jsName);
-		
+		JSStringRelease(jsName);		
 	}
 
 	// Create a reference to ourselves, and make it read only, don't enum, don't delete
@@ -204,6 +202,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 #endif
 
 	// Load class kit
+	useJSLint		= NO;
 	id lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
 	if ([[NSFileManager defaultManager] fileExistsAtPath:lintPath])	[self evalJSFile:lintPath];
 	id classKitPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"class" ofType:@"js"];
@@ -423,26 +422,10 @@ static id JSCocoaSingleton = NULL;
 	// Delegate canLoadJSFile
 	//
 	if (_delegate && [_delegate respondsToSelector:@selector(JSCocoa:canLoadJSFile:)] && ![_delegate JSCocoa:self canLoadJSFile:path])	return	NO;
-	
-	// Normal path, with macro expansion for class definitions
-	// OR
-	// Lintex path
-	id functionName = @"expandJSMacros";
 
 	// Expand macros
-	BOOL hasFunction = [self hasJSFunctionNamed:functionName];
-	if (hasFunction && useJSLint)
-	{
-		id expandedScript = [self unboxJSValueRef:[self callJSFunctionNamed:functionName withArguments:script, nil]];
-		// Bail if expansion failed
-		if (!expandedScript || ![expandedScript isKindOfClass:[NSString class]])	
-			return NSLog(@"%@ expansion failed on %@ (%@)", functionName, path, expandedScript), NO;
-
-		script = expandedScript;
-//		NSLog(@"===================================================================================");
-//		NSLog(@"%@", expandedScript);
-	}
-
+	script = [self expandJSMacros:script url:path];
+	
 	//
 	// Delegate canEvaluateScript, willEvaluateScript
 	//
@@ -488,6 +471,9 @@ static id JSCocoaSingleton = NULL;
 - (JSValueRef)evalJSString:(NSString*)script withScriptURL:(NSString*)url
 {
 	if (!script)	return	NULL;
+
+	// Expand macros
+	script = [self expandJSMacros:script url:nil];
 	
 	//
 	// Delegate canEvaluateScript, willEvaluateScript
@@ -636,6 +622,29 @@ static id JSCocoaSingleton = NULL;
 	return	!![self JSFunctionNamed:name];
 }
 
+//
+// Expand macros
+//
+- (NSString*)expandJSMacros:(NSString*)script url:(NSString*)url
+{
+	// Normal path, with macro expansion for class definitions
+	// OR
+	// Lintex path
+	id functionName = @"expandJSMacros";
+
+	// Expand macros
+	BOOL hasFunction = [self hasJSFunctionNamed:functionName];
+	if (hasFunction && useJSLint)
+	{
+		id expandedScript = [self unboxJSValueRef:[self callJSFunctionNamed:functionName withArguments:script, nil]];
+		// Bail if expansion failed
+		if (!expandedScript || ![expandedScript isKindOfClass:[NSString class]]) 
+			return NSLog(@"%@ expansion failed on %@ (%@)", functionName, url, expandedScript), nil;
+
+		script = expandedScript;
+	}
+	return	script;
+}
 
 //
 // Unbox a JSValueRef
@@ -2579,11 +2588,18 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 			// Grab symbol
 			void* symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
 			if (!symbol)	return	NSLog(@"(OSX_getPropertyCallback) symbol %@ not found", propertyName), NULL;
-			NSString* str = *(NSString**)symbol;
+
+			// ObjC objects, like NSApp : pointer to NSApplication.sharedApplication
+			if ([[declared_type stringValue] isEqualToString:@"@"])
+			{
+				id o = *(id*)symbol;
+				return [JSCocoaController boxedJSObject:o inContext:ctx];
+			}
 
 			// Return symbol as a Javascript string
-			JSStringRef jsName = JSStringCreateWithUTF8CString([str UTF8String]);
-			JSValueRef jsString = JSValueMakeString(ctx, jsName);
+			NSString* str		= *(NSString**)symbol;
+			JSStringRef jsName	= JSStringCreateWithUTF8CString([str UTF8String]);
+			JSValueRef jsString	= JSValueMakeString(ctx, jsName);
 			JSStringRelease(jsName);
 			return	jsString;
 		}
@@ -3541,7 +3557,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 					}
 				}
 				// Check if delegate handles calling
-				if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:argumentCount:arguments:inContext:exception:)])
+				if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
 				{
 					JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:setterName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
 					if (delegateCall)	return	!!delegateCall;
@@ -3861,7 +3877,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 				JSValueRef res = [jsc JSCocoa:jsc callMethod:methodName ofObject:callee privateObject:thisPrivateObject argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
 				if (res)	return	res;
 				
-				return	throwException(ctx, exception, [NSString stringWithFormat:@"jsCocoaObject_callAsFunction : method %@ not found", methodName]), NULL;
+				return	throwException(ctx, exception, [NSString stringWithFormat:@"jsCocoaObject_callAsFunction : method %@ not found — remnant of a split call ?", methodName]), NULL;
 			}
 		}
 		
