@@ -8,19 +8,19 @@
 
 #import <Cocoa/Cocoa.h>
 #import <VPPlugin/VPPlugin.h>
-#import "JSTTextView.h"
-#import "NoodleLineNumberView.h"
+#import <JSTalk/JSTTextView.h>
+//#import "NoodleLineNumberView.h"
 #import "TDParseKit.h"
 
 @interface VPJSTViewController : VPItemController {
     IBOutlet JSTTextView *textView;
-    NoodleLineNumberView *lineNumberView;
+    //NoodleLineNumberView *lineNumberView;
 
     TDTokenizer *_tokenizer;
     NSDictionary *_keywords;
 }
 
-
+- (void) openJSTalkWebsite:(id)sender;
 - (void) executeScript:(id)sender;
 - (void) parseCode:(id)sender;
 

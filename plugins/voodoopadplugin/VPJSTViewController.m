@@ -8,7 +8,7 @@
 
 #import "VPJSTViewController.h"
 #import "JavaScriptPluginEnabler.h"
-#import "MarkerLineNumberView.h"
+//#import "MarkerLineNumberView.h"
 #import <JSTalk/JSTalk.h>
 
 const NSString *kUTTypeJSTalkSource = @"org.jstalk.jstalk-source";
@@ -82,13 +82,13 @@ const NSString *kUTTypeJSTalkSource = @"org.jstalk.jstalk-source";
     
     // FIXME: make this a pref
     [[textView textStorage] setAttributes:[NSDictionary dictionaryWithObject:[NSFont fontWithName:@"Monaco" size:10] forKey:NSFontAttributeName] range:NSMakeRange(0, [[textView textStorage] length]) ];
-    
+    /*
     lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[textView enclosingScrollView]];
     [[textView enclosingScrollView] setVerticalRulerView:lineNumberView];
     [[textView enclosingScrollView] setHasHorizontalRuler:NO];
     [[textView enclosingScrollView] setHasVerticalRuler:YES];
     [[textView enclosingScrollView] setRulersVisible:YES];
-    
+    */
     [[textView textStorage] setDelegate:self];
     [self parseCode:nil];
 }
@@ -166,6 +166,14 @@ const NSString *kUTTypeJSTalkSource = @"org.jstalk.jstalk-source";
     
     [[textView textStorage] endEditing];
     
+}
+
+- (void) runPageAsScript:(id)sender {
+    [self executeScript:sender];
+}
+
+- (void) openJSTalkWebsite:(id)sender {
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://jstalk.org/"]];
 }
 
 

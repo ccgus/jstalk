@@ -9,25 +9,20 @@
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
-		CC41A1D10F5E17920055DBC7 /* VPPlugin.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */; };
-		CC5D7BF410ADE92E00268497 /* JSTalk32.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5D7BF310ADE92E00268497 /* JSTalk32.png */; };
-		CC6080580EA410F400A1244C /* JavaScriptPluginEnabler.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */; };
-		CCCFE0C70F834718005161C9 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
-		CCCFE0D30F83471E005161C9 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0C60F834718005161C9 /* JSTalk.framework */; };
-		CCFFD604108417BA006522F8 /* VPJSTViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFFD603108417BA006522F8 /* VPJSTViewController.m */; };
-		CCFFD622108418E3006522F8 /* JSTalkEditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD621108418E3006522F8 /* JSTalkEditView.xib */; };
-		CCFFD68E10841BEE006522F8 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD68D10841BEE006522F8 /* Clear.tiff */; };
-		CCFFD69010841BF1006522F8 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CCFFD68F10841BF1006522F8 /* Play.tiff */; };
+		CC6AEBD410D4561800004565 /* FMailBundle.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6AEBD310D4561800004565 /* FMailBundle.m */; };
+		CCF91ADC10E033ED00B129E8 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCF91ADB10E033ED00B129E8 /* JSTalk.framework */; };
+		CCF91AE410E0340400B129E8 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCF91ADB10E033ED00B129E8 /* JSTalk.framework */; };
+		CCF91B1310E0363300B129E8 /* jstalkstatusicon.png in Resources */ = {isa = PBXBuildFile; fileRef = CCF91B1210E0363300B129E8 /* jstalkstatusicon.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CCF127B50F5CB75100CE0A63 /* Copy Frameworks */ = {
+		CCF91AE910E0342200B129E8 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CCCFE0D30F83471E005161C9 /* JSTalk.framework in Copy Frameworks */,
+				CCF91AE410E0340400B129E8 /* JSTalk.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -36,23 +31,17 @@
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		089C167EFE841241C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		089C167FFE841241C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSTalk.vpplugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		32DBCF630370AF2F00C91783 /* FMailApp_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMailApp_Prefix.pch; sourceTree = "<group>"; };
+		8D5B49B6048680CD000E48DA /* FMailApp.mailbundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FMailApp.mailbundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = VPPlugin.framework; sourceTree = "<group>"; };
-		CC5D7BF310ADE92E00268497 /* JSTalk32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalk32.png; path = ../../res/images/JSTalk32.png; sourceTree = SOURCE_ROOT; };
-		CC6080560EA410F400A1244C /* JavaScriptPluginEnabler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler.h; sourceTree = "<group>"; };
-		CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JavaScriptPluginEnabler.m; sourceTree = "<group>"; };
-		CC6080590EA410FC00A1244C /* JavaScriptPluginEnabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JavaScriptPluginEnabler_Prefix.pch; sourceTree = "<group>"; };
-		CCCFE0C60F834718005161C9 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
-		CCFFD602108417BA006522F8 /* VPJSTViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPJSTViewController.h; sourceTree = "<group>"; };
-		CCFFD603108417BA006522F8 /* VPJSTViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VPJSTViewController.m; sourceTree = "<group>"; };
-		CCFFD621108418E3006522F8 /* JSTalkEditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JSTalkEditView.xib; sourceTree = "<group>"; };
-		CCFFD68D10841BEE006522F8 /* Clear.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Clear.tiff; path = ../../res/images/Clear.tiff; sourceTree = SOURCE_ROOT; };
-		CCFFD68F10841BF1006522F8 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = ../../res/images/Play.tiff; sourceTree = SOURCE_ROOT; };
-		CCFFD7CA1084236D006522F8 /* TDParseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TDParseKit.h; path = ../../src/todparsekit/TDParseKit.h; sourceTree = SOURCE_ROOT; };
+		CC6AEBD210D4561800004565 /* FMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMailBundle.h; sourceTree = "<group>"; };
+		CC6AEBD310D4561800004565 /* FMailBundle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMailBundle.m; sourceTree = "<group>"; };
+		CC6AEBD910D4565B00004565 /* MVMailBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MVMailBundle.h; sourceTree = "<group>"; };
+		CCF91ADB10E033ED00B129E8 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
+		CCF91B1210E0363300B129E8 /* jstalkstatusicon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = jstalkstatusicon.png; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -62,25 +51,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				CC41A1D10F5E17920055DBC7 /* VPPlugin.framework in Frameworks */,
-				CCCFE0C70F834718005161C9 /* JSTalk.framework in Frameworks */,
+				CCF91ADC10E033ED00B129E8 /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		089C166AFE841209C02AAC07 /* SketchPage */ = {
+		089C166AFE841209C02AAC07 /* FMailApp */ = {
 			isa = PBXGroup;
 			children = (
-				CCFFD64010841986006522F8 /* UIWidgets */,
 				08FB77AFFE84173DC02AAC07 /* Classes */,
 				32C88E010371C26100C91783 /* Other Sources */,
 				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
 			);
-			name = SketchPage;
+			name = FMailApp;
 			sourceTree = "<group>";
 		};
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
@@ -95,10 +82,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				CCFFD68D10841BEE006522F8 /* Clear.tiff */,
-				CC5D7BF310ADE92E00268497 /* JSTalk32.png */,
-				CCFFD68F10841BF1006522F8 /* Play.tiff */,
-				CCFFD621108418E3006522F8 /* JSTalkEditView.xib */,
+				CCF91B1210E0363300B129E8 /* jstalkstatusicon.png */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -108,10 +92,9 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				CC6080560EA410F400A1244C /* JavaScriptPluginEnabler.h */,
-				CC6080570EA410F400A1244C /* JavaScriptPluginEnabler.m */,
-				CCFFD602108417BA006522F8 /* VPJSTViewController.h */,
-				CCFFD603108417BA006522F8 /* VPJSTViewController.m */,
+				CC6AEBD910D4565B00004565 /* MVMailBundle.h */,
+				CC6AEBD210D4561800004565 /* FMailBundle.h */,
+				CC6AEBD310D4561800004565 /* FMailBundle.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -119,8 +102,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCCFE0C60F834718005161C9 /* JSTalk.framework */,
-				CC41A1D00F5E17920055DBC7 /* VPPlugin.framework */,
+				CCF91ADB10E033ED00B129E8 /* JSTalk.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -139,7 +121,7 @@
 		19C28FB8FE9D52D311CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */,
+				8D5B49B6048680CD000E48DA /* FMailApp.mailbundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,39 +129,31 @@
 		32C88E010371C26100C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CC6080590EA410FC00A1244C /* JavaScriptPluginEnabler_Prefix.pch */,
+				32DBCF630370AF2F00C91783 /* FMailApp_Prefix.pch */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		CCFFD64010841986006522F8 /* UIWidgets */ = {
-			isa = PBXGroup;
-			children = (
-				CCFFD7CA1084236D006522F8 /* TDParseKit.h */,
-			);
-			name = UIWidgets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8D5B49AC048680CD000E48DA /* JSTalk */ = {
+		8D5B49AC048680CD000E48DA /* FMailApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JSTalk" */;
+			buildConfigurationList = 1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "FMailApp" */;
 			buildPhases = (
 				8D5B49AF048680CD000E48DA /* Resources */,
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
-				CCF127B50F5CB75100CE0A63 /* Copy Frameworks */,
+				CCF91AE910E0342200B129E8 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = JSTalk;
+			name = FMailApp;
 			productInstallPath = "$(HOME)/Library/Bundles";
-			productName = SketchPage;
-			productReference = 8D5B49B6048680CD000E48DA /* JSTalk.vpplugin */;
+			productName = FMailApp;
+			productReference = 8D5B49B6048680CD000E48DA /* FMailApp.mailbundle */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -187,14 +161,14 @@
 /* Begin PBXProject section */
 		089C1669FE841209C02AAC07 /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "VPJSTalkPlugin" */;
+			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "FMailApp" */;
 			compatibilityVersion = "Xcode 3.1";
 			hasScannedForEncodings = 1;
-			mainGroup = 089C166AFE841209C02AAC07 /* SketchPage */;
+			mainGroup = 089C166AFE841209C02AAC07 /* FMailApp */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D5B49AC048680CD000E48DA /* JSTalk */,
+				8D5B49AC048680CD000E48DA /* FMailApp */,
 			);
 		};
 /* End PBXProject section */
@@ -205,10 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
-				CCFFD622108418E3006522F8 /* JSTalkEditView.xib in Resources */,
-				CCFFD68E10841BEE006522F8 /* Clear.tiff in Resources */,
-				CCFFD69010841BF1006522F8 /* Play.tiff in Resources */,
-				CC5D7BF410ADE92E00268497 /* JSTalk32.png in Resources */,
+				CCF91B1310E0363300B129E8 /* jstalkstatusicon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,8 +190,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC6080580EA410F400A1244C /* JavaScriptPluginEnabler.m in Sources */,
-				CCFFD604108417BA006522F8 /* VPJSTViewController.m in Sources */,
+				CC6AEBD410D4561800004565 /* FMailBundle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,14 +212,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = i386;
+				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/Deployment\"",
-					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
-					"\"$(SRCROOT)\"",
 					/tmp/jstalk/build/Release,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -257,16 +223,17 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = JavaScriptPluginEnabler_Prefix.pch;
+				GCC_PREFIX_HEADER = FMailApp_Prefix.pch;
+				GCC_VERSION = com.flyingmeat.compilers.llvm.tot;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../PlugIns";
-				OTHER_CFLAGS = "-DDEBUG";
+				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				OTHER_LDFLAGS = (
 					"-undefined",
-					dynamic_lookup,
+					suppress,
+					"-force_flat_namespace",
 				);
-				PRODUCT_NAME = JSTalk;
-				WRAPPER_EXTENSION = vpplugin;
+				PRODUCT_NAME = FMailApp;
+				WRAPPER_EXTENSION = mailbundle;
 			};
 			name = Debug;
 		};
@@ -274,65 +241,58 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				BUNDLE_LOADER = /Applications/Mail.app/Contents/MacOS/Mail;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/Deployment\"",
-					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
-					"\"$(SRCROOT)\"",
 					/tmp/jstalk/build/Release,
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = JavaScriptPluginEnabler_Prefix.pch;
+				GCC_PREFIX_HEADER = FMailApp_Prefix.pch;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "@executable_path/../PlugIns";
+				INSTALL_PATH = "$(HOME)/Library/Mail/Bundles";
 				OTHER_LDFLAGS = (
 					"-undefined",
-					dynamic_lookup,
+					suppress,
+					"-force_flat_namespace",
 				);
-				PRODUCT_NAME = JSTalk;
-				WRAPPER_EXTENSION = vpplugin;
+				PRODUCT_NAME = FMailApp;
+				WRAPPER_EXTENSION = mailbundle;
 			};
 			name = Release;
 		};
 		1DEB913F08733D840010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Debug;
 		};
 		1DEB914008733D840010E9CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				GCC_C_LANGUAGE_STANDARD = c99;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.5;
+				SDKROOT = macosx10.6;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "JSTalk" */ = {
+		1DEB913A08733D840010E9CD /* Build configuration list for PBXNativeTarget "FMailApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB913B08733D840010E9CD /* Debug */,
@@ -341,7 +301,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "VPJSTalkPlugin" */ = {
+		1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "FMailApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB913F08733D840010E9CD /* Debug */,

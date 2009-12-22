@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>${EXECUTABLE_NAME}</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>com.flyingmeat.${PRODUCT_NAME:rfc1034Identifier}</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>${PRODUCT_NAME}</string>
+	<key>CFBundlePackageType</key>
+	<string>BNDL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>NSPrincipalClass</key>
+	<string>FMailBundle</string>
+	<key>CFBundleVersion</key>
+	<string>1.4.5</string>
+	<key>SupportedPluginCompatibilityUUIDs</key>
+	<array>
+		<string>B3F3FC72-315D-4323-BE85-7AB76090224D</string>
+		<string>225E0A48-2CDB-44A6-8D99-A9BB8AF6BA04</string>
+		<string>2610F061-32C6-4C6B-B90A-7A3102F9B9C8</string>
+		<string>99BB3782-6C16-4C6F-B910-25ED1C1CB38B</string>
+		<string>2F0CF6F9-35BA-4812-9CB2-155C0FDB9B0F</string>
+		<string>0CB5F2A0-A173-4809-86E3-9317261F1745</string>
+	</array>
+</dict>
+</plist>

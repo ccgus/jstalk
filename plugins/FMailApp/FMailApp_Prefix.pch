@@ -1,0 +1,9 @@
+//
+// Prefix header for all source files of the 'FMailApp' target in the 'FMailApp' project.
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+
+#define debug NSLog
