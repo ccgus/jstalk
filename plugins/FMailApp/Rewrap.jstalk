@@ -1,0 +1,83 @@
+/*
+VPShortcutKey='
+VPShortcutMask=command shift
+VPEndConfig
+*/
+
+function rewrap(s, len) {
+    
+    var ret = [NSMutableString string];
+    
+    
+    s = [s stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+    s = [s stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+    
+    var lines = [s componentsSeparatedByString:@"\n"];
+    
+    for (i = 0; i < [lines count]; i++) {
+    
+        line = lines[i];
+        
+        if (![line length]) {
+            [ret appendString:@"\n"];
+            continue;
+        }
+        
+        var idx = 0;
+        
+        while ((idx < [line length]) && ([line characterAtIndex:idx] == 62)) { // 62 is '>'
+            idx++;
+        }
+        
+        var pre = [NSMutableString string];
+        
+        for (j = 0; j < idx; j++) {
+            [pre appendString:@">"];
+        }
+        
+        var oldLine = [line substringFromIndex:idx];
+        
+        var newLine = [NSMutableString string];
+        
+        [newLine appendString:pre];
+        
+        var words = [oldLine componentsSeparatedByString:@" "];
+        
+        for (wordIdx = 0; wordIdx < [words count]; wordIdx++) {
+            
+            var word = words[wordIdx];
+            
+            if ([newLine length] + [word length] > len) {
+                [ret appendString:newLine];
+                [ret appendString:@"\n"];
+                [newLine setString:pre];
+            }
+            
+            if ([word length] && [newLine length]) {
+                [newLine appendString:@" "];
+            }
+            
+            [newLine appendString:word];
+            
+        }
+        
+        [ret appendString:newLine];
+        [ret appendString:@"\n"];
+        
+    }
+    
+    return ret;
+}
+
+
+
+var view = [jstalk env].caller;
+
+var rawSource = [view valueForKeyPath:@"window.delegate.backEnd.plainTextMessage.rawSource.mutableCopy.autorelease"];
+
+[rawSource replaceOccurrencesOfString:@"=\n" withString:@"" options:0 range:NSMakeRange(0, [rawSource length])];
+[rawSource replaceOccurrencesOfString:@"=20\n" withString:@"\n" options:0 range:NSMakeRange(0, [rawSource length])];
+
+[view selectAll];
+
+[view insertText:rewrap(rawSource, 72)];
