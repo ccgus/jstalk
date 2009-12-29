@@ -1250,12 +1250,12 @@
 				INSTALL_PATH = "@loader_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
+					"-lffi",
 					"-framework",
 					Foundation,
 					"-framework",
 					AppKit,
 					"-lexpat",
-					"-lffi",
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = JSTalk;

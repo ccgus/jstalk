@@ -418,6 +418,28 @@
 }
 
 
+- (void) copyBookmarkletToPasteboard:(id)sender {
+    
+    NSRange r = [jsTextView selectedRange];
+    
+    NSString *selectedText = 0x00;
+        
+    if (r.length == 0) {
+        selectedText = [[jsTextView textStorage] string];
+    }
+    else {
+        selectedText = [[[jsTextView textStorage] string] substringWithRange:r];
+    }
+    
+    NSString *bookmarklet = [NSString stringWithFormat:@"javascript:%@", [selectedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    
+    [pb declareTypes:[NSArray arrayWithObject:NSStringPboardType] owner:nil];
+    [pb setString:bookmarklet forType:NSStringPboardType];
+}
+
+
 @end
 
 

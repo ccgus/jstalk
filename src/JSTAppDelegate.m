@@ -16,6 +16,10 @@
 - (void) updatePrefsFontField;
 @end
 
+void JSTUncaughtExceptionHandler(NSException *exception) {
+    NSLog(@"Uncaught exception: %@", exception);
+}
+
 @implementation JSTAppDelegate
 
 + (void) initialize {
@@ -41,6 +45,8 @@
     
     [JSTalk setShouldLoadJSTPlugins:YES];
     [JSTalk listen];
+    
+    NSSetUncaughtExceptionHandler(JSTUncaughtExceptionHandler);
 }
 
 - (IBAction) showPrefs:(id)sender {
