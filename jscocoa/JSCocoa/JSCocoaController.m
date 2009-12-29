@@ -4075,10 +4075,17 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	//
 	if (prep_status == FFI_OK)
 	{
-		void* storage = [returnValue storage];
-		if ([returnValue ffi_type] == &ffi_type_void)	storage = NULL;
-//		log_ffi_call(&cif, values, callAddress);
-		ffi_call(&cif, callAddress, storage, values);
+        @try {
+            void* storage = [returnValue storage];
+            if ([returnValue ffi_type] == &ffi_type_void)	storage = NULL;
+            //		log_ffi_call(&cif, values, callAddress);
+            ffi_call(&cif, callAddress, storage, values);
+        }
+        @catch (NSException *e) {
+            debug(@"%s:%d", __FUNCTION__, __LINE__);
+            throwException(ctx, exception, [e description]);
+            return 0x00;
+        }
 	}
 	
 	if (effectiveArgumentCount > 0)	
