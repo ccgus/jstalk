@@ -60,6 +60,13 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
                                 keyEquivalent:@""
                     keyEquivalentModifierMask:0];
     
+    [[self pluginManager] addPluginsMenuTitle:[NSString stringWithFormat:@"Copy as JSTalk Bookmarklet"]
+                           withSuperMenuTitle:@"JSTalk"
+                                       target:self
+                                       action:@selector(copyBookmarkletToPasteboard:)
+                                keyEquivalent:@""
+                    keyEquivalentModifierMask:0];
+                    
     [[self pluginManager] registerPluginAppleScriptName:@"JSTalk Script"
                                                  target:self
                                                  action:@selector(runScriptAction:)];
@@ -115,6 +122,42 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
     return YES;
 }
+
+
+- (void) copyBookmarkletToPasteboard:(id<VPPluginWindowController>)windowController {
+    
+    
+    NSRange r = [[windowController textView] selectedRange];
+    
+    NSString *selectedText = 0x00;
+    
+    if (r.length == 0) {
+        selectedText = [[[windowController textView] textStorage] string];
+    }
+    else {
+        selectedText = [[[[windowController textView] textStorage] string] substringWithRange:r];
+    }
+    
+    NSString *bookmarklet = [NSString stringWithFormat:@"javascript:%@", [selectedText stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSDictionary *atts = [NSDictionary dictionaryWithObject:bookmarklet forKey:NSLinkAttributeName];
+    
+    NSAttributedString *ats = [[[NSMutableAttributedString alloc] initWithString:@"JSTalk Bookmarklet" attributes:atts] autorelease];
+    
+    NSData *atsData = [ats RTFFromRange:NSMakeRange(0, [ats length]) documentAttributes:nil];
+    
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    
+    [pb declareTypes:[NSArray arrayWithObjects:NSStringPboardType, NSRTFPboardType, nil] owner:nil];
+    [pb setString:bookmarklet forType:NSStringPboardType];
+    [pb setData:atsData forType:NSRTFPboardType];
+}
+
+
+
+
+
+
 
 - (void)savePanelDidEndForSaveAsJavaScript:(NSSavePanel *)savePanel
                          returnCode:(int)returnCode
