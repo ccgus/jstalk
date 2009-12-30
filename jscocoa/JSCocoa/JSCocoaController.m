@@ -473,7 +473,10 @@ static id JSCocoaSingleton = NULL;
 	if (!script)	return	NULL;
 
 	// Expand macros
-	script = [self expandJSMacros:script url:nil];
+	id expandedScript = [self expandJSMacros:script url:nil];
+	if (!expandedScript)	
+		return [NSString stringWithFormat:@"Macro expansion failed on script %@ (%@)", script, url ? url : @"(no script url)"], NULL;
+	script = expandedScript;
 	
 	//
 	// Delegate canEvaluateScript, willEvaluateScript
@@ -581,7 +584,6 @@ static id JSCocoaSingleton = NULL;
 	// Return if function is not of function type
 	JSObjectRef	jsFunction = JSValueToObject(ctx, jsFunctionValue, NULL);
 	if (!jsFunction)			return	NSLog(@"callJSFunctionNamed : %@ is not a function", name), NULL;
-
 	// Call !
 	return	[self callJSFunction:jsFunction withArguments:arguments];
 }
@@ -631,15 +633,15 @@ static id JSCocoaSingleton = NULL;
 	// OR
 	// Lintex path
 	id functionName = @"expandJSMacros";
-
 	// Expand macros
 	BOOL hasFunction = [self hasJSFunctionNamed:functionName];
 	if (hasFunction && useJSLint)
 	{
-		id expandedScript = [self unboxJSValueRef:[self callJSFunctionNamed:functionName withArguments:script, nil]];
+		JSValueRef v = [self callJSFunctionNamed:functionName withArguments:script, nil];
+		id expandedScript = [self unboxJSValueRef:v];
 		// Bail if expansion failed
-		if (!expandedScript || ![expandedScript isKindOfClass:[NSString class]]) 
-			return NSLog(@"%@ expansion failed on %@ (%@)", functionName, url, expandedScript), nil;
+		if (!expandedScript || ![expandedScript isKindOfClass:[NSString class]])	
+			return NSLog(@"%@ expansion failed on script %@ (%@) ", functionName, script, url), NULL;
 
 		script = expandedScript;
 	}
@@ -1713,7 +1715,6 @@ static id JSCocoaSingleton = NULL;
 		[NSMakeCollectable(value) autorelease];
 	}
 	JSPropertyNameArrayRelease(jsNames);
-    
     [_delegate JSCocoa:self hadError:b onLineNumber:[line intValue] atSourceURL:sourceURL];
 }
 
@@ -3681,7 +3682,6 @@ static bool jsCocoaObject_deleteProperty(JSContextRef ctx, JSObjectRef object, J
 	[NSMakeCollectable(propertyName) autorelease];
 	
 	JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
-//	NSLog(@"Deleting property %@", propertyName);
 
 	if (![privateObject.type isEqualToString:@"@"])	return false;
 
@@ -4075,17 +4075,30 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	//
 	if (prep_status == FFI_OK)
 	{
-        @try {
-            void* storage = [returnValue storage];
-            if ([returnValue ffi_type] == &ffi_type_void)	storage = NULL;
-            //		log_ffi_call(&cif, values, callAddress);
-            ffi_call(&cif, callAddress, storage, values);
-        }
-        @catch (NSException *e) {
-            debug(@"%s:%d", __FUNCTION__, __LINE__);
-            throwException(ctx, exception, [e description]);
-            return 0x00;
-        }
+		void* storage = [returnValue storage];
+		if ([returnValue ffi_type] == &ffi_type_void)	storage = NULL;
+//		log_ffi_call(&cif, values, callAddress);
+
+		// Catch exceptions when calling ObjC
+		if (callingObjC)
+		{
+			@try 
+			{
+				ffi_call(&cif, callAddress, storage, values);
+			}
+			@catch (NSException * e) 
+			{
+				if (effectiveArgumentCount > 0)	
+				{
+					free(args);
+					free(values);
+				}
+				[JSCocoaFFIArgument boxObject:e toJSValueRef:exception inContext:ctx];
+				return	NULL;
+			}
+		}
+		else
+			ffi_call(&cif, callAddress, storage, values);
 	}
 	
 	if (effectiveArgumentCount > 0)	
@@ -4216,10 +4229,11 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
 		{
 			id methodName = privateObject.methodName;
 			BOOL callingSwizzled = [methodName isEqualToString:@"Original"];
-			if (argumentCount != 1)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ wants one argument array", methodName]), NULL;
+			if (argumentCount != 1 && argumentCount != 3)	return	throwException(ctx, exception, [NSString stringWithFormat:@"%@ wants (arguments) or (arguments, selector, argarray)", methodName]), NULL;
+			int originalArgumentCount = argumentCount;
 
 			// Get argument object
-			JSObjectRef argumentObject = JSValueToObject(ctx, arguments[0], NULL);
+			JSObjectRef argumentObject = JSValueToObject(ctx, arguments[argumentCount == 3 ? 2 : 0], NULL);
 			
 			// Get argument count
 			JSStringRef	jsLengthName = JSStringCreateWithUTF8CString("length");
@@ -4238,6 +4252,9 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
 			argumentCount = superArgumentCount;
 			
 			// Get method name and associated class (need class for obj_msgSendSuper)
+			if (originalArgumentCount == 3)
+				argumentObject = JSValueToObject(ctx, arguments[0], NULL);
+
 			JSStringRef	jsCalleeName = JSStringCreateWithUTF8CString("callee");
 			JSValueRef	jsCalleeValue = JSObjectGetProperty(ctx, argumentObject, jsCalleeName, NULL);
 			JSStringRelease(jsCalleeName);
@@ -4250,6 +4267,15 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
 				return	throwException(ctx, exception, @"Super couldn't find parent method"), NULL;
 			}
 			superSelectorClass = [[[JSCocoaController controllerFromContext:ctx] classForJSFunction:jsCallee] superclass];
+
+			// Retrieve selector for [super someMethod:...] call
+			if (originalArgumentCount == 3)
+			{
+				JSStringRef resultStringJS = JSValueToStringCopy(ctx, arguments[1], NULL);
+				superSelector = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
+				JSStringRelease(resultStringJS);
+				if (callingSwizzled)	superSelector = [NSString stringWithFormat:@"%@%@", OriginalMethodPrefix, superSelector];
+			}			
 			
 			// Swizzled handling : we're just changing the selector
 			if (callingSwizzled)

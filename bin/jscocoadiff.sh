@@ -2,9 +2,9 @@
 
 SRC_DIR=`cd ${0%/*}/..; pwd`
 
-#FORK_SRC_DIR=$SRC_DIR/../jscocoafork
+FORK_SRC_DIR=$SRC_DIR/../jscocoa
 
-FORK_SRC_DIR=$1
+#FORK_SRC_DIR=$1
 
 cd "$SRC_DIR/jscocoa/JSCocoa/"
 
