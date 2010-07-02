@@ -1,9 +1,0 @@
-var VoodooPad = JSTalk.application_("VoodooPad Pro");
-
-var firstDoc = VoodooPad.orderedDocuments().objectAtIndex_(0);
-
-print(firstDoc);
-
-indexText = firstDoc.pageForKey_("index").dataAsAttributedString().string();
-
-print(indexText);

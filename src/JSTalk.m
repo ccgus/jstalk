@@ -183,6 +183,7 @@ static NSMutableArray *JSTalkPluginList;
     
     @try {
         [_jsController setUseAutoCall:NO];
+        [_jsController setUseJSLint:NO];
         resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
     }
     @catch (NSException * e) {
