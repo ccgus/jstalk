@@ -12,9 +12,83 @@
 
 @implementation JSTalk (JSTExtras)
 
-- (void) exit:(int)termCode {
+- (void)exit:(int)termCode {
     exit(termCode);
 }
+
+- (void)modifiers:(NSString*)using down:(BOOL)pressDown {
+    
+    // we're doing it this way, since for some reason, it doesn't always
+    // work correct when using the "using command & option down" stuff
+    // for applescript.  I DON'T KNOW WHY IT JUST DOESN'T.
+    
+    BOOL option = [using rangeOfString:@"option"].location != NSNotFound;
+    BOOL command = [using rangeOfString:@"command"].location != NSNotFound;
+    BOOL control = [using rangeOfString:@"control"].location != NSNotFound;
+    BOOL shift = [using rangeOfString:@"shift"].location != NSNotFound;
+    
+    if (command) {
+        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)55, pressDown);
+    }
+    if (option) {
+        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)58, pressDown);
+    }
+    
+    if (control) {
+        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)59, pressDown);
+    }
+    if (shift) {
+        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)56, pressDown);
+    }
+}
+
+
+- (void)keystroke:(NSString*)keys using:(NSString*)using {
+    keys = [keys stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+    
+    NSString *appleScriptString = [NSString stringWithFormat:@"tell application \"System Events\"\nkeystroke \"%@\"\nend tell", keys];
+    
+    NSAppleScript *as = [[[NSAppleScript alloc] initWithSource:appleScriptString] autorelease];
+    
+    [self modifiers:using down:YES];
+    
+    NSDictionary *err;
+    if (![as executeAndReturnError:&err]) {
+        NSLog(@"Error: %@", err);
+    }
+    
+    [self modifiers:using down:NO];
+    
+}
+
+- (void)keystroke:(NSString*)keys {
+    [self keystroke:keys using:@""];
+}
+
+- (void)keyCode:(NSString*)keys using:(NSString*)using {
+
+    NSString *appleScriptString = [NSString stringWithFormat:@"tell application \"System Events\"\nkey code %@\nend tell", keys];
+    
+    NSAppleScript *as = [[[NSAppleScript alloc] initWithSource:appleScriptString] autorelease];
+    
+    [self modifiers:using down:YES];
+    
+    NSDictionary *err;
+    if (![as executeAndReturnError:&err]) {
+        NSLog(@"Error: %@", err);
+    }
+    
+    [self modifiers:using down:NO];
+}
+
+- (void)keyCode:(NSString*)keys {
+    [self keyCode:keys using:@""];
+}
+
+- (void)sleep:(CGFloat)s {
+    sleep(s);
+}
+
 
 @end
 
@@ -40,12 +114,12 @@
     return doc;
 }
 
-- (void) activate {
+- (void)activate {
     ProcessSerialNumber xpsn = { 0, kCurrentProcess };
     SetFrontProcess( &xpsn );
 }
 
-- (NSInteger) displayDialog:(NSString*)msg withTitle:(NSString*) title {
+- (NSInteger)displayDialog:(NSString*)msg withTitle:(NSString*) title {
     
     NSAlert *alert = [NSAlert alertWithMessageText:title defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:msg];
     
@@ -54,7 +128,7 @@
     return button;
 }
 
-- (NSInteger) displayDialog:(NSString*)msg {
+- (NSInteger)displayDialog:(NSString*)msg {
     
     NSString *title = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleNameKey];
     
@@ -65,11 +139,11 @@
     return [self displayDialog:msg withTitle:title];
 }
 
-- (id) sharedDocumentController {
+- (id)sharedDocumentController {
     return [NSDocumentController sharedDocumentController];
 }
 
-- (id) standardUserDefaults {
+- (id)standardUserDefaults {
     return [NSUserDefaults standardUserDefaults];
 }
 
@@ -78,7 +152,7 @@
 
 @implementation NSDocument (JSTExtras)
 
-- (id) dataOfType:(NSString*)type {
+- (id)dataOfType:(NSString*)type {
     
     NSError *err = 0x00;
     
@@ -94,7 +168,7 @@
 
 @implementation NSData (JSTExtras)
 
-- (BOOL) writeToFile:(NSString*)path {
+- (BOOL)writeToFile:(NSString*)path {
     
     return [self writeToURL:[NSURL fileURLWithPath:path] atomically:YES];
 }
@@ -103,7 +177,7 @@
 
 @implementation NSObject (JSTExtras)
 
-- (Class) ojbcClass {
+- (Class)ojbcClass {
     return [self class];
 }
 
@@ -112,7 +186,7 @@
 
 @implementation SBApplication (JSTExtras)
 
-+ (id) application:(NSString*)appName {
++ (id)application:(NSString*)appName {
     
     NSString *appPath = [[NSWorkspace sharedWorkspace] fullPathForApplication:appName];
     
@@ -134,7 +208,7 @@
 
 @implementation NSString (JSTExtras)
 
-- (NSURL*) fileURL {
+- (NSURL*)fileURL {
     return [NSURL fileURLWithPath:self];
 }
 
@@ -143,7 +217,7 @@
 
 @implementation NSApplication (JSTRandomCrap)
 
-+ (NSDictionary*) JSTAXStuff {
++ (NSDictionary*)JSTAXStuff {
     
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
@@ -212,7 +286,7 @@
     
 }
 
-+ (void) JSTAXSetSelectedTextAttributeOnFocusedElement:(NSString*)s {
++ (void)JSTAXSetSelectedTextAttributeOnFocusedElement:(NSString*)s {
     AXUIElementRef uiElement = AXUIElementCreateSystemWide();
     
     CFTypeRef focusedUIElement = 0x00;
@@ -232,7 +306,7 @@
     CFRelease(uiElement);
 }
 
-+ (void) JSTAXSetSelectedTextRangeAttributeOnFocusedElement:(NSRange)range {
++ (void)JSTAXSetSelectedTextRangeAttributeOnFocusedElement:(NSRange)range {
     AXUIElementRef uiElement = AXUIElementCreateSystemWide();
     
     CFTypeRef focusedUIElement = 0x00;
