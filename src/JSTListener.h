@@ -21,7 +21,7 @@
 
 @property (assign) id rootObject;
 
-+ (void) listen;
-+ (void) listenWithRootObject:(id)rootObject;
++ (void)listen;
++ (void)listenWithRootObject:(id)rootObject;
 
 @end

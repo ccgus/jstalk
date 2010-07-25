@@ -17,7 +17,7 @@
 
 @synthesize rootObject=_rootObject;
 
-+ (id) sharedListener {
++ (id)sharedListener {
     static JSTListener *me = 0x00;
     if (!me) {
         me = [[JSTListener alloc] init];
@@ -26,17 +26,17 @@
     return me;
 }
 
-+ (void) listen {
++ (void)listen {
     [[self sharedListener] setupListener];
 }
 
-+ (void) listenWithRootObject:(id)rootObject; {
++ (void)listenWithRootObject:(id)rootObject; {
     ((JSTListener*)[self sharedListener]).rootObject = rootObject;
     [self listen];
 }
 
 
-- (void) setupListener {
+- (void)setupListener {
     NSString *myBundleId    = [[NSBundle mainBundle] bundleIdentifier];
     NSString *port          = [NSString stringWithFormat:@"%@.JSTalk", myBundleId];
     

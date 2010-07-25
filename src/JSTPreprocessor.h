@@ -13,7 +13,7 @@
 
 }
 
-+ (NSString*) preprocessCode:(NSString*)sourceString;
++ (NSString*)preprocessCode:(NSString*)sourceString;
 
 @end
 
@@ -24,13 +24,12 @@
     unichar _openSymbol;
     NSMutableArray *_args;
     JSTPSymbolGroup *_parent;
-    
 }
 
 @property (retain) NSMutableArray *args;
 @property (retain) JSTPSymbolGroup *parent;
 
-- (void) addSymbol:(id)aSymbol;
+- (void)addSymbol:(id)aSymbol;
 
 @end
 

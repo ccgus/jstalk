@@ -25,23 +25,23 @@ static NSMutableArray *JSTalkPluginList;
 @synthesize jsController=_jsController;
 @synthesize env=_env;
 
-+ (void) load {
++ (void)load {
     //debug(@"%s:%d", __FUNCTION__, __LINE__);
 }
 
-+ (void) listen {
++ (void)listen {
     [JSTListener listen];
 }
 
-+ (void) setShouldLoadExtras:(BOOL)b {
++ (void)setShouldLoadExtras:(BOOL)b {
     JSTalkShouldLoadJSTPlugins = b;
 }
 
-+ (void) setShouldLoadJSTPlugins:(BOOL)b {
++ (void)setShouldLoadJSTPlugins:(BOOL)b {
     JSTalkShouldLoadJSTPlugins = b;
 }
 
-- (id) init {
+- (id)init {
 	self = [super init];
 	if (self != nil) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
@@ -69,7 +69,7 @@ static NSMutableArray *JSTalkPluginList;
     [super dealloc];
 }
 
-- (void) loadExtraAtPath:(NSString*) fullPath {
+- (void)loadExtraAtPath:(NSString*)fullPath {
     
     Class pluginClass;
     
@@ -118,7 +118,7 @@ static NSMutableArray *JSTalkPluginList;
     
 }
 
-- (void) loadPlugins {
+- (void)loadPlugins {
     JSTalkPluginList = [[NSMutableArray array] retain];
     
     NSString *appSupport = @"Library/Application Support/JSTalk/Plug-ins";
@@ -144,7 +144,7 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
-- (void) pushObject:(id)obj withName:(NSString*)name  {
+- (void)pushObject:(id)obj withName:(NSString*)name  {
     
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
@@ -157,7 +157,7 @@ static NSMutableArray *JSTalkPluginList;
     JSStringRelease(jsName);  
 }
 
-- (void) deleteObjectWithName:(NSString*)name {
+- (void)deleteObjectWithName:(NSString*)name {
     
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
@@ -168,7 +168,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-- (id) executeString:(NSString*) str {
+- (id)executeString:(NSString*) str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
         [self loadPlugins];
@@ -208,7 +208,7 @@ static NSMutableArray *JSTalkPluginList;
     return resultObj;
 }
 
-- (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
+- (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
     JSCocoaController *jsController = [self jsController];
     JSContextRef ctx                = [jsController ctx];
@@ -227,9 +227,32 @@ static NSMutableArray *JSTalkPluginList;
     return returnObject;
 }
 
+- (void)include:(NSString*)fileName {
+    
+    if (![fileName hasPrefix:@"/"] && [_env objectForKey:@"scriptURL"]) {
+        NSString *parentDir = [[[_env objectForKey:@"scriptURL"] path] stringByDeletingLastPathComponent];
+        fileName = [parentDir stringByAppendingPathComponent:fileName];
+    }
+    
+    NSURL *scriptURL = [NSURL fileURLWithPath:fileName];
+    NSError *err = 0x00;
+    NSString *str = [NSString stringWithContentsOfURL:scriptURL encoding:NSUTF8StringEncoding error:&err];
+    
+    if (!str) {
+        NSLog(@"Could not open file '%@'", scriptURL);
+        NSLog(@"Error: %@", err);
+        return;
+    }
+    
+    str = [JSTPreprocessor preprocessCode:str];
+                   
+    #warning fixme: why does withScriptURL take a string path?
+    if (![[self jsController] evalJSString:str withScriptURL:[scriptURL path]]) {
+        NSLog(@"Could not include '%@'", fileName);
+    }
+}
 
-
-- (void) print:(NSString*)s {
+- (void)print:(NSString*)s {
     
     if (_printController && [_printController respondsToSelector:@selector(print:)]) {
         [_printController print:s];
@@ -243,7 +266,7 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
-+ (id) applicationOnPort:(NSString*)port {
++ (id)applicationOnPort:(NSString*)port {
     
     NSConnection *conn  = 0x00;
     NSUInteger tries    = 0;
@@ -266,7 +289,7 @@ static NSMutableArray *JSTalkPluginList;
     return [conn rootProxy];
 }
 
-+ (id) application:(NSString*)app {
++ (id)application:(NSString*)app {
     
     NSString *appPath = [[NSWorkspace sharedWorkspace] fullPathForApplication:app];
     
@@ -294,7 +317,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-+ (id) proxyForApp:(NSString*)app {
++ (id)proxyForApp:(NSString*)app {
     return [self application:app];
 }
 

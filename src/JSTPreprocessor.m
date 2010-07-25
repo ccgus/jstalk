@@ -14,7 +14,7 @@
 
 @implementation JSTPreprocessor
 
-+ (NSString*) preprocessForObjCStrings:(NSString*)sourceString {
++ (NSString*)preprocessForObjCStrings:(NSString*)sourceString {
     
     NSMutableString *buffer = [NSMutableString string];
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
@@ -49,15 +49,15 @@
     return buffer;
 }
 
-+ (BOOL) isOpenSymbol:(NSString*)tag {
++ (BOOL)isOpenSymbol:(NSString*)tag {
     return [tag isEqualToString:@"["] || [tag isEqualToString:@"("];
 }
 
-+ (BOOL) isCloseSymbol:(NSString*)tag {
++ (BOOL)isCloseSymbol:(NSString*)tag {
     return [tag isEqualToString:@"]"] || [tag isEqualToString:@")"];
 }
 
-+ (NSString*) preprocessForObjCMessagesToJS:(NSString*)sourceString {
++ (NSString*)preprocessForObjCMessagesToJS:(NSString*)sourceString {
     
     NSMutableString *buffer = [NSMutableString string];
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
@@ -107,7 +107,7 @@
     return buffer;
 }
 
-+ (NSString*) preprocessCode:(NSString*)sourceString {
++ (NSString*)preprocessCode:(NSString*)sourceString {
     
     sourceString = [self preprocessForObjCStrings:sourceString];
     sourceString = [self preprocessForObjCMessagesToJS:sourceString];
@@ -123,7 +123,7 @@
 @synthesize args=_args;
 @synthesize parent=_parent;
 
-- (id) init {
+- (id)init {
 	self = [super init];
 	if (self != nil) {
 		_args = [[NSMutableArray array] retain];
@@ -139,7 +139,7 @@
     [super dealloc];
 }
 
-- (void) addSymbol:(id)aSymbol {
+- (void)addSymbol:(id)aSymbol {
     
     if (!_openSymbol && [aSymbol isKindOfClass:[TDToken class]]) {
         _openSymbol = [[aSymbol stringValue] characterAtIndex:0];
@@ -149,7 +149,7 @@
     }
 }
 
-- (NSString*) description {
+- (NSString*)description {
     
     NSUInteger argsCount = [_args count];
     

@@ -21,15 +21,15 @@
 @property (retain) JSCocoaController *jsController;
 @property (retain) NSMutableDictionary *env;
 
-- (id) executeString:(NSString*) str;
-- (void) pushObject:(id)obj withName:(NSString*)name;
-- (void) deleteObjectWithName:(NSString*)name;
+- (id)executeString:(NSString*) str;
+- (void)pushObject:(id)obj withName:(NSString*)name;
+- (void)deleteObjectWithName:(NSString*)name;
 
-- (JSCocoaController*) jsController;
-- (id) callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
+- (JSCocoaController*)jsController;
+- (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
-+ (void) listen;
-+ (void) setShouldLoadJSTPlugins:(BOOL)b;
-+ (id) application:(NSString*)app;
++ (void)listen;
++ (void)setShouldLoadJSTPlugins:(BOOL)b;
++ (id)application:(NSString*)app;
 
 @end
