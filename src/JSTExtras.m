@@ -237,8 +237,8 @@
             
             CFTypeRef attValue;
             
-            AXError error = AXUIElementCopyAttributeValue(focusedUIElement, (CFStringRef)attName, &attValue);
-            if (!error) {
+            AXError lerror = AXUIElementCopyAttributeValue(focusedUIElement, (CFStringRef)attName, &attValue);
+            if (!lerror) {
                 
                 if ((AXValueGetType(attValue) == kAXValueCGPointType)) {
                     NSPoint p;

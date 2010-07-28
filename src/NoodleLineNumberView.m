@@ -38,7 +38,7 @@
 - (NSMutableArray *)lineIndices;
 - (void)invalidateLineIndices;
 - (void)calculateLines;
-- (unsigned)lineNumberForCharacterIndex:(unsigned)index inText:(NSString *)text;
+- (NSUInteger)lineNumberForCharacterIndex:(NSUInteger)index inText:(NSString *)text;
 - (NSDictionary *)textAttributes;
 - (NSDictionary *)markerTextAttributes;
 
@@ -184,7 +184,7 @@
     [self setNeedsDisplay:YES];
 }
 
-- (NSInteger)lineNumberForLocation:(float)location
+- (NSInteger)lineNumberForLocation:(CGFloat)location
 {
 	NSUInteger		line, count, index, rectCount, i;
 	NSRectArray		rects;
@@ -211,7 +211,7 @@
 		
 		for (line = 0; line < count; line++)
 		{
-			index = [[lines objectAtIndex:line] unsignedIntValue];
+			index = [[lines objectAtIndex:line] unsignedIntegerValue];
 			
 			rects = [layoutManager rectArrayForCharacterRange:NSMakeRange(index, 0)
 								 withinSelectedCharacterRange:nullRange
@@ -230,9 +230,9 @@
 	return NSNotFound;
 }
 
-- (NoodleLineNumberMarker *)markerAtLine:(unsigned)line
+- (NoodleLineNumberMarker *)markerAtLine:(NSUInteger)line
 {
-	return [linesToMarkers objectForKey:[NSNumber numberWithUnsignedInt:line - 1]];
+	return [linesToMarkers objectForKey:[NSNumber numberWithUnsignedInteger:line - 1]];
 }
 
 
@@ -246,7 +246,7 @@
     {
         NSUInteger        index, numberOfLines, stringLength, lineEnd, contentEnd;
         NSString        *text;
-        float         oldThickness, newThickness;
+        CGFloat         oldThickness, newThickness;
         
         text = [view string];
         stringLength = [text length];
@@ -258,7 +258,7 @@
         
         do
         {
-            [lineIndices addObject:[NSNumber numberWithUnsignedInt:index]];
+            [lineIndices addObject:[NSNumber numberWithUnsignedInteger:index]];
             
             index = NSMaxRange([text lineRangeForRange:NSMakeRange(index, 0)]);
             numberOfLines++;
@@ -266,10 +266,10 @@
         while (index < stringLength);
 
         // Check if text ends with a new line.
-        [text getLineStart:NULL end:&lineEnd contentsEnd:&contentEnd forRange:NSMakeRange([[lineIndices lastObject] unsignedIntValue], 0)];
+        [text getLineStart:NULL end:&lineEnd contentsEnd:&contentEnd forRange:NSMakeRange([[lineIndices lastObject] unsignedIntegerValue], 0)];
         if (contentEnd < lineEnd)
         {
-            [lineIndices addObject:[NSNumber numberWithUnsignedInt:index]];
+            [lineIndices addObject:[NSNumber numberWithUnsignedInteger:index]];
         }
 
         oldThickness = [self ruleThickness];
@@ -290,9 +290,9 @@
 	}
 }
 
-- (unsigned)lineNumberForCharacterIndex:(unsigned)index inText:(NSString *)text
+- (NSUInteger)lineNumberForCharacterIndex:(NSUInteger)index inText:(NSString *)text
 {
-    unsigned			left, right, mid, lineStart;
+    NSUInteger			left, right, mid, lineStart;
 	NSMutableArray		*lines;
 
 	lines = [self lineIndices];
@@ -304,7 +304,7 @@
     while ((right - left) > 1)
     {
         mid = (right + left) / 2;
-        lineStart = [[lines objectAtIndex:mid] unsignedIntValue];
+        lineStart = [[lines objectAtIndex:mid] unsignedIntegerValue];
         
         if (index < lineStart)
         {
@@ -340,12 +340,12 @@
 
 - (CGFloat)requiredThickness
 {
-    unsigned			lineCount, digits, i;
+    NSUInteger			lineCount, digits, i;
     NSMutableString     *sampleString;
     NSSize              stringSize;
     
     lineCount = [[self lineIndices] count];
-    digits = (unsigned)log10(lineCount) + 1;
+    digits = (NSUInteger)log10(lineCount) + 1;
 	sampleString = [NSMutableString string];
     for (i = 0; i < digits; i++)
     {
@@ -389,7 +389,7 @@
         NSString				*text, *labelText;
         NSUInteger				rectCount, index, line, count;
         NSRectArray				rects;
-        float					ypos, yinset;
+        CGFloat					ypos, yinset;
         NSDictionary			*textAttributes, *currentTextAttributes;
         NSSize					stringSize, markerSize;
 		NoodleLineNumberMarker	*marker;
@@ -420,7 +420,7 @@
         
         for (line = [self lineNumberForCharacterIndex:range.location inText:text]; line < count; line++)
         {
-            index = [[lines objectAtIndex:line] unsignedIntValue];
+            index = [[lines objectAtIndex:line] unsignedIntegerValue];
             
             if (NSLocationInRange(index, range))
             {
@@ -435,7 +435,7 @@
                     // portion. Need to compensate for the clipview's coordinates.
                     ypos = yinset + NSMinY(rects[0]) - NSMinY(visibleRect);
 					
-					marker = [linesToMarkers objectForKey:[NSNumber numberWithUnsignedInt:line]];
+					marker = [linesToMarkers objectForKey:[NSNumber numberWithUnsignedInteger:line]];
 					
 					if (marker != nil)
 					{
@@ -500,7 +500,7 @@
 	if ([aMarker isKindOfClass:[NoodleLineNumberMarker class]])
 	{
 		[linesToMarkers setObject:aMarker
-							forKey:[NSNumber numberWithUnsignedInt:[(NoodleLineNumberMarker *)aMarker lineNumber] - 1]];
+							forKey:[NSNumber numberWithUnsignedInteger:[(NoodleLineNumberMarker *)aMarker lineNumber] - 1]];
 	}
 	else
 	{
@@ -512,7 +512,7 @@
 {
 	if ([aMarker isKindOfClass:[NoodleLineNumberMarker class]])
 	{
-		[linesToMarkers removeObjectForKey:[NSNumber numberWithUnsignedInt:[(NoodleLineNumberMarker *)aMarker lineNumber] - 1]];
+		[linesToMarkers removeObjectForKey:[NSNumber numberWithUnsignedInteger:[(NoodleLineNumberMarker *)aMarker lineNumber] - 1]];
 	}
 	else
 	{

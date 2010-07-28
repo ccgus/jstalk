@@ -12,7 +12,7 @@
 #import "NoodleLineNumberView.h"
 
 @interface JSTTextView (Private)
-- (void) setupLineView;
+- (void)setupLineView;
 @end
 
 
@@ -32,7 +32,7 @@
     return self;
 }
 
-- (id) initWithCoder:(NSCoder *)aDecoder {
+- (id)initWithCoder:(NSCoder *)aDecoder {
     
     self = [super initWithCoder:aDecoder];
 	if (self != nil) {
@@ -52,7 +52,7 @@
 }
 
 
-- (void) setupLineViewAndStuff {
+- (void)setupLineViewAndStuff {
     
     _lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
     [[self enclosingScrollView] setVerticalRulerView:_lineNumberView];
@@ -99,7 +99,7 @@
 
 
 
-- (void) parseCode:(id)sender {
+- (void)parseCode:(id)sender {
     
     // we should really do substrings...
     
@@ -161,16 +161,16 @@
 
 
 
-- (NSArray *) writablePasteboardTypes {
+- (NSArray *)writablePasteboardTypes {
     return [[super writablePasteboardTypes] arrayByAddingObject:NSRTFPboardType];
 }
 
-- (void) insertTab:(id)sender {
+- (void)insertTab:(id)sender {
     [self insertText:@"    "];
 }
 
 
-- (void) insertNewline:(id)sender {
+- (void)insertNewline:(id)sender {
     
     [super insertNewline:sender];
     
@@ -197,7 +197,7 @@
 
 // Mimic BBEdit's option-delete behavior, which is THE WAY IT SHOULD BE DONE
 
-- (void) deleteWordForward:(id)sender {
+- (void)deleteWordForward:(id)sender {
     
     NSRange r = [self selectedRange];
     NSUInteger textLength = [[self textStorage] length];

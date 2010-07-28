@@ -32,7 +32,7 @@
 
 @implementation NoodleLineNumberMarker
 
-- (id)initWithRulerView:(NSRulerView *)aRulerView lineNumber:(float)line image:(NSImage *)anImage imageOrigin:(NSPoint)imageOrigin
+- (id)initWithRulerView:(NSRulerView *)aRulerView lineNumber:(CGFloat)line image:(NSImage *)anImage imageOrigin:(NSPoint)imageOrigin
 {
 	if ((self = [super initWithRulerView:aRulerView markerLocation:0.0 image:anImage imageOrigin:imageOrigin]) != nil)
 	{
@@ -41,12 +41,12 @@
 	return self;
 }
 
-- (void)setLineNumber:(unsigned)line
+- (void)setLineNumber:(NSUInteger)line
 {
 	lineNumber = line;
 }
 
-- (unsigned)lineNumber
+- (NSUInteger)lineNumber
 {
 	return lineNumber;
 }
@@ -61,11 +61,11 @@
 	{
 		if ([decoder allowsKeyedCoding])
 		{
-			lineNumber = [[decoder decodeObjectForKey:NOODLE_LINE_CODING_KEY] unsignedIntValue];
+			lineNumber = [[decoder decodeObjectForKey:NOODLE_LINE_CODING_KEY] unsignedIntegerValue];
 		}
 		else
 		{
-			lineNumber = [[decoder decodeObject] unsignedIntValue];
+			lineNumber = [[decoder decodeObject] unsignedIntegerValue];
 		}
 	}
 	return self;
@@ -77,11 +77,11 @@
 	
 	if ([encoder allowsKeyedCoding])
 	{
-		[encoder encodeObject:[NSNumber numberWithUnsignedInt:lineNumber] forKey:NOODLE_LINE_CODING_KEY];
+		[encoder encodeObject:[NSNumber numberWithUnsignedInteger:lineNumber] forKey:NOODLE_LINE_CODING_KEY];
 	}
 	else
 	{
-		[encoder encodeObject:[NSNumber numberWithUnsignedInt:lineNumber]];
+		[encoder encodeObject:[NSNumber numberWithUnsignedInteger:lineNumber]];
 	}
 }
 

@@ -18,6 +18,6 @@
 
 @property (retain) NSDictionary *keywords;
 
-- (void) parseCode:(id)sender;
+- (void)parseCode:(id)sender;
 
 @end
