@@ -11,6 +11,10 @@
 #import "JSTPreprocessor.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
+
+extern int *_NSGetArgc(void);
+extern char ***_NSGetArgv(void);
+
 static BOOL JSTalkShouldLoadJSTPlugins = YES;
 static NSMutableArray *JSTalkPluginList;
 
@@ -119,6 +123,21 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 - (void)loadPlugins {
+    
+    // install plugins that were passed via the command line
+    int i = 0;
+    char **argv = *_NSGetArgv();
+    for (i = 0; argv[i] != NULL; ++i) {
+        
+        NSString *a = [NSString stringWithUTF8String:argv[i]];
+        
+        if ([@"-jstplugin" isEqualToString:a]) {
+            i++;
+            NSLog(@"Loading plugin at: [%@]", [NSString stringWithUTF8String:argv[i]]);
+            [self loadExtraAtPath:[NSString stringWithUTF8String:argv[i]]];
+        }
+    }
+    
     JSTalkPluginList = [[NSMutableArray array] retain];
     
     NSString *appSupport = @"Library/Application Support/JSTalk/Plug-ins";

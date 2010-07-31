@@ -63,6 +63,8 @@ git clone git://github.com/ccgus/jstalk.git
 
 cd /tmp/jstalk
 
+git submodule init && git submodule update
+
 v=`date "+%s"`
 
 echo setting build id
