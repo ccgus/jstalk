@@ -123,7 +123,7 @@
     return YES;
 }
 
-- (void) print:(NSString*)s {
+- (void)print:(NSString*)s {
     
     BOOL needToSetAtts = [[outputTextView textStorage] length] == 0;
     
@@ -137,7 +137,7 @@
     
 }
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     lineNumber -= 1;
     
@@ -167,11 +167,13 @@
 }
 
 
-- (void) runScript:(NSString*)s {
+- (void)runScript:(NSString*)s {
     
     @try {
         
         JSTalk *jstalk = [[JSTalk alloc] init];
+        
+        [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         
         JSCocoaController *jsController = [jstalk jsController];
         jsController.delegate = self;
@@ -193,6 +195,9 @@
         if (result) {
             [self print:[result description]];
         }
+        
+        
+        [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
         
         [jstalk release];
         
