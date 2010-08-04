@@ -14,6 +14,59 @@
 
 @implementation JSTPreprocessor
 
+#ifdef DEBUG
+
+// THIS IS EXPERIMENTAL
+
++ (NSString*)processMultilineStrings:(NSString*)sourceString {
+    
+    NSString *tok = @"\"\"\"";
+    
+    NSScanner *scanner = [NSScanner scannerWithString:sourceString];
+    NSMutableString *ret = [NSMutableString string];
+    
+    while (![scanner isAtEnd]) {
+        
+        NSString *into;
+        NSString *quot;
+        
+        if ([scanner scanUpToString:tok intoString:&into]) {
+            [ret appendString:into];
+        }
+        
+        
+        if ([scanner scanString:tok intoString:nil]) {
+            if ([scanner scanString:tok intoString: nil]) {
+                continue;
+            }
+            else if ([scanner scanUpToString:tok intoString:&quot] && [scanner scanString:tok intoString: nil]) {
+                
+                quot = [quot stringByReplacingOccurrencesOfString:@"\r\n" withString:@"\n"];
+                quot = [quot stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
+                
+                [ret appendString:@"\""];
+                
+                NSArray *lines = [quot componentsSeparatedByString:@"\n"];
+                int i = 0;
+                while (i < [lines count] - 1) {
+                    NSString *line = [lines objectAtIndex:i];
+                    line = [line stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+                    [ret appendFormat:@"%@\\n", line];
+                    i++;
+                }
+                
+                NSString *line = [lines objectAtIndex:i];
+                line = [line stringByReplacingOccurrencesOfString:@"\"" withString:@"\\\""];
+                [ret appendFormat:@"%@\"", line];
+            }
+        }
+    }
+    
+    return ret;
+}
+
+#endif
+
 + (NSString*)preprocessForObjCStrings:(NSString*)sourceString {
     
     NSMutableString *buffer = [NSMutableString string];
@@ -108,6 +161,10 @@
 }
 
 + (NSString*)preprocessCode:(NSString*)sourceString {
+    
+    #ifdef DEBUG
+    sourceString = [self processMultilineStrings:sourceString];
+    #endif
     
     sourceString = [self preprocessForObjCStrings:sourceString];
     sourceString = [self preprocessForObjCMessagesToJS:sourceString];
