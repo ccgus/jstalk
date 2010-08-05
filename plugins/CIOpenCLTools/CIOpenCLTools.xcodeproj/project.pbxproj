@@ -62,7 +62,6 @@
 				089C167CFE841241C02AAC07 /* Resources */,
 				089C1671FE841209C02AAC07 /* Frameworks and Libraries */,
 				19C28FB8FE9D52D311CA2CBB /* Products */,
-				CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */,
 			);
 			name = samplejstalkextra;
 			sourceTree = "<group>";
@@ -104,6 +103,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 				CC32EFD112034FDF0090827E /* OpenCL.framework */,
 			);

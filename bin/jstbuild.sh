@@ -116,6 +116,14 @@ if [ $? != 0 ]; then
     exit
 fi
 
+
+cd /tmp/jstalk/plugins/CIOpenCLTools
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+if [ $? != 0 ]; then
+    echo "****** Bad build for CIOpenCLTools ********"
+    exit
+fi
+
 cd /tmp/jstalk/automator/
 $xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target JSTAutomator
 if [ $? != 0 ]; then
@@ -144,9 +152,11 @@ cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
 cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
 mkdir JSTalkFoo/plugins
-cp -r JSTalk.acplugin  JSTalkFoo/plugins/.
-cp -r JSTalk.vpplugin  JSTalkFoo/plugins/.
-cp -r FMDB.jstplugin   JSTalkFoo/plugins/.
+cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
+cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
+cp -r FMDB.jstplugin        JSTalkFoo/plugins/.
+cp -r CIOpenCL.jstplugin    JSTalkFoo/plugins/.
+
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
 cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
