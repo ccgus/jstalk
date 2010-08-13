@@ -64,18 +64,16 @@
 
 static NSMutableDictionary *JSTOpenCLWindows = 0x00;
 
-+ (void)viewImageBuffer:(JSTOpenCLImageBuffer*)imgBuffer inWindowNamed:(NSString*)winName {
++ (NSWindow*)getWindowNamed:(NSString*)winName defaultSize:(NSSize)s {
     
     if (!JSTOpenCLWindows) {
         JSTOpenCLWindows = [[NSMutableDictionary dictionary] retain];
     }
     
-    CGImageRef img = [self createImageRefFromBuffer:imgBuffer];
-    
     NSWindow *w = [JSTOpenCLWindows objectForKey:winName];
     
     if (!w) {
-        NSRect r = NSMakeRect(0, 0, CGImageGetWidth(img), CGImageGetHeight(img));;
+        NSRect r = NSMakeRect(0, 0, s.width, s.height);
         
         w = [[[NSWindow alloc] initWithContentRect:r styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:NO] autorelease];
         
@@ -105,15 +103,33 @@ static NSMutableDictionary *JSTOpenCLWindows = 0x00;
         
     }
     
+    return w;
+}
+
++ (void)viewImageBuffer:(JSTOpenCLImageBuffer*)imgBuffer inWindowNamed:(NSString*)winName {
+    
+    CGImageRef img = [self createImageRefFromBuffer:imgBuffer];
+    
+    NSWindow *w = [self getWindowNamed:winName defaultSize:NSMakeSize(CGImageGetWidth(img), CGImageGetHeight(img))];
+    
     NSImageView *imageView = [[[w contentView] subviews] lastObject];
     
     NSImage *i = [[[NSImage alloc] initWithCGImage:img size:NSMakeSize(CGImageGetWidth(img), CGImageGetHeight(img))] autorelease];
     
     [imageView setImage:i];
     
-    
     CGImageRelease(img);
 }
+
++ (void)viewNSImage:(NSImage*)img inWindowNamed:(NSString*)winName {
+    
+    NSWindow *w = [self getWindowNamed:winName defaultSize:[img size]];
+    
+    NSImageView *imageView = [[[w contentView] subviews] lastObject];
+    
+    [imageView setImage:img];
+}
+
 
 + (void)dumpPixelsInBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
     
