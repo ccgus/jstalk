@@ -4,9 +4,9 @@ function drawInImage(img, f) {
     [img unlockFocus];
 }
 
-function makeButton(pressed, size) {
+function makeButton(pressed, size, scale) {
     
-    var img = [[[NSImage alloc] initWithSize:size] autorelease];
+    var img = [NSImage imageWithSize:size];
     
     drawInImage(img, function() {
     
@@ -52,9 +52,9 @@ function makeButton(pressed, size) {
 }
 
 var imgRect = NSMakeRect(0, 0, 100, 26);
-var up     = makeButton(true, imgRect.size);
-var down   = makeButton(false, imgRect.size);
-var both   = [[[NSImage alloc] initWithSize:NSMakeSize(150, 100)] autorelease];
+var up     = makeButton(true, imgRect.size, 2);
+var down   = makeButton(false, imgRect.size, 1);
+var both   = [NSImage imageWithSize:NSMakeSize(150, 100)];
 
 drawInImage(both, function() {
     [[NSColor grayColor] set];

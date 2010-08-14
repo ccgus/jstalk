@@ -10,6 +10,5 @@ kernel vec4 foo(vec4 colorA, vec4 colorB) {
 
 var img = [filter outputImage];
 
-[JSTImageTools setShouldUseCISofwareRenderer:NO];
 [JSTImageTools viewCIImage:img inWindowNamed:"test" extent:CGRectMake(0, 0, 400, 200)];
 

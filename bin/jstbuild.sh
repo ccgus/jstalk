@@ -117,10 +117,10 @@ if [ $? != 0 ]; then
 fi
 
 
-cd /tmp/jstalk/plugins/CIOpenCLTools
+cd /tmp/jstalk/plugins/imagetools
 $xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
-    echo "****** Bad build for CIOpenCLTools ********"
+    echo "****** Bad build for Image Tools ********"
     exit
 fi
 
@@ -155,7 +155,7 @@ mkdir JSTalkFoo/plugins
 cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
 cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
 cp -r FMDB.jstplugin        JSTalkFoo/plugins/.
-cp -r CIOpenCL.jstplugin    JSTalkFoo/plugins/.
+cp -r ImageTools.jstplugin  JSTalkFoo/plugins/.
 
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
