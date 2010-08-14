@@ -12,7 +12,6 @@
 @synthesize computeDeviceId;
 @synthesize computeDeviceType;
 
-
 - (id)init {
     
     self = [super init];

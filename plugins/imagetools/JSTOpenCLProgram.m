@@ -21,6 +21,7 @@ static int FloorPow2(int n);
 
 @implementation JSTOpenCLProgram
 
+
 - (id)initWithContext: (JSTOpenCLContext*) theContext {
 	self = [super init];
 	if ( !self ) return nil;
@@ -181,6 +182,11 @@ static int FloorPow2(int n)
 @synthesize height=_height;
 @synthesize bitmapData=_bitmapData;
 @synthesize bytesPerRow=_bytesPerRow;
+
+
++ (id)instanceWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
+    return [[[self alloc] initWithContext:theContext width:w height:h] autorelease];
+}
 
 - (id)initWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
     

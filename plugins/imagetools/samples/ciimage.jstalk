@@ -8,5 +8,8 @@ kernel vec4 foo(vec4 colorA, vec4 colorB) {
 [filter addKernelArgument:[CIColor colorWithString:"0.0 0.0 1.0 1.0"]];
 [filter addKernelArgument:[CIColor colorWithString:"0.0 1.0 1.0 0.5"]];
 
-[filter viewImageInWindowNamed:"test" extent:CGRectMake(0, 0, 400, 200)];
+var img = [filter outputImage];
+
+[JSTImageTools setShouldUseCISofwareRenderer:NO];
+[JSTImageTools viewCIImage:img inWindowNamed:"test" extent:CGRectMake(0, 0, 400, 200)];
 

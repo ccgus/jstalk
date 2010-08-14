@@ -13,17 +13,17 @@ __kernel void test2(image2d_t img) {
 var w = 400;
 var h = 400;
 
-var context = [[[JSTOpenCLContext alloc] init] autorelease];
+var context = [JSTOpenCLContext instance];
 var program = [context programWithSource:src];
 [program build];
 
 var kernel = [program createKernel:"test2"];
 
-var buffer = [[[JSTOpenCLImageBuffer alloc] initWithContext:context width:w height:h] autorelease];
+var buffer = [JSTOpenCLImageBuffer instanceWithContext:context width:w height:h];
 
 [kernel setArgument:0 buffer:buffer];
 
 [kernel enqueueCallWithGlobalSizeX:w Y:h];
 [context finish];
 
-[JSTOpenCL viewImageBuffer:buffer inWindowNamed:"foo"];
+[JSTImageTools viewImageBuffer:buffer inWindowNamed:"foo"];

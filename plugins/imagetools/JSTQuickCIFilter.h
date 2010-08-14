@@ -20,10 +20,3 @@
 @end
 
 
-@interface JSTSimpleCIView : NSView {
-    CIImage *_theImage;
-}
-
-@property (retain) CIImage *theImage;
-
-@end
