@@ -17,7 +17,7 @@
 
 - (BOOL)qualifies:(id)obj {
     NSInteger c = [obj integerValue];
-    return isdigit(c);
+    return isdigit((int)c);
 }
 
 @end

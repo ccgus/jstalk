@@ -151,13 +151,12 @@ static NSMutableArray *JSTalkPluginList;
     NSString *userPath   = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
     
     if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:[userPath stringByDeletingLastPathComponent] attributes:nil];
-        [[NSFileManager defaultManager] createDirectoryAtPath:userPath attributes:nil];
+        [[NSFileManager defaultManager] createDirectoryAtPath:userPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
     
     for (NSString *folder in [NSArray arrayWithObjects:appPath, sysPath, userPath, nil]) {
         
-        for (NSString *bundle in [[NSFileManager defaultManager] directoryContentsAtPath:folder]) {
+        for (NSString *bundle in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:folder error:nil]) {
             
             if (!([bundle hasSuffix:@".jstplugin"])) {
                 continue;

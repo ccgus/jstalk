@@ -63,8 +63,8 @@
         [[[jsTextView textStorage] mutableString] setString:src];
     }
     
-    [[[[self windowControllers] objectAtIndex:0] window] setFrameAutosaveName:[self fileName]];
-    [splitView setAutosaveName:[self fileName]];
+    [[[[self windowControllers] objectAtIndex:0] window] setFrameAutosaveName:[[self fileURL] path]];
+    [splitView setAutosaveName:[[self fileURL] path]];
 }
 
 - (void)windowControllerDidLoadNib:(NSWindowController *) aController {
@@ -259,7 +259,7 @@
     }
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:fileName]) {
-        if (![[NSFileManager defaultManager] removeFileAtPath:fileName handler:nil]) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:fileName error:nil]) {
             NSRunAlertPanel(@"Could not remove file", @"Sorry, but I could not remove the old file in order to save your application.", @"OK", nil, nil);
             NSBeep();
             return;
@@ -268,7 +268,7 @@
     
     NSString *runnerPath = [[NSBundle mainBundle] pathForResource:@"JSTalkRunner" ofType:@"app"];
     
-    if (![[NSFileManager defaultManager] copyPath:runnerPath toPath:fileName handler:nil]) {
+    if (![[NSFileManager defaultManager] copyItemAtPath:runnerPath toPath:fileName error:nil]) {
         NSRunAlertPanel(@"Could not save", @"Sorry, but I could not save the application to the folder", @"OK", nil, nil);
         return;
     }
@@ -352,10 +352,10 @@
     }
     
     // setup our watcher.0
-    self.externalEditorFileWatcher = [JSTFileWatcher fileWatcherWithPath:[self fileName] delegate:self];
+    self.externalEditorFileWatcher = [JSTFileWatcher fileWatcherWithPath:[[self fileURL] path] delegate:self];
     
     // and away we go.
-    [[NSWorkspace sharedWorkspace] openFile:[self fileName] withApplication:appPath];
+    [[NSWorkspace sharedWorkspace] openFile:[[self fileURL] path] withApplication:appPath];
 }
 
 - (void) fileWatcherDidRecieveFSEvent:(JSTFileWatcher*)fw {

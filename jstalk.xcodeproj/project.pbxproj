@@ -207,7 +207,6 @@
 		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
 		CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
-		CCA69D571203BE0300C23AE7 /* jslint-jscocoa.js in Sources */ = {isa = PBXBuildFile; fileRef = CCA69D561203BE0300C23AE7 /* jslint-jscocoa.js */; };
 		CCA69D641203BE6000C23AE7 /* jslint-jscocoa.js in Resources */ = {isa = PBXBuildFile; fileRef = CCA69D561203BE0300C23AE7 /* jslint-jscocoa.js */; };
 		CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BA0F1EFA9700126722 /* JSTDocument.xib */; };
@@ -1037,7 +1036,6 @@
 				CC0FEEE510867410008FF7DD /* MarkerLineNumberView.m in Sources */,
 				CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */,
 				CC0FEEE910867412008FF7DD /* NoodleLineNumberView.m in Sources */,
-				CCA69D571203BE0300C23AE7 /* jslint-jscocoa.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

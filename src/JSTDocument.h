@@ -11,7 +11,7 @@
 #import "JSTTextView.h"
 #import "JSTFileWatcher.h"
 
-@interface JSTDocument : NSDocument {
+@interface JSTDocument : NSDocument <NSToolbarDelegate> {
     IBOutlet JSTTextView *jsTextView;
     IBOutlet NSTextView *outputTextView;
     IBOutlet NSSplitView *splitView;

@@ -12,7 +12,7 @@
 
 - (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
-    NSLog(@"Error line %d, %@", lineNumber, error);
+    NSLog(@"Error line %d, %@", (int)lineNumber, error);
     
     exit(1);
 }
