@@ -195,8 +195,8 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
         [w makeKeyAndOrderFront:self];
         [w setReleasedWhenClosed:NO]; // we retain it in the dictionary.
         [w setContentBorderThickness:bottomBorderHeight forEdge:NSMinYEdge];
-        //[w setPreferredBackingLocation:NSWindowBackingLocationMainMemory];
-        
+        [w setPreferredBackingLocation:NSWindowBackingLocationMainMemory];
+        //[w setColorSpace:[NSColorSpace genericRGBColorSpace]];
         extent.origin.y += bottomBorderHeight;
         
         JSTSimpleCIView *iv = [[[JSTSimpleCIView alloc] initWithFrame:extent] autorelease];
@@ -226,7 +226,7 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
     
 }
 
-static BOOL JSTImageToolsCISWRender = YES;
+static BOOL JSTImageToolsCISWRender = NO;
 + (void)setShouldUseCISofwareRenderer:(BOOL)b {
     JSTImageToolsCISWRender = b;
 }

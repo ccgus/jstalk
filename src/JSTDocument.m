@@ -208,8 +208,6 @@
     @finally {
         // um.?
     }
-    
-    debug(@"all done");
         
 }
 
