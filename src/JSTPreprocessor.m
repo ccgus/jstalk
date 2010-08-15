@@ -14,10 +14,6 @@
 
 @implementation JSTPreprocessor
 
-#ifdef DEBUG
-
-// THIS IS EXPERIMENTAL
-
 + (NSString*)processMultilineStrings:(NSString*)sourceString {
     
     NSString *tok = @"\"\"\"";
@@ -64,8 +60,6 @@
     
     return ret;
 }
-
-#endif
 
 + (NSString*)preprocessForObjCStrings:(NSString*)sourceString {
     
@@ -162,10 +156,7 @@
 
 + (NSString*)preprocessCode:(NSString*)sourceString {
     
-    #ifdef DEBUG
     sourceString = [self processMultilineStrings:sourceString];
-    #endif
-    
     sourceString = [self preprocessForObjCStrings:sourceString];
     sourceString = [self preprocessForObjCMessagesToJS:sourceString];
     

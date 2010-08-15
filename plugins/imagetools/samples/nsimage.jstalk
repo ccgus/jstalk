@@ -15,7 +15,7 @@ function makeButton(pressed, size, scale) {
         var outline = [NSColor colorWithCalibratedRed:0.576 green:0.130 blue:0.019 alpha:1.000];
         var whiteDrop   = [NSColor colorWithCalibratedRed:1 green:1 blue:1 alpha:.2];
         var pressedDrop = [NSColor colorWithCalibratedRed:0 green:0 blue:0 alpha:.03];
-        var radius  = size.height / 2;
+        var radius  = 5;
         var width   = size.width - 2;
         var height  = size.height - 2;
         
