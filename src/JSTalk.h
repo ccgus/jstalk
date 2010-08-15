@@ -29,6 +29,7 @@
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
 + (void)listen;
++ (void)resetPlugins;
 + (void)setShouldLoadJSTPlugins:(BOOL)b;
 + (id)application:(NSString*)app;
 

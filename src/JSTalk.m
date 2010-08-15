@@ -122,6 +122,11 @@ static NSMutableArray *JSTalkPluginList;
     
 }
 
++ (void)resetPlugins {
+    [JSTalkPluginList release];
+    JSTalkPluginList = 0x00;
+}
+
 - (void)loadPlugins {
     
     // install plugins that were passed via the command line

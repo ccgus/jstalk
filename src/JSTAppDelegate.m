@@ -10,10 +10,10 @@
 #import "JSTalk.h"
 
 @interface JSTAppDelegate (PrivateStuff)
-- (void) restoreWorkspace;
-- (void) saveWorkspace;
-- (void) loadExternalEditorPrefs;
-- (void) updatePrefsFontField;
+- (void)restoreWorkspace;
+- (void)saveWorkspace;
+- (void)loadExternalEditorPrefs;
+- (void)updatePrefsFontField;
 @end
 
 void JSTUncaughtExceptionHandler(NSException *exception) {
@@ -22,7 +22,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 
 @implementation JSTAppDelegate
 
-+ (void) initialize {
++ (void)initialize {
     
     
 	NSMutableDictionary *defaultValues 	= [NSMutableDictionary dictionary];
@@ -49,7 +49,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     NSSetUncaughtExceptionHandler(JSTUncaughtExceptionHandler);
 }
 
-- (IBAction) showPrefs:(id)sender {
+- (IBAction)showPrefs:(id)sender {
     
     [self loadExternalEditorPrefs];
     [self updatePrefsFontField];
@@ -65,24 +65,30 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     [self saveWorkspace];
 }
 
-- (void) restoreWorkspace {
+- (void)restoreWorkspace {
     
     NSArray *ar = [[NSUserDefaults standardUserDefaults] objectForKey:@"workspaceOpenDocuments"];
     
     for (NSString *path in ar) {
+        
+        if ([path hasSuffix:@".jstplugin"]) {
+            debug(@"Skipping %@", path);
+            continue;
+        }
+        
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:[NSURL fileURLWithPath:path] display:YES error:nil];
     }
 }
 
-- (void) saveWorkspace {
+- (void)saveWorkspace {
     
     NSMutableArray *openDocs = [NSMutableArray array];
     
     for (NSDocument *doc in [[NSDocumentController sharedDocumentController] documents]) {
         
-        if ([doc fileName]) {
+        if ([doc fileURL]) {
             // saving the file alias would be better.
-            [openDocs addObject:[doc fileName]];
+            [openDocs addObject:[[doc fileURL] path]];
         }
     }
     
@@ -91,7 +97,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 }
 
 
-- (void) loadExternalEditorPrefs {
+- (void)loadExternalEditorPrefs {
     
     NSString *editorId = [[NSUserDefaults standardUserDefaults] objectForKey:@"externalEditor"];
     
@@ -137,7 +143,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     }
 }
 
-- (void) chooseExternalEditor:(id)sender {
+- (void)chooseExternalEditor:(id)sender {
     
     NSOpenPanel *p = [NSOpenPanel openPanel];
     
@@ -154,7 +160,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
                   contextInfo:nil];
 }
 
-- (void) prefsChoosefont:(id)sender {
+- (void)prefsChoosefont:(id)sender {
     
     [[NSFontManager sharedFontManager] setTarget:self];
     
@@ -174,21 +180,21 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     
 }
 
-- (void) updatePrefsFontField {
+- (void)updatePrefsFontField {
     NSFont *f = [self defaultEditorFont];
     [prefsFontField setStringValue:[NSString stringWithFormat:@"%@ %dfp", [f fontName],(int)[f pointSize]]];
 }
 
-- (void) setDefaultEditorFont:(NSFont*)f {
+- (void)setDefaultEditorFont:(NSFont*)f {
     NSData *fontAsData = [NSArchiver archivedDataWithRootObject:f];
     [[NSUserDefaults standardUserDefaults] setObject:fontAsData forKey: @"defaultFont"];
 }
 
-- (NSFont*) defaultEditorFont {
+- (NSFont*)defaultEditorFont {
     
     NSFont *defaultFont = 0x00;
     
-    NSData *d = [[NSUserDefaults standardUserDefaults] objectForKey:  @"defaultFont"];
+    NSData *d = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultFont"];
     if (d) {
         defaultFont = [NSUnarchiver unarchiveObjectWithData:d];
     }
