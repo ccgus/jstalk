@@ -153,8 +153,7 @@ Checking out the code:
 ----------------------
 	$ git clone git://github.com/ccgus/jstalk.git
 	$ cd jstalk
-	$ git submodule init && git submodule update
-
+	$ git clone http://github.com/parmanoir/jscocoa.git jscocoa
 
 
 TODO:

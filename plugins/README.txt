@@ -1,4 +1,4 @@
-INSTALING THE SQLITE / FMDB PLUGIN
+INSTALLING THE SQLITE / FMDB PLUGIN
 ----------------------------------
 
 The FMDB.jstplugin needs to be installed in this folder:
@@ -6,7 +6,7 @@ The FMDB.jstplugin needs to be installed in this folder:
 
 
 
-INSTALING THE ACORN PLUGIN
+INSTALLING THE ACORN PLUGIN
 --------------------------
 
 The Acorn plugin requires Acorn: http://flyingmeat.com/acorn/
@@ -15,7 +15,7 @@ And you need to put the "JSTalk.acplugin" plugin inside this folder:
 
 
 
-INSTALING THE VOODOOPAD PLUGIN
+INSTALLING THE VOODOOPAD PLUGIN
 ------------------------------
 
 The VoodooPad plugin requires VoodooPad: http://flyingmeat.com/voodoopad/
