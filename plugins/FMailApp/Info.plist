@@ -23,15 +23,19 @@
 	<key>NSPrincipalClass</key>
 	<string>FMailBundle</string>
 	<key>CFBundleVersion</key>
-	<string>1.4.5</string>
+	<string>1.4.8b1</string>
 	<key>SupportedPluginCompatibilityUUIDs</key>
 	<array>
+		<string>E71BD599-351A-42C5-9B63-EA5C47F7CE8E</string>
+		<string>B842F7D0-4D81-4DDF-A672-129CA5B32D57</string>
 		<string>B3F3FC72-315D-4323-BE85-7AB76090224D</string>
 		<string>225E0A48-2CDB-44A6-8D99-A9BB8AF6BA04</string>
 		<string>2610F061-32C6-4C6B-B90A-7A3102F9B9C8</string>
 		<string>99BB3782-6C16-4C6F-B910-25ED1C1CB38B</string>
 		<string>2F0CF6F9-35BA-4812-9CB2-155C0FDB9B0F</string>
 		<string>0CB5F2A0-A173-4809-86E3-9317261F1745</string>
+		<string>857A142A-AB81-4D99-BECC-D1B55A86D94E</string>
+		<string>BDD81F4D-6881-4A8D-94A7-E67410089EEB</string>
 	</array>
 </dict>
 </plist>
