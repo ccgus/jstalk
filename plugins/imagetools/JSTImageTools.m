@@ -92,6 +92,7 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
         [iv setImageAlignment:NSImageAlignCenter];
         [iv setImageScaling:NSImageScaleProportionallyDown];
         [iv setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
+        [iv setEditable:YES];
         [[w contentView] addSubview:iv];
         [w setTitle:winName];
         
