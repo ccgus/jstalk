@@ -10,6 +10,7 @@
 #import "MarkerLineNumberView.h"
 #import "TDParseKit.h"
 #import "NoodleLineNumberView.h"
+#import "TETextUtils.h"
 
 @interface JSTTextView (Private)
 - (void)setupLineView;
@@ -235,8 +236,108 @@
     }
 }
 
+- (void)deleteBackward:(id)sender {
+    if ([[self delegate] respondsToSelector:@selector(textView:doCommandBySelector:)]) {
+        // If the delegate wants a crack at command selectors, give it a crack at the standard selector too.
+        if ([[self delegate] textView:self doCommandBySelector:@selector(deleteBackward:)]) {
+            return;
+        }
+    }
+    else {
+        NSRange charRange = [self rangeForUserTextChange];
+        if (charRange.location != NSNotFound) {
+            if (charRange.length > 0) {
+                // Non-zero selection.  Delete normally.
+                [super deleteBackward:sender];
+            } else {
+                if (charRange.location == 0) {
+                    // At beginning of text.  Delete normally.
+                    [super deleteBackward:sender];
+                } else {
+                    NSString *string = [self string];
+                    NSRange paraRange = [string lineRangeForRange:NSMakeRange(charRange.location - 1, 1)];
+                    if (paraRange.location == charRange.location) {
+                        // At beginning of line.  Delete normally.
+                        [super deleteBackward:sender];
+                    } else {
+                        unsigned tabWidth = 4; //[[TEPreferencesController sharedPreferencesController] tabWidth];
+                        unsigned indentWidth = 4;// [[TEPreferencesController sharedPreferencesController] indentWidth];
+                        BOOL usesTabs = NO; //[[TEPreferencesController sharedPreferencesController] usesTabs];
+                        NSRange leadingSpaceRange = paraRange;
+                        unsigned leadingSpaces = TE_numberOfLeadingSpacesFromRangeInString(string, &leadingSpaceRange, tabWidth);
+                        
+                        if (charRange.location > NSMaxRange(leadingSpaceRange)) {
+                            // Not in leading whitespace.  Delete normally.
+                            [super deleteBackward:sender];
+                        } else {
+                            NSTextStorage *text = [self textStorage];
+                            unsigned leadingIndents = leadingSpaces / indentWidth;
+                            NSString *replaceString;
+                            
+                            // If we were indented to an fractional level just go back to the last even multiple of indentWidth, if we were exactly on, go back a full level.
+                            if (leadingSpaces % indentWidth == 0) {
+                                leadingIndents--;
+                            }
+                            leadingSpaces = leadingIndents * indentWidth;
+                            replaceString = ((leadingSpaces > 0) ? TE_tabbifiedStringWithNumberOfSpaces(leadingSpaces, tabWidth, usesTabs) : @"");
+                            if ([self shouldChangeTextInRange:leadingSpaceRange replacementString:replaceString]) {
+                                NSDictionary *newTypingAttributes;
+                                if (charRange.location < [string length]) {
+                                    newTypingAttributes = [[text attributesAtIndex:charRange.location effectiveRange:NULL] retain];
+                                } else {
+                                    newTypingAttributes = [[text attributesAtIndex:(charRange.location - 1) effectiveRange:NULL] retain];
+                                }
+                                
+                                [text replaceCharactersInRange:leadingSpaceRange withString:replaceString];
+                                
+                                [self setTypingAttributes:newTypingAttributes];
+                                [newTypingAttributes release];
+                                
+                                [self didChangeText];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 
+
+- (void)TE_doUserIndentByNumberOfLevels:(int)levels {
+    // Because of the way paragraph ranges work we will add spaces a final paragraph separator only if the selection is an insertion point at the end of the text.
+    // We ask for rangeForUserTextChange and extend it to paragraph boundaries instead of asking rangeForUserParagraphAttributeChange because this is not an attribute change and we don't want it to be affected by the usesRuler setting.
+    NSRange charRange = [[self string] lineRangeForRange:[self rangeForUserTextChange]];
+    NSRange selRange = [self selectedRange];
+    if (charRange.location != NSNotFound) {
+        NSTextStorage *textStorage = [self textStorage];
+        NSAttributedString *newText;
+        unsigned tabWidth = 4;
+        unsigned indentWidth = 4;
+        BOOL usesTabs = NO;
+        
+        selRange.location -= charRange.location;
+        newText = TE_attributedStringByIndentingParagraphs([textStorage attributedSubstringFromRange:charRange], levels,  &selRange, [self typingAttributes], tabWidth, indentWidth, usesTabs);
+        
+        selRange.location += charRange.location;
+        if ([self shouldChangeTextInRange:charRange replacementString:[newText string]]) {
+            [[textStorage mutableString] replaceCharactersInRange:charRange withString:[newText string]];
+            //[textStorage replaceCharactersInRange:charRange withAttributedString:newText];
+            [self setSelectedRange:selRange];
+            [self didChangeText];
+        }
+    }
+}
+
+
+- (void)shiftLeft:(id)sender {
+    [self TE_doUserIndentByNumberOfLevels:-1];
+}
+
+- (void)shiftRight:(id)sender {
+    [self TE_doUserIndentByNumberOfLevels:1];
+}
 
 enum {
     OpeningLatinQuoteCharacter = 0x00AB,
@@ -285,141 +386,6 @@ static void initBraces() {
             closingBraces = [[NSMutableString allocWithZone:NULL] initWithCharacters:charBuf length:defLen];
         }
     }
-}
-
-unichar TE_matchingDelimiter(unichar delimiter) {
-    // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c;
-    
-    initBraces();
-    
-    c = NUM_BRACE_PAIRS;
-    for (i=0; i<c; i++) {
-        if (delimiter == [openingBraces characterAtIndex:i]) {
-            return [closingBraces characterAtIndex:i];
-        }
-        if (delimiter == [closingBraces characterAtIndex:i]) {
-            return [openingBraces characterAtIndex:i];
-        }
-    }
-    return (unichar)0;
-}
-
-BOOL TE_isOpeningBrace(unichar delimiter) {
-    // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c = NUM_BRACE_PAIRS;
-    
-    initBraces();
-    
-    for (i=0; i<c; i++) {
-        if (delimiter == [openingBraces characterAtIndex:i]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-BOOL TE_isClosingBrace(unichar delimiter) {
-    // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c = NUM_BRACE_PAIRS;
-    
-    initBraces();
-    
-    for (i=0; i<c; i++) {
-        if (delimiter == [closingBraces characterAtIndex:i]) {
-            return YES;
-        }
-    }
-    return NO;
-}
-
-#define STACK_DEPTH 100
-#define BUFF_SIZE 512
-
-NSRange TE_findMatchingBraceForRangeInString(NSRange origRange, NSString *string) {
-    // Note that this delimiter matching does not treat delimiters inside comments and quoted delimiters specially at all.
-    NSRange matchRange = NSMakeRange(NSNotFound, 0);
-    unichar selChar = [string characterAtIndex:origRange.location];
-    BOOL backwards;
-    
-    // Figure out if we're doing anything and which direction to do it in...
-    if (TE_isOpeningBrace(selChar)) {
-        backwards = NO;
-    } else if (TE_isClosingBrace(selChar)) {
-        backwards = YES;
-    } else {
-        return matchRange;
-    }
-    
-    {
-        unichar delimiterStack[STACK_DEPTH];
-        unsigned stackCount = 0;
-        NSRange searchRange, buffRange;
-        unichar buff[BUFF_SIZE];
-        int i;
-        BOOL done = NO;
-        BOOL push = NO, pop = NO;
-        
-        delimiterStack[stackCount++] = selChar;
-        
-        if (backwards) {
-            searchRange = NSMakeRange(0, origRange.location);
-        } else {
-            searchRange = NSMakeRange(NSMaxRange(origRange), [string length] - NSMaxRange(origRange));
-        }
-        // This loops over all the characters in searchRange, going either backwards or forwards.
-        while ((searchRange.length > 0) && !done) {
-            // Fill the buffer with a chunk of the searchRange
-            if (searchRange.length <= BUFF_SIZE) {
-                buffRange = searchRange;
-            } else {
-                if (backwards) {
-                    buffRange = NSMakeRange(NSMaxRange(searchRange) - BUFF_SIZE, BUFF_SIZE);
-                } else {
-                    buffRange = NSMakeRange(searchRange.location, BUFF_SIZE);
-                }
-            }
-            [string getCharacters:buff range:buffRange];
-            
-            // This loops over all the characters in buffRange, going either backwards or forwards.
-            for (i = (backwards ? (buffRange.length - 1) : 0); (!done && (backwards ? (i >= 0) : (i < buffRange.length))); (backwards ? i-- : i++)) {
-                // Figure out if we need to push or pop the stack.
-                if (backwards) {
-                    push = TE_isClosingBrace(buff[i]);
-                    pop = TE_isOpeningBrace(buff[i]);
-                } else {
-                    push = TE_isOpeningBrace(buff[i]);
-                    pop = TE_isClosingBrace(buff[i]);
-                }
-                
-                // Now do the push or pop, if any
-                if (pop) {
-                    if (delimiterStack[--stackCount] != TE_matchingDelimiter(buff[i])) {
-                        // Might want to beep here?
-                        done = YES;
-                    } else if (stackCount == 0) {
-                        matchRange = NSMakeRange(buffRange.location + i, 1);
-                        done = YES;
-                    }
-                } else if (push) {
-                    if (stackCount < STACK_DEPTH) {
-                        delimiterStack[stackCount++] = buff[i];
-                    } else {
-                        NSLog(@"TextExtras: Exhausted stack depth for delimiter matching.  Giving up.");
-                        done = YES;
-                    }
-                }
-            }
-            
-            // Remove the buffRange from the searchRange.
-            if (!backwards) {
-                searchRange.location += buffRange.length;
-            }
-            searchRange.length -= buffRange.length;
-        }
-    }
-    
-    return matchRange;
 }
 
 

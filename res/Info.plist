@@ -92,8 +92,6 @@
 				<string>application/x-jstalk</string>
 			</dict>
 		</dict>
-		
-		
 		<dict>
 			<key>UTTypeConformsTo</key>
 			<array>
@@ -116,8 +114,6 @@
 				</array>
 			</dict>
 		</dict>
-		
-		
 	</array>
 </dict>
 </plist>

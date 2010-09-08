@@ -13,12 +13,19 @@
     IBOutlet NSPanel *prefsWindow;
     IBOutlet NSTextField *externalEditorField;
     IBOutlet NSTextField *prefsFontField;
+    
+    
+    IBOutlet NSMenu         *statusMenu;
+    NSStatusItem            *statusItem;
+    
 }
 
-- (void) chooseExternalEditor:(id)sender;
-- (void) prefsChoosefont:(id)sender;
+- (void)chooseExternalEditor:(id)sender;
+- (void)prefsChoosefont:(id)sender;
 
-- (NSFont*) defaultEditorFont;
-- (void) setDefaultEditorFont:(NSFont*)f;
+- (NSFont*)defaultEditorFont;
+- (void)setDefaultEditorFont:(NSFont*)f;
+
+- (void)runAsJSTalkStatusAction:(id)sender;
 
 @end

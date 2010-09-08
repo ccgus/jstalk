@@ -196,11 +196,15 @@
 		CC43C1090F4BBC4D0044BA41 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC43C11E0F4BBDF40044BA41 /* main.jstalk in Resources */ = {isa = PBXBuildFile; fileRef = CC43C11D0F4BBDF40044BA41 /* main.jstalk */; };
 		CC43C12F0F4BBE8B0044BA41 /* JSTalkRunner.app in Resources */ = {isa = PBXBuildFile; fileRef = CC43C0DB0F4BBA820044BA41 /* JSTalkRunner.app */; };
+		CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */; };
+		CC5EDD531237F71300E0D965 /* JSTalkStatusIconAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */; };
 		CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
 		CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* JSTListener.m */; };
 		CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */; };
 		CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
+		CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CC725EB71238026D00EA83BF /* TETextUtils.h */; };
+		CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725EB81238026D00EA83BF /* TETextUtils.m */; };
 		CC7576B40F6DF3B7003AE279 /* JSTFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */; };
 		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
 		CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */ = {isa = PBXBuildFile; fileRef = CC94E0510F4A616300208BE0 /* JSTalk.icns */; };
@@ -408,10 +412,14 @@
 		CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRunnerApplication.m; path = src/JSTRunnerApplication.m; sourceTree = "<group>"; };
 		CC43C11D0F4BBDF40044BA41 /* main.jstalk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jstalk; path = res/main.jstalk; sourceTree = "<group>"; };
 		CC43C14B0F4BC20C0044BA41 /* JSTalkRunner-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkRunner-Info.plist"; path = "res/JSTalkRunner-Info.plist"; sourceTree = "<group>"; };
+		CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalkStatusIcon.png; path = res/images/JSTalkStatusIcon.png; sourceTree = "<group>"; };
+		CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalkStatusIconAlt.png; path = res/images/JSTalkStatusIconAlt.png; sourceTree = "<group>"; };
 		CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jstalk; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = jstalkmain.m; path = src/jstalkmain.m; sourceTree = "<group>"; };
 		CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk.h; path = src/JSTalk.h; sourceTree = "<group>"; };
 		CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTalk.m; path = src/JSTalk.m; sourceTree = "<group>"; };
+		CC725EB71238026D00EA83BF /* TETextUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TETextUtils.h; path = src/TETextUtils.h; sourceTree = "<group>"; };
+		CC725EB81238026D00EA83BF /* TETextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TETextUtils.m; path = src/TETextUtils.m; sourceTree = "<group>"; };
 		CC7576B20F6DF3B7003AE279 /* JSTFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTFileWatcher.h; path = src/JSTFileWatcher.h; sourceTree = "<group>"; };
 		CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTFileWatcher.m; path = src/JSTFileWatcher.m; sourceTree = "<group>"; };
 		CC94E0510F4A616300208BE0 /* JSTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalk.icns; path = res/images/JSTalk.icns; sourceTree = "<group>"; };
@@ -683,6 +691,8 @@
 		CC1C7E3E0F48C2F3007A2941 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */,
+				CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */,
 				CCF68F1D0F4E3E4F00925FCA /* JSTalkDocument.icns */,
 				CC94E0510F4A616300208BE0 /* JSTalk.icns */,
 				CC1C7E570F48C76B007A2941 /* Clear.tiff */,
@@ -720,6 +730,8 @@
 		CC5064DE0F4A155000F4A952 /* UIWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				CC725EB71238026D00EA83BF /* TETextUtils.h */,
+				CC725EB81238026D00EA83BF /* TETextUtils.m */,
 				CC1322FD0F23F3C10032FEB8 /* JSTTextView.h */,
 				CC1322FE0F23F3C10032FEB8 /* JSTTextView.m */,
 				CC1322E20F23F2380032FEB8 /* MarkerLineNumberView.h */,
@@ -823,6 +835,7 @@
 				CC0FEEE410867410008FF7DD /* MarkerLineNumberView.h in Headers */,
 				CC0FEEE610867410008FF7DD /* NoodleLineNumberMarker.h in Headers */,
 				CC0FEEE810867411008FF7DD /* NoodleLineNumberView.h in Headers */,
+				CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -937,6 +950,8 @@
 				CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */,
 				CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */,
 				CCF68F1E0F4E3E4F00925FCA /* JSTalkDocument.icns in Resources */,
+				CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */,
+				CC5EDD531237F71300E0D965 /* JSTalkStatusIconAlt.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,6 +1051,7 @@
 				CC0FEEE510867410008FF7DD /* MarkerLineNumberView.m in Sources */,
 				CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */,
 				CC0FEEE910867412008FF7DD /* NoodleLineNumberView.m in Sources */,
+				CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
