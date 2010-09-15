@@ -18,6 +18,8 @@
 
 - (void)modifiers:(NSString*)using down:(BOOL)pressDown {
     
+    // THIS IS TOTOALLY BROKEN, BUT AT LEAST IT DOESN'T USE DEPREICATED APIS ANYMORE.
+    
     // we're doing it this way, since for some reason, it doesn't always
     // work correct when using the "using command & option down" stuff
     // for applescript.  I DON'T KNOW WHY IT JUST DOESN'T.
@@ -28,17 +30,26 @@
     BOOL shift = [using rangeOfString:@"shift"].location != NSNotFound;
     
     if (command) {
-        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)55, pressDown);
+        debug(@"sending command: %d", pressDown);
+        CGEventRef event = CGEventCreateKeyboardEvent(nil, (CGKeyCode)55, pressDown);
+        CGEventPost(kCGHIDEventTap, event);
+        CFRelease(event);
     }
     if (option) {
-        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)58, pressDown);
+        CGEventRef event = CGEventCreateKeyboardEvent(nil, (CGKeyCode)58, pressDown);
+        CGEventPost(kCGHIDEventTap, event);
+        CFRelease(event);
     }
     
     if (control) {
-        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)59, pressDown);
+        CGEventRef event = CGEventCreateKeyboardEvent(nil, (CGKeyCode)59, pressDown);
+        CGEventPost(kCGHIDEventTap, event);
+        CFRelease(event);
     }
     if (shift) {
-        CGPostKeyboardEvent((CGCharCode)0, (CGKeyCode)56, pressDown);
+        CGEventRef event = CGEventCreateKeyboardEvent(nil, (CGKeyCode)56, pressDown);
+        CGEventPost(kCGHIDEventTap, event);
+        CFRelease(event);
     }
 }
 
