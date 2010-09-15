@@ -26,6 +26,4 @@
 - (NSFont*)defaultEditorFont;
 - (void)setDefaultEditorFont:(NSFont*)f;
 
-- (void)runAsJSTalkStatusAction:(id)sender;
-
 @end

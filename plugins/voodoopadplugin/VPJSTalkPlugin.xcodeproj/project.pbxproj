@@ -246,9 +246,6 @@
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/Deployment\"",
-					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
 					"\"$(SRCROOT)\"",
 					/tmp/jstalk/build/Release,
 				);
@@ -281,9 +278,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../build/Deployment\"",
-					"\"$(SRCROOT)/../../../../svn_voodoopad/plugin/build/Deployment\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
 					"\"$(SRCROOT)\"",
 					/tmp/jstalk/build/Release,
 				);

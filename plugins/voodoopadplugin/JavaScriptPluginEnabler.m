@@ -21,13 +21,13 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 
 @interface JavaScriptPluginEnabler (Private)
-- (NSDictionary*) propertiesFromScriptAtPath:(NSString*)path;
+- (NSDictionary*)propertiesFromScriptAtPath:(NSString*)path;
 @end
 
 @implementation JavaScriptPluginEnabler
 
 
-- (void) didRegister {
+- (void)didRegister {
 
     JavaScriptPluginEnablerGlobalHACKHACKHACK = self;
     
@@ -79,17 +79,17 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     [JSTalk listen];
 }
 
-- (BOOL) runScript:(NSString *)script forEvent:(NSString*)eventName withEventDictionary:(NSMutableDictionary*)eventDictionary {
+- (BOOL)runScript:(NSString *)script forEvent:(NSString*)eventName withEventDictionary:(NSMutableDictionary*)eventDictionary {
     // todo
     return NO;
 }
 
-- (BOOL) canHandleURL:(NSString*)theUrl {
+- (BOOL)canHandleURL:(NSString*)theUrl {
     return [theUrl hasPrefix:@"jstalk:"] || [theUrl hasPrefix:@"javascript:"];
 }
 
 
-- (BOOL) handleURL:(NSString*)theURL {
+- (BOOL)handleURL:(NSString*)theURL {
     
     if ([theURL hasPrefix:@"jstalk:"]) {
         theURL = [theURL substringWithRange:NSMakeRange(7, [theURL length] - 7)];
@@ -124,7 +124,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 }
 
 
-- (void) copyBookmarkletToPasteboard:(id<VPPluginWindowController>)windowController {
+- (void)copyBookmarkletToPasteboard:(id<VPPluginWindowController>)windowController {
     
     
     NSRange r = [[windowController textView] selectedRange];
@@ -202,7 +202,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
                           contextInfo:windowController];
 }
 
-- (void) runScript:(NSString*)script withWindowController:(id<VPPluginWindowController>)windowController {
+- (void)runScript:(NSString*)script withWindowController:(id<VPPluginWindowController>)windowController {
     
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
     
@@ -219,7 +219,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
 }
 
-- (void) handleRunAsJavaScript:(id<VPPluginWindowController>)windowController {
+- (void)handleRunAsJavaScript:(id<VPPluginWindowController>)windowController {
     
     _nonRetainedCurrentTextView = [windowController textView];
     
@@ -243,7 +243,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 
 
-- (void) handleRunScript:(id<VPPluginWindowController>)windowController userObject:(id)userObject {
+- (void)handleRunScript:(id<VPPluginWindowController>)windowController userObject:(id)userObject {
     // todo
     
     NSError *err = 0x00;
@@ -259,7 +259,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 
 
-- (NSDictionary*) propertiesFromScriptAtPath:(NSString*)path {
+- (NSDictionary*)propertiesFromScriptAtPath:(NSString*)path {
     
     NSMutableString *s = [NSMutableString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:nil];
     if (!s) {
@@ -365,7 +365,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     return d;
 }
 
-- (void) registerScript:(NSString*)scriptPath {
+- (void)registerScript:(NSString*)scriptPath {
     
     NSMutableString *s = [NSMutableString stringWithContentsOfFile:scriptPath encoding:NSUTF8StringEncoding error:nil];
     if (!s) {
@@ -398,7 +398,7 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
 }
 
-- (NSString*) scriptsDir {
+- (NSString*)scriptsDir {
     
     NSString *scriptPluginDir = [@"~/Library/Application Support/VoodooPad/Script PlugIns" stringByExpandingTildeInPath];
     BOOL isDir;
@@ -416,11 +416,11 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 
 
-- (void) print:(NSString*)s {
+- (void)print:(NSString*)s {
     [[NSApp delegate] console:s];
 }
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     lineNumber -= 1;
     
@@ -452,8 +452,50 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     }
 }
 
-- (BOOL) validateAction:(SEL)anAction forPageType:(NSString*)pageType userObject:(id)userObject {
+- (BOOL)validateAction:(SEL)anAction forPageType:(NSString*)pageType userObject:(id)userObject {
     return YES;
 }
 
+
+
 @end
+
+@interface NSApplication (JSTalkExtras)
+
+@end
+
+
+@implementation NSApplication (JSTalkExtras)
+
++ (id)newScriptingErrorBlockForJSFunction:(JSValueRefAndContextRef)callbackFunction {
+    
+    void (^theBlock)(NSError *) = ^(NSError *err) {
+        
+        id jsc = [JSCocoa controllerFromContext:callbackFunction.ctx];
+        [jsc callJSFunction:callbackFunction.value withArguments:[NSArray arrayWithObjects:err, nil]];
+    };
+    
+    return [theBlock copy];
+}
+
+
++ (void)testFunction:(void (^)(NSError *))theBlock {
+    
+    theBlock(nil);
+    
+}
+
+
+
+@end
+
+
+
+
+
+
+
+
+
+
+

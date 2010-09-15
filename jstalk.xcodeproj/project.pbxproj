@@ -1208,6 +1208,7 @@
 					x86_64,
 					i386,
 				);
+				CC = /opt/bin/clang;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;

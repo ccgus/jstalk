@@ -12,8 +12,6 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="559"/>
-			<integer value="375"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -1454,21 +1452,6 @@
 			<object class="NSCustomObject" id="165627770">
 				<string key="NSClassName">JSTDocumentController</string>
 			</object>
-			<object class="NSMenu" id="442303352">
-				<string key="NSTitle"/>
-				<object class="NSMutableArray" key="NSMenuItems">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<object class="NSMenuItem" id="390583452">
-						<reference key="NSMenu" ref="442303352"/>
-						<string key="NSTitle">Run As JSTalk</string>
-						<string key="NSKeyEquiv">J</string>
-						<int key="NSKeyEquivModMask">1048576</int>
-						<int key="NSMnemonicLoc">2147483647</int>
-						<reference key="NSOnImage" ref="1033313550"/>
-						<reference key="NSMixedImage" ref="310636482"/>
-					</object>
-				</object>
-			</object>
 		</object>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<object class="NSMutableArray" key="connectionRecords">
@@ -2144,22 +2127,6 @@
 						<reference key="destination" ref="97207725"/>
 					</object>
 					<int key="connectionID">557</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
-						<string key="label">statusMenu</string>
-						<reference key="source" ref="662002506"/>
-						<reference key="destination" ref="442303352"/>
-					</object>
-					<int key="connectionID">563</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">runAsJSTalkStatusAction:</string>
-						<reference key="source" ref="662002506"/>
-						<reference key="destination" ref="390583452"/>
-					</object>
-					<int key="connectionID">564</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -3280,21 +3247,6 @@
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">559</int>
-						<reference key="object" ref="442303352"/>
-						<object class="NSMutableArray" key="children">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="390583452"/>
-						</object>
-						<reference key="parent" ref="0"/>
-						<string key="objectName">Status Menu</string>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">560</int>
-						<reference key="object" ref="390583452"/>
-						<reference key="parent" ref="442303352"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">565</int>
 						<reference key="object" ref="463546511"/>
 						<reference key="parent" ref="892078337"/>
@@ -3532,11 +3484,8 @@
 					<string>552.IBPluginDependency</string>
 					<string>555.IBPluginDependency</string>
 					<string>555.ImportedFromIB2</string>
-					<string>559.IBEditorWindowLastContentRect</string>
-					<string>559.IBPluginDependency</string>
 					<string>56.IBPluginDependency</string>
 					<string>56.ImportedFromIB2</string>
-					<string>560.IBPluginDependency</string>
 					<string>565.IBPluginDependency</string>
 					<string>567.IBPluginDependency</string>
 					<string>57.IBEditorWindowLastContentRect</string>
@@ -3796,11 +3745,8 @@
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>{{608, 885}, {177, 23}}</string>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<integer value="1"/>
-					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>{{346, 654}, {221, 183}}</string>
@@ -3977,11 +3923,9 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>chooseExternalEditor:</string>
 							<string>prefsChoosefont:</string>
-							<string>runAsJSTalkStatusAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 						</object>
@@ -3992,7 +3936,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>chooseExternalEditor:</string>
 							<string>prefsChoosefont:</string>
-							<string>runAsJSTalkStatusAction:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -4002,10 +3945,6 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">prefsChoosefont:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">runAsJSTalkStatusAction:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 						</object>

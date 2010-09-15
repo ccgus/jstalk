@@ -47,7 +47,7 @@ static NSMutableArray *JSTalkPluginList;
 
 - (id)init {
 	self = [super init];
-	if (self != nil) {
+	if ((self != nil)) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
 	}
