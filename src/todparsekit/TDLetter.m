@@ -17,7 +17,7 @@
 
 - (BOOL)qualifies:(id)obj {
     NSInteger c = [obj integerValue];
-    return isalpha(c);
+    return isalpha((int)c);
 }
 
 @end

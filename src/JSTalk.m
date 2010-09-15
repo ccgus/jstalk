@@ -269,8 +269,7 @@ static NSMutableArray *JSTalkPluginList;
     
     str = [JSTPreprocessor preprocessCode:str];
                    
-    #warning fixme: why does withScriptURL take a string path?
-    if (![[self jsController] evalJSString:str withScriptURL:[scriptURL path]]) {
+    if (![[self jsController] evalJSString:str withScriptPath:[scriptURL path]]) {
         NSLog(@"Could not include '%@'", fileName);
     }
 }

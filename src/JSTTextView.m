@@ -373,7 +373,7 @@ static void initBraces() {
         
         if (!openingBraces) {
             unichar charBuf[100];
-            unsigned defLen;
+            NSUInteger defLen;
             
             defLen = [defaultOpeningBraces length];
             [defaultOpeningBraces getCharacters:charBuf];

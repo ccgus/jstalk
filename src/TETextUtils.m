@@ -43,7 +43,7 @@ unsigned TE_numberOfLeadingSpacesFromRangeInString(NSString *string, NSRange *ra
     unsigned spaceCount = 0;
     BOOL done = NO;
     unsigned tabW = tabWidth;
-    unsigned endOfWhiteSpaceIndex = NSNotFound;
+    NSUInteger endOfWhiteSpaceIndex = NSNotFound;
 
     if (range->length == 0) {
         return 0;
@@ -124,12 +124,13 @@ NSArray *TE_tabStopArrayForFontAndTabWidth(NSFont *font, unsigned tabWidth) {
     float charWidth;
     float widthOfTab;
     unsigned i;
-
+    
+    /*
     if ([font glyphIsEncoded:(NSGlyph)' ']) {
         charWidth = [font advancementForGlyph:(NSGlyph)' '].width;
-    } else {
+    } else {*/
         charWidth = [font maximumAdvancement].width;
-    }
+    //}
     widthOfTab = (charWidth * tabWidth);
     
     if (!array) {
@@ -153,7 +154,7 @@ NSArray *TE_tabStopArrayForFontAndTabWidth(NSFont *font, unsigned tabWidth) {
 extern NSRange TE_rangeOfLineWithLeadingWhiteSpace(NSString *string, NSRange startRange, unsigned leadingSpaces, NSComparisonResult matchStyle, BOOL backwardFlag, unsigned tabWidth) {
     NSRange searchRange;
     NSRange curRange, tempRange;
-    unsigned len = [string length];
+    NSUInteger len = [string length];
     unsigned curSpaces;
     
     // Expand startRange to paragraph boundaries
@@ -215,7 +216,7 @@ static void indentParagraphRangeInAttributedString(NSRange range, NSMutableAttri
     NSRange leadingSpaceRange = range;
     unsigned numSpaces = TE_numberOfLeadingSpacesFromRangeInString([attrString string], &leadingSpaceRange, tabWidth);
     NSString *newWhitespace;
-    unsigned newWhitespaceLength;
+    NSUInteger newWhitespaceLength;
     int curLevels;
     
     curLevels = numSpaces / indentWidth;
@@ -327,7 +328,7 @@ static void initBraces() {
 
         if (!openingBraces) {
             unichar charBuf[100];
-            unsigned defLen;
+            NSUInteger defLen;
 
             defLen = [defaultOpeningBraces length];
             [defaultOpeningBraces getCharacters:charBuf];
@@ -344,7 +345,7 @@ static void initBraces() {
 
 unichar TE_matchingDelimiter(unichar delimiter) {
     // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c;
+    NSUInteger i, c;
 
     initBraces();
 
@@ -362,7 +363,7 @@ unichar TE_matchingDelimiter(unichar delimiter) {
 
 BOOL TE_isOpeningBrace(unichar delimiter) {
     // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c = NUM_BRACE_PAIRS;
+    NSUInteger i, c = NUM_BRACE_PAIRS;
 
     initBraces();
 
@@ -376,7 +377,7 @@ BOOL TE_isOpeningBrace(unichar delimiter) {
 
 BOOL TE_isClosingBrace(unichar delimiter) {
     // This is not very efficient or anything, but the list of delimiters is expected to be quite short.
-    unsigned i, c = NUM_BRACE_PAIRS;
+    NSUInteger i, c = NUM_BRACE_PAIRS;
 
     initBraces();
 
@@ -408,10 +409,10 @@ NSRange TE_findMatchingBraceForRangeInString(NSRange origRange, NSString *string
 
     {
         unichar delimiterStack[STACK_DEPTH];
-        unsigned stackCount = 0;
+        NSUInteger stackCount = 0;
         NSRange searchRange, buffRange;
         unichar buff[BUFF_SIZE];
-        int i;
+        NSInteger i;
         BOOL done = NO;
         BOOL push = NO, pop = NO;
 

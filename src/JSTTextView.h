@@ -10,7 +10,7 @@
 
 @class NoodleLineNumberView;
 
-@interface JSTTextView : NSTextView {
+@interface JSTTextView : NSTextView <NSTextStorageDelegate>{
     NoodleLineNumberView	*_lineNumberView;
     NSDictionary *_keywords;
 }

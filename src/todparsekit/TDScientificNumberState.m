@@ -29,13 +29,13 @@
         NSInteger e = c;
         c = [r read];
         
-        BOOL hasExp = isdigit(c);
+        BOOL hasExp = isdigit((int)c);
         negativeExp = ('-' == c);
         BOOL positiveExp = ('+' == c);
 
         if (!hasExp && (negativeExp || positiveExp)) {
             c = [r read];
-            hasExp = isdigit(c);
+            hasExp = isdigit((int)c);
         }
         if (-1 != c) {
             [r unread];

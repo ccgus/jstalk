@@ -88,7 +88,7 @@
     CGFloat v = 0.0;
     
     while (1) {
-        if (isdigit(c)) {
+        if (isdigit((int)c)) {
             [self append:c];
             gotADigit = YES;
             v = v * 10.0 + (c - '0');
@@ -117,7 +117,7 @@
 - (void)parseRightSideFromReader:(TDReader *)r {
     if ('.' == c) {
         NSInteger n = [r read];
-        BOOL nextIsDigit = isdigit(n);
+        BOOL nextIsDigit = isdigit((int)n);
         if (-1 != n) {
             [r unread];
         }
