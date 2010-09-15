@@ -952,8 +952,8 @@ static NSMutableDictionary* typeEncodings = nil;
 + (NSString*)structureFullTypeEncodingFromStructureName:(NSString*)structureName
 {
 	// Fetch structure type encoding from BridgeSupport
-//	id xml = [[BridgeSupportController sharedController] query:structureName withType:@"struct"];
-	id xml = [[BridgeSupportController sharedController] queryName:structureName type:@"struct"];
+//	id xml = [[JSTBridgeSupportLoader sharedController] query:structureName withType:@"struct"];
+	id xml = [[JSTBridgeSupportLoader sharedController] queryName:structureName type:@"struct"];
 
 	if (xml == nil)
 	{

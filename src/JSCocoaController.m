@@ -928,7 +928,7 @@ static id JSCocoaSingleton = NULL;
 	id path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.bridgeSupport", inPath, name, name];
 
 	// Return YES if already loaded
-	if ([[BridgeSupportController sharedController] isBridgeSupportLoaded:path])	return	YES;
+	if ([[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:path])	return	YES;
 
 	// Load framework
 	id libPath = [NSString stringWithFormat:@"%@/%@.framework/%@", inPath, name, name];
@@ -936,7 +936,7 @@ static id JSCocoaSingleton = NULL;
 	if (!address)	return	NSLog(@"Could not load framework dylib %@", libPath), NO;
 
 	// Try loading .bridgesupport file
-	if (![[BridgeSupportController sharedController] loadBridgeSupport:path])	return	NSLog(@"Could not load framework bridgesupport %@", path), NO;
+	if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupport:path])	return	NSLog(@"Could not load framework bridgesupport %@", path), NO;
 
 	// Try loading extra dylib (inline functions made callable and compiled to a .dylib)
 	id extraLibPath = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.dylib", inPath, name, name];
@@ -954,8 +954,8 @@ static id JSCocoaSingleton = NULL;
 	if (customCallPaths)	[customCallPaths release];
 	customCallPaths = [NSMutableDictionary new];
 	
-	[customCallPaths addEntriesFromDictionary:[[BridgeSupportController sharedController] variadicFunctions]];
-	[customCallPaths addEntriesFromDictionary:[[BridgeSupportController sharedController] variadicSelectors]];
+	[customCallPaths addEntriesFromDictionary:[[JSTBridgeSupportLoader sharedController] variadicFunctions]];
+	[customCallPaths addEntriesFromDictionary:[[JSTBridgeSupportLoader sharedController] variadicSelectors]];
 
 	[customCallPaths setObject:@"true" forKey:@"Original"];
 	[customCallPaths setObject:@"true" forKey:@"Super"];
@@ -1690,7 +1690,7 @@ static id JSCocoaSingleton = NULL;
 	while (class)
 	{
 		id className = [class description];
-		id xml = [[BridgeSupportController sharedController] queryName:className];
+		id xml = [[JSTBridgeSupportLoader sharedController] queryName:className];
 		// Go up if this class has no description
 		if (!xml)	
 		{
@@ -1721,7 +1721,7 @@ static id JSCocoaSingleton = NULL;
 
 - (BOOL)isFunctionVariadic:(id)functionName
 {
-	id xml = [[BridgeSupportController sharedController] queryName:functionName];
+	id xml = [[JSTBridgeSupportLoader sharedController] queryName:functionName];
 
 	// Get XML definition
 	id error;
@@ -2698,7 +2698,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 	//
 	// Query BridgeSupport for property
 	//
-	xml = [[BridgeSupportController sharedController] queryName:propertyName];
+	xml = [[JSTBridgeSupportLoader sharedController] queryName:propertyName];
 	if (xml)
 	{
 		id error = nil;
@@ -2808,7 +2808,7 @@ static void OSXObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSP
 {
 	// Move to a definition object
 /*
-	NSArray* keys = [[BridgeSupportController sharedController] keys];
+	NSArray* keys = [[JSTBridgeSupportLoader sharedController] keys];
 	for (id key in keys)
 	{
 		JSStringRef jsString = JSStringCreateWithUTF8CString([key UTF8String]);

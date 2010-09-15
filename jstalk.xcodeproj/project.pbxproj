@@ -176,8 +176,6 @@
 		CC43C1090F4BBC4D0044BA41 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC43C11E0F4BBDF40044BA41 /* main.jstalk in Resources */ = {isa = PBXBuildFile; fileRef = CC43C11D0F4BBDF40044BA41 /* main.jstalk */; };
 		CC43C12F0F4BBE8B0044BA41 /* JSTalkRunner.app in Resources */ = {isa = PBXBuildFile; fileRef = CC43C0DB0F4BBA820044BA41 /* JSTalkRunner.app */; };
-		CC506DE812415B28005AD5E6 /* BridgeSupportController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DD912415B28005AD5E6 /* BridgeSupportController.h */; };
-		CC506DE912415B28005AD5E6 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDA12415B28005AD5E6 /* BridgeSupportController.m */; };
 		CC506DEB12415B28005AD5E6 /* JSCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DDC12415B28005AD5E6 /* JSCocoa.h */; };
 		CC506DEC12415B28005AD5E6 /* JSCocoaController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DDD12415B28005AD5E6 /* JSCocoaController.h */; };
 		CC506DED12415B28005AD5E6 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDE12415B28005AD5E6 /* JSCocoaController.m */; };
@@ -189,7 +187,6 @@
 		CC506DF312415B28005AD5E6 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE412415B28005AD5E6 /* JSCocoaLib.m */; };
 		CC506DF412415B28005AD5E6 /* JSCocoaPrivateObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DE512415B28005AD5E6 /* JSCocoaPrivateObject.h */; };
 		CC506DF512415B28005AD5E6 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE612415B28005AD5E6 /* JSCocoaPrivateObject.m */; };
-		CC506DF712415B28005AD5E6 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDA12415B28005AD5E6 /* BridgeSupportController.m */; };
 		CC506DF812415B28005AD5E6 /* class.js in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDB12415B28005AD5E6 /* class.js */; };
 		CC506DF912415B28005AD5E6 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDE12415B28005AD5E6 /* JSCocoaController.m */; };
 		CC506DFA12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE012415B28005AD5E6 /* JSCocoaFFIArgument.m */; };
@@ -214,6 +211,11 @@
 		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
 		CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
+		CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
+		CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CCB4454312417564000EECB5 /* JSTBridgedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB4454112417564000EECB5 /* JSTBridgedObject.h */; };
+		CCB4454412417564000EECB5 /* JSTBridgedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB4454212417564000EECB5 /* JSTBridgedObject.m */; };
 		CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BA0F1EFA9700126722 /* JSTDocument.xib */; };
 		CCC5B8C90F1EFA9700126722 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BE0F1EFA9700126722 /* MainMenu.xib */; };
@@ -412,8 +414,6 @@
 		CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRunnerApplication.m; path = src/JSTRunnerApplication.m; sourceTree = "<group>"; };
 		CC43C11D0F4BBDF40044BA41 /* main.jstalk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jstalk; path = res/main.jstalk; sourceTree = "<group>"; };
 		CC43C14B0F4BC20C0044BA41 /* JSTalkRunner-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkRunner-Info.plist"; path = "res/JSTalkRunner-Info.plist"; sourceTree = "<group>"; };
-		CC506DD912415B28005AD5E6 /* BridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgeSupportController.h; path = src/BridgeSupportController.h; sourceTree = "<group>"; };
-		CC506DDA12415B28005AD5E6 /* BridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BridgeSupportController.m; path = src/BridgeSupportController.m; sourceTree = "<group>"; };
 		CC506DDB12415B28005AD5E6 /* class.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; name = class.js; path = src/class.js; sourceTree = "<group>"; };
 		CC506DDC12415B28005AD5E6 /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = src/JSCocoa.h; sourceTree = "<group>"; };
 		CC506DDD12415B28005AD5E6 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = src/JSCocoaController.h; sourceTree = "<group>"; };
@@ -440,6 +440,10 @@
 		CC94E0510F4A616300208BE0 /* JSTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalk.icns; path = res/images/JSTalk.icns; sourceTree = "<group>"; };
 		CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = src/JSTPreprocessor.h; sourceTree = "<group>"; };
 		CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = src/JSTPreprocessor.m; sourceTree = "<group>"; };
+		CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridgeSupportLoader.h; path = src/JSTBridgeSupportLoader.h; sourceTree = "<group>"; };
+		CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgeSupportLoader.m; path = src/JSTBridgeSupportLoader.m; sourceTree = "<group>"; };
+		CCB4454112417564000EECB5 /* JSTBridgedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridgedObject.h; path = src/JSTBridgedObject.h; sourceTree = "<group>"; };
+		CCB4454212417564000EECB5 /* JSTBridgedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgedObject.m; path = src/JSTBridgedObject.m; sourceTree = "<group>"; };
 		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CCC5B8B00F1EFA9700126722 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = res/Info.plist; sourceTree = "<group>"; };
 		CCC5B8BB0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/JSTDocument.xib; sourceTree = "<group>"; };
@@ -761,8 +765,10 @@
 		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
 			isa = PBXGroup;
 			children = (
-				CC506DD912415B28005AD5E6 /* BridgeSupportController.h */,
-				CC506DDA12415B28005AD5E6 /* BridgeSupportController.m */,
+				CCB4454112417564000EECB5 /* JSTBridgedObject.h */,
+				CCB4454212417564000EECB5 /* JSTBridgedObject.m */,
+				CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */,
+				CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */,
 				CC506DDB12415B28005AD5E6 /* class.js */,
 				CC506DDC12415B28005AD5E6 /* JSCocoa.h */,
 				CC506DDD12415B28005AD5E6 /* JSCocoaController.h */,
@@ -843,13 +849,14 @@
 				CC0FEEE610867410008FF7DD /* NoodleLineNumberMarker.h in Headers */,
 				CC0FEEE810867411008FF7DD /* NoodleLineNumberView.h in Headers */,
 				CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */,
-				CC506DE812415B28005AD5E6 /* BridgeSupportController.h in Headers */,
 				CC506DEB12415B28005AD5E6 /* JSCocoa.h in Headers */,
 				CC506DEC12415B28005AD5E6 /* JSCocoaController.h in Headers */,
 				CC506DEE12415B28005AD5E6 /* JSCocoaFFIArgument.h in Headers */,
 				CC506DF012415B28005AD5E6 /* JSCocoaFFIClosure.h in Headers */,
 				CC506DF212415B28005AD5E6 /* JSCocoaLib.h in Headers */,
 				CC506DF412415B28005AD5E6 /* JSCocoaPrivateObject.h in Headers */,
+				CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */,
+				CCB4454312417564000EECB5 /* JSTBridgedObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1061,12 +1068,13 @@
 				CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */,
 				CC0FEEE910867412008FF7DD /* NoodleLineNumberView.m in Sources */,
 				CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */,
-				CC506DE912415B28005AD5E6 /* BridgeSupportController.m in Sources */,
 				CC506DED12415B28005AD5E6 /* JSCocoaController.m in Sources */,
 				CC506DEF12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */,
 				CC506DF112415B28005AD5E6 /* JSCocoaFFIClosure.m in Sources */,
 				CC506DF312415B28005AD5E6 /* JSCocoaLib.m in Sources */,
 				CC506DF512415B28005AD5E6 /* JSCocoaPrivateObject.m in Sources */,
+				CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
+				CCB4454412417564000EECB5 /* JSTBridgedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,7 +1141,6 @@
 				CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */,
 				CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
 				CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */,
-				CC506DF712415B28005AD5E6 /* BridgeSupportController.m in Sources */,
 				CC506DF812415B28005AD5E6 /* class.js in Sources */,
 				CC506DF912415B28005AD5E6 /* JSCocoaController.m in Sources */,
 				CC506DFA12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */,
@@ -1141,6 +1148,7 @@
 				CC506DFC12415B28005AD5E6 /* JSCocoaLib.m in Sources */,
 				CC506DFD12415B28005AD5E6 /* JSCocoaPrivateObject.m in Sources */,
 				CC506DFE12415B28005AD5E6 /* jslint-jscocoa.js in Sources */,
+				CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1244,6 +1252,7 @@
 					x86_64,
 					i386,
 				);
+				CC = /opt/bin/clang;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;

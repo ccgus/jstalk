@@ -10,8 +10,10 @@
 
 #ifdef DEBUG
     #define debug(...) NSLog(__VA_ARGS__)
+    #define JSTAssert assert
 #else
     #define debug(...)
+    #define JSTAssert(...)
 #endif
 
 #define JSTPrefs [NSUserDefaults standardUserDefaults]

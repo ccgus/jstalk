@@ -11,7 +11,7 @@
 #define MACOSX
 #import <ffi/ffi.h>
 #endif
-#import "BridgeSupportController.h"
+#import "JSTBridgeSupportLoader.h"
 #import "JSCocoaPrivateObject.h"
 #import "JSCocoaFFIArgument.h"
 #import "JSCocoaFFIClosure.h"

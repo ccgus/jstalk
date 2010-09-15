@@ -107,7 +107,7 @@ static NSMutableArray *JSTalkPluginList;
             if (bridgeSupportName) {
                 NSString *bridgeSupportPath = [pluginBundle pathForResource:bridgeSupportName ofType:nil];
                 
-                [[BridgeSupportController sharedController] loadBridgeSupport:bridgeSupportPath];
+                [[JSTBridgeSupportLoader sharedController] loadBridgeSupport:bridgeSupportPath];
             }
         }
         else {

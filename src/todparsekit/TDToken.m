@@ -19,7 +19,7 @@ static TDTokenEOF *EOFToken = nil;
 + (TDTokenEOF *)instance {
     @synchronized(self) {
         if (!EOFToken) {
-            [[self alloc] init]; // assignment not done here
+            EOFToken = [[self alloc] init]; // assignment not done here
         }
     }
     return EOFToken;
