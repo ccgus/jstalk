@@ -18,12 +18,11 @@
 
 
 // JS value container, used by methods wanting a straight JSValue and not a converted JS->ObjC value.
-struct	JSValueRefAndContextRef
-{
-	JSValueRef		value;
-	JSContextRef	ctx;
+struct JSValueRefAndContextRef {
+    JSValueRef    value;
+    JSContextRef  ctx;
 };
-typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
+typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
 #import "iPhone/libffi/ffi.h"
@@ -36,48 +35,34 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 //
 @interface JSCocoaController : NSObject {
 
-	JSGlobalContextRef	ctx;
-	BOOL				ownsContext;
-    id					_delegate;
+    JSGlobalContextRef    ctx;
+    BOOL                ownsContext;
+    id                    _delegate;
 
-	//
-	// Safe dealloc
-	//	- (void)dealloc cannot be overloaded as it is called during JS GC, which forbids new JS code execution.
-	//	As the js dealloc method cannot be called, safe dealloc allows it to be executed during the next run loop cycle
-	//	NOTE : upon destroying a JSCocoaController, safe dealloc is disabled
-	//
-	BOOL				useSafeDealloc;
-
-	//
-	// Split call
-	//	Allows calling multi param ObjC messages with a jQuery-like syntax.
-	//
-	//	obj.do({ this : 'hello', andThat : 'world' })
-	//		instead of
-	//		obj.dothis_andThat_('hello', 'world')
-	//
-	BOOL				useSplitCall;
-
-	// JSLint : used for ObjJ syntax, class syntax, return if
-	BOOL				useJSLint;
-	
+    //
+    // Safe dealloc
+    //    - (void)dealloc cannot be overloaded as it is called during JS GC, which forbids new JS code execution.
+    //    As the js dealloc method cannot be called, safe dealloc allows it to be executed during the next run loop cycle
+    //    NOTE : upon destroying a JSCocoaController, safe dealloc is disabled
+    //
+    BOOL                useSafeDealloc;
+    
+    // JSLint : used for ObjJ syntax, class syntax, return if
+    BOOL                useJSLint;
+    
 }
 
 @property (assign) id delegate;
 @property BOOL useSafeDealloc;
-@property BOOL useSplitCall;
 @property BOOL useJSLint;
 @property BOOL useAutoCall;
-@property BOOL callSelectorsMissingTrailingSemicolon;
 @property BOOL canSetOnBoxedObjects;
 
 
 - (id)init;
 - (id)initWithGlobalContext:(JSGlobalContextRef)ctx;
 
-+ (id)sharedController;
 + (id)controllerFromContext:(JSContextRef)ctx;
-+ (BOOL)hasSharedController;
 - (JSGlobalContextRef)ctx;
 + (void)hazardReport;
 + (NSString*)runningArchitecture;
@@ -216,20 +201,20 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 // Check if getting property is allowed
 - (BOOL) JSCocoa:(JSCocoaController*)controller canGetProperty:(NSString*)propertyName ofObject:(id)object inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 // Custom handler for getting properties
-//	Return a custom JSValueRef to bypass JSCocoa
-//	Return NULL to let JSCocoa handle getProperty
-//	Return JSValueMakeNull() to return a Javascript null
+//    Return a custom JSValueRef to bypass JSCocoa
+//    Return NULL to let JSCocoa handle getProperty
+//    Return JSValueMakeNull() to return a Javascript null
 - (JSValueRef) JSCocoa:(JSCocoaController*)controller getProperty:(NSString*)propertyName ofObject:(id)object inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 
 //
 // Setting
 //
 // Check if setting property is allowed
-- (BOOL) JSCocoa:(JSCocoaController*)controller canSetProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
+- (BOOL)JSCocoa:(JSCocoaController*)controller canSetProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 // Custom handler for setting properties
-//	Return YES to indicate you handled setting
-//	Return NO to let JSCocoa handle setProperty
-- (BOOL) JSCocoa:(JSCocoaController*)controller setProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
+//    Return YES to indicate you handled setting
+//    Return NO to let JSCocoa handle setProperty
+- (BOOL)JSCocoa:(JSCocoaController*)controller setProperty:(NSString*)propertyName ofObject:(id)object toValue:(JSValueRef)value inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 
 //
 // Calling
@@ -239,8 +224,8 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 // Check if calling an ObjC method is allowed
 - (BOOL) JSCocoa:(JSCocoaController*)controller canCallMethod:(NSString*)methodName ofObject:(id)object argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 // Custom handler for calling
-//	Return YES to indicate you handled calling
-//	Return NO to let JSCocoa handle calling
+//    Return YES to indicate you handled calling
+//    Return NO to let JSCocoa handle calling
 - (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSCocoaPrivateObject*)thisPrivateObject argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception;
 
 //
@@ -249,9 +234,9 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 // Check if getting property is allowed
 - (BOOL) JSCocoa:(JSCocoaController*)controller canGetGlobalProperty:(NSString*)propertyName inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 // Custom handler for getting properties
-//	Return a custom JSValueRef to bypass JSCocoa
-//	Return NULL to let JSCocoa handle getProperty
-//	Return JSValueMakeNull() to return a Javascript null
+//    Return a custom JSValueRef to bypass JSCocoa
+//    Return NULL to let JSCocoa handle getProperty
+//    Return JSValueMakeNull() to return a Javascript null
 - (JSValueRef) JSCocoa:(JSCocoaController*)controller getGlobalProperty:(NSString*)propertyName inContext:(JSContextRef)ctx exception:(JSValueRef*)exception;
 
 //
@@ -268,64 +253,57 @@ typedef struct	JSValueRefAndContextRef JSValueRefAndContextRef;
 // Check if script can be evaluated
 - (BOOL)JSCocoa:(JSCocoaController*)controller canEvaluateScript:(NSString*)script;
 // Called before evalJSString, used to modify script about to be evaluated
-//	Return a custom NSString (eg a macro expanded version of the source)
-//	Return NULL to let JSCocoa handle evaluation
+//    Return a custom NSString (eg a macro expanded version of the source)
+//    Return NULL to let JSCocoa handle evaluation
 - (NSString*)JSCocoa:(JSCocoaController*)controller willEvaluateScript:(NSString*)script;
 
 @end
 
 
 //
-// JSCocoa shorthand
-//
-@interface JSCocoa : JSCocoaController
-@end
-
-//
 // Boxed object cache : holds one JSObjectRef for each reference to a pointer to an ObjC object
 //
 @interface BoxedJSObject : NSObject {
-	JSObjectRef	jsObject;
+    JSObjectRef _jsObject;
 }
-- (void)setJSObject:(JSObjectRef)o;
-- (JSObjectRef)jsObject;
+
+- (id)initWithJSObject:(JSObjectRef)ref;
+@property (assign) JSObjectRef jsObject;
 
 @end
 
 //
 // Helpers
 //
-id	NSStringFromJSValue(JSValueRef value, JSContextRef ctx);
-//void* malloc_autorelease(size_t size);
+id NSStringFromJSValue(JSValueRef value, JSContextRef ctx);
 
 // Convert values between contexts (eg user context and webkit page context)
 JSValueRef valueToExternalContext(JSContextRef ctx, JSValueRef value, JSContextRef externalCtx);
 
 // valueOf() is called by Javascript on objects, eg someObject + ' someString'
-JSValueRef	valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception);
+JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception);
 
 //
 // From PyObjC : when to call objc_msgSend_stret, for structure return
-//		Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
+//        Depending on structure size & architecture, structures are returned as function first argument (done transparently by ffi) or via registers
 //
 
 #if defined(__ppc__)
-#   define SMALL_STRUCT_LIMIT	4
+#   define SMALL_STRUCT_LIMIT    4
 #elif defined(__ppc64__)
-#   define SMALL_STRUCT_LIMIT	8
+#   define SMALL_STRUCT_LIMIT    8
 #elif defined(__i386__) 
-#   define SMALL_STRUCT_LIMIT 	8
+#   define SMALL_STRUCT_LIMIT     8
 #elif defined(__x86_64__) 
-#   define SMALL_STRUCT_LIMIT	16
+#   define SMALL_STRUCT_LIMIT    16
 #elif TARGET_OS_IPHONE
 // TOCHECK
-#   define SMALL_STRUCT_LIMIT	4
+#   define SMALL_STRUCT_LIMIT    4
 #else
 #   error "Unsupported MACOSX platform"
 #endif
 
-
 // Stored in boxedobjects to access a list of methods, properties, ...
-#define RuntimeInformationPropertyName		"info"
+#define RuntimeInformationPropertyName "info"
 
 

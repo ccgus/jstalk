@@ -128,7 +128,6 @@
             [_currentBridgeObject setReturnValue:arg];
         }
         
-        
         [arg release];
     }
     
@@ -191,13 +190,7 @@
         return NO;
     }
     
-    debug(@"end");
-    
-    [self oldloadBridgeSupport:path];
-    
-    debug(@"old end");
-    
-    return YES;
+    return [self oldloadBridgeSupport:path];
 }
 
 
