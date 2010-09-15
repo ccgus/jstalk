@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='0.9'>
+<function name='jsobjc_msgSendV' variadic='true'>
+<arg type='@'/>
+<arg type=':'/>
+<retval type='@'/>
+</function>
+<function name='jsobjc_msgSend'>
+<arg type='@'/>
+<arg type=':'/>
+<retval type='^'/>
+</function>
+<function variadic='true' name='objc_msgSend'>
+<arg type='@'/>
+<arg type=':'/>
+<retval type='@'/>
+</function>
+<function name='jsobjc_msgSend1'>
+<arg type='@'/>
+<arg type=':'/>
+<arg type='^'/>
+<retval type='@'/>
+</function>
+</signatures>
