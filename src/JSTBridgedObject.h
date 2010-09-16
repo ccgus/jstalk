@@ -1,65 +1,99 @@
 //
-//  JSTBridgeType.h
-//  jstalk
+//  JSTBridgedObject.h
+//  JSCocoa
 //
-//  Created by August Mueller on 9/15/10.
-//  Copyright 2010 Flying Meat Inc. All rights reserved.
+//  Created by Patrick Geiller on 09/07/08.
+//  Copyright 2008 __MyCompanyName__. All rights reserved.
 //
 
+#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
 #import <Cocoa/Cocoa.h>
+#import <JavaScriptCore/JavaScriptCore.h>
+#endif
 
-enum {
-    JSTUnknown,
-    JSTStruct,
-    JSTConstant,
-    JSTEnum,
-    JSTFunction,
-    JSTMethod,
-    JSTClass,
-};
+#import "JSTBridgeSupportInfo.h"
+#import <mach-o/dyld.h>
+#import <dlfcn.h>
+//#import <objc/objc-class.h>
+#import <objc/runtime.h>
+#import <objc/message.h>
+
+
+
+//
+// Boxing object
+//
+//	type
+//	@			ObjC object
+//	struct		C struct
+//	method		ObjC method name
+//	rawPointer	raw C pointer (_C_PTR)
+//	jsFunction	Javascript function
+//	jsValueRef	raw jsvalue
+//	externalJSValueRef	EXPERIMENTAL from webView
+//
 
 @interface JSTBridgedObject : NSObject {
-    int                 _objectType;
-    NSString            *_name;
-    NSString            *_type;
+
+	NSString*	type;
+	NSString*	xml;
+	NSString*	methodName;
+	NSString*	structureName;
+	
+	NSString*	declaredType;
+//	void*		ptr;
+	void*		rawPointer;
+
+	id			object;
+
+	Method		method;
+	
+	JSValueRef	jsValue;
+	JSContextRef	ctx;
+	unsigned int	externalJSValueIndex;
+	// (test) when storing JSValues from a WebView, used to retain the WebView's context.
+	// Disabled for now. Just make sure the WebView has a longer life than the vars
+	// it's using.
+	//
+	// Disabled because retaining the context crashes in 32 bits, but works in 64 bit.
+	// May be reenabled someday.
+//	JSContextGroupRef	contextGroup;
+	
+	BOOL		isAutoCall;
+	BOOL		retainObject;
     
-    NSMutableArray      *_structFields;
     
-    NSString            *_declaredType;
+    JSTBridgeSupportInfo *_bridgeInfo;
     
-    int                 _enumValue;
-    
-    NSMutableArray      *_arguments;
-    JSTBridgedObject    *_returnValue;
-    
-    NSMutableDictionary *_instanceMethods;
-    NSMutableDictionary *_classMethods;
-    
-    NSString            *_methodSelector;
 }
 
-@property (assign) int objectType;
-@property (retain) NSString *name;
-@property (retain) NSString *type;
-@property (retain) NSString *declaredType;
-@property (assign) int enumValue;
-@property (retain) JSTBridgedObject *returnValue;
-@property (retain) NSString *methodSelector;
+@property (copy) NSString*	type;
+@property (copy) NSString*	xml;
+@property (copy) NSString*	methodName;
+@property (copy) NSString*	structureName;
+@property (copy) NSString*	declaredType;
+@property (retain) JSTBridgeSupportInfo *bridgeInfo;
 
-- (NSArray *)structFields;
-- (void)addStructField:(NSString*)s;
+@property BOOL	isAutoCall;
 
-- (NSArray *)arguments;
-- (void)addArgument:(JSTBridgedObject*)arg;
+//- (void)setPtr:(void*)ptrValue;
+//- (void*)ptr;
 
-- (NSDictionary *)instanceMethods;
-- (void)addInstanceMethod:(JSTBridgedObject*)arg;
+- (void)setObject:(id)o;
+- (void)setObjectNoRetain:(id)o;
+- (BOOL)retainObject;
+- (id)object;
 
-- (NSDictionary *)classMethods;
-- (void)addClassMethod:(JSTBridgedObject*)arg;
+- (void)setMethod:(Method)m;
+- (Method)method;
 
-// This is a convenience function, so we don't have to have multiple ifdef's 
-// in our parser code.
-- (void)grabTypeFromAttributes:(NSDictionary*)atts;
+- (void)setJSValueRef:(JSValueRef)v ctx:(JSContextRef)ctx;
+- (JSValueRef)jsValueRef;
+- (JSContextRef)ctx;
+- (void)setExternalJSValueRef:(JSValueRef)v ctx:(JSContextRef)ctx;
+
+- (void*)rawPointer;
+- (void)setRawPointer:(void*)rp encoding:(id)encoding;
+- (id)rawPointerEncoding;
 
 @end

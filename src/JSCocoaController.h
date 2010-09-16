@@ -12,7 +12,7 @@
 #import <ffi/ffi.h>
 #endif
 #import "JSTBridgeSupportLoader.h"
-#import "JSCocoaPrivateObject.h"
+#import "JSTBridgedObject.h"
 #import "JSCocoaFFIArgument.h"
 #import "JSCocoaFFIClosure.h"
 
@@ -35,9 +35,9 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 //
 @interface JSCocoaController : NSObject {
 
-    JSGlobalContextRef    ctx;
-    BOOL                ownsContext;
-    id                    _delegate;
+    JSGlobalContextRef  _ctx;
+    BOOL                _ownsContext;
+    id                  _delegate;
 
     //
     // Safe dealloc
@@ -46,17 +46,17 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
     //    NOTE : upon destroying a JSCocoaController, safe dealloc is disabled
     //
     BOOL                useSafeDealloc;
-    
-    // JSLint : used for ObjJ syntax, class syntax, return if
-    BOOL                useJSLint;
+    BOOL                useJSLint; // JSLint : used for ObjJ syntax, class syntax, return if
+    BOOL                useAutoCall;
+    BOOL                canSetOnBoxedObjects;
     
 }
 
 @property (assign) id delegate;
-@property BOOL useSafeDealloc;
-@property BOOL useJSLint;
-@property BOOL useAutoCall;
-@property BOOL canSetOnBoxedObjects;
+@property (assign) BOOL useSafeDealloc;
+@property (assign) BOOL useJSLint;
+@property (assign) BOOL canSetOnBoxedObjects;
+@property (assign) BOOL useAutoCall;
 
 
 - (id)init;
@@ -115,9 +115,9 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 + (void)garbageCollect;
 - (void)garbageCollect;
 - (void)unlinkAllReferences;
-+ (void)upJSCocoaPrivateObjectCount;
-+ (void)downJSCocoaPrivateObjectCount;
-+ (int)JSCocoaPrivateObjectCount;
++ (void)upJSTBridgedObjectCount;
++ (void)downJSTBridgedObjectCount;
++ (int)JSTBridgedObjectCount;
 
 + (void)upJSValueProtectCount;
 + (void)downJSValueProtectCount;
@@ -169,7 +169,7 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 //
 + (JSObjectRef)jsCocoaPrivateObjectInContext:(JSContextRef)ctx;
 + (NSMutableArray*)parseObjCMethodEncoding:(const char*)typeEncoding;
-+ (NSMutableArray*)parseCFunctionEncoding:(NSString*)xml functionName:(NSString**)functionNamePlaceHolder;
+//+ (NSMutableArray*)cFunctionEncodingsForBridgedObject:(JSTBridgedObject*)bridgedObject;
 
 + (void)ensureJSValueIsObjectAfterInstanceAutocall:(JSValueRef)value inContext:(JSContextRef)ctx;
 - (NSString*)formatJSException:(JSValueRef)exception;
@@ -226,7 +226,7 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 // Custom handler for calling
 //    Return YES to indicate you handled calling
 //    Return NO to let JSCocoa handle calling
-- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSCocoaPrivateObject*)thisPrivateObject argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception;
+- (JSValueRef) JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSTBridgedObject*)thisPrivateObject argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception;
 
 //
 // Getting global properties (classes, structures, C function names, enums via OSXObject_getProperty)

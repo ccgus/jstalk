@@ -2,7 +2,7 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
-#import "JSTBridgedObject.h"
+#import "JSTBridgeSupportInfo.h"
 
 @interface JSTBridgeSupportLoader : NSObject <NSXMLParserDelegate> {
     
@@ -15,15 +15,17 @@
     
     
     NSMutableDictionary     *_symbolLookup;
-    JSTBridgedObject        *_currentBridgeObject;
-    JSTBridgedObject        *_currentBridgeClass;
+    JSTBridgeSupportInfo        *_currentBridgeObject;
+    JSTBridgeSupportInfo        *_currentBridgeClass;
 }
 
 + (id)sharedController;
 
-- (BOOL)loadBridgeSupport:(NSString*)path;
+- (BOOL)loadBridgeSupportAtPath:(NSString*)path;
 - (BOOL)isBridgeSupportLoaded:(NSString*)path;
 - (NSUInteger)bridgeSupportIndexForString:(NSString*)string;
+
+- (JSTBridgeSupportInfo*)bridgedObjectForSymbol:(NSString*)symbol;
 
 - (NSMutableDictionary*)variadicSelectors;
 - (NSMutableDictionary*)variadicFunctions;

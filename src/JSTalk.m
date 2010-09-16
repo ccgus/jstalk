@@ -107,7 +107,7 @@ static NSMutableArray *JSTalkPluginList;
             if (bridgeSupportName) {
                 NSString *bridgeSupportPath = [pluginBundle pathForResource:bridgeSupportName ofType:nil];
                 
-                [[JSTBridgeSupportLoader sharedController] loadBridgeSupport:bridgeSupportPath];
+                [[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:bridgeSupportPath];
             }
         }
         else {
@@ -172,7 +172,7 @@ static NSMutableArray *JSTalkPluginList;
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
     JSObjectRef jsObject            = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-    JSCocoaPrivateObject *private   = JSObjectGetPrivate(jsObject);
+    JSTBridgedObject *private   = JSObjectGetPrivate(jsObject);
     private.type = @"@";
     [private setObject:obj];
     

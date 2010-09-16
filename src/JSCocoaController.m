@@ -12,74 +12,64 @@
 
 #pragma mark JS objects forward definitions
 
+
+#define jstrace NSLog
+//#define jstrace(...)
+
 // Global object
-static    JSValueRef    OSXObject_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
+static    JSValueRef  OSXObject_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
 static    void        OSXObject_getPropertyNames(JSContextRef, JSObjectRef, JSPropertyNameAccumulatorRef);
 
 // Private JS object callbacks
 static    void        jsCocoaObject_initialize(JSContextRef, JSObjectRef);
 static    void        jsCocoaObject_finalize(JSObjectRef);
-static    JSValueRef    jsCocoaObject_callAsFunction(JSContextRef, JSObjectRef, JSObjectRef, size_t, const JSValueRef [], JSValueRef*);
-//static    bool        jsCocoaObject_hasProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName);
-static    JSValueRef    jsCocoaObject_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
+static    JSValueRef  jsCocoaObject_callAsFunction(JSContextRef, JSObjectRef, JSObjectRef, size_t, const JSValueRef [], JSValueRef*);
+static    JSValueRef  jsCocoaObject_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
 static    bool        jsCocoaObject_setProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef, JSValueRef*);
 static    bool        jsCocoaObject_deleteProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
 static    void        jsCocoaObject_getPropertyNames(JSContextRef, JSObjectRef, JSPropertyNameAccumulatorRef);
 static    JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef, JSObjectRef, size_t, const JSValueRef [], JSValueRef*);
-static    JSValueRef    jsCocoaObject_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception);
+static    JSValueRef  jsCocoaObject_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception);
 static    bool        jsCocoaObject_hasInstance(JSContextRef ctx, JSObjectRef constructor, JSValueRef possibleInstance, JSValueRef* exception);
 
-static    JSValueRef    jsCocoaInfo_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
+static    JSValueRef  jsCocoaInfo_getProperty(JSContextRef, JSObjectRef, JSStringRef, JSValueRef*);
 static    void        jsCocoaInfo_getPropertyNames(JSContextRef, JSObjectRef, JSPropertyNameAccumulatorRef);
 
 // Set on valueOf callback property of objects
-#define    JSCocoaInternalAttribute kJSPropertyAttributeDontEnum
+#define JSCocoaInternalAttribute kJSPropertyAttributeDontEnum
 
 // These will be destroyed when the last JSCocoa instance dies
-static    JSClassRef            OSXObjectClass        = nil;
-static    JSClassRef            jsCocoaObjectClass    = nil;
-static    JSClassRef            jsCocoaFunctionClass= nil;
-static    JSClassRef            jsCocoaInfoClass    = nil;
-static    JSClassRef            hashObjectClass        = nil;
+static    JSClassRef  OSXObjectClass        = nil;
+static    JSClassRef  jsCocoaObjectClass    = nil;
+static    JSClassRef  jsCocoaFunctionClass  = nil;
+static    JSClassRef  jsCocoaInfoClass      = nil;
+static    JSClassRef  hashObjectClass       = nil;
 
 // Convenience method to throw a Javascript exception
 static void throwException(JSContextRef ctx, JSValueRef* exception, NSString* reason);
 
-
 // iPhone specifics
 #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0, 
-                                                    nil, nil, 
-                                                    nil, nil, 
-                                                    nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil };
+const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil };
 #import "GDataDefines.h"
 #import "GDataXMLNode.h"
 #endif
 
 // Appended to swizzled method names
-#define OriginalMethodPrefix    @"original"
-    
-    
+#define OriginalMethodPrefix @"original"
 
-
-
-
-
-//
-// JSCocoaController
-//
-#pragma mark -
-#pragma mark JSCocoaController
 
 @interface JSCocoaController (Private)
-- (void) callDelegateForException:(JSValueRef)exception;
+- (void)callDelegateForException:(JSValueRef)exception;
 @end
 
 @implementation JSCocoaController
 
-@synthesize delegate=_delegate;
-@synthesize useSafeDealloc;
-@synthesize useJSLint;
+    @synthesize delegate=_delegate;
+    @synthesize useSafeDealloc;
+    @synthesize useJSLint;
+    @synthesize canSetOnBoxedObjects;
+    @synthesize useAutoCall;
 
     // Given a jsFunction, retrieve its closure (jsFunction's pointer address is used as key)
     static    id    closureHash;
@@ -106,7 +96,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
 
     // Auto call zero arg methods : allow NSWorkspace.sharedWorkspace instead of NSWorkspace.sharedWorkspace()
-    static    BOOL    useAutoCall;
+    //static    BOOL    useAutoCall;
     
     // Allows setting javascript values on boxed objects (which are collected after niling all references to them)
     static    BOOL    canSetOnBoxedObjects;
@@ -124,187 +114,193 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     // Javascript functions defined for ObjC classes are stored in this hash
     // __globalJSFunctionRepository__[className][propertyName]
 
-//
-// Init
-//
-- (id)initWithGlobalContext:(JSGlobalContextRef)_ctx
-{
-//    NSLog(@"JSCocoa : %x spawning with context %x", self, _ctx);
-    self    = [super init];
-    controllerCount++;
-
-    @synchronized(self)
-    {
-        if (!sharedInstanceStats)    
-        {
-            sharedInstanceStats         = [NSMutableDictionary new];
-            closureHash                 = [NSMutableDictionary new];
-            jsFunctionSelectors         = [NSMutableDictionary new];
-            jsFunctionClasses           = [NSMutableDictionary new];
-            jsFunctionHash              = [NSMutableDictionary new];
-            splitCallCache              = [NSMutableDictionary new];
-            jsClassParents              = [NSMutableDictionary new];
-            boxedObjects                = [NSMutableDictionary new];
-            jsClasses                   = [NSMutableArray new];
-            customCallPathsCacheIsClean = NO;
-            customCallPaths             = nil;            
-
-            useAutoCall                 = YES;
-            canSetOnBoxedObjects        = NO;
-            logAllExceptions            = NO;
-        }
-    }
-
-
-    //
-    // OSX object javascript definition
-    //
-    JSClassDefinition OSXObjectDefinition    = kJSClassDefinitionEmpty;
-    OSXObjectDefinition.className                = "OSX";
-    OSXObjectDefinition.getProperty                = OSXObject_getProperty;
-    OSXObjectDefinition.getPropertyNames        = OSXObject_getPropertyNames;
-    if (!OSXObjectClass)
-        OSXObjectClass = JSClassCreate(&OSXObjectDefinition);
-
-    //
-    // Private object, used for holding references to objects, classes, structs
-    //
-    JSClassDefinition jsCocoaObjectDefinition    = kJSClassDefinitionEmpty;
-    jsCocoaObjectDefinition.className            = "JSCocoa box";
-    jsCocoaObjectDefinition.initialize            = jsCocoaObject_initialize;
-    jsCocoaObjectDefinition.finalize            = jsCocoaObject_finalize;
-//    jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
-    jsCocoaObjectDefinition.getProperty            = jsCocoaObject_getProperty;
-    jsCocoaObjectDefinition.setProperty            = jsCocoaObject_setProperty;
-    jsCocoaObjectDefinition.deleteProperty        = jsCocoaObject_deleteProperty;
-    jsCocoaObjectDefinition.getPropertyNames    = jsCocoaObject_getPropertyNames;
-//    jsCocoaObjectDefinition.callAsFunction        = jsCocoaObject_callAsFunction;
-    jsCocoaObjectDefinition.callAsConstructor    = jsCocoaObject_callAsConstructor;
-//    jsCocoaObjectDefinition.hasInstance            = jsCocoaObject_hasInstance;
-    jsCocoaObjectDefinition.convertToType        = jsCocoaObject_convertToType;
-
-    if (!jsCocoaObjectClass)
-        jsCocoaObjectClass = JSClassCreate(&jsCocoaObjectDefinition);
-
-    //
-    // Second kind of private object, used to hold method and function names
-    //    Separated from the object because "typeof NSDate.date" gave "function" instead of object, preventing enumeration in WebKit inspector
-    //
-    JSClassDefinition jsCocoaFunctionDefinition    = kJSClassDefinitionEmpty;
-    jsCocoaFunctionDefinition.className            = "JSCocoa box";
-    jsCocoaFunctionDefinition.parentClass        = jsCocoaObjectClass;
-    jsCocoaFunctionDefinition.callAsFunction    = jsCocoaObject_callAsFunction;
-    
-    if (!jsCocoaFunctionClass)
-        jsCocoaFunctionClass = JSClassCreate(&jsCocoaFunctionDefinition);
-    
-    //
-    // Holds __info in objects
-    //
-    JSClassDefinition jsCocoaInfoDefinition        = kJSClassDefinitionEmpty;
-    jsCocoaInfoDefinition.className                = "Runtime info";
-    jsCocoaInfoDefinition.getProperty            = jsCocoaInfo_getProperty;
-    jsCocoaInfoDefinition.getPropertyNames        = jsCocoaInfo_getPropertyNames;
-    
-    if (!jsCocoaInfoClass)
-        jsCocoaInfoClass = JSClassCreate(&jsCocoaInfoDefinition);
-    
-    //
-    // Private Hash of derived classes, storing js values
-    //
-    JSClassDefinition jsCocoaHashObjectDefinition    = kJSClassDefinitionEmpty;
-    if (!hashObjectClass)
-        hashObjectClass = JSClassCreate(&jsCocoaHashObjectDefinition);
-
-    //
-    // Start context
-    //
-    
-    // Starting from our own context
-    if (!_ctx)
-    {
-        ctx = JSGlobalContextCreate(OSXObjectClass);
-    }
-    // Starting from an existing context
-    else
-    {
-        ctx = _ctx;
-        //JSGlobalContextRetain(ctx);
-        JSObjectRef o = JSObjectMake(ctx, OSXObjectClass, nil);
-        // Set a global var named 'OSX' which will fulfill the usual role of JSCocoa's global object
-        JSStringRef    jsName = JSStringCreateWithUTF8CString("OSX");
-        JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, o, kJSPropertyAttributeDontDelete, nil);
-        JSStringRelease(jsName);
-        
-        [self accomodateWebKitInspector];
-    }
-
-#if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
-    [self loadFrameworkWithName:@"AppKit"];
-    [self loadFrameworkWithName:@"CoreFoundation"];
-    [self loadFrameworkWithName:@"Foundation"];
-    [self loadFrameworkWithName:@"CoreGraphics" inPath:@"/System/Library/Frameworks/ApplicationServices.framework/Frameworks"];
-#endif    
-
-#if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
-    [BurksPool setJSFunctionHash:jsFunctionHash];
-#endif
-
-    // Create a reference to ourselves, and make it read only, don't enum, don't delete
-    [self setObject:self withName:@"__jsc__" attributes:kJSPropertyAttributeReadOnly|kJSPropertyAttributeDontEnum|kJSPropertyAttributeDontDelete];
-
-
-    // Load class kit
-    if (!_ctx)
-    {
-        useJSLint        = NO;
-        id lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:lintPath])    [self evalJSFile:lintPath];
-        id classKitPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"class" ofType:@"js"];
-        if ([[NSFileManager defaultManager] fileExistsAtPath:classKitPath])    [self evalJSFile:classKitPath];
-    }
-
-    // Add allKeys method to Javascript hash : { a : 1, b : 2, c : 3 }.allKeys() = ['a', 'b', 'c']
-
-    // Retrieve Javascript function from class.js
-    JSStringRef jsName = JSStringCreateWithUTF8CString("allKeysInHash");
-    JSValueRef fn = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, nil);
-    JSStringRelease(jsName);
-    
-    if (fn)
-    {
-        // Add it to Object.prototype with dont enum property
-        JSStringRef scriptJS = JSStringCreateWithUTF8CString("return Object.prototype");
-        JSObjectRef fn2 = JSObjectMakeFunction(ctx, nil, 0, nil, scriptJS, nil, 1, nil);
-        JSValueRef jsValue = JSObjectCallAsFunction(ctx, fn2, nil, 0, nil, nil);
-        JSObjectRef jsObject = JSValueToObject(ctx, jsValue, nil);
-        JSStringRelease(scriptJS);
-
-        jsName = JSStringCreateWithUTF8CString("allKeys");
-        JSObjectSetProperty(ctx, jsObject, jsName, fn, kJSPropertyAttributeDontEnum, nil);
-        JSStringRelease(jsName);
-    }
-    
-    // Objects can use their own dealloc, normally used up by JSCocoa
-    // JSCocoa registers 'safeDealloc' in place of 'dealloc' and calls it in the next run loop cycle. 
-    // (If called during dealloc, this would mean executing JS code during JS GC, which is not possible)
-    // useSafeDealloc will be turned to NO upon JSCocoaController dealloc
-    useSafeDealloc    = YES;
-    // Yep !
-    useJSLint        = YES;
-    
-    ownsContext        = NO;
-
-    [JSCocoaController updateCustomCallPaths];
-
-    return    self;
-}
 
 - (id)init {
-    id o = [self initWithGlobalContext:nil];
-    ownsContext = YES;
-    return    o;
+	if ((self = [self initWithGlobalContext:nil])) {
+		_ownsContext = YES;
+	}
+    
+	return self;
 }
+
+
+- (id)initWithGlobalContext:(JSGlobalContextRef)aContext {
+
+    if ((self = [super init])) {
+        
+        controllerCount++;
+        
+        @synchronized(self) {
+            
+            if (!sharedInstanceStats) {
+                sharedInstanceStats         = [NSMutableDictionary new];
+                closureHash                 = [NSMutableDictionary new];
+                jsFunctionSelectors         = [NSMutableDictionary new];
+                jsFunctionClasses           = [NSMutableDictionary new];
+                jsFunctionHash              = [NSMutableDictionary new];
+                splitCallCache              = [NSMutableDictionary new];
+                jsClassParents              = [NSMutableDictionary new];
+                boxedObjects                = [NSMutableDictionary new];
+                jsClasses                   = [NSMutableArray new];
+            }
+        }
+
+
+        //
+        // OSX object javascript definition
+        //
+        JSClassDefinition OSXObjectDefinition    = kJSClassDefinitionEmpty;
+        OSXObjectDefinition.className            = "OSX";
+        OSXObjectDefinition.getProperty          = OSXObject_getProperty;
+        OSXObjectDefinition.getPropertyNames     = OSXObject_getPropertyNames;
+        
+        if (!OSXObjectClass) {
+            OSXObjectClass = JSClassCreate(&OSXObjectDefinition);
+        }
+            
+
+        //
+        // Private object, used for holding references to objects, classes, structs
+        //
+        JSClassDefinition jsCocoaObjectDefinition    = kJSClassDefinitionEmpty;
+        jsCocoaObjectDefinition.className            = "JSCocoa box";
+        jsCocoaObjectDefinition.initialize            = jsCocoaObject_initialize;
+        jsCocoaObjectDefinition.finalize            = jsCocoaObject_finalize;
+    //    jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
+        jsCocoaObjectDefinition.getProperty            = jsCocoaObject_getProperty;
+        jsCocoaObjectDefinition.setProperty            = jsCocoaObject_setProperty;
+        jsCocoaObjectDefinition.deleteProperty        = jsCocoaObject_deleteProperty;
+        jsCocoaObjectDefinition.getPropertyNames    = jsCocoaObject_getPropertyNames;
+    //    jsCocoaObjectDefinition.callAsFunction        = jsCocoaObject_callAsFunction;
+        jsCocoaObjectDefinition.callAsConstructor    = jsCocoaObject_callAsConstructor;
+    //    jsCocoaObjectDefinition.hasInstance            = jsCocoaObject_hasInstance;
+        jsCocoaObjectDefinition.convertToType        = jsCocoaObject_convertToType;
+
+        if (!jsCocoaObjectClass)
+            jsCocoaObjectClass = JSClassCreate(&jsCocoaObjectDefinition);
+
+        //
+        // Second kind of private object, used to hold method and function names
+        //    Separated from the object because "typeof NSDate.date" gave "function" instead of object, preventing enumeration in WebKit inspector
+        //
+        JSClassDefinition jsCocoaFunctionDefinition    = kJSClassDefinitionEmpty;
+        jsCocoaFunctionDefinition.className            = "JSCocoa box";
+        jsCocoaFunctionDefinition.parentClass        = jsCocoaObjectClass;
+        jsCocoaFunctionDefinition.callAsFunction    = jsCocoaObject_callAsFunction;
+        
+        if (!jsCocoaFunctionClass) {
+            jsCocoaFunctionClass = JSClassCreate(&jsCocoaFunctionDefinition);
+        }
+        
+        //
+        // Holds __info in objects
+        //
+        JSClassDefinition jsCocoaInfoDefinition        = kJSClassDefinitionEmpty;
+        jsCocoaInfoDefinition.className                = "Runtime info";
+        jsCocoaInfoDefinition.getProperty            = jsCocoaInfo_getProperty;
+        jsCocoaInfoDefinition.getPropertyNames        = jsCocoaInfo_getPropertyNames;
+        
+        if (!jsCocoaInfoClass) {
+            jsCocoaInfoClass = JSClassCreate(&jsCocoaInfoDefinition);
+        }
+        
+        //
+        // Private Hash of derived classes, storing js values
+        //
+        JSClassDefinition jsCocoaHashObjectDefinition    = kJSClassDefinitionEmpty;
+        if (!hashObjectClass) {
+            hashObjectClass = JSClassCreate(&jsCocoaHashObjectDefinition);
+        }
+        
+        //
+        // Start context
+        //
+        
+        // Starting from our own context
+        if (!aContext) {
+            _ctx = JSGlobalContextCreate(OSXObjectClass);
+        }
+        // Starting from an existing context
+        else {
+            _ctx = aContext;
+            //JSGlobalContextRetain(ctx);
+            JSObjectRef o = JSObjectMake(_ctx, OSXObjectClass, nil);
+            // Set a global var named 'OSX' which will fulfill the usual role of JSCocoa's global object
+            JSStringRef jsName = JSStringCreateWithUTF8CString("OSX");
+            JSObjectSetProperty(_ctx, JSContextGetGlobalObject(_ctx), jsName, o, kJSPropertyAttributeDontDelete, nil);
+            JSStringRelease(jsName);
+            
+            [self accomodateWebKitInspector];
+        }
+
+    #if !TARGET_IPHONE_SIMULATOR && !TARGET_OS_IPHONE
+        [self loadFrameworkWithName:@"AppKit"];
+        [self loadFrameworkWithName:@"CoreFoundation"];
+        [self loadFrameworkWithName:@"Foundation"];
+        [self loadFrameworkWithName:@"CoreGraphics" inPath:@"/System/Library/Frameworks/ApplicationServices.framework/Frameworks"];
+    #endif    
+
+    #if TARGET_IPHONE_SIMULATOR || TARGET_OS_IPHONE
+        [BurksPool setJSFunctionHash:jsFunctionHash];
+    #endif
+
+        // Create a reference to ourselves, and make it read only, don't enum, don't delete
+        [self setObject:self withName:@"__jsc__" attributes:kJSPropertyAttributeReadOnly|kJSPropertyAttributeDontEnum|kJSPropertyAttributeDontDelete];
+
+
+        // Load class kit
+        if (!_ctx) {
+            useJSLint = NO;
+            /*
+            NSString *lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
+            if (lintPath) {
+                [self evalJSFile:lintPath];
+            }
+            
+            NSString *classKitPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"class" ofType:@"js"];
+            if (classKitPath) {
+                [self evalJSFile:classKitPath];
+            }
+            */
+        }
+
+        // Add allKeys method to Javascript hash : { a : 1, b : 2, c : 3 }.allKeys() = ['a', 'b', 'c']
+
+        // Retrieve Javascript function from class.js
+        JSStringRef jsName = JSStringCreateWithUTF8CString("allKeysInHash");
+        JSValueRef fn = JSObjectGetProperty(_ctx, JSContextGetGlobalObject(_ctx), jsName, nil);
+        JSStringRelease(jsName);
+        
+        if (fn)
+        {
+            // Add it to Object.prototype with dont enum property
+            JSStringRef scriptJS = JSStringCreateWithUTF8CString("return Object.prototype");
+            JSObjectRef fn2 = JSObjectMakeFunction(_ctx, nil, 0, nil, scriptJS, nil, 1, nil);
+            JSValueRef jsValue = JSObjectCallAsFunction(_ctx, fn2, nil, 0, nil, nil);
+            JSObjectRef jsObject = JSValueToObject(_ctx, jsValue, nil);
+            JSStringRelease(scriptJS);
+
+            jsName = JSStringCreateWithUTF8CString("allKeys");
+            JSObjectSetProperty(_ctx, jsObject, jsName, fn, kJSPropertyAttributeDontEnum, nil);
+            JSStringRelease(jsName);
+        }
+        
+        // Objects can use their own dealloc, normally used up by JSCocoa
+        // JSCocoa registers 'safeDealloc' in place of 'dealloc' and calls it in the next run loop cycle. 
+        // (If called during dealloc, this would mean executing JS code during JS GC, which is not possible)
+        // useSafeDealloc will be turned to NO upon JSCocoaController dealloc
+        useSafeDealloc    = YES;
+        // Yep !
+        useJSLint        = YES;
+        
+        _ownsContext        = NO;
+
+        [JSCocoaController updateCustomCallPaths];
+    }
+    
+    return self;
+}
+
 
 
 //
@@ -313,7 +309,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 - (void)cleanUp {
     [self setUseSafeDealloc:NO];
     [self unlinkAllReferences];
-    JSGarbageCollect(ctx);
+    JSGarbageCollect(_ctx);
     
     controllerCount--;
     if (controllerCount == 0)
@@ -378,7 +374,9 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     }
     
 
-    if (ownsContext)    JSGlobalContextRelease(ctx);
+    if (_ownsContext) {
+        JSGlobalContextRelease(_ctx);
+    }
 }
 
 - (oneway void)release
@@ -389,7 +387,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     if ([self retainCount] == 2 && useSafeDealloc)
     {
         [self setUseSafeDealloc:NO];
-        [self unlinkAllReferences];
+        #warning HEY GUS, COMMENT THIS BACK IN:
+        //[self unlinkAllReferences];
         // This will take retain count from 2 to 1, readying this instance for deallocation
         [self garbageCollect];
     }
@@ -409,8 +408,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
 
 // Retrieves the __jsc__ variable from a context and unbox it
-+ (id)controllerFromContext:(JSContextRef)ctx
-{
++ (id)controllerFromContext:(JSContextRef)ctx {
     JSStringRef jsName = JSStringCreateWithUTF8CString("__jsc__");
     JSValueRef jsValue = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, nil);
     JSStringRelease(jsName);
@@ -471,7 +469,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         }                                                    \n\
                                                             ";
     JSStringRef scriptJS = JSStringCreateWithCFString((CFStringRef)[NSString stringWithUTF8String:script]);
-    JSEvaluateScript(ctx, scriptJS, nil, nil, 1, nil);
+    JSEvaluateScript(_ctx, scriptJS, nil, nil, 1, nil);
     JSStringRelease(scriptJS);
 }
 
@@ -533,7 +531,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     
     // Eval !
     JSValueRef    exception = nil;
-    JSValueRef result = JSEvaluateScript(ctx, scriptJS, nil, scriptPath, 1, &exception);
+    JSValueRef result = JSEvaluateScript(_ctx, scriptJS, nil, scriptPath, 1, &exception);
     if (returnValue)    *returnValue = result;
     // Release
     JSStringRelease(scriptPath);
@@ -556,53 +554,57 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     return    [self evalJSFile:path toJSValueRef:nil];
 }
 
-//
-// Evaluate a string
-// 
-- (JSValueRef)evalJSString:(NSString*)script withScriptPath:(NSString*)path
-{
-    if (!script)    return    nil;
-
-    // Expand macros
-    id expandedScript = [self expandJSMacros:script path:path];
-    if (expandedScript)
-        script = expandedScript;
-    
-    //
-    // Delegate canEvaluateScript, willEvaluateScript
-    //
-    if (_delegate)
-    {
-        if ([_delegate respondsToSelector:@selector(JSCocoa:canEvaluateScript:)] && ![_delegate JSCocoa:self canEvaluateScript:script])    return    nil;
-        if ([_delegate respondsToSelector:@selector(JSCocoa:willEvaluateScript:)])    script = [_delegate JSCocoa:self willEvaluateScript:script];
+- (JSValueRef)evalJSString:(NSString*)script withScriptPath:(NSString*)path {
+    if (!script) {
+        return nil;
     }
     
-    if (!script)
-        return NSLog(@"evalJSString has nothing to eval"), nil;    
-
+    // Expand macros
+    id expandedScript = [self expandJSMacros:script path:path];
+    if (expandedScript) {
+        script = expandedScript;
+    }
+    
+    
+    if ([_delegate respondsToSelector:@selector(JSCocoa:canEvaluateScript:)] && ![_delegate JSCocoa:self canEvaluateScript:script]) {
+        return nil;
+    }
+        
+    if ([_delegate respondsToSelector:@selector(JSCocoa:willEvaluateScript:)]) {
+        script = [_delegate JSCocoa:self willEvaluateScript:script];
+    }
+    
+    if (!script) {
+        NSLog(@"evalJSString has nothing to eval");
+        return nil;    
+    }
+    
     if (!customCallPathsCacheIsClean) {
         [JSCocoaController updateCustomCallPaths];
     }
     
-    JSStringRef        scriptJS    = JSStringCreateWithCFString((CFStringRef)script);
-    JSValueRef        exception    = nil;
-    JSStringRef        scriptPath = path ? JSStringCreateWithUTF8CString([path UTF8String]) : nil;
-    JSValueRef        result = JSEvaluateScript(ctx, scriptJS, nil, scriptPath, 1, &exception);
+    jstrace(@"Running script:\n%@", script);
+    
+    JSStringRef scriptJS    = JSStringCreateWithCFString((CFStringRef)script);
+    JSValueRef exception    = nil;
+    JSStringRef scriptPath  = path ? JSStringCreateWithUTF8CString([path UTF8String]) : nil;
+    JSValueRef result       = JSEvaluateScript(_ctx, scriptJS, nil, scriptPath, 1, &exception);
     JSStringRelease(scriptJS);
-    if (path)        JSStringRelease(scriptPath);
-
-    if (exception) 
-    {
-        [self callDelegateForException:exception];
-        return    nil;
+    
+    if (scriptPath) {
+        JSStringRelease(scriptPath);
     }
 
-    return    result;
+    if (exception)  {
+        [self callDelegateForException:exception];
+        return nil;
+    }
+
+    return result;
 }
 
 // Evaluate a string, no script path
-- (JSValueRef)evalJSString:(NSString*)script
-{
+- (JSValueRef)evalJSString:(NSString*)script {
     return [self evalJSString:script withScriptPath:nil];
 }
 
@@ -613,7 +615,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 // 
 - (JSValueRef)callJSFunction:(JSValueRef)function withArguments:(NSArray*)arguments
 {
-    JSObjectRef    jsFunction = JSValueToObject(ctx, function, nil);
+    JSObjectRef    jsFunction = JSValueToObject(_ctx, function, nil);
     // Return if function is not of function type
     if (!jsFunction)            return    NSLog(@"callJSFunction : value is not a function"), nil;
 
@@ -627,7 +629,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         {
             char typeEncoding = _C_ID;
             id argument = [arguments objectAtIndex:i];
-            [JSCocoaFFIArgument toJSValueRef:&jsArguments[i] inContext:ctx typeEncoding:typeEncoding fullTypeEncoding:NULL fromStorage:&argument];
+            [JSCocoaFFIArgument toJSValueRef:&jsArguments[i] inContext:_ctx typeEncoding:typeEncoding fullTypeEncoding:NULL fromStorage:&argument];
         }
     }
 
@@ -636,7 +638,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     }
 
     JSValueRef exception = nil;
-    JSValueRef returnValue = JSObjectCallAsFunction(ctx, jsFunction, nil, argumentCount, jsArguments, &exception);
+    JSValueRef returnValue = JSObjectCallAsFunction(_ctx, jsFunction, nil, argumentCount, jsArguments, &exception);
     if (jsArguments) free(jsArguments);
 
     if (exception) 
@@ -669,12 +671,12 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     }
 
     // Get global object
-    JSObjectRef globalObject    = JSContextGetGlobalObject(ctx);
+    JSObjectRef globalObject    = JSContextGetGlobalObject(_ctx);
     JSValueRef exception        = nil;
     
     // Get function as property of global object
     JSStringRef jsFunctionName = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSValueRef jsFunctionValue = JSObjectGetProperty(ctx, globalObject, jsFunctionName, &exception);
+    JSValueRef jsFunctionValue = JSObjectGetProperty(_ctx, globalObject, jsFunctionName, &exception);
     JSStringRelease(jsFunctionName);
     if (exception)                
     {
@@ -684,7 +686,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     }
     
     // Return if function is not of function type
-    JSObjectRef    jsFunction = JSValueToObject(ctx, jsFunctionValue, nil);
+    JSObjectRef    jsFunction = JSValueToObject(_ctx, jsFunctionValue, nil);
     if (!jsFunction)            return    NSLog(@"callJSFunctionNamed : %@ is not a function", name), nil;
     // Call !
     return    [self callJSFunction:jsFunction withArguments:arguments];
@@ -709,7 +711,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     JSValueRef exception        = nil;
     // Get function as property of global object
     JSStringRef jsFunctionName = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSValueRef jsFunctionValue = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsFunctionName, &exception);
+    JSValueRef jsFunctionValue = JSObjectGetProperty(_ctx, JSContextGetGlobalObject(_ctx), jsFunctionName, &exception);
     JSStringRelease(jsFunctionName);
     if (exception)                
     {
@@ -718,12 +720,12 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         return    NO;
     }
     
-    return    JSValueToObject(ctx, jsFunctionValue, nil);    
+    return JSValueToObject(_ctx, jsFunctionValue, nil);    
 }
 
 - (BOOL)hasJSFunctionNamed:(NSString*)name
 {
-    return    !![self JSFunctionNamed:name];
+    return !![self JSFunctionNamed:name];
 }
 
 //
@@ -749,8 +751,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     }
     return    script;
 }
-- (NSString*)expandJSMacros:(NSString*)script path:(NSString*)path
-{
+
+- (NSString*)expandJSMacros:(NSString*)script path:(NSString*)path {
     return [self expandJSMacros:script path:path errors:nil];
 }
 
@@ -764,7 +766,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
     JSStringRef scriptJS    = JSStringCreateWithUTF8CString([script UTF8String]);
     JSValueRef    exception    = nil;
-    BOOL b = JSCheckScriptSyntax(ctx, scriptJS, scriptJS, 1, &exception);
+    BOOL b = JSCheckScriptSyntax(_ctx, scriptJS, scriptJS, 1, &exception);
     JSStringRelease(scriptJS);
     
     if (exception)
@@ -790,38 +792,39 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //
 // Unbox a JSValueRef
 //
-- (id)unboxJSValueRef:(JSValueRef)value
-{
+- (id)unboxJSValueRef:(JSValueRef)value {
     id object = nil;
-    [JSCocoaFFIArgument unboxJSValueRef:value toObject:&object inContext:ctx];
+    [JSCocoaFFIArgument unboxJSValueRef:value toObject:&object inContext:_ctx];
     return object;
 }
 
 //
 // Conversion boolean / number / string
 //
-- (BOOL)toBool:(JSValueRef)value
-{
-    if (!value)    return false;
-    return JSValueToBoolean(ctx, value);
+- (BOOL)toBool:(JSValueRef)value {
+    if (!value) {
+        return NO;
+    }
+    
+    return JSValueToBoolean(_ctx, value);
 }
 
 - (double)toDouble:(JSValueRef)value
 {
     if (!value)    return 0;
-    return JSValueToNumber(ctx, value, nil);
+    return JSValueToNumber(_ctx, value, nil);
 }
 
 - (int)toInt:(JSValueRef)value
 {
     if (!value)    return 0;
-    return (int)JSValueToNumber(ctx, value, nil);
+    return (int)JSValueToNumber(_ctx, value, nil);
 }
 
 - (NSString*)toString:(JSValueRef)value
 {
     if (!value)    return nil;
-    JSStringRef resultStringJS = JSValueToStringCopy(ctx, value, nil);
+    JSStringRef resultStringJS = JSValueToStringCopy(_ctx, value, nil);
     NSString* resultString = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
     JSStringRelease(resultStringJS);
     [NSMakeCollectable(resultString) autorelease];
@@ -840,12 +843,12 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //
 - (BOOL)setObject:(id)object withName:(id)name attributes:(JSPropertyAttributes)attributes
 {
-    JSObjectRef o = [JSCocoaController boxedJSObject:object inContext:ctx];
+    JSObjectRef o = [JSCocoaController boxedJSObject:object inContext:_ctx];
 
     // Set
     JSValueRef    exception = nil;
     JSStringRef    jsName = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, o, attributes, &exception);
+    JSObjectSetProperty(_ctx, JSContextGetGlobalObject(_ctx), jsName, o, attributes, &exception);
     JSStringRelease(jsName);
 
     if (exception)    
@@ -867,7 +870,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     JSValueRef    exception = nil;
     // Delete
     JSStringRef    jsName = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, &exception);
+    JSObjectDeleteProperty(_ctx, JSContextGetGlobalObject(_ctx), jsName, &exception);
     JSStringRelease(jsName);
 
     if (exception)    
@@ -890,30 +893,41 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 // Load framework
 //    even if framework has no bridgeSupport, load it anyway - it could contain ObjC classes
 //
-- (BOOL)loadFrameworkWithName:(NSString*)name inPath:(NSString*)inPath
-{
-    id path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.bridgeSupport", inPath, name, name];
-
+- (BOOL)loadFrameworkWithName:(NSString*)name inPath:(NSString*)inPath {
+    
+    NSString *path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@Full.bridgeSupport", inPath, name, name];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.bridgeSupport", inPath, name, name];
+    }
+    
     // Return YES if already loaded
-    if ([[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:path])    return    YES;
-
+    if ([[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:path]) {
+        return YES;
+    }
+    
     // Load framework
-    id libPath = [NSString stringWithFormat:@"%@/%@.framework/%@", inPath, name, name];
-    void* address = dlopen([libPath UTF8String], RTLD_LAZY);
-    if (!address)    return    NSLog(@"Could not load framework dylib %@", libPath), NO;
+    NSString* libPath   = [NSString stringWithFormat:@"%@/%@.framework/%@", inPath, name, name];
+    void* address       = dlopen([libPath UTF8String], RTLD_LAZY);
+    if (!address) {
+        NSLog(@"Could not load framework dylib %@", libPath);
+        return NO;
+    }
 
     // Try loading .bridgesupport file
-    if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupport:path])    return    NSLog(@"Could not load framework bridgesupport %@", path), NO;
-
+    if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:path]) {
+        NSLog(@"Could not load framework bridgesupport %@", path);
+        return NO;
+    }
+    
     // Try loading extra dylib (inline functions made callable and compiled to a .dylib)
-    id extraLibPath = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.dylib", inPath, name, name];
-    /*address = */dlopen([extraLibPath UTF8String], RTLD_LAZY);
-    // Don't fail if we didn't load the extra dylib as it is optional
-//    if (!address)    return    NSLog(@"Did not load extra framework dylib %@", path), NO;
-
+    // We dont' care about failing here, as it is optional
+    NSString *extraLibPath = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.dylib", inPath, name, name];
+    dlopen([extraLibPath UTF8String], RTLD_LAZY);
+    
     customCallPathsCacheIsClean = NO;
     
-    return    YES;
+    return YES;
 }
 
 + (void)updateCustomCallPaths
@@ -934,45 +948,40 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
 
 # pragma mark Unsorted methods
-+ (void)log:(NSString*)string
-{
++ (void)log:(NSString*)string {
     NSLog(@"%@", string);
 }
-- (void)log:(NSString*)string
-{
+
+- (void)log:(NSString*)string {
     NSLog(@"%@", string);
 }
-- (id)system:(NSString*)string
-{
+
+- (id)system:(NSString*)string {
     system([string UTF8String]);
     return    nil;
 }
 
-+ (void)logAndSay:(NSString*)string {
-    [self log:string];
++ (JSObjectRef)jsCocoaPrivateObjectInContext:(JSContextRef)ctx {
+    JSTBridgedObject* private = [[JSTBridgedObject alloc] init];
+
+#ifdef __OBJC_GC__
+// Mark internal object as non collectable
+[[NSGarbageCollector defaultCollector] disableCollectorForPointer:private];
+#endif
+
+    return JSObjectMake(ctx, jsCocoaObjectClass, private);
 }
 
-+ (JSObjectRef)jsCocoaPrivateObjectInContext:(JSContextRef)ctx
-{
-    JSCocoaPrivateObject* private = [[JSCocoaPrivateObject alloc] init];
++ (JSObjectRef)jsCocoaPrivateFunctionInContext:(JSContextRef)ctx {
+    
+    JSTBridgedObject* private = [[JSTBridgedObject alloc] init];
+    
 #ifdef __OBJC_GC__
 // Mark internal object as non collectable
 [[NSGarbageCollector defaultCollector] disableCollectorForPointer:private];
 #endif
-    JSObjectRef o = JSObjectMake(ctx, jsCocoaObjectClass, private);
-    [private release];
-    return    o;
-}
-+ (JSObjectRef)jsCocoaPrivateFunctionInContext:(JSContextRef)ctx
-{
-    JSCocoaPrivateObject* private = [[JSCocoaPrivateObject alloc] init];
-#ifdef __OBJC_GC__
-// Mark internal object as non collectable
-[[NSGarbageCollector defaultCollector] disableCollectorForPointer:private];
-#endif
-    JSObjectRef o = JSObjectMake(ctx, jsCocoaFunctionClass, private);
-    [private release];
-    return    o;
+    
+    return JSObjectMake(ctx, jsCocoaFunctionClass, private);
 }
 
 //
@@ -983,34 +992,13 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //        instead of
 //        NSWorkspace.sharedWorkspace()
 //
-- (BOOL)useAutoCall
-{
-    return    useAutoCall;
-}
-- (void)setUseAutoCall:(BOOL)b
-{
-    useAutoCall = b;
+
+- (JSGlobalContextRef)ctx {
+    return _ctx;
 }
 
-
-- (BOOL)canSetOnBoxedObjects
-{
-    return    canSetOnBoxedObjects;
-}
-- (void)setCanSetOnBoxedObjects:(BOOL)b
-{
-    canSetOnBoxedObjects = b;
-}
-
-
-- (JSGlobalContextRef)ctx
-{
-    return    ctx;
-}
-
-- (id)instanceStats
-{
-    return    sharedInstanceStats;
+- (id)instanceStats {
+    return sharedInstanceStats;
 }
 
 //
@@ -1021,8 +1009,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //    * in property get (NSString.instance.count, getting 'count')
 //    * in valueOf (handled automatically as JavascriptCore will request 'valueOf' through property get)
 //
-+ (void)ensureJSValueIsObjectAfterInstanceAutocall:(JSValueRef)jsValue inContext:(JSContextRef)ctx
-{
++ (void)ensureJSValueIsObjectAfterInstanceAutocall:(JSValueRef)jsValue inContext:(JSContextRef)ctx {
     NSLog(@"***For zero arg instance, use obj.instance() instead of obj.instance***");
 }
 
@@ -1099,7 +1086,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
             if (*argsParser == '^')
                 while (*argsParser && !(*argsParser >= '0' && *argsParser <= '9'))    argsParser++;
 
-            id argumentEncoding = [[JSCocoaFFIArgument alloc] init];
+            JSCocoaFFIArgument *argumentEncoding = [[JSCocoaFFIArgument alloc] init];
             // Set return value
             if ([argumentEncodings count] == 0)    [argumentEncoding setIsReturnValue:YES];
             
@@ -1131,14 +1118,17 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 //
 // This is parsed from BridgeSupport's xml
 //
-+ (NSMutableArray*)parseCFunctionEncoding:(NSString*)xml functionName:(NSString**)functionNamePlaceHolder
-{
+/*
++ (NSMutableArray*)cFunctionEncodingsForBridgedObject:(JSTBridgedObject*)bridgedObject {
+    
+    NSString *xml = [bridgedObject xml];
+    
     id argumentEncodings = [NSMutableArray array];
     id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:xml options:0 error:nil];
     [xmlDocument autorelease];
 
     id rootElement = [xmlDocument rootElement];
-    *functionNamePlaceHolder = [[rootElement attributeForName:@"name"] stringValue];
+    // *functionNamePlaceHolder = [[rootElement attributeForName:@"name"] stringValue];
     
     // Parse children and return value
     NSUInteger i, numChildren    = [rootElement childCount];
@@ -1152,14 +1142,14 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         if ([[child name] isEqualToString:@"arg"] || isReturnValue)
         {
 #if __LP64__    
-            id typeEncoding = [[child attributeForName:@"type64"] stringValue];
+            NSString *typeEncoding = [[child attributeForName:@"type64"] stringValue];
             if (!typeEncoding)    typeEncoding = [[child attributeForName:@"type"] stringValue];
 #else
-            id typeEncoding = [[child attributeForName:@"type"] stringValue];
+            NSString *typeEncoding = [[child attributeForName:@"type"] stringValue];
 #endif            
             char typeEncodingChar = [typeEncoding UTF8String][0];
         
-            id argumentEncoding = [[JSCocoaFFIArgument alloc] init];
+            JSCocoaFFIArgument *argumentEncoding = [[JSCocoaFFIArgument alloc] init];
             // Set return value — NO, as return value might not be the first element. Use retval to decide.
 //            if ([argumentEncodings count] == 0)        [argumentEncoding setIsReturnValue:YES];
                     if (typeEncodingChar == '{')    [argumentEncoding setStructureTypeEncoding:typeEncoding];
@@ -1197,7 +1187,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     // If no return value was set, default to void
     if (!returnValue)
     {
-        id argumentEncoding = [[JSCocoaFFIArgument alloc] init];
+        JSCocoaFFIArgument *argumentEncoding = [[JSCocoaFFIArgument alloc] init];
         // Set return value
         if ([argumentEncodings count] == 0)    [argumentEncoding setIsReturnValue:YES];
         [argumentEncoding setTypeEncoding:'v'];
@@ -1211,7 +1201,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     return argumentEncodings;
 }
 
-
+*/
 
 
 #pragma mark Class Creation
@@ -1346,7 +1336,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     id keyForClassAndMethod    = [NSString stringWithFormat:@"%@ %@", class, methodName];
     id keyForFunction        = [NSString stringWithFormat:@"%x", valueAndContext.value];
 
-    id privateObject = [[JSCocoaPrivateObject alloc] init];
+    id privateObject = [[JSTBridgedObject alloc] init];
     [privateObject setJSValueRef:valueAndContext.value ctx:[jsc ctx]];
     [jsFunctionHash setObject:privateObject forKey:keyForClassAndMethod];
 
@@ -1376,7 +1366,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     
     id jsc = [JSCocoaController controllerFromContext:valueAndContext.ctx];
     JSContextRef ctx = [jsc ctx];
-    id privateObject = [[JSCocoaPrivateObject alloc] init];
+    id privateObject = [[JSTBridgedObject alloc] init];
     [privateObject setJSValueRef:valueAndContext.value ctx:ctx];
 
     //    Remove previous method
@@ -1730,7 +1720,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     
     // Box the ObjC object in a JSObjectRef
     JSObjectRef jsObject = [self jsCocoaPrivateObjectInContext:ctx];
-    JSCocoaPrivateObject* private = JSObjectGetPrivate(jsObject);
+    JSTBridgedObject* private = JSObjectGetPrivate(jsObject);
     private.type = @"@";
     [private setObject:o];
     
@@ -1814,7 +1804,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 
 - (NSString*)formatJSException:(JSValueRef)exception
 {
-    return [JSCocoaController formatJSException:exception inContext:ctx];
+    return [JSCocoaController formatJSException:exception inContext:_ctx];
 }
 
 
@@ -1827,18 +1817,18 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         return;
     }
     
-    JSStringRef resultStringJS = JSValueToStringCopy(ctx, exception, nil);
+    JSStringRef resultStringJS = JSValueToStringCopy(_ctx, exception, nil);
     NSString* b = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
     JSStringRelease(resultStringJS);
     [NSMakeCollectable(b) autorelease];
     
-    if (JSValueGetType(ctx, exception) != kJSTypeObject) {
+    if (JSValueGetType(_ctx, exception) != kJSTypeObject) {
         [_delegate JSCocoa:self hadError:b onLineNumber:0 atSourceURL:nil];
     }
     
     // Iterate over all properties of the exception
-    JSObjectRef jsObject = JSValueToObject(ctx, exception, nil);
-    JSPropertyNameArrayRef jsNames = JSObjectCopyPropertyNames(ctx, jsObject);
+    JSObjectRef jsObject = JSValueToObject(_ctx, exception, nil);
+    JSPropertyNameArrayRef jsNames = JSObjectCopyPropertyNames(_ctx, jsObject);
     size_t i, nameCount = JSPropertyNameArrayGetCount(jsNames);
     id line = nil, sourceURL = nil;
     for (i=0; i<nameCount; i++)
@@ -1846,8 +1836,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         JSStringRef jsName = JSPropertyNameArrayGetNameAtIndex(jsNames, i);
         id name = (id)JSStringCopyCFString(kCFAllocatorDefault, jsName);
         
-        JSValueRef    jsValueRef = JSObjectGetProperty(ctx, jsObject, jsName, nil);
-        JSStringRef    valueJS = JSValueToStringCopy(ctx, jsValueRef, nil);
+        JSValueRef    jsValueRef = JSObjectGetProperty(_ctx, jsObject, jsName, nil);
+        JSStringRef    valueJS = JSValueToStringCopy(_ctx, jsValueRef, nil);
         NSString* value = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, valueJS);
         JSStringRelease(valueJS);
         
@@ -1877,7 +1867,10 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
     files = [files sortedArrayUsingSelector:@selector(localizedStandardCompare:)];
 //    NSLog(@"files=%@", files);
 
-    if ([files count] == 0)    return    [JSCocoaController logAndSay:@"no test files found"], 0;
+    if ([files count] == 0) {
+        NSLog(@"No test files found");
+        return -1;
+    }
     
     for (id file in files)
     {
@@ -1898,8 +1891,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
         }
         if (!evaled)    
         {
-            id error = [NSString stringWithFormat:@"test %@ failed (Ran %d out of %d tests)", file, count+1, [files count]];
-            [JSCocoaController logAndSay:error];
+            NSLog(@"test %@ failed (Ran %d out of %ld tests)", file, count+1, (long)[files count]);
             return NO;
         }
         count ++;
@@ -1931,15 +1923,13 @@ static id autoreleasePool;
 // Collect on top of the run loop, not in some JS function
 //
 + (void)garbageCollect    {    NSLog(@"***Call garbageCollect on an instance***"); JSGarbageCollect(NULL); }
-- (void)garbageCollect    {    JSGarbageCollect(ctx); }
+- (void)garbageCollect    {    JSGarbageCollect(_ctx); }
 
 //
 // Make all root Javascript variables point to nil
 //
-- (void)unlinkAllReferences
-{
+- (void)unlinkAllReferences {
     // nil and delete every reference to every live object
-//    [self evalJSString:@"for (var i in this) { log('DELETE ' + i); this[i] = nil; delete this[i]; }"];
     [self evalJSString:@"for (var i in this) { this[i] = nil; delete this[i]; }"];
     // Everything is now collectable !
 }
@@ -1959,10 +1949,10 @@ static id autoreleasePool;
 #pragma mark Garbage Collection debug
 
 // Boxing object, set as a Javascript object's private data
-static int JSCocoaPrivateObjectCount = 0; 
-+ (void)upJSCocoaPrivateObjectCount        {    JSCocoaPrivateObjectCount++;        }
-+ (void)downJSCocoaPrivateObjectCount    {    JSCocoaPrivateObjectCount--;        }
-+ (int)JSCocoaPrivateObjectCount        {    return    JSCocoaPrivateObjectCount;    }
+static int JSTBridgedObjectCount = 0; 
++ (void)upJSTBridgedObjectCount        {    JSTBridgedObjectCount++;        }
++ (void)downJSTBridgedObjectCount    {    JSTBridgedObjectCount--;        }
++ (int)JSTBridgedObjectCount        {    return    JSTBridgedObjectCount;    }
 
 // Javascript hash, set on classes created with JSCocoaController.createClass
 // - used to store js values on instances ( someClassDerivedInJS['someValue'] = 'hello !' )
@@ -2105,7 +2095,7 @@ int    liveInstanceCount    = 0;
 //
 // NSDistantObject call using NSInvocation
 //
-- (JSValueRef)JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSCocoaPrivateObject*)thisPrivateObject argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception
+- (JSValueRef)JSCocoa:(JSCocoaController*)controller callMethod:(NSString*)methodName ofObject:(id)callee privateObject:(JSTBridgedObject*)thisPrivateObject argumentCount:(size_t)argumentCount arguments:(JSValueRef*)arguments inContext:(JSContextRef)localCtx exception:(JSValueRef*)exception
 {
     SEL selector = NSSelectorFromString(methodName);
     if (class_getInstanceMethod([callee class], selector) || class_getClassMethod([callee class], selector)) {
@@ -2137,7 +2127,7 @@ int    liveInstanceCount    = 0;
             id fullStructureType = [JSCocoaFFIArgument structureFullTypeEncodingFromStructureTypeEncoding:structureType];
         
             int size = [JSCocoaFFIArgument sizeOfStructure:structureType];
-            JSObjectRef jsObject = JSValueToObject(ctx, arguments[argIndex], nil);
+            JSObjectRef jsObject = JSValueToObject(_ctx, arguments[argIndex], nil);
             if (size && fullStructureType && jsObject)
             {
                 // Alloc structure size and let NSData deallocate it
@@ -2146,12 +2136,13 @@ int    liveInstanceCount    = 0;
                 [NSData dataWithBytesNoCopy:source length:size freeWhenDone:YES];
                 
                 void* p = source;
-                NSInteger numParsed =    [JSCocoaFFIArgument structureFromJSObjectRef:jsObject inContext:ctx inParentJSValueRef:NULL fromCString:(char*)[fullStructureType UTF8String] fromStorage:&p];
-                if (numParsed)    [invocation setArgument:source atIndex:argIndex+2];
+                NSInteger numParsed = [JSCocoaFFIArgument structureFromJSObjectRef:jsObject inContext:_ctx inParentJSValueRef:NULL fromCString:(char*)[fullStructureType UTF8String] fromStorage:&p];
+                if (numParsed) {
+                    [invocation setArgument:source atIndex:argIndex+2];
+                }
             }
         }
-        else
-        if ([arg isKindOfClass:[NSNumber class]]) {
+        else if ([arg isKindOfClass:[NSNumber class]]) {
             
 //            const char *type = [signature getArgumentTypeAtIndex:argIndex + 2];
             if (strcmp(type, @encode(BOOL)) == 0) {
@@ -2331,7 +2322,7 @@ int    liveInstanceCount    = 0;
 // Hold these methods in a derived NSObject class : only derived classes created with a __jsHash (capable of hosting js objects) will get them
 @interface    JSCocoaMethodHolder : NSObject
 @end
-// Stored there for convenience. They won't be used by JSCocoaPrivateObject but will be patched in for any derived class
+// Stored there for convenience. They won't be used by JSTBridgedObject but will be patched in for any derived class
 @implementation JSCocoaMethodHolder
 - (BOOL)setJSValue:(JSValueRefAndContextRef)valueAndContext forJSName:(JSValueRefAndContextRef)nameAndContext
 {
@@ -2555,7 +2546,7 @@ static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
     
     // Set it as new object
     JSObjectRef thisObject = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-    JSCocoaPrivateObject* private = JSObjectGetPrivate(thisObject);
+    JSTBridgedObject* private = JSObjectGetPrivate(thisObject);
     private.type = @"@";
     [private setObjectNoRetain:newInstance];
     // No — will retain allocated object and trigger "did you forget to call init" warning
@@ -2605,41 +2596,39 @@ static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
 #pragma mark -
 #pragma mark JavascriptCore OSX object
 
-//
-//
-//    Global resolver : main class used as 'this' in Javascript's global scope. Name requests go through here.
-//
-//
-JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception)
-{
-    NSString*    propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
-    [NSMakeCollectable(propertyName) autorelease];
 
-    if ([propertyName isEqualToString:@"__jsc__"])    return    nil;
+// Global resolver : main class used as 'this' in Javascript's global scope. Name requests go through here.
+JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
     
-//    NSLog(@"Asking for global property %@", propertyName);
+    NSString* propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
+    [NSMakeCollectable(propertyName) autorelease];
+    
+    if ([propertyName isEqualToString:@"__jsc__"]) {
+        return nil;
+    }
+    
+    jstrace(@"%s:%d: %@", __FUNCTION__, __LINE__, propertyName);
+    
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
-    //
+    
     // Delegate canGetGlobalProperty, getGlobalProperty
-    //
-    if (delegate)
-    {
-        // Check if getting is allowed
-        if ([delegate respondsToSelector:@selector(JSCocoa:canGetGlobalProperty:inContext:exception:)])
-        {
-            BOOL canGetGlobal = [delegate JSCocoa:jsc canGetGlobalProperty:propertyName inContext:ctx exception:exception];
-            if (!canGetGlobal)
-            {
-                if (!*exception)    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow getting global property %@", propertyName]);
-                return    nil;
-            }
+    // Check if getting is allowed
+    if ([delegate respondsToSelector:@selector(JSCocoa:canGetGlobalProperty:inContext:exception:)]) {
+        BOOL canGetGlobal = [delegate JSCocoa:jsc canGetGlobalProperty:propertyName inContext:ctx exception:exception];
+        if (!canGetGlobal) {
+            if (!*exception) {
+                throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow getting global property %@", propertyName]);
+            }    
+            return nil;
         }
-        // Check if delegate handles getting
-        if ([delegate respondsToSelector:@selector(JSCocoa:getGlobalProperty:inContext:exception:)])
-        {
-            JSValueRef delegateGetGlobal = [delegate JSCocoa:jsc getGlobalProperty:propertyName inContext:ctx exception:exception];
-            if (delegateGetGlobal)        return    delegateGetGlobal;
+    }
+        
+    // Check if delegate handles getting
+    if ([delegate respondsToSelector:@selector(JSCocoa:getGlobalProperty:inContext:exception:)]) {
+        JSValueRef delegateGetGlobal = [delegate JSCocoa:jsc getGlobalProperty:propertyName inContext:ctx exception:exception];
+        if (delegateGetGlobal) {
+            return delegateGetGlobal;
         }
     }
     
@@ -2647,127 +2636,142 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
     // ObjC class
     //
     Class objCClass = NSClassFromString(propertyName);
-    if (objCClass && ![propertyName isEqualToString:@"Object"])
-    {
+    if (objCClass && ![propertyName isEqualToString:@"Object"]) {
+        jstrace(@"Using runtime lookup for %@", propertyName);
         JSValueRef ret = [JSCocoaController boxedJSObject:objCClass inContext:ctx];
-        return    ret;
+        return ret;
     }
-
-    id xml;
-    id type = nil;
-    //
-    // Query BridgeSupport for property
-    //
-    xml = [[JSTBridgeSupportLoader sharedController] queryName:propertyName];
-    if (xml)
-    {
-        id error = nil;
-        id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:xml options:0 error:&error];
-        if (error)    return    NSLog(@"(OSX_getPropertyCallback) malformed xml while getting property %@ of type %@ : %@", propertyName, type, error), nil;
-        [xmlDocument autorelease];
+    
+    
+    JSTBridgeSupportInfo *bridgedObjectInfo = [[JSTBridgeSupportLoader sharedController] bridgedObjectForSymbol:propertyName];
+    
+    if (bridgedObjectInfo) {
+        jstrace(@"Using bridge support lookup for %@", propertyName);
         
-        type = [[xmlDocument rootElement] name];
+        NSString *xml = [[JSTBridgeSupportLoader sharedController] queryName:propertyName];
+        
+        NSError *error;
+        NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithXMLString:xml options:0 error:&error] autorelease];
+        if (!xmlDocument) {
+            NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+            NSLog(@"Malformed xml while getting property %@ : %@", propertyName, error);
+            return nil;
+        }
+        
+        NSString *type = [[xmlDocument rootElement] name];
 
-        //
-        // Function
-        //
-        if ([type isEqualToString:@"function"])
-        {
-            JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-            JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
-            private.type = @"function";
-            private.xml = xml;
-            return    o;
+        // Let's see if it's a function
+        if ([bridgedObjectInfo objectType] == JSTFunction) {
+            
+            JSObjectRef jsRef               = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
+            JSTBridgedObject* private   = JSObjectGetPrivate(jsRef);
+            private.type                    = @"function";
+            private.xml                     = xml;
+            private.bridgeInfo              = bridgedObjectInfo;
+            
+            jstrace(@"%@ is a function (jsRef: %p)", propertyName, jsRef);
+            
+            return jsRef;
         }
 
-        //
-        // Struct
-        //
-        else
-        if ([type isEqualToString:@"struct"])
-        {
-            JSObjectRef o = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-            JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+        // ok, is it a struct maybe?
+        else if ([bridgedObjectInfo objectType] == JSTStruct) {
+            JSObjectRef jsRef = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
+            JSTBridgedObject* private = JSObjectGetPrivate(jsRef);
             private.type = @"struct";
             private.xml = xml;
-            return    o;
+            private.bridgeInfo = bridgedObjectInfo;
+            return jsRef;
         }
         
-        //
-        // Constant
-        //
-        else
-        if ([type isEqualToString:@"constant"])
+        // How about a constant?
+        else if (([bridgedObjectInfo objectType] == JSTConstant))
         {
             // ##fix : NSZeroPoint, NSZeroRect, NSZeroSize would need special (struct) + type64 handling
             // Check if constant's declared_type is NSString*
-            id declared_type = [[xmlDocument rootElement] attributeForName:@"declared_type"];
-            if (!declared_type)    declared_type = [[xmlDocument rootElement] attributeForName:@"type"];
-            if (!declared_type || !([[declared_type stringValue] isEqualToString:@"NSString*"] 
-                                    || [[declared_type stringValue] isEqualToString:@"@"]
-                                    || [[declared_type stringValue] isEqualToString:@"^{__CFString=}"]
-                                    ))    
-                return    NSLog(@"(OSX_getPropertyCallback) %@ not a NSString* constant : %@", propertyName, xml), nil;
+            NSXMLNode *declared_type = [[xmlDocument rootElement] attributeForName:@"declared_type"];
+            
+            if (!declared_type) {
+                declared_type = [[xmlDocument rootElement] attributeForName:@"type"];
+            }
+            
+            if (!declared_type || !([[declared_type stringValue] isEqualToString:@"NSString*"] ||
+                                    [[declared_type stringValue] isEqualToString:@"@"] ||
+                                    [[declared_type stringValue] isEqualToString:@"^{__CFString=}"])) {
+                
+                NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+                NSLog(@"%@ not a NSString* constant : %@", propertyName, xml);
+                return nil;
+            }
+                
 
             // Grab symbol
             void* symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
-            if (!symbol)    return    NSLog(@"(OSX_getPropertyCallback) symbol %@ not found", propertyName), nil;
-
+            if (!symbol) {
+                NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+                NSLog(@"symbol %@ not found", propertyName);
+                return nil;
+            }
+            
             // ObjC objects, like NSApp : pointer to NSApplication.sharedApplication
-            if ([[declared_type stringValue] isEqualToString:@"@"])
-            {
+            if ([[declared_type stringValue] isEqualToString:@"@"]) {
                 id o = *(id*)symbol;
                 return [JSCocoaController boxedJSObject:o inContext:ctx];
             }
 
             // Return symbol as a Javascript string
-            NSString* str        = *(NSString**)symbol;
-            JSStringRef jsName    = JSStringCreateWithUTF8CString([str UTF8String]);
-            JSValueRef jsString    = JSValueMakeString(ctx, jsName);
+            NSString* str           = *(NSString**)symbol;
+            JSStringRef jsName      = JSStringCreateWithUTF8CString([str UTF8String]);
+            JSValueRef jsString     = JSValueMakeString(ctx, jsName);
             JSStringRelease(jsName);
-            return    jsString;
+            return jsString;
         }
 
-        //
         // Enum
-        //
-        else
-        if ([type isEqualToString:@"enum"])
-        {
+        else if ([type isEqualToString:@"enum"]) {
+            
             // Check if constant's declared_type is NSString*
             id value = [[xmlDocument rootElement] attributeForName:@"value"];
-            if (!value)    
-            {
+            if (!value) {
                 value = [[xmlDocument rootElement] attributeForName:@"value64"];
-                if (!value)
-                    return    NSLog(@"(OSX_getPropertyCallback) %@ enum has no value set", propertyName), nil;
+                if (!value) {
+                    NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+                    NSLog(@"%@ enum has no value set", propertyName);
+                    return nil;
+                }
             }
 
             // Try parsing value
             double doubleValue = 0;
             value = [value stringValue];
-            if (![[NSScanner scannerWithString:value] scanDouble:&doubleValue]) return    NSLog(@"(OSX_getPropertyCallback) scanning %@ enum failed", propertyName), nil;
-            return    JSValueMakeNumber(ctx, doubleValue);
+            if (![[NSScanner scannerWithString:value] scanDouble:&doubleValue]) {
+                NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+                NSLog(@"Scanning %@ enum failed", propertyName);
+                return nil;
+            }
+            
+            return JSValueMakeNumber(ctx, doubleValue);
         }
     }
 
     // Describe ourselves
-    if ([propertyName isEqualToString:@"toString"] || [propertyName isEqualToString:@"valueOf"])
-    {
-        JSStringRef scriptJS = JSStringCreateWithUTF8CString("return '(JSCocoa global object)'");
+    if ([propertyName isEqualToString:@"toString"] || [propertyName isEqualToString:@"valueOf"]) {
+        JSStringRef scriptJS = JSStringCreateWithUTF8CString("return '(JSTalk global object)'");
         JSObjectRef fn = JSObjectMakeFunction(ctx, nil, 0, nil, scriptJS, nil, 1, nil);
         JSStringRelease(scriptJS);
-        return    fn;
+        return fn;
     }
 
-    return    nil;
+    return nil;
 }
 
 
-static void OSXObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames)
-{
+static void OSXObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames) {
+    
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
     // Move to a definition object
-/*
+    /*
     NSArray* keys = [[JSTBridgeSupportLoader sharedController] keys];
     for (id key in keys)
     {
@@ -2775,7 +2779,7 @@ static void OSXObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSP
         JSPropertyNameAccumulatorAddName(propertyNames, jsString);
         JSStringRelease(jsString);            
     }
-*/    
+    */    
 }
 
 
@@ -2797,7 +2801,7 @@ static void OSXObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSP
 BOOL    isUsingStret(id argumentEncodings)
 {
     int resultSize = 0;
-    char returnEncoding = [[argumentEncodings objectAtIndex:0] typeEncoding];
+    char returnEncoding = [(JSCocoaFFIArgument*)[argumentEncodings objectAtIndex:0] typeEncoding];
     if (returnEncoding == _C_STRUCT_B) resultSize = [JSCocoaFFIArgument sizeOfStructure:[[argumentEncodings objectAtIndex:0] structureTypeEncoding]];
     if (returnEncoding == _C_STRUCT_B && 
     //#ifdef  __ppc64__
@@ -2949,7 +2953,7 @@ JSValueRef valueToExternalContext(JSContextRef ctx, JSValueRef value, JSContextR
         {
             JSObjectRef o = JSValueToObject(ctx, value, nil);
             if (!o)        return    JSValueMakeNull(externalCtx);
-            JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(o);
+            JSTBridgedObject* privateObject = JSObjectGetPrivate(o);
             if (![privateObject.type isEqualToString:@"externalJSValueRef"])    
             {
                 id object = [privateObject object];
@@ -2990,7 +2994,7 @@ JSValueRef boxedValueFromExternalContext(JSContextRef externalCtx, JSValueRef va
     else
         o = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
         
-    JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+    JSTBridgedObject* private = JSObjectGetPrivate(o);
     private.type = @"externalJSValueRef";
     [private setExternalJSValueRef:value ctx:externalCtx];
     return    o;    
@@ -3006,9 +3010,8 @@ JSValueRef boxedValueFromExternalContext(JSContextRef externalCtx, JSValueRef va
 JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception)
 {
     // Holding a native JS value ? Return it
-    JSCocoaPrivateObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
-    if ([thisPrivateObject.type isEqualToString:@"jsValueRef"])    
-    {
+    JSTBridgedObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
+    if ([thisPrivateObject.type isEqualToString:@"jsValueRef"]) {
         return [thisPrivateObject jsValueRef];
     }
 
@@ -3026,34 +3029,37 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
     }
     
     // NSNumber special case
-    if ([thisPrivateObject.object isKindOfClass:[NSNumber class]])
-        return    JSValueMakeNumber(ctx, [thisPrivateObject.object doubleValue]);
+    if ([thisPrivateObject.object isKindOfClass:[NSNumber class]]) {
+        return JSValueMakeNumber(ctx, [thisPrivateObject.object doubleValue]);
+    }
+        
 
     // Convert to string
-    id toString = [thisPrivateObject description];
+    NSString *toString = [thisPrivateObject description];
     
     // Object
-    if ([thisPrivateObject.type isEqualToString:@"@"])
-    {
+    if ([thisPrivateObject.type isEqualToString:@"@"]) {
         // Holding an out value ?
-        if ([thisPrivateObject.object isKindOfClass:[JSCocoaOutArgument class]])
-        {
+        if ([thisPrivateObject.object isKindOfClass:[JSCocoaOutArgument class]]) {
             JSValueRef outValue = [(JSCocoaOutArgument*)thisPrivateObject.object outJSValueRefInContext:ctx];
-            if (!outValue)
-            {
+            
+            if (!outValue) {
                 JSStringRef    jsName = JSStringCreateWithUTF8CString("Unitialized outArgument");
                 JSValueRef r = JSValueMakeString(ctx, jsName);
                 JSStringRelease(jsName);
                 return r;
             }
             // Holding an object ? Call valueOf on it
-            if (JSValueGetType(ctx, outValue) == kJSTypeObject)
+            if (JSValueGetType(ctx, outValue) == kJSTypeObject) {
                 return valueOfCallback(ctx, nil, JSValueToObject(ctx, outValue, nil), 0, nil, nil);
+            }
+            
             // Return raw JSValueRef
             return outValue;
         }
-        else
+        else {
             toString = [NSString stringWithFormat:@"%@", [[thisPrivateObject object] description]];
+        }
     }
 
     // Struct
@@ -3080,32 +3086,29 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
     [scan setCharactersToBeSkipped:nil];
     double v = 0;
     [scan scanDouble:&v];
-    if ([scan isAtEnd])
+    if ([scan isAtEnd]) {
         return JSValueMakeNumber(ctx, v);
+    }
+        
 
     // Convert to string and return
     JSStringRef jsToString = JSStringCreateWithCFString((CFStringRef)toString);
     JSValueRef jsValueToString = JSValueMakeString(ctx, jsToString);
     JSStringRelease(jsToString);
-    return    jsValueToString;
+    return jsValueToString;
 }
 
-//
-// initialize
-//    retain boxed object
-//
-static void jsCocoaObject_initialize(JSContextRef ctx, JSObjectRef object)
-{
-    id o = JSObjectGetPrivate(object);
-    [o retain];
+
+// initialize & retain boxed object
+static void jsCocoaObject_initialize(JSContextRef ctx, JSObjectRef object) {
+    // when we create the private object- it's already got a +1 retain count.
+    //[JSObjectGetPrivate(object) retain];
 }
 
-//
-// finalize
-//    release boxed object
-//
-static void jsCocoaObject_finalize(JSObjectRef object)
-{
+// release boxed object
+static void jsCocoaObject_finalize(JSObjectRef object) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
     // if dealloc is overloaded, releasing now will trigger JS code and fail
     // As we're being called by GC, KJS might assert() in operationInProgress == NoOperation
     id private = JSObjectGetPrivate(object);
@@ -3186,12 +3189,13 @@ static bool jsCocoaObject_hasProperty(JSContextRef ctx, JSObjectRef object, JSSt
 //
 //    At method start, handle special cases for arrays (integers, length) and dictionaries
 //
-static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception)
-{
+static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
     NSString*    propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
     
-    JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
+    JSTBridgedObject* privateObject = JSObjectGetPrivate(object);
 //    NSLog(@"Asking for property %@ %@(%@)", propertyName, privateObject, privateObject.type);
 
     // Get delegate
@@ -3267,7 +3271,7 @@ call:
                 {
 //                    NSLog(@"*** array method : %@", propertyName);
                     JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-                    JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+                    JSTBridgedObject* private = JSObjectGetPrivate(o);
                     private.type = @"jsFunction";
                     [private setJSValueRef:result ctx:ctx];
                     return    o;
@@ -3343,7 +3347,7 @@ call:
         {
             NSLog(@"GOT IT %@", propertyName);
             JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-            JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+            JSTBridgedObject* private = JSObjectGetPrivate(o);
             private.type = @"jsFunction";
             [private setJSValueRef:result ctx:ctx];
             return    o;
@@ -3353,6 +3357,7 @@ call:
         // Attempt Zero arg autocall
         // Object.alloc().init() -> Object.alloc.init
         //
+        BOOL useAutoCall = NO;
         if (useAutoCall)
         {
             callee    = [privateObject object];
@@ -3396,7 +3401,7 @@ call:
                     [JSCocoaFFIArgument boxObject:instance toJSValueRef:&returnValue inContext:ctx];
                     // Release it, making the javascript box the sole retainer
                     // niling all references to this object will release the instance during Javascript GC                    
-                    JSCocoaPrivateObject* private = JSObjectGetPrivate(JSValueToObject(ctx, returnValue, nil));
+                    JSTBridgedObject* private = JSObjectGetPrivate(JSValueToObject(ctx, returnValue, nil));
                     [private.object release];
                     
                     return    returnValue;
@@ -3407,7 +3412,7 @@ call:
                 {
                     id allocatedObject = [callee alloc];
                     JSObjectRef jsObject = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-                    JSCocoaPrivateObject* private = JSObjectGetPrivate(jsObject);
+                    JSTBridgedObject* private = JSObjectGetPrivate(jsObject);
                     private.type = @"@";
                     [private setObjectNoRetain:allocatedObject];
                     return    jsObject;
@@ -3448,7 +3453,7 @@ call:
                 values[1]    = (void*)&selector;
                 
                 // Get return value holder
-                id returnValue = [argumentEncodings objectAtIndex:0];
+                JSCocoaFFIArgument *returnValue = [argumentEncodings objectAtIndex:0];
                 
                 // Allocate return value storage if it's a pointer
                 if ([returnValue typeEncoding] == '^')
@@ -3563,7 +3568,7 @@ call:
                     if ([callee instancesRespondToSelector:NSSelectorFromString(initMethodName)])
                     {
                         JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-                        JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+                        JSTBridgedObject* private = JSObjectGetPrivate(o);
                         private.type = @"method";
                         private.methodName = methodName;
                         return o;
@@ -3591,7 +3596,7 @@ call:
                 if (result && JSValueGetType(ctx, result) == kJSTypeObject)
                 {
                     JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-                    JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+                    JSTBridgedObject* private = JSObjectGetPrivate(o);
                     private.type = @"jsFunction";
                     [private setJSValueRef:result ctx:ctx];
                     return    o;
@@ -3616,7 +3621,7 @@ call:
         
         // Get ready for method call
         JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-        JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+        JSTBridgedObject* private = JSObjectGetPrivate(o);
         private.type = @"method";
         private.methodName = methodName;
 
@@ -3627,7 +3632,7 @@ call:
     if (/*[privateObject.type isEqualToString:@"struct"] &&*/ ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]))
     {
         JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-        JSCocoaPrivateObject* private = JSObjectGetPrivate(o);
+        JSTBridgedObject* private = JSObjectGetPrivate(o);
         private.type = @"method";
         private.methodName = propertyName;
         return    o;
@@ -3653,7 +3658,7 @@ call:
             id callee = privateObject;
             privateObject.object = callee;
             // Box the private object
-            privateObject = [[JSCocoaPrivateObject new] autorelease];
+            privateObject = [[JSTBridgedObject new] autorelease];
             privateObject.object = callee;
             privateObject.type = @"@";
             propertyName = methodName;
@@ -3693,111 +3698,113 @@ call:
 // setProperty
 //    call setter : propertyName -> setPropertyName
 //
-static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef jsValue, JSValueRef* exception)
-{
-    JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
-    NSString*    propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
+static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef jsValue, JSValueRef* exception) {
+    
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+    
+    JSTBridgedObject    *bridgedObject = JSObjectGetPrivate(object);
+    NSString            *propertyName  = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
     
-//    NSLog(@"****SET %@ in ctx %x on object %x (type=%@) method=%@", propertyName, ctx, object, privateObject.type, privateObject.methodName);
-
+    jstrace(@"%s:%d- setting %@ on %@", __FUNCTION__, __LINE__, propertyName, bridgedObject);
+    
     // Get delegate
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
 
-    if ([privateObject.type isEqualToString:@"@"])
-    {
-        //
-        // Delegate canSetProperty, setProperty
-        //
-        if (delegate)
-        {
-            // Check if setting is allowed
-            if ([delegate respondsToSelector:@selector(JSCocoa:canSetProperty:ofObject:toValue:inContext:exception:)])
-            {
-                BOOL canSet = [delegate JSCocoa:jsc canSetProperty:propertyName ofObject:privateObject.object toValue:jsValue inContext:ctx exception:exception];
-                if (!canSet)
-                {
-                    if (!*exception)    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow setting %@.%@", privateObject.object, propertyName]);
-                    return    nil;
+    if ([bridgedObject.type isEqualToString:@"@"]) {
+        
+        // Check if setting is allowed
+        if ([delegate respondsToSelector:@selector(JSCocoa:canSetProperty:ofObject:toValue:inContext:exception:)]) {
+            if (![delegate JSCocoa:jsc canSetProperty:propertyName ofObject:bridgedObject.object toValue:jsValue inContext:ctx exception:exception]) {
+                if (!*exception) {
+                    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow setting %@.%@", bridgedObject.object, propertyName]);
                 }
-            }
-            // Check if delegate handles getting
-            if ([delegate respondsToSelector:@selector(JSCocoa:setProperty:ofObject:toValue:inContext:exception:)])
-            {
-                BOOL delegateSet = [delegate JSCocoa:jsc setProperty:propertyName ofObject:privateObject.object toValue:jsValue inContext:ctx exception:exception];
-                if (delegateSet)    return    true;
+                
+                return NO;
             }
         }
+        
+        // Check if delegate handles getting
+        if ([delegate respondsToSelector:@selector(JSCocoa:setProperty:ofObject:toValue:inContext:exception:)]) {
+            if ([delegate JSCocoa:jsc setProperty:propertyName ofObject:bridgedObject.object toValue:jsValue inContext:ctx exception:exception]) {
+                return YES;
+            }
+        }
+    
 
         // Special case for NSMutableArray set
-//        if ([privateObject.object isKindOfClass:[NSArray class]])
-        if ([privateObject.object respondsToSelector:@selector(replaceObjectAtIndex:withObject:)])
-        {
-            id array    = privateObject.object;
-//            if (![array respondsToSelector:@selector(replaceObjectAtIndex:withObject:)])    return    throwException(ctx, exception, @"Calling set on a non mutable array"), false;
-            id scan        = [NSScanner scannerWithString:propertyName];
-            NSInteger propertyIndex;
+        //if ([bridgedObject.object isKindOfClass:[NSMutableArray class]]) {
+        if ([bridgedObject.object respondsToSelector:@selector(replaceObjectAtIndex:withObject:)]) {
+            
+            NSMutableArray *array = bridgedObject.object;
+            //  if (![array respondsToSelector:@selector(replaceObjectAtIndex:withObject:)])    return    throwException(ctx, exception, @"Calling set on a non mutable array"), false;
+            
+            NSScanner *scan = [NSScanner scannerWithString:propertyName];
+            
             // Is asked property an int ?
-            BOOL convertedToInt =  ([scan scanInteger:&propertyIndex]);
-            if (convertedToInt && [scan isAtEnd])
-            {
-                if (propertyIndex < 0 || propertyIndex >= [array count])    return    false;
-
-                id property = nil;
-                if ([JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&property inContext:ctx])
-                {
-                    [array replaceObjectAtIndex:propertyIndex withObject:property];
-                    return    true;
+            NSInteger propertyIndex;
+            BOOL convertedToInt = [scan scanInteger:&propertyIndex];
+            
+            if (convertedToInt && [scan isAtEnd]) {
+                if (propertyIndex < 0 || propertyIndex >= [array count]) {
+                    return NO;
                 }
-                else    return false;
+
+                id property;
+                if ([JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&property inContext:ctx]) {
+                    [array replaceObjectAtIndex:propertyIndex withObject:property];
+                    return YES;
+                }
+                else {
+                    return NO;
+                }
             }
         }
 
 
         // Special case for NSMutableDictionary set
-//        if ([privateObject.object isKindOfClass:[NSDictionary class]])
-        if ([privateObject.object respondsToSelector:@selector(setObject:forKey:)])
-        {
-            id dictionary    = privateObject.object;
-//            if (![dictionary respondsToSelector:@selector(setObject:forKey:)])    return    throwException(ctx, exception, @"Calling set on a non mutable dictionary"), false;
-
-            id property = nil;
-            if ([JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&property inContext:ctx])
-            {
+        // if ([bridgedObject.object isKindOfClass:[NSDictionary class]])
+        if ([bridgedObject.object respondsToSelector:@selector(setObject:forKey:)]) {
+            
+            NSMutableDictionary *dictionary = bridgedObject.object;
+            
+            id property;
+            if ([JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&property inContext:ctx]) {
                 [dictionary setObject:property forKey:propertyName];
-                return    true;
+                return YES;
             }
-            else    return false;
+            else {
+                return NO;
+            }
         }
-
         
         // Special case for JSCocoaMemoryBuffer get
-        if ([privateObject.object isKindOfClass:[JSCocoaMemoryBuffer class]])
-        {
-            id buffer = privateObject.object;
+        if ([bridgedObject.object isKindOfClass:[JSCocoaMemoryBuffer class]]) {
             
-            id scan        = [NSScanner scannerWithString:propertyName];
+            JSCocoaMemoryBuffer *buffer = bridgedObject.object;
+            NSScanner *scan             = [NSScanner scannerWithString:propertyName];
             NSInteger propertyIndex;
             // Is asked property an int ?
-            BOOL convertedToInt =  ([scan scanInteger:&propertyIndex]);
-            if (convertedToInt && [scan isAtEnd])
-            {
-                if (propertyIndex < 0 || propertyIndex >= [buffer typeCount])    return    nil;
-                return    [buffer setValue:jsValue atIndex:propertyIndex inContext:ctx];
+            if ([scan scanInteger:&propertyIndex] && [scan isAtEnd]) {
+                if (propertyIndex < 0 || propertyIndex >= [buffer typeCount]) {
+                    return NO;
+                }
+                
+                return [buffer setValue:jsValue atIndex:propertyIndex inContext:ctx];
             }
         }
         
+        id callee = [bridgedObject object];
         
-        
+        /*
         // Try shorthand overload : obc[selector] = function
-        id callee    = [privateObject object];
-        if ([propertyName rangeOfString:@":"].location != NSNotFound)
-        {
+        if ([propertyName rangeOfString:@":"].location != NSNotFound) {
             JSValueRefAndContextRef v = { jsValue, ctx };
             [JSCocoaController overloadInstanceMethod:propertyName class:[callee class] jsFunction:v];
-            return    true;
+            return  YES;
         }
+        */
         
         
         // Can't use capitalizedString on the whole string as it will transform 
@@ -3806,15 +3813,15 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
         // we want    MyValue
 
         // Capitalize only first letter
-        NSString*    setterName = [NSString stringWithFormat:@"set%@%@:", 
+        NSString* setterName = [NSString stringWithFormat:@"set%@%@:", 
                                             [[propertyName substringWithRange:NSMakeRange(0,1)] capitalizedString], 
                                             [propertyName substringWithRange:NSMakeRange(1, [propertyName length]-1)]];
-
+        
         //
         // Attempt Zero arg autocall for setter
         // Object.alloc().init() -> Object.alloc.init
         //
-        SEL sel        = NSSelectorFromString(setterName);
+        SEL sel = NSSelectorFromString(setterName);
         if ([callee respondsToSelector:sel])
         {
             //
@@ -3835,7 +3842,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
                 // Check if delegate handles calling
                 if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
                 {
-                    JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:setterName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+                    JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:setterName ofObject:callee privateObject:bridgedObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
                     if (delegateCall)    return    !!delegateCall;
                 }
             }
@@ -3858,7 +3865,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
             // Extract arguments
             const char* typeEncoding = method_getTypeEncoding(method);
             id argumentEncodings = [JSCocoaController parseObjCMethodEncoding:typeEncoding];
-            if ([[argumentEncodings objectAtIndex:0] typeEncoding] != 'v')    return    throwException(ctx, exception, [NSString stringWithFormat:@"(in setter) %@ must return void", setterName]), false;
+            if ([(JSCocoaFFIArgument*)[argumentEncodings objectAtIndex:0] typeEncoding] != 'v')    return    throwException(ctx, exception, [NSString stringWithFormat:@"(in setter) %@ must return void", setterName]), false;
 
             // Call address
             void* callAddress = getObjCCallAddress(argumentEncodings);
@@ -3909,12 +3916,13 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
             if (set)    return    true;
         }
     }
-
+    
+    
     // External WebView value
-    if ([privateObject.type isEqualToString:@"externalJSValueRef"] || [[privateObject rawPointerEncoding] isEqualToString:@"^{OpaqueJSContext=}"])
+    if ([bridgedObject.type isEqualToString:@"externalJSValueRef"] || [[bridgedObject rawPointerEncoding] isEqualToString:@"^{OpaqueJSContext=}"])
     {
-        JSValueRef externalValue = [privateObject jsValueRef];
-        JSContextRef externalCtx = externalValue ? [privateObject ctx] : [privateObject rawPointer];
+        JSValueRef externalValue = [bridgedObject jsValueRef];
+        JSContextRef externalCtx = externalValue ? [bridgedObject ctx] : [bridgedObject rawPointer];
         JSObjectRef externalObject = externalValue ? JSValueToObject(externalCtx, externalValue, nil) : JSContextGetGlobalObject(externalCtx);
         if (!externalObject)    return    false;
 
@@ -3931,26 +3939,42 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
         
         return    true;
     }
-
+    
+    
+    [pool release];
+    
     //
     // From here we return false to have Javascript set values on Javascript objects : valueOf, thisObject, structures
     //
 
     // Special case for autocall : allow current js object to receive a custom valueOf method that will handle autocall
     // And a thisObject property holding class for instance autocall
-    if ([propertyName isEqualToString:@"valueOf"])            return    false;
+    if ([propertyName isEqualToString:@"valueOf"]) {
+        return NO;
+    }
+    
     // An out argument allocates pointer storage when calling stuff like gl version.
     // JSCocoa needs to set a custom javascript property to recognize out arguments.
-    if ([propertyName isEqualToString:@"isOutArgument"])    return    false;
+    if ([propertyName isEqualToString:@"isOutArgument"]) {
+        return NO;
+    }
+    
     // Allow general setting on structs
-    if ([privateObject.type isEqualToString:@"struct"])        return    false;
+    if ([bridgedObject.type isEqualToString:@"struct"]) {
+        return NO;
+    }
     
     // Don't throw an exception if setting is allowed
-    if (canSetOnBoxedObjects)                                return    false;
-
+    if (canSetOnBoxedObjects) {
+        return NO;
+    }
+    
+    
     // Setter fails AND WARNS if propertyName can't be set
     // This happens of non-JSCocoa ObjC objects, eg NSWorkspace.sharedWorspace.someVariable = value
-    return    throwException(ctx, exception, [NSString stringWithFormat:@"(in setter) object %@ does not support setting — Derive from that class to make it able to host any Javascript object ", privateObject.object]), false;
+    throwException(ctx, exception, [NSString stringWithFormat:@"(in setter) object %@ does not support setting — Derive from that class to make it able to host any Javascript object ", bridgedObject.object]);
+    
+    return NO;
 }
 
 
@@ -3958,12 +3982,13 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 // deleteProperty
 //    delete property in hash
 //
-static bool jsCocoaObject_deleteProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception)
-{
+static bool jsCocoaObject_deleteProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
     NSString*    propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
     
-    JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
+    JSTBridgedObject* privateObject = JSObjectGetPrivate(object);
 
     if (![privateObject.type isEqualToString:@"@"])    return false;
 
@@ -3979,9 +4004,10 @@ static bool jsCocoaObject_deleteProperty(JSContextRef ctx, JSObjectRef object, J
 // getPropertyNames
 //    enumerate dictionary keys
 //
-static void jsCocoaObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames)
-{
-    JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(object);
+static void jsCocoaObject_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    JSTBridgedObject* privateObject = JSObjectGetPrivate(object);
 
     // If we have a dictionary, add keys from allKeys
     if ([privateObject.type isEqualToString:@"@"])
@@ -4026,45 +4052,50 @@ static void jsCocoaObject_getPropertyNames(JSContextRef ctx, JSObjectRef object,
 // This uses libffi to call C and ObjC.
 static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, JSValueRef arguments[], JSValueRef* exception, NSString* superSelector, Class superSelectorClass, BOOL isVariadic, JSValueRef** argumentsToFree)
 {
-    JSCocoaPrivateObject* privateObject        = JSObjectGetPrivate(function);
-    JSCocoaPrivateObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
-
+    JSTBridgedObject* bridgedObject     = JSObjectGetPrivate(function);
+    JSTBridgedObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
+    
     // Return an exception if calling on nil
-    if ([thisPrivateObject object] == nil && !privateObject.xml)    return    throwException(ctx, exception, @"jsCocoaObject_callAsFunction : call with nil object"), nil;
+    if ([thisPrivateObject object] == nil && !bridgedObject.bridgeInfo) {
+        throwException(ctx, exception, @"jsCocoaObject_callAsFunction : call with nil object");
+        return nil;
+    }
 
     // Function address
     void* callAddress = nil;
 
     // Number of arguments of called method or function
-    NSUInteger callAddressArgumentCount = 0;
+    NSUInteger callAddressArgumentCount = [[[bridgedObject bridgeInfo] arguments] count];;
 
     // Arguments encoding
     // Holds return value encoding as first element
-    NSMutableArray*    argumentEncodings = nil;
-
+    NSArray *argumentEncodings = nil;
+    
     // Calling ObjC ? If NO, we're calling C
-    BOOL    callingObjC = NO;
+    BOOL callingObjC = NO;
+    
     // Structure return (objc_msgSend_stret)
-    BOOL    usingStret    = NO;
+    BOOL usingStret    = NO;
+    
     // Calling instance... , replaced with init... and released, making the js object sole owner
-    BOOL    callingInstance    = NO;
+    BOOL callingInstance = NO;
 
 
     // Get delegate
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
 
-    //
     // ObjC setup
-    //
-    id callee = nil, methodName = nil, functionName = nil;
+    id callee = nil;
+    NSString *methodName = nil;
+    NSString *functionName = nil;
     
-    // Calls can be made on boxed ObjC objects AND JSCocoaPrivateObjects
-    if ([privateObject.type isEqualToString:@"method"] && ([thisPrivateObject.type isEqualToString:@"@"] || [thisPrivateObject.object class] == [JSCocoaPrivateObject class]))
+    // Calls can be made on boxed ObjC objects AND JSTBridgedObjects
+    if ([bridgedObject.type isEqualToString:@"method"] && ([thisPrivateObject.type isEqualToString:@"@"] || [thisPrivateObject.object class] == [JSTBridgedObject class]))
     {
         callingObjC    = YES;
         callee        = [thisPrivateObject object];
-        methodName    = superSelector ? superSelector : [NSMutableString stringWithString:privateObject.methodName];
+        methodName    = superSelector ? superSelector : [NSMutableString stringWithString:bridgedObject.methodName];
 //        NSLog(@"calling %@.%@", callee, methodName);
 
         //
@@ -4084,22 +4115,25 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
                 }
             }
             // Check if delegate handles calling
-            if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
+            if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:bridgedObject:argumentCount:arguments:inContext:exception:)])
             {
                 JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:methodName ofObject:callee privateObject:thisPrivateObject argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
                 if (delegateCall)    return    delegateCall;
             }
         }
+        
+        /*
         // Special case for alloc autocall — do not retain alloced result as it might crash (eg [[NSLocale alloc] retain] fails in ObjC)
         if (!useAutoCall && argumentCount == 0 && [methodName isEqualToString:@"alloc"])
         {
             id allocatedObject = [callee alloc];
             JSObjectRef jsObject = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-            JSCocoaPrivateObject* private = JSObjectGetPrivate(jsObject);
+            JSTBridgedObject* private = JSObjectGetPrivate(jsObject);
             private.type = @"@";
             [private setObjectNoRetain:allocatedObject];
             return    jsObject;        
         }
+        */
         
 
         // Instance call
@@ -4169,34 +4203,32 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
         callAddress = getObjCCallAddress(argumentEncodings);
     }
 
-    //
-    // C setup
-    //
-    if (!callingObjC)
-    {
-        if (!privateObject.xml)    return    throwException(ctx, exception, @"jsCocoaObject_callAsFunction : no xml in object = nothing to call (Autocall problem ? To call argless objCobject.method(), remove the parens if autocall is ON)") , nil;
-//        NSLog(@"C encoding=%@", privateObject.xml);
-        argumentEncodings = [JSCocoaController parseCFunctionEncoding:privateObject.xml functionName:&functionName];
+
+    // Straight C function setup
+    if (!callingObjC) {
+        
+        if (!bridgedObject.xml) {
+            throwException(ctx, exception, @"jsCocoaObject_callAsFunction : no xml in object = nothing to call (Autocall problem ? To call argless objCobject.method(), remove the parens if autocall is ON)");
+            return nil;
+        }
+        
+        argumentEncodings   = [[bridgedObject bridgeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedObject];
+        functionName        = [[bridgedObject bridgeInfo] symbolName];
+        
         // Grab symbol
         callAddress = dlsym(RTLD_DEFAULT, [functionName UTF8String]);
-        if (!callAddress)    return    throwException(ctx, exception, [NSString stringWithFormat:@"Function %@ not found", functionName]), nil;
-        // Function arguments is all arguments minus return value
-        callAddressArgumentCount = [argumentEncodings count]-1;
-
-        //
-        // Delegate canCallFunction
-        //
-        if (delegate)
-        {
-            // Check if calling is allowed
-            if ([delegate respondsToSelector:@selector(JSCocoa:canCallFunction:argumentCount:arguments:inContext:exception:)])
-            {
-                BOOL canCall = [delegate JSCocoa:jsc canCallFunction:functionName argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception];
-                if (!canCall)
-                {
-                    if (!*exception)    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow calling function %@", functionName]);
-                    return    nil;
+        if (!callAddress) {
+            throwException(ctx, exception, [NSString stringWithFormat:@"Function %@ not found", functionName]);
+            return nil;
+        }
+        
+        // Check if calling is allowed
+        if ([delegate respondsToSelector:@selector(JSCocoa:canCallFunction:argumentCount:arguments:inContext:exception:)]) {
+            if (![delegate JSCocoa:jsc canCallFunction:functionName argumentCount:argumentCount arguments:arguments inContext:ctx exception:exception]) {
+                if (!*exception) {
+                    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow calling function %@", functionName]);
                 }
+                return nil;
             }
         }
     }
@@ -4214,118 +4246,137 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     //
     BOOL sugarCheckVariadic = NO;
     // Check if selector or method names matches a known variadic method. This may be a false positive ...
-    if (isVariadic)    
-    {
+    if (isVariadic) {
         // ... so we check further.
-        if (methodName)        isVariadic = [[JSCocoaController controllerFromContext:ctx] isMethodVariadic:methodName class:[callee class]];
-        else                isVariadic = [[JSCocoaController controllerFromContext:ctx] isFunctionVariadic:functionName];
+        
+        if (methodName) {
+            isVariadic = [[JSCocoaController controllerFromContext:ctx] isMethodVariadic:methodName class:[callee class]];
+        }
+        else {
+            isVariadic = [[JSCocoaController controllerFromContext:ctx] isFunctionVariadic:functionName];
+        }
         
         // Bail if not variadic
-        if (!isVariadic)
-        {
-            return    throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]), nil;
+        if (!isVariadic) {
+            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
+            return nil;
         }
+        
         // Sugar check : if last object is not nil, account for it
-        if (isVariadic && callingObjC && argumentCount && !JSValueIsNull(ctx, arguments[argumentCount-1]))
-        {
+        if (isVariadic && callingObjC && argumentCount && !JSValueIsNull(ctx, arguments[argumentCount-1])) {
             // Will be tested during argument conversion
             sugarCheckVariadic = YES;
             argumentCount++;
         }
     }
-    else
-    {
-        if (callAddressArgumentCount != argumentCount)
-            return    throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]), nil;
+    else {
+        if (callAddressArgumentCount != argumentCount) {
+            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
+            return nil;
+        }
     }
 
     //
     // ffi data
     //
-    ffi_cif        cif;
-    ffi_type**    args    = nil;
-    void**        values    = nil;
-    char*        selector;
+    ffi_cif cif;
+    ffi_type **args = nil;
+    void **values    = nil;
+    char *selector;
+    
     // super call
-    struct        objc_super _super;
-    void*        superPointer;
+    struct objc_super _super;
+    void *superPointer;
     
     // Total number of arguments to ffi_call
-    NSUInteger    effectiveArgumentCount = argumentCount + (callingObjC ? 2 : 0);
-    if (effectiveArgumentCount > 0)
-    {
-        args = malloc(sizeof(ffi_type*)*effectiveArgumentCount);
+    NSUInteger effectiveArgumentCount = argumentCount + (callingObjC ? 2 : 0);
+    
+    if (effectiveArgumentCount > 0) {
+        args   = malloc(sizeof(ffi_type*)*effectiveArgumentCount);
         values = malloc(sizeof(void*)*effectiveArgumentCount);
 
         // If calling ObjC, setup instance and selector
-        int        i, idx = 0;
-        if (callingObjC)
-        {
+        int i;
+        int idx = 0;
+        
+        if (callingObjC) {
             selector    = (char*)NSSelectorFromString(methodName);
-            args[0]        = &ffi_type_pointer;
-            args[1]        = &ffi_type_pointer;
-            values[0]    = (void*)&callee;
-            values[1]    = (void*)&selector;
+            args[0]     = &ffi_type_pointer;
+            args[1]     = &ffi_type_pointer;
+            values[0]   = (void*)&callee;
+            values[1]   = (void*)&selector;
             idx = 2;
             
             // Super handling
-            if (superSelector)
-            {
-                if (superSelectorClass == nil)    return    throwException(ctx, exception, [NSString stringWithFormat:@"Null superclass in %@", callee]), nil;
+            if (superSelector) {
+                if (superSelectorClass == nil) {
+                    throwException(ctx, exception, [NSString stringWithFormat:@"Null superclass in %@", callee]);
+                    return nil;
+                }   
+                
                 callAddress = objc_msgSendSuper;
-                if (usingStret)    callAddress = objc_msgSendSuper_stret;
+                if (usingStret) {
+                    callAddress = objc_msgSendSuper_stret;
+                }
+                
                 _super.receiver = callee;
 #if __LP64__
-                _super.super_class    = superSelectorClass;
+                _super.super_class = superSelectorClass;
 #elif TARGET_IPHONE_SIMULATOR || !TARGET_OS_IPHONE
-                _super.class    = superSelectorClass;
+                _super.class = superSelectorClass;
 #else            
-                _super.super_class    = superSelectorClass;
+                _super.super_class = superSelectorClass;
 #endif            
-                superPointer    = &_super;
-                values[0]        = &superPointer;
-//                NSLog(@"superClass=%@ (old=%@) (%@) function=%x", superSelectorClass, [callee superclass], [callee class], function);
+                superPointer = &_super;
+                values[0] = &superPointer;
             }
         }
-
+        
         // Setup arguments, unboxing or converting data
-        for (i=0; i<argumentCount; i++, idx++)
-        {
+        for (i = 0; i < argumentCount; i++, idx++) {
+            
             // All variadic arguments are treated as ObjC objects (@)
-            JSCocoaFFIArgument*    arg;
-            if (isVariadic && i >= callAddressArgumentCount)
-            {
+            JSCocoaFFIArgument *arg;
+            
+            if (isVariadic && i >= callAddressArgumentCount) {
                 arg = [[JSCocoaFFIArgument alloc] init];
                 [arg setTypeEncoding:'@'];
                 [arg autorelease];
             }
-            else
-                arg        = [argumentEncodings objectAtIndex:idx+1];
+            else {
+                arg = [argumentEncodings objectAtIndex:idx+1];
+            }
+                
 
             // Convert argument
-            JSValueRef            jsValue    = sugarCheckVariadic && i == argumentCount-1 ? JSValueMakeNull(ctx) : arguments[i];
-            BOOL    shouldConvert = YES;
+            JSValueRef jsValue = sugarCheckVariadic && i == argumentCount-1 ? JSValueMakeNull(ctx) : arguments[i];
+            BOOL shouldConvert = YES;
+            
             // Check type o modifiers
-            if ([arg typeEncoding] == '^')
-            {
+            if ([arg typeEncoding] == '^') {
+                
                 // If holding a JSCocoaOutArgument, allocate custom storage
-                if (JSValueGetType(ctx, jsValue) == kJSTypeObject)
-                {
-                    JSStringRef    jsName = JSStringCreateWithUTF8CString("isOutArgument");
+                if (JSValueGetType(ctx, jsValue) == kJSTypeObject) {
+                    
+                    JSStringRef jsName = JSStringCreateWithUTF8CString("isOutArgument");
                     BOOL isOutArgument = JSValueToBoolean(ctx, JSObjectGetProperty(ctx, JSValueToObject(ctx, jsValue, nil), jsName, nil));
                     JSStringRelease(jsName);
-                    if (isOutArgument)
-                    {
+                    
+                    if (isOutArgument) {
                         id unboxed = nil;
                         [JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&unboxed inContext:ctx];
-                        if (unboxed && [unboxed isKindOfClass:[JSCocoaOutArgument class]])
-                        {
-                            if (![(JSCocoaOutArgument*)unboxed mateWithJSCocoaFFIArgument:arg])    return    throwException(ctx, exception, [NSString stringWithFormat:@"Pointer argument %@ not handled", [arg pointerTypeEncoding]]), nil;
+                        
+                        if (unboxed && [unboxed isKindOfClass:[JSCocoaOutArgument class]]) {
+                            if (![(JSCocoaOutArgument*)unboxed mateWithJSCocoaFFIArgument:arg]){
+                                throwException(ctx, exception, [NSString stringWithFormat:@"Pointer argument %@ not handled", [arg pointerTypeEncoding]]);
+                                return nil;
+                            }
+                            
                             shouldConvert = NO;
                             [arg setIsOutArgument:YES];
                         }
-                        if (unboxed && [unboxed isKindOfClass:[JSCocoaMemoryBuffer class]])
-                        {
+                        
+                        if (unboxed && [unboxed isKindOfClass:[JSCocoaMemoryBuffer class]]) {
                             JSCocoaMemoryBuffer* buffer = unboxed;
                             [arg setTypeEncoding:[arg typeEncoding] withCustomStorage:[buffer pointerForIndex:0]];
                             shouldConvert = NO;
@@ -4334,89 +4385,100 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
                     }
                 }
 
-                if (shouldConvert)
-                {
+                if (shouldConvert) {
                     // Allocate default storage
                     [arg allocateStorage];
                 }
-                    
             }
 
-            args[idx]        = [arg ffi_type];
-            if (shouldConvert)
-            {
-                BOOL    converted = [arg fromJSValueRef:jsValue inContext:ctx];
-                if (!converted)        
-                    return    throwException(ctx, exception, [NSString stringWithFormat:@"Argument %c not converted", [arg typeEncoding]]), nil;
+            args[idx] = [arg ffi_type];
+            
+            if (shouldConvert) {
+                BOOL converted = [arg fromJSValueRef:jsValue inContext:ctx];
+                if (!converted) {
+                    throwException(ctx, exception, [NSString stringWithFormat:@"Argument %c not converted", [arg typeEncoding]]);
+                    return nil;
+                }
             }
-            values[idx]        = [arg storage];
+            
+            values[idx] = [arg storage];
         }
     }
     
     // Get return value holder
-    id returnValue = [argumentEncodings objectAtIndex:0];
+    JSCocoaFFIArgument *returnValue = [argumentEncodings objectAtIndex:0];
     
     // Allocate return value storage if it's a pointer
-    if ([returnValue typeEncoding] == '^')
+    if ([returnValue typeEncoding] == '^') {
         [returnValue allocateStorage];
-
+    }
+    
     // Setup ffi
-    ffi_status prep_status    = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned int)effectiveArgumentCount, [returnValue ffi_type], args);
+    ffi_status prep_status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned int)effectiveArgumentCount, [returnValue ffi_type], args);
 
     //
     // Call !
     //
-    if (prep_status == FFI_OK)
-    {
+    if (prep_status == FFI_OK) {
+        
         void* storage = [returnValue storage];
-        if ([returnValue ffi_type] == &ffi_type_void)    storage = nil;
+        if ([returnValue ffi_type] == &ffi_type_void) {
+            storage = nil;
+        }
 
         // Catch exceptions when calling ObjC
-        if (callingObjC)
-        {
-            @try 
-            {
+        if (callingObjC) {
+            
+            @try  {
                 ffi_call(&cif, callAddress, storage, values);
             }
-            @catch (NSException* e) 
-            {
-                if (effectiveArgumentCount > 0)    
-                {
+            @catch (NSException* e)  {
+                if (effectiveArgumentCount > 0) {
                     free(args);
                     free(values);
                 }
+                
                 [JSCocoaFFIArgument boxObject:e toJSValueRef:exception inContext:ctx];
-                return    nil;
+                return nil;
             }
         }
-        else
+        else {
             ffi_call(&cif, callAddress, storage, values);
+        }
     }
     
-    if (effectiveArgumentCount > 0)    
-    {
+    if (effectiveArgumentCount > 0) {
         free(args);
         free(values);
     }
-    if (prep_status != FFI_OK)    return    throwException(ctx, exception, @"ffi_prep_cif failed"), nil;
+    
+    if (prep_status != FFI_OK){
+        throwException(ctx, exception, @"ffi_prep_cif failed");
+        return nil;
+    } 
     
     // Return now if our function returns void
     // Return nil as a JSValueRef to avoid crashing
-    if ([returnValue ffi_type] == &ffi_type_void)    return    JSValueMakeNull(ctx);
-
+    if ([returnValue ffi_type] == &ffi_type_void) {
+        return  JSValueMakeNull(ctx);
+    }
+    
     // Else, convert return value
-    JSValueRef    jsReturnValue = nil;
+    JSValueRef jsReturnValue = nil;
     BOOL converted = [returnValue toJSValueRef:&jsReturnValue inContext:ctx];
-    if (!converted)    return    throwException(ctx, exception, [NSString stringWithFormat:@"Return value not converted in %@", methodName?methodName:functionName]), nil;
+    if (!converted)  {
+        throwException(ctx, exception, [NSString stringWithFormat:@"Return value not converted in %@", methodName?methodName:functionName]);
+        return nil;
+    }
     
     // Instance call : release object to make js object sole owner
-    if (callingInstance)
-    {
-        JSCocoaPrivateObject* private = JSObjectGetPrivate(JSValueToObject(ctx, jsReturnValue, nil));
+    if (callingInstance) {
+        #warning Test this guy here.
+        JSTBridgedObject* private = JSObjectGetPrivate(JSValueToObject(ctx, jsReturnValue, nil));
         [private.object release];
     }
-
-    return    jsReturnValue;
+    
+    return jsReturnValue;
 }
 
 //
@@ -4426,70 +4488,77 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 //        * js function calls : on an ObjC class, use of pure js functions as methods
 //        * toString, valueOf
 //
-static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception)
-{
-    JSCocoaPrivateObject* privateObject        = JSObjectGetPrivate(function);
-    JSValueRef*    superArguments    = nil;
-    id    superSelector            = nil;
-    id    superSelectorClass        = nil;
-
+static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
+    
+    JSTBridgedObject *bridgedObject     = JSObjectGetPrivate(function);
+    JSValueRef *superArguments          = nil;
+    NSString *superSelector             = nil;
+    Class superSelectorClass            = nil;
+    
+    jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject bridgeInfo] symbolName]);
+    
     // Pure JS functions for derived ObjC classes
-    if ([privateObject jsValueRef])
-    {
-        if ([privateObject.type isEqualToString:@"jsFunction"])
-        {
-            JSObjectRef jsFunction = JSValueToObject(ctx, [privateObject jsValueRef], nil);
+    if ([bridgedObject jsValueRef]) {
+        
+        if ([bridgedObject.type isEqualToString:@"jsFunction"]) {
+            JSObjectRef jsFunction = JSValueToObject(ctx, [bridgedObject jsValueRef], nil);
             JSValueRef ret = JSObjectCallAsFunction(ctx, jsFunction, thisObject, argumentCount, arguments, exception);
             return    ret;
         }
-        else
-        if ([privateObject.type isEqualToString:@"externalJSValueRef"])
-        {
-            JSContextRef externalCtx = [privateObject ctx];
-            JSObjectRef jsFunction = JSValueToObject(externalCtx, [privateObject jsValueRef], nil);
-            if (!jsFunction)
-            {
+        else if ([bridgedObject.type isEqualToString:@"externalJSValueRef"]) {
+            
+            JSContextRef externalCtx = [bridgedObject ctx];
+            JSObjectRef jsFunction = JSValueToObject(externalCtx, [bridgedObject jsValueRef], nil);
+            if (!jsFunction) {
                 throwException(ctx, exception, [NSString stringWithFormat:@"WebView call : value not a function"]);
                 return JSValueMakeNull(ctx);
             }
 
             // Retrieve 'this' : either the global external object (window), or a result from previous calll
             JSObjectRef externalThisObject;
-            JSCocoaPrivateObject* privateThis        = JSObjectGetPrivate(thisObject);
-            if ([privateThis jsValueRef])    externalThisObject = JSValueToObject(externalCtx, [privateThis jsValueRef], nil);
-            else                            externalThisObject = JSContextGetGlobalObject(externalCtx);
+            JSTBridgedObject* privateThis = JSObjectGetPrivate(thisObject);
+            if ([privateThis jsValueRef]) {
+                externalThisObject = JSValueToObject(externalCtx, [privateThis jsValueRef], nil);
+            }
+            else {
+                externalThisObject = JSContextGetGlobalObject(externalCtx);
+            }
 
-            if (!externalThisObject)
-            {
+            if (!externalThisObject) {
                 throwException(ctx, exception, [NSString stringWithFormat:@"WebView call : externalThisObject not found"]);
                 return JSValueMakeNull(ctx);
             }
             
             // Convert arguments to WebView context
             JSValueRef* convertedArguments = nil;
-            if (argumentCount) convertedArguments = malloc(sizeof(JSValueRef)*argumentCount);
-            for (int i=0; i<argumentCount; i++)
-                convertedArguments[i] = valueToExternalContext(ctx, arguments[i], externalCtx);
-
+            if (argumentCount) {
+                convertedArguments = malloc(sizeof(JSValueRef)*argumentCount);
+                
+                for (int i=0; i < argumentCount; i++) {
+                    convertedArguments[i] = valueToExternalContext(ctx, arguments[i], externalCtx);
+                }
+            }
+            
             // Call
             JSValueRef ret = JSObjectCallAsFunction(externalCtx, jsFunction, externalThisObject, argumentCount, convertedArguments, exception);
-            if (convertedArguments) free(convertedArguments);
+            if (convertedArguments) {
+                free(convertedArguments);
+            }
 
             // If WebView had an exception, re-throw it in our context
-            if (exception && *exception)    
-            {
+            if (exception && *exception) {
                 id s = [JSCocoaController formatJSException:*exception inContext:externalCtx];
                 throwException(ctx, exception, [NSString stringWithFormat:@"(WebView) %@", s]);
                 return JSValueMakeNull(ctx);
             }
-
+            
             // Box result from WebView
             return boxedValueFromExternalContext(externalCtx, ret, ctx);
         }
     }
 
     // Javascript custom methods
-    id methodName = privateObject.methodName;
+    NSString *methodName = bridgedObject.methodName;
     
     BOOL isVariadic = NO;
     // Possible optimization if more custom methods are handled
@@ -4498,7 +4567,7 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
         if ([methodName isEqualToString:@"toString"] || [methodName isEqualToString:@"valueOf"])
         {
             JSValueRef jsValue = valueOfCallback(ctx, function, thisObject, 0, nil, nil);
-            if ([privateObject.methodName isEqualToString:@"toString"])    
+            if ([bridgedObject.methodName isEqualToString:@"toString"])    
             {
                 JSStringRef str = JSValueToStringCopy(ctx, jsValue, nil);
                 JSValueRef ret = JSValueMakeString(ctx, str);
@@ -4516,7 +4585,7 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
         //
         if ([methodName isEqualToString:@"Super"] || [methodName isEqualToString:@"Original"])
         {
-            methodName = privateObject.methodName;
+            methodName = bridgedObject.methodName;
             BOOL callingSwizzled = [methodName isEqualToString:@"Original"];
             if (argumentCount != 1 && argumentCount != 3)    return    throwException(ctx, exception, [NSString stringWithFormat:@"%@ wants (arguments) or (arguments, selector, argarray)", methodName]), nil;
             size_t originalArgumentCount = argumentCount;
@@ -4575,7 +4644,7 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
                     return    throwException(ctx, exception, [NSString stringWithFormat:@"Original called on a non swizzled method (%@)", superSelector]), nil;
                 }
                 function = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-                JSCocoaPrivateObject* private = JSObjectGetPrivate(function);
+                JSTBridgedObject* private = JSObjectGetPrivate(function);
                 private.type        = @"method";
                 private.methodName    = superSelector;
                 
@@ -4587,18 +4656,26 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
             if ([superSelector isEqualToString:@"safeDealloc"] && superSelectorClass == [NSObject class])
                 return    JSValueMakeUndefined(ctx);
         }
-        else
+        else {
             isVariadic = YES;
+        }
     }
-
-    JSValueRef* functionArguments    = superArguments ? superArguments : (JSValueRef*)arguments;
-    JSValueRef*    argumentsToFree        = nil;
-    JSValueRef jsReturnValue = jsCocoaObject_callAsFunction_ffi(ctx, function, thisObject, argumentCount, functionArguments, exception, superSelector, superSelectorClass, isVariadic, &argumentsToFree);
     
-    if (superArguments)        free(superArguments);
-    if (argumentsToFree)    free(argumentsToFree);
+    debug(@"going ffi for %@", methodName);
     
-    return    jsReturnValue;
+    JSValueRef *functionArguments   = superArguments ? superArguments : (JSValueRef*)arguments;
+    JSValueRef *argumentsToFree     = nil;
+    JSValueRef jsReturnValue        = jsCocoaObject_callAsFunction_ffi(ctx, function, thisObject, argumentCount, functionArguments, exception, superSelector, superSelectorClass, isVariadic, &argumentsToFree);
+    
+    if (superArguments) {
+        free(superArguments);
+    }
+    
+    if (argumentsToFree) {
+        free(argumentsToFree);
+    }
+    
+    return jsReturnValue;
 }
 
 
@@ -4612,8 +4689,9 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
 //    var p = new NSRect(1, 2, 3, 4)        returns { origin : { x : 1, y : 2 }, size : { width : 3, height : 4 } }
 //
 static JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef ctx, JSObjectRef constructor, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     
-    JSCocoaPrivateObject* privateObject = JSObjectGetPrivate(constructor);
+    JSTBridgedObject* privateObject = JSObjectGetPrivate(constructor);
     if (!privateObject) {
         throwException(ctx, exception, @"Calling set on a non mutable dictionary");
         return nil;
@@ -4623,8 +4701,6 @@ static JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef ctx, JSObjectRef
         throwException(ctx, exception, @"Calling constructor on a non struct");
         return nil;
     }
-    
-    #warning HEY GUS DO THE XML STUFF HERE.
     
     // Get structure type
     id xmlDocument = [[NSXMLDocument alloc] initWithXMLString:privateObject.xml options:0 error:nil];
@@ -4667,6 +4743,8 @@ static JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef ctx, JSObjectRef
 // convertToType
 //
 static JSValueRef jsCocoaObject_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    
     // Only invoked when converting to strings and numbers.
     // Would have been useful to be called on BOOLs too, to avoid false positives of ('varname' in object) when varname may start a split call.
     
@@ -4678,6 +4756,7 @@ static JSValueRef jsCocoaObject_convertToType(JSContextRef ctx, JSObjectRef obje
 
 
 static bool jsCocoaObject_hasInstance(JSContextRef ctx, JSObjectRef constructor, JSValueRef possibleInstance, JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     return NO;
 }
 
@@ -4689,6 +4768,7 @@ static bool jsCocoaObject_hasInstance(JSContextRef ctx, JSObjectRef constructor,
 
 
 static JSValueRef jsCocoaInfo_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     
     NSString* propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
@@ -4754,6 +4834,8 @@ static JSValueRef jsCocoaInfo_getProperty(JSContextRef ctx, JSObjectRef object, 
 }
 
 static void jsCocoaInfo_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames) {
+    
+    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     
     NSMutableArray* names   = [NSMutableArray arrayWithObjects:@"methods", @"ivars", @"properties", @"protocols", nil];
     
@@ -4846,7 +4928,7 @@ static void throwException(JSContextRef ctx, JSValueRef* exception, NSString* re
 
 - (id)description {
     
-    id boxedObject = [(JSCocoaPrivateObject*)JSObjectGetPrivate(_jsObject) object];
+    id boxedObject = [(JSTBridgedObject*)JSObjectGetPrivate(_jsObject) object];
     id retainCount = [NSString stringWithFormat:@"%d", [boxedObject retainCount]];
 
 #if !TARGET_OS_IPHONE

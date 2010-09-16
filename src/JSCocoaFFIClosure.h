@@ -24,7 +24,7 @@
 	JSValueRef		jsFunction;
 	// ##UNSURE This might cause a crash if we're registered in a non global context that will have been destroyed when we JSValueUnprotect the function
 	JSContextRef	ctx;
-
+    
 	ffi_cif			cif;
 #if !TARGET_OS_IPHONE
 	ffi_closure*	closure;

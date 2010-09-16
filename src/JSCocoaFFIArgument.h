@@ -42,8 +42,6 @@
 + (int)sizeOfTypeEncoding:(char)encoding;
 + (int)alignmentOfTypeEncoding:(char)encoding;
 
-+ (ffi_type*)ffi_typeForTypeEncoding:(char)encoding;
-
 + (int)sizeOfStructure:(NSString*)encoding;
 
 
@@ -74,7 +72,7 @@
 - (void**)rawStoragePointer;
 - (char)typeEncoding;
 - (NSString*)structureTypeEncoding;
-- (id)pointerTypeEncoding;
+- (NSString*)pointerTypeEncoding;
 
 
 - (void)setIsReturnValue:(BOOL)v;
@@ -95,3 +93,5 @@
 - (ffi_type*)ffi_type;
 
 @end
+
+ffi_type* ffi_typeForTypeEncoding(char encoding);

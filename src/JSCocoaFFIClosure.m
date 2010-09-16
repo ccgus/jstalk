@@ -161,7 +161,7 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 		for (i=0; i<effectiveArgumentCount; i++, idx++)
 		{
 			// +1 to skip return value
-			id encodingObject = [encodings objectAtIndex:idx+1];
+			JSCocoaFFIArgument *encodingObject = [encodings objectAtIndex:idx+1];
 
 			id arg = [[JSCocoaFFIArgument alloc] init];
 			char encoding = [encodingObject typeEncoding];
@@ -185,7 +185,7 @@ void closure_function(ffi_cif* cif, void* resp, void** args, void* userdata)
 	JSValueRef jsReturnValue = JSObjectCallAsFunction(ctx, jsFunctionObject, jsThis, effectiveArgumentCount, args, &exception);
 
 	// Convert return value if it's not void
-	char encoding = [[encodings objectAtIndex:0] typeEncoding];
+	char encoding = [(JSCocoaFFIArgument*)[encodings objectAtIndex:0] typeEncoding];
 	if (jsReturnValue && encoding != 'v')
 	{
 		[JSCocoaFFIArgument fromJSValueRef:jsReturnValue inContext:ctx typeEncoding:encoding fullTypeEncoding:[[encodings objectAtIndex:0] structureTypeEncoding] fromStorage:returnValue];

@@ -1047,7 +1047,7 @@
 		return	transformed
 	}
 
-	function	allKeysInHash(o)
+	function allKeysInHash(o)
 	{
 		var r = []
 		for (var i in this) r.push(i)

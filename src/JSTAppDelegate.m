@@ -24,7 +24,6 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 
 + (void)initialize {
     
-    
 	NSMutableDictionary *defaultValues 	= [NSMutableDictionary dictionary];
     NSUserDefaults      *defaults 	 	= [NSUserDefaults standardUserDefaults];
     
@@ -36,6 +35,15 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:defaultValues];
 }
 
+- (void)applicationDidFinishLaunching:(NSNotification *)notification {
+    // Let's preload some bridge files.
+    // wait, let's not, at least until we manage to also load the framework at the same time.
+    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/AppKit.framework/Resources/BridgeSupport/AppKitFull.bridgeSupport"];
+    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/CoreFoundation.framework/Resources/BridgeSupport/CoreFoundationFull.bridgeSupport"];
+    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/Foundation.framework/Resources/BridgeSupport/FoundationFull.bridgeSupport"];
+    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/Resources/BridgeSupport/CoreGraphicsFull.bridgeSupport"];
+    
+}
 
 - (void)awakeFromNib {
     

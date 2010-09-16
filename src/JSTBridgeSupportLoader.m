@@ -58,33 +58,33 @@
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)nsURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)atts {
     
-    JSTBridgedObject *nextObject = 0x00;
+    JSTBridgeSupportInfo *nextObject = 0x00;
     
     if ([tagName isEqualToString:@"struct"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTStruct];
     }
     else if ([tagName isEqualToString:@"constant"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTConstant];
         [nextObject setDeclaredType:[atts objectForKey:@"declared_type"]];
     }
     else if ([tagName isEqualToString:@"enum"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTEnum];
         [nextObject setEnumValue:[[atts objectForKey:@"value"] intValue]]; // enums are always ints, not longs in 64 bit.
     }
     else if ([tagName isEqualToString:@"function"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTFunction];
     }
     else if ([tagName isEqualToString:@"class"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTClass];
         _currentBridgeClass = nextObject;
     }
     else if (_currentBridgeClass && [tagName isEqualToString:@"method"]) {
-        nextObject = [[JSTBridgedObject alloc] init];
+        nextObject = [[JSTBridgeSupportInfo alloc] init];
         [nextObject setObjectType:JSTMethod];
         [nextObject setMethodSelector:[atts objectForKey:@"selector"]];
         
@@ -101,7 +101,7 @@
     }
     else if ([_currentBridgeObject objectType] == JSTFunction && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
-        JSTBridgedObject *arg = [[JSTBridgedObject alloc] init];
+        JSTBridgeSupportInfo *arg = [[JSTBridgeSupportInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
         [arg grabTypeFromAttributes:atts];
         
@@ -117,7 +117,7 @@
     // is it an arg or a ret for a method on a class?
     else if (_currentBridgeClass && [_currentBridgeObject objectType] == JSTMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
-        JSTBridgedObject *arg = [[JSTBridgedObject alloc] init];
+        JSTBridgeSupportInfo *arg = [[JSTBridgeSupportInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
         [arg grabTypeFromAttributes:atts];
         
@@ -137,7 +137,7 @@
         
         [nextObject grabTypeFromAttributes:atts];
         
-        [nextObject setName:[atts objectForKey:@"name"]];
+        [nextObject setSymbolName:[atts objectForKey:@"name"]];
         
         _currentBridgeObject = nextObject;
         
@@ -147,8 +147,8 @@
             
             //debug(@"Adding: %@ - %@", [nextObject name], [nextObject type]);
             
-            JSTAssert([nextObject name]);
-            [_symbolLookup setObject:nextObject forKey:[nextObject name]];
+            JSTAssert([nextObject symbolName]);
+            [_symbolLookup setObject:nextObject forKey:[nextObject symbolName]];
             
         }
         
@@ -165,11 +165,9 @@
     if (_currentBridgeClass && [tagName isEqualToString:@"class"]) {
         _currentBridgeClass = 0x00;
     }
-    
 }
 
-// FIXME: rename to loadBridgeSupportAtPath:
-- (BOOL)loadBridgeSupport:(NSString*)path {
+- (BOOL)loadBridgeSupportAtPath:(NSString*)path {
     
     NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]] autorelease];
     
@@ -178,21 +176,30 @@
         return NO;
     }
     
+    BOOL success;
+    
     @synchronized(self) {
         [parser setDelegate:self];
-        [parser parse];
+        success = [parser parse];
     }
     
-    NSError *err;
-    if ((err = [parser parserError])) {
+    if (!success) {
+        
         NSLog(@"Could not load the bridge support at '%@'", path);
-        NSLog(@"Error: %@", err);
+        
+        NSError *err;
+        if ((err = [parser parserError])) {
+            NSLog(@"Error: %@", err);
+        }
         return NO;
     }
     
     return [self oldloadBridgeSupport:path];
 }
 
+- (JSTBridgeSupportInfo*)bridgedObjectForSymbol:(NSString*)symbol {
+    return [_symbolLookup objectForKey:symbol];
+}
 
 
 //
