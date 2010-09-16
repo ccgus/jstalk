@@ -2,7 +2,7 @@
 #import <Cocoa/Cocoa.h>
 #endif
 
-#import "JSTBridgeSupportInfo.h"
+#import "JSTRuntimeInfo.h"
 
 @interface JSTBridgeSupportLoader : NSObject <NSXMLParserDelegate> {
     
@@ -15,8 +15,8 @@
     
     
     NSMutableDictionary     *_symbolLookup;
-    JSTBridgeSupportInfo        *_currentBridgeObject;
-    JSTBridgeSupportInfo        *_currentBridgeClass;
+    JSTRuntimeInfo        *_currentBridgeObject;
+    JSTRuntimeInfo        *_currentBridgeClass;
 }
 
 + (id)sharedController;
@@ -25,7 +25,7 @@
 - (BOOL)isBridgeSupportLoaded:(NSString*)path;
 - (NSUInteger)bridgeSupportIndexForString:(NSString*)string;
 
-- (JSTBridgeSupportInfo*)bridgedObjectForSymbol:(NSString*)symbol;
+- (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol;
 
 - (NSMutableDictionary*)variadicSelectors;
 - (NSMutableDictionary*)variadicFunctions;

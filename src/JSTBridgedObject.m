@@ -17,7 +17,7 @@
 @synthesize methodName;
 @synthesize structureName;
 @synthesize isAutoCall;
-@synthesize bridgeInfo=_bridgeInfo;
+@synthesize runtimeInfo=_runtimeInfo;
 
 
 - (id) init {
@@ -74,7 +74,7 @@
     [methodName release];
     [structureName release];
     [declaredType release];
-    [_bridgeInfo release];
+    [_runtimeInfo release];
 
 }
 

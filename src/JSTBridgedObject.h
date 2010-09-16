@@ -11,7 +11,7 @@
 #import <JavaScriptCore/JavaScriptCore.h>
 #endif
 
-#import "JSTBridgeSupportInfo.h"
+#import "JSTRuntimeInfo.h"
 #import <mach-o/dyld.h>
 #import <dlfcn.h>
 //#import <objc/objc-class.h>
@@ -63,7 +63,7 @@
 	BOOL		retainObject;
     
     
-    JSTBridgeSupportInfo *_bridgeInfo;
+    JSTRuntimeInfo *_runtimeInfo;
     
 }
 
@@ -72,7 +72,7 @@
 @property (copy) NSString*	methodName;
 @property (copy) NSString*	structureName;
 @property (copy) NSString*	declaredType;
-@property (retain) JSTBridgeSupportInfo *bridgeInfo;
+@property (retain) JSTRuntimeInfo *runtimeInfo;
 
 @property BOOL	isAutoCall;
 

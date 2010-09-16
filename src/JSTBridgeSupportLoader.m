@@ -52,39 +52,43 @@
 }
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
-    [_currentBridgeObject release];
+    //[_currentBridgeObject release];
     _currentBridgeObject = 0x00;
 }
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)tagName namespaceURI:(NSString *)nsURI qualifiedName:(NSString *)qName attributes:(NSDictionary *)atts {
     
-    JSTBridgeSupportInfo *nextObject = 0x00;
+    JSTRuntimeInfo *nextObject = 0x00;
     
     if ([tagName isEqualToString:@"struct"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTStruct];
     }
     else if ([tagName isEqualToString:@"constant"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTConstant];
         [nextObject setDeclaredType:[atts objectForKey:@"declared_type"]];
     }
     else if ([tagName isEqualToString:@"enum"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTEnum];
         [nextObject setEnumValue:[[atts objectForKey:@"value"] intValue]]; // enums are always ints, not longs in 64 bit.
     }
     else if ([tagName isEqualToString:@"function"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTFunction];
     }
     else if ([tagName isEqualToString:@"class"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        
+        // well, appkit + foundation both have stuff for NSString... yay additions!
+        nextObject = [_symbolLookup objectForKey:[atts objectForKey:@"name"]];
+        nextObject = nextObject ? [nextObject retain] : [[JSTRuntimeInfo alloc] init];
+        
         [nextObject setObjectType:JSTClass];
         _currentBridgeClass = nextObject;
     }
     else if (_currentBridgeClass && [tagName isEqualToString:@"method"]) {
-        nextObject = [[JSTBridgeSupportInfo alloc] init];
+        nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTMethod];
         [nextObject setMethodSelector:[atts objectForKey:@"selector"]];
         
@@ -94,14 +98,13 @@
         else {
             [_currentBridgeClass addInstanceMethod:nextObject];
         }
-        
     }
     else if ([_currentBridgeObject objectType] == JSTStruct && [tagName isEqualToString:@"field"]) {
         [_currentBridgeObject addStructField:[atts objectForKey:@"name"]];
     }
     else if ([_currentBridgeObject objectType] == JSTFunction && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
-        JSTBridgeSupportInfo *arg = [[JSTBridgeSupportInfo alloc] init];
+        JSTRuntimeInfo *arg = [[JSTRuntimeInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
         [arg grabTypeFromAttributes:atts];
         
@@ -117,7 +120,7 @@
     // is it an arg or a ret for a method on a class?
     else if (_currentBridgeClass && [_currentBridgeObject objectType] == JSTMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
-        JSTBridgeSupportInfo *arg = [[JSTBridgeSupportInfo alloc] init];
+        JSTRuntimeInfo *arg = [[JSTRuntimeInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
         [arg grabTypeFromAttributes:atts];
         
@@ -197,7 +200,7 @@
     return [self oldloadBridgeSupport:path];
 }
 
-- (JSTBridgeSupportInfo*)bridgedObjectForSymbol:(NSString*)symbol {
+- (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol {
     return [_symbolLookup objectForKey:symbol];
 }
 

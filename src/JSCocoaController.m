@@ -2597,6 +2597,7 @@ static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
 #pragma mark JavascriptCore OSX object
 
 
+
 // Global resolver : main class used as 'this' in Javascript's global scope. Name requests go through here.
 JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
     
@@ -2643,7 +2644,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
     }
     
     
-    JSTBridgeSupportInfo *bridgedObjectInfo = [[JSTBridgeSupportLoader sharedController] bridgedObjectForSymbol:propertyName];
+    JSTRuntimeInfo *bridgedObjectInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:propertyName];
     
     if (bridgedObjectInfo) {
         jstrace(@"Using bridge support lookup for %@", propertyName);
@@ -2662,12 +2663,11 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
 
         // Let's see if it's a function
         if ([bridgedObjectInfo objectType] == JSTFunction) {
-            
             JSObjectRef jsRef               = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-            JSTBridgedObject* private   = JSObjectGetPrivate(jsRef);
+            JSTBridgedObject* private       = JSObjectGetPrivate(jsRef);
             private.type                    = @"function";
             private.xml                     = xml;
-            private.bridgeInfo              = bridgedObjectInfo;
+            private.runtimeInfo             = bridgedObjectInfo;
             
             jstrace(@"%@ is a function (jsRef: %p)", propertyName, jsRef);
             
@@ -2680,7 +2680,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
             JSTBridgedObject* private = JSObjectGetPrivate(jsRef);
             private.type = @"struct";
             private.xml = xml;
-            private.bridgeInfo = bridgedObjectInfo;
+            private.runtimeInfo = bridgedObjectInfo;
             return jsRef;
         }
         
@@ -4056,7 +4056,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     JSTBridgedObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
     
     // Return an exception if calling on nil
-    if ([thisPrivateObject object] == nil && !bridgedObject.bridgeInfo) {
+    if ([thisPrivateObject object] == nil && !bridgedObject.runtimeInfo) {
         throwException(ctx, exception, @"jsCocoaObject_callAsFunction : call with nil object");
         return nil;
     }
@@ -4065,7 +4065,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     void* callAddress = nil;
 
     // Number of arguments of called method or function
-    NSUInteger callAddressArgumentCount = [[[bridgedObject bridgeInfo] arguments] count];;
+    NSUInteger callAddressArgumentCount = [[[bridgedObject runtimeInfo] arguments] count];;
 
     // Arguments encoding
     // Holds return value encoding as first element
@@ -4212,8 +4212,8 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
             return nil;
         }
         
-        argumentEncodings   = [[bridgedObject bridgeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedObject];
-        functionName        = [[bridgedObject bridgeInfo] symbolName];
+        argumentEncodings   = [[bridgedObject runtimeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedObject];
+        functionName        = [[bridgedObject runtimeInfo] symbolName];
         
         // Grab symbol
         callAddress = dlsym(RTLD_DEFAULT, [functionName UTF8String]);
@@ -4481,6 +4481,91 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     return jsReturnValue;
 }
 
+
+
+
+static JSValueRef jst_msgSend(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
+    
+    if (argumentCount < 2) {
+        throwException(ctx, exception, [NSString stringWithFormat:@"Invalid number of arguments to objc_msgSend (%ld)", argumentCount]);
+        return JSValueMakeNull(ctx);
+    }
+    
+    // make sure our selector is actually a string...
+    if (JSValueGetType(ctx, arguments[1]) != kJSTypeString) {
+        throwException(ctx, exception, @"Selector is not a string! (%ld)");
+        return JSValueMakeNull(ctx);
+    }
+    
+    NSString *selString = JSTCreateStringFromJSValue(ctx, arguments[1]);
+    SEL sel = NSSelectorFromString(selString);
+    
+    
+    JSTBridgedObject *bridgedTarget = JSObjectGetPrivate(JSValueToObject(ctx, arguments[0], nil));
+    id target = [bridgedTarget object];
+    
+    debug(@"target: '%@'", target);
+    debug(@"selString: '%@'", selString);
+    
+    JSTRuntimeInfo *targetInfo = [bridgedTarget runtimeInfo];
+    
+    if (!targetInfo) {
+        targetInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([target class])];
+    }
+    
+    
+    JSTRuntimeInfo *methodInfo = [[targetInfo instanceMethods] objectForKey:selString];
+    if (!methodInfo) {
+        methodInfo = [[targetInfo classMethods] objectForKey:selString];
+    }
+    
+    if (!methodInfo) {
+        debug(@"targetInfo: '%@'", targetInfo);
+        debug(@"Can't find runtime info for %@", [targetInfo symbolName]);
+        debug(@"[targetInfo instanceMethods]: '%@'", [targetInfo instanceMethods]);
+        debug(@"[targetInfo classMethods]: '%@'", [targetInfo classMethods]);
+    }
+    
+    BOOL returnNull = !methodInfo;
+    id retValue;
+    
+    if (argumentCount == 2) {
+        retValue = objc_msgSend(target, sel);
+    }
+    else if (argumentCount == 3) {
+        retValue = objc_msgSend(target, sel, [(JSTBridgedObject *)JSObjectGetPrivate(JSValueToObject(ctx, arguments[2], nil)) object]);
+    }
+    
+    [selString release];
+    
+    debug(@"returnNull: %d", returnNull);
+    
+    // this is totally undefined and silly to do.
+    if (retValue <= (void*)0xa) {
+        retValue = 0x00;
+    }
+    
+    debug(@"retValue: '%@'", retValue);
+    
+    if (returnNull || !retValue) {
+        debug(@"returning nil");
+        return JSValueMakeNull(ctx);
+    }
+    
+    // time to box this guy.  We're assuming objc instance for now.
+    
+    JSValueRef retRef;
+    if ([JSCocoaFFIArgument boxObject:retValue toJSValueRef:&retRef inContext:ctx]) {
+        debug(@"successful box");
+        return retRef;
+    }
+    
+    debug(@"couldn't box, returning null");
+    
+    return JSValueMakeNull(ctx);
+}
+
+
 //
 // This method handles
 //        * C and ObjC calls
@@ -4495,7 +4580,12 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
     NSString *superSelector             = nil;
     Class superSelectorClass            = nil;
     
-    jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject bridgeInfo] symbolName]);
+    jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject runtimeInfo] symbolName]);
+    
+    if ([[[bridgedObject runtimeInfo] symbolName] isEqualToString:@"objc_msgSend"]) {
+        return jst_msgSend(ctx, function, thisObject, argumentCount, arguments, exception);
+    }
+    
     
     // Pure JS functions for derived ObjC classes
     if ([bridgedObject jsValueRef]) {
@@ -4860,7 +4950,20 @@ static void jsCocoaInfo_getPropertyNames(JSContextRef ctx, JSObjectRef object, J
 
 #pragma mark Helpers
 
-id NSStringFromJSValue(JSValueRef value, JSContextRef ctx) {
+NSString *JSTCreateStringFromJSValue(JSContextRef ctx, JSValueRef value) {
+    
+    if (JSValueIsNull(ctx, value)) {
+        return nil;
+    }
+    
+    JSStringRef resultStringJS = JSValueToStringCopy(ctx, value, nil);
+    NSString* resultString     = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
+    JSStringRelease(resultStringJS);
+    
+    return resultString;
+}
+
+NSString *NSStringFromJSValue(JSValueRef value, JSContextRef ctx) {
     
     if (JSValueIsNull(ctx, value)) {
         return nil;

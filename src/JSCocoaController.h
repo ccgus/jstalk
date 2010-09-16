@@ -275,7 +275,8 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 //
 // Helpers
 //
-id NSStringFromJSValue(JSValueRef value, JSContextRef ctx);
+NSString *NSStringFromJSValue(JSValueRef value, JSContextRef ctx);
+NSString *JSTCreateStringFromJSValue(JSContextRef ctx, JSValueRef value);
 
 // Convert values between contexts (eg user context and webkit page context)
 JSValueRef valueToExternalContext(JSContextRef ctx, JSValueRef value, JSContextRef externalCtx);

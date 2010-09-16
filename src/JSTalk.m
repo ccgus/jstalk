@@ -50,6 +50,14 @@ static NSMutableArray *JSTalkPluginList;
 	if ((self != nil)) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
+        
+        NSString *bridgeSupport = [[NSBundle bundleForClass:[self class]] pathForResource:@"JSTalk" ofType:@"bridgesupport"];
+        
+        if (bridgeSupport && ![[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:bridgeSupport]) {
+            if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:bridgeSupport]) {
+                NSLog(@"Could not load JSTalk's bridge support file: %@", bridgeSupport);
+            }
+        }
 	}
     
 	return self;

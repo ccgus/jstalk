@@ -286,14 +286,16 @@
     }
     
     
-    BOOL useMsgSend = NO;
+    BOOL useMsgSend = YES;
     
     if (useMsgSend) {
-        NSMutableString *ret = [NSMutableString stringWithString:@"jsobjc_msgSend"];
-
+        NSMutableString *ret = [NSMutableString stringWithString:@"objc_msgSend"];
+        
+        /*
         if ([methodArgs count]) {
             [ret appendFormat:@"%d", [methodArgs count]];
         }
+        */
         
         [ret appendFormat:@"(%@, \"%@\"", target, selector];
         
