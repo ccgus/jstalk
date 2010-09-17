@@ -4052,20 +4052,26 @@ static void jsCocoaObject_getPropertyNames(JSContextRef ctx, JSObjectRef object,
 // This uses libffi to call C and ObjC.
 static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, JSValueRef arguments[], JSValueRef* exception, NSString* superSelector, Class superSelectorClass, BOOL isVariadic, JSValueRef** argumentsToFree)
 {
-    JSTBridgedObject* bridgedObject     = JSObjectGetPrivate(function);
+    JSTBridgedObject* bridgedFunction   = JSObjectGetPrivate(function);
     JSTBridgedObject* thisPrivateObject = JSObjectGetPrivate(thisObject);
     
     // Return an exception if calling on nil
-    if ([thisPrivateObject object] == nil && !bridgedObject.runtimeInfo) {
+    if ([thisPrivateObject object] == nil && !bridgedFunction.runtimeInfo) {
         throwException(ctx, exception, @"jsCocoaObject_callAsFunction : call with nil object");
         return nil;
     }
-
+    
+    BOOL callingMsgSend = [[[bridgedFunction runtimeInfo] symbolName] hasPrefix:@"objc_msgSend"];
+    
+    debug(@"[[bridgedFunction runtimeInfo] symbolName]: '%@'", [[bridgedFunction runtimeInfo] symbolName]);
+    
+    debug(@"callingMsgSend: %d", callingMsgSend);
+    
     // Function address
     void* callAddress = nil;
 
     // Number of arguments of called method or function
-    NSUInteger callAddressArgumentCount = [[[bridgedObject runtimeInfo] arguments] count];;
+    NSUInteger callAddressArgumentCount = [[[bridgedFunction runtimeInfo] arguments] count];;
 
     // Arguments encoding
     // Holds return value encoding as first element
@@ -4091,11 +4097,11 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     NSString *functionName = nil;
     
     // Calls can be made on boxed ObjC objects AND JSTBridgedObjects
-    if ([bridgedObject.type isEqualToString:@"method"] && ([thisPrivateObject.type isEqualToString:@"@"] || [thisPrivateObject.object class] == [JSTBridgedObject class]))
+    if ([bridgedFunction.type isEqualToString:@"method"] && ([thisPrivateObject.type isEqualToString:@"@"] || [thisPrivateObject.object class] == [JSTBridgedObject class]))
     {
         callingObjC    = YES;
         callee        = [thisPrivateObject object];
-        methodName    = superSelector ? superSelector : [NSMutableString stringWithString:bridgedObject.methodName];
+        methodName    = superSelector ? superSelector : [NSMutableString stringWithString:bridgedFunction.methodName];
 //        NSLog(@"calling %@.%@", callee, methodName);
 
         //
@@ -4207,13 +4213,17 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     // Straight C function setup
     if (!callingObjC) {
         
-        if (!bridgedObject.xml) {
+        if (!bridgedFunction.xml) {
             throwException(ctx, exception, @"jsCocoaObject_callAsFunction : no xml in object = nothing to call (Autocall problem ? To call argless objCobject.method(), remove the parens if autocall is ON)");
             return nil;
         }
         
-        argumentEncodings   = [[bridgedObject runtimeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedObject];
-        functionName        = [[bridgedObject runtimeInfo] symbolName];
+        debug(@"getting function encodings..");
+        
+        argumentEncodings   = [[bridgedFunction runtimeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedFunction];
+        functionName        = [[bridgedFunction runtimeInfo] symbolName];
+        
+        JSTAssert([argumentEncodings count]);
         
         // Grab symbol
         callAddress = dlsym(RTLD_DEFAULT, [functionName UTF8String]);
@@ -4405,6 +4415,8 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
         }
     }
     
+    JSTAssert([argumentEncodings count]);
+    
     // Get return value holder
     JSCocoaFFIArgument *returnValue = [argumentEncodings objectAtIndex:0];
     
@@ -4582,9 +4594,12 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
     
     jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject runtimeInfo] symbolName]);
     
+    
+    /*
     if ([[[bridgedObject runtimeInfo] symbolName] isEqualToString:@"objc_msgSend"]) {
         return jst_msgSend(ctx, function, thisObject, argumentCount, arguments, exception);
     }
+    */
     
     
     // Pure JS functions for derived ObjC classes

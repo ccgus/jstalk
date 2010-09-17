@@ -30,7 +30,7 @@ enum {
     int                 _enumValue;
     
     NSMutableArray      *_arguments;
-    JSTRuntimeInfo    *_returnValue;
+    JSTRuntimeInfo      *_returnValue;
     
     NSMutableDictionary *_instanceMethods;
     NSMutableDictionary *_classMethods;

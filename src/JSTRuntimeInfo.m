@@ -97,56 +97,58 @@
     }
 }
 
+- (JSCocoaFFIArgument*)ffiArgumentForRuntimeInfo:(JSTRuntimeInfo *)arg {
+    
+    NSString *typeEncoding                  = [arg typeEncoding];
+    char typeEncodingChar                   = [typeEncoding UTF8String][0];
+    JSCocoaFFIArgument *argumentEncoding    = [[[JSCocoaFFIArgument alloc] init] autorelease];
+    
+    if (typeEncodingChar == '{') {
+        [argumentEncoding setStructureTypeEncoding:typeEncoding];
+    }
+    else if (typeEncodingChar == '^') {
+        
+        // Special case for functions like CGColorSpaceCreateWithName
+        if ([typeEncoding isEqualToString:@"^{__CFString=}"]) {
+            [argumentEncoding setTypeEncoding:_C_ID];
+        }
+        else {
+            [argumentEncoding setPointerTypeEncoding:typeEncoding];
+        }
+    }
+    else {
+        BOOL didSet = [argumentEncoding setTypeEncoding:typeEncodingChar];
+        if (!didSet) {
+            NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+            NSLog(@"Could not set type encoding");
+            return nil;
+        }
+    }
+    
+    return argumentEncoding;
+}
 
 - (NSArray*)functionEncodings {
     
     NSMutableArray *argumentEncodings = [NSMutableArray array];
     
-    NSArray *args = [self arguments];
-    if ([self returnValue]) {
-        args = [args arrayByAddingObject:[self returnValue]];
+    JSTRuntimeInfo *returnInfo = [self returnValue];
+    
+    JSCocoaFFIArgument *ffia;
+    
+    if (!returnInfo) {
+        ffia = [[[JSCocoaFFIArgument alloc] init] autorelease];
+        [ffia setTypeEncoding:'v'];
+    }
+    else {
+        ffia = [self ffiArgumentForRuntimeInfo:returnInfo];
     }
     
-    for (JSTRuntimeInfo *arg in args) {
-        
-        NSString *typeEncoding                  = [arg typeEncoding];
-        char typeEncodingChar                   = [typeEncoding UTF8String][0];
-        JSCocoaFFIArgument *argumentEncoding    = [[[JSCocoaFFIArgument alloc] init] autorelease];
-        
-        if (typeEncodingChar == '{') {
-            [argumentEncoding setStructureTypeEncoding:typeEncoding];
-        }
-        else if (typeEncodingChar == '^') {
-            
-            // Special case for functions like CGColorSpaceCreateWithName
-            if ([typeEncoding isEqualToString:@"^{__CFString=}"]) {
-                [argumentEncoding setTypeEncoding:_C_ID];
-            }
-            else {
-                [argumentEncoding setPointerTypeEncoding:typeEncoding];
-            }
-        }
-        else {
-            BOOL didSet = [argumentEncoding setTypeEncoding:typeEncodingChar];
-            if (!didSet) {
-                return nil;
-            }
-        }
-        
-        if (arg == [self returnValue]) {
-            [argumentEncoding setIsReturnValue:YES];
-            [argumentEncodings insertObject:argumentEncoding atIndex:0];
-        }
-        else {
-            [argumentEncodings addObject:argumentEncoding];
-        }
-    }
+    [ffia setIsReturnValue:YES];
+    [argumentEncodings addObject:ffia];
     
-    if (![self returnValue]) {
-        JSCocoaFFIArgument *retEncoding = [[[JSCocoaFFIArgument alloc] init] autorelease];
-        [retEncoding setIsReturnValue:YES];
-        [retEncoding setTypeEncoding:'v'];
-        [argumentEncodings insertObject:retEncoding atIndex:0];
+    for (JSTRuntimeInfo *arg in [self arguments]) {
+        [argumentEncodings addObject:[self ffiArgumentForRuntimeInfo:arg]];
     }
     
     return argumentEncodings;
