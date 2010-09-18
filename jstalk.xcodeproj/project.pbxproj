@@ -174,6 +174,16 @@
 		CC4143660F2527E400E46669 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
 		CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CC4143C10F2529F200E46669 /* JSTExtras.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC41845912447743004144B7 /* MARTNSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845112447743004144B7 /* MARTNSObject.h */; };
+		CC41845A12447743004144B7 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845212447743004144B7 /* MARTNSObject.m */; };
+		CC41845B12447743004144B7 /* RTIvar.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845312447743004144B7 /* RTIvar.h */; };
+		CC41845C12447743004144B7 /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845412447743004144B7 /* RTIvar.m */; };
+		CC41845D12447743004144B7 /* RTMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845512447743004144B7 /* RTMethod.h */; };
+		CC41845E12447743004144B7 /* RTMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845612447743004144B7 /* RTMethod.m */; };
+		CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845712447743004144B7 /* RTUnregisteredClass.h */; };
+		CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845812447743004144B7 /* RTUnregisteredClass.m */; };
+		CC41857112448360004144B7 /* MABlockClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41856F12448360004144B7 /* MABlockClosure.h */; };
+		CC41857212448360004144B7 /* MABlockClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41857012448360004144B7 /* MABlockClosure.m */; };
 		CC43C0EE0F4BBB2F0044BA41 /* JSTRunnerApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */; };
 		CC43C0F30F4BBB730044BA41 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B8CC0F1EFAAA00126722 /* main.m */; };
 		CC43C1090F4BBC4D0044BA41 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
@@ -411,6 +421,16 @@
 		CC4143C00F2529F200E46669 /* JSTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTExtras.m; path = src/JSTExtras.m; sourceTree = "<group>"; };
 		CC4143C10F2529F200E46669 /* JSTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTExtras.h; path = src/JSTExtras.h; sourceTree = "<group>"; };
 		CC41440F0F252D0700E46669 /* JSTalkFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkFramework-Info.plist"; path = "res/JSTalkFramework-Info.plist"; sourceTree = "<group>"; };
+		CC41845112447743004144B7 /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MARTNSObject.h; path = src/MARTNSObject.h; sourceTree = "<group>"; };
+		CC41845212447743004144B7 /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MARTNSObject.m; path = src/MARTNSObject.m; sourceTree = "<group>"; };
+		CC41845312447743004144B7 /* RTIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTIvar.h; path = src/RTIvar.h; sourceTree = "<group>"; };
+		CC41845412447743004144B7 /* RTIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTIvar.m; path = src/RTIvar.m; sourceTree = "<group>"; };
+		CC41845512447743004144B7 /* RTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTMethod.h; path = src/RTMethod.h; sourceTree = "<group>"; };
+		CC41845612447743004144B7 /* RTMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTMethod.m; path = src/RTMethod.m; sourceTree = "<group>"; };
+		CC41845712447743004144B7 /* RTUnregisteredClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTUnregisteredClass.h; path = src/RTUnregisteredClass.h; sourceTree = "<group>"; };
+		CC41845812447743004144B7 /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTUnregisteredClass.m; path = src/RTUnregisteredClass.m; sourceTree = "<group>"; };
+		CC41856F12448360004144B7 /* MABlockClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MABlockClosure.h; path = src/MABlockClosure.h; sourceTree = "<group>"; };
+		CC41857012448360004144B7 /* MABlockClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MABlockClosure.m; path = src/MABlockClosure.m; sourceTree = "<group>"; };
 		CC43C0DB0F4BBA820044BA41 /* JSTalkRunner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSTalkRunner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC43C0EC0F4BBB2F0044BA41 /* JSTRunnerApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTRunnerApplication.h; path = src/JSTRunnerApplication.h; sourceTree = "<group>"; };
 		CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRunnerApplication.m; path = src/JSTRunnerApplication.m; sourceTree = "<group>"; };
@@ -593,6 +613,7 @@
 		CC0EC3380F2274730094F69D /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				CC4184501244773A004144B7 /* MA */,
 				CC5064DE0F4A155000F4A952 /* UIWidgets */,
 				CC1C7D200F48BB2C007A2941 /* todparsekit */,
 				CCC5B92C0F1EFB5900126722 /* JSCocoa */,
@@ -718,6 +739,23 @@
 				CC1C7E3F0F48C34D007A2941 /* Play.tiff */,
 			);
 			name = images;
+			sourceTree = "<group>";
+		};
+		CC4184501244773A004144B7 /* MA */ = {
+			isa = PBXGroup;
+			children = (
+				CC41856F12448360004144B7 /* MABlockClosure.h */,
+				CC41857012448360004144B7 /* MABlockClosure.m */,
+				CC41845112447743004144B7 /* MARTNSObject.h */,
+				CC41845212447743004144B7 /* MARTNSObject.m */,
+				CC41845312447743004144B7 /* RTIvar.h */,
+				CC41845412447743004144B7 /* RTIvar.m */,
+				CC41845512447743004144B7 /* RTMethod.h */,
+				CC41845612447743004144B7 /* RTMethod.m */,
+				CC41845712447743004144B7 /* RTUnregisteredClass.h */,
+				CC41845812447743004144B7 /* RTUnregisteredClass.m */,
+			);
+			name = MA;
 			sourceTree = "<group>";
 		};
 		CC43C0CD0F4BBA2D0044BA41 /* Runner */ = {
@@ -858,6 +896,11 @@
 				CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */,
 				CCA9C1E21241D5A2003EB4C5 /* JSTBridgedObject.h in Headers */,
 				CC09CB531242C91F00B41D15 /* JSTRuntimeInfo.h in Headers */,
+				CC41845912447743004144B7 /* MARTNSObject.h in Headers */,
+				CC41845B12447743004144B7 /* RTIvar.h in Headers */,
+				CC41845D12447743004144B7 /* RTMethod.h in Headers */,
+				CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */,
+				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1084,6 +1127,11 @@
 				CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
 				CCA9C1E31241D5A2003EB4C5 /* JSTBridgedObject.m in Sources */,
 				CC09CB541242C91F00B41D15 /* JSTRuntimeInfo.m in Sources */,
+				CC41845A12447743004144B7 /* MARTNSObject.m in Sources */,
+				CC41845C12447743004144B7 /* RTIvar.m in Sources */,
+				CC41845E12447743004144B7 /* RTMethod.m in Sources */,
+				CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */,
+				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

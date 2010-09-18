@@ -62,6 +62,9 @@ enum {
 // in our parser code.
 - (void)grabTypeFromAttributes:(NSDictionary*)atts;
 
-- (NSArray*)functionEncodings;
+- (JSTRuntimeInfo*)runtimeInfoForClassMethodName:(NSString*)name;
+- (JSTRuntimeInfo*)runtimeInfoForInstanceMethodName:(NSString*)name;
+
+- (NSMutableArray*)functionEncodings;
 
 @end

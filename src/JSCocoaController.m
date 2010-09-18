@@ -9,6 +9,7 @@
 
 #import "JSCocoaController.h"
 #import "JSCocoaLib.h"
+#import "MARTNSObject.h"
 
 #pragma mark JS objects forward definitions
 
@@ -3107,7 +3108,7 @@ static void jsCocoaObject_initialize(JSContextRef ctx, JSObjectRef object) {
 
 // release boxed object
 static void jsCocoaObject_finalize(JSObjectRef object) {
-    jstrace(@"%s:%d", __FUNCTION__, __LINE__);
+    //jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     
     // if dealloc is overloaded, releasing now will trigger JS code and fail
     // As we're being called by GC, KJS might assert() in operationInProgress == NoOperation
@@ -4063,16 +4064,14 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     
     BOOL callingMsgSend = [[[bridgedFunction runtimeInfo] symbolName] hasPrefix:@"objc_msgSend"];
     
-    debug(@"[[bridgedFunction runtimeInfo] symbolName]: '%@'", [[bridgedFunction runtimeInfo] symbolName]);
-    
-    debug(@"callingMsgSend: %d", callingMsgSend);
+    isVariadic = isVariadic || callingMsgSend;
     
     // Function address
     void* callAddress = nil;
 
     // Number of arguments of called method or function
-    NSUInteger callAddressArgumentCount = [[[bridgedFunction runtimeInfo] arguments] count];;
-
+    NSUInteger callAddressArgumentCount = [[[bridgedFunction runtimeInfo] arguments] count];
+    
     // Arguments encoding
     // Holds return value encoding as first element
     NSArray *argumentEncodings = nil;
@@ -4218,10 +4217,89 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
             return nil;
         }
         
-        debug(@"getting function encodings..");
-        
-        argumentEncodings   = [[bridgedFunction runtimeInfo] functionEncodings]; //[JSCocoaController cFunctionEncodingsForBridgedObject:bridgedFunction];
+        argumentEncodings   = [[bridgedFunction runtimeInfo] functionEncodings];
         functionName        = [[bridgedFunction runtimeInfo] symbolName];
+        
+        if (callingMsgSend) {
+            
+            JSTBridgedObject *bridgedTarget = JSObjectGetPrivate(JSValueToObject(ctx, arguments[0], nil));
+            id target                       = [bridgedTarget object];
+            
+            NSString *selString             = JSTCreateStringFromJSValue(ctx, arguments[1]);
+            JSTRuntimeInfo *targetInfo      = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([target class])];
+            
+            if (!targetInfo) {
+                // maybe it's some fancy subclass?
+                
+                Class c = class_getSuperclass([target class]);
+                while (c && !targetInfo) {
+                    targetInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass(c)];
+                    c = class_getSuperclass(c);
+                }
+                
+                
+                
+                
+            }
+            
+            BOOL isClassMethod = class_isMetaClass(object_getClass(target));
+            
+            JSTRuntimeInfo *methodInfo;
+            if (isClassMethod) { // are we dealing with an Class method?
+                methodInfo = [targetInfo runtimeInfoForClassMethodName:selString];
+            }
+            else { // looks like it's an instance method.
+                methodInfo = [targetInfo runtimeInfoForInstanceMethodName:selString];
+            }
+            
+            NSMutableArray *tempEncodings = [methodInfo functionEncodings];
+            
+            debug(@"tempEncodings: '%@'", tempEncodings);
+            
+            if (tempEncodings) {
+                JSCocoaFFIArgument *targArgument = [argumentEncodings objectAtIndex:1];
+                JSCocoaFFIArgument *selArg       = [argumentEncodings objectAtIndex:2];
+                
+                [tempEncodings insertObject:selArg atIndex:1];
+                [tempEncodings insertObject:targArgument atIndex:1];
+                
+                argumentEncodings = tempEncodings;
+            }
+            else {
+                
+                debug(@"no bridge info...");
+                
+                // well shit.  No bridge info.
+                
+                int idx = 2;
+                while (idx < argumentCount) {
+                    
+                    JSCocoaFFIArgument *arg = [[[JSCocoaFFIArgument alloc] init] autorelease];
+                    [arg setTypeEncoding:'@'];
+                    
+                    [(NSMutableArray*)argumentEncodings addObject:arg];
+                    
+                    idx++;
+                }
+                
+                
+                
+                SEL methodSelector = NSSelectorFromString(selString);
+                
+                Method m = isClassMethod ? class_getClassMethod([target class], methodSelector) : class_getInstanceMethod([target class], methodSelector);
+                
+                if (method_getTypeEncoding(m)[0] == 'v') {
+                    [(JSCocoaFFIArgument*)[argumentEncodings objectAtIndex:0] setTypeEncoding:'v'];// make it void
+                }
+                
+                
+            }
+            
+            debug(@"target: '%@'", target);
+            debug(@"selString: '%@'", selString);
+            debug(@"argumentEncodings: '%@'", argumentEncodings);
+            
+        }
         
         JSTAssert([argumentEncodings count]);
         
@@ -4268,7 +4346,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
         
         // Bail if not variadic
         if (!isVariadic) {
-            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
+            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d (a)", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
             return nil;
         }
         
@@ -4281,7 +4359,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     }
     else {
         if (callAddressArgumentCount != argumentCount) {
-            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
+            throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d (b)", functionName ? functionName : methodName,    callAddressArgumentCount, argumentCount]);
             return nil;
         }
     }
@@ -4348,7 +4426,10 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
             // All variadic arguments are treated as ObjC objects (@)
             JSCocoaFFIArgument *arg;
             
-            if (isVariadic && i >= callAddressArgumentCount) {
+            if (callingMsgSend) {
+                arg = [argumentEncodings objectAtIndex:idx+1];
+            }
+            else if (isVariadic && i >= callAddressArgumentCount) {
                 arg = [[JSCocoaFFIArgument alloc] init];
                 [arg setTypeEncoding:'@'];
                 [arg autorelease];
@@ -4357,6 +4438,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
                 arg = [argumentEncodings objectAtIndex:idx+1];
             }
                 
+            
 
             // Convert argument
             JSValueRef jsValue = sugarCheckVariadic && i == argumentCount-1 ? JSValueMakeNull(ctx) : arguments[i];
@@ -4525,17 +4607,21 @@ static JSValueRef jst_msgSend(JSContextRef ctx, JSObjectRef function, JSObjectRe
         targetInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([target class])];
     }
     
+    JSTRuntimeInfo *methodInfo;
     
-    JSTRuntimeInfo *methodInfo = [[targetInfo instanceMethods] objectForKey:selString];
-    if (!methodInfo) {
-        methodInfo = [[targetInfo classMethods] objectForKey:selString];
+    if (class_isMetaClass(object_getClass(target))) { // are we dealing with an Class method?
+        debug(@"looking up class method for %@", target);
+        methodInfo = [targetInfo runtimeInfoForClassMethodName:selString];
+    }
+    else { // looks like it's an instance method.
+        debug(@"looking up instance method for %@", target);
+        methodInfo = [targetInfo runtimeInfoForInstanceMethodName:selString];
     }
     
+    debug(@"methodInfo: '%@'", methodInfo);
+    
     if (!methodInfo) {
-        debug(@"targetInfo: '%@'", targetInfo);
-        debug(@"Can't find runtime info for %@", [targetInfo symbolName]);
-        debug(@"[targetInfo instanceMethods]: '%@'", [targetInfo instanceMethods]);
-        debug(@"[targetInfo classMethods]: '%@'", [targetInfo classMethods]);
+        debug(@"Can't find bridged info!");
     }
     
     BOOL returnNull = !methodInfo;
@@ -4545,7 +4631,12 @@ static JSValueRef jst_msgSend(JSContextRef ctx, JSObjectRef function, JSObjectRe
         retValue = objc_msgSend(target, sel);
     }
     else if (argumentCount == 3) {
-        retValue = objc_msgSend(target, sel, [(JSTBridgedObject *)JSObjectGetPrivate(JSValueToObject(ctx, arguments[2], nil)) object]);
+        
+        NSSize s = *(NSSize*)[(JSTBridgedObject *)JSObjectGetPrivate(JSValueToObject(ctx, arguments[2], nil)) rawPointer];
+        
+        debug(@"s: %@", NSStringFromSize(s));
+        
+        retValue = objc_msgSend(target, sel, [(JSTBridgedObject *)JSObjectGetPrivate(JSValueToObject(ctx, arguments[2], nil)) rawPointer]);
     }
     
     [selString release];
@@ -4592,8 +4683,7 @@ static JSValueRef jsCocoaObject_callAsFunction(JSContextRef ctx, JSObjectRef fun
     NSString *superSelector             = nil;
     Class superSelectorClass            = nil;
     
-    jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject runtimeInfo] symbolName]);
-    
+    //jstrace(@"%s:%d (function: %p) %@ %@", __FUNCTION__, __LINE__, function, bridgedObject, [[bridgedObject runtimeInfo] symbolName]);
     
     /*
     if ([[[bridgedObject runtimeInfo] symbolName] isEqualToString:@"objc_msgSend"]) {

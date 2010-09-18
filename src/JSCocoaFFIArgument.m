@@ -1107,7 +1107,7 @@ static NSMutableDictionary* typeEncodings = nil;
 + (BOOL)boxObject:(id)objcObject toJSValueRef:(JSValueRef*)value inContext:(JSContextRef)ctx
 {
     // Return null if our pointer is null
-    if (!objcObject)
+    if (!objcObject || (objcObject <= (void*)0xa))
     {
         *value = JSValueMakeNull(ctx);
         return    YES;

@@ -7,6 +7,7 @@
 //
 
 #import "JSTRuntimeInfo.h"
+#import "JSTBridgeSupportLoader.h"
 #import "JSCocoaFFIArgument.h"
 #import <objc/runtime.h>
 
@@ -84,6 +85,48 @@
     [_classMethods setObject:arg forKey:[arg methodSelector]];
 }
 
+
+- (JSTRuntimeInfo*)runtimeInfoForClassMethodName:(NSString*)name {
+    JSTRuntimeInfo *ri = [_classMethods objectForKey:name];
+    
+    if (!ri) {
+        
+        Class s = class_getSuperclass(NSClassFromString(_symbolName));
+        
+        if (!s) {
+            NSLog(@"Can't find superclass for %@", _symbolName);
+            return nil;
+        }
+        
+        JSTRuntimeInfo *superRi = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass(s)];
+        
+        ri = [superRi runtimeInfoForClassMethodName:name];
+    }
+    
+    return ri;
+}
+
+- (JSTRuntimeInfo*)runtimeInfoForInstanceMethodName:(NSString*)name {
+    JSTRuntimeInfo *ri = [_instanceMethods objectForKey:name];
+    
+    if (!ri) {
+        
+        Class s = class_getSuperclass(NSClassFromString(_symbolName));
+        
+        if (!s) {
+            NSLog(@"Can't find superclass for %@", _symbolName);
+            return nil;
+        }
+        
+        JSTRuntimeInfo *superRi = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass(s)];
+        
+        ri = [superRi runtimeInfoForInstanceMethodName:name];
+    }
+    
+    return ri;
+}
+
+
 - (void)grabTypeFromAttributes:(NSDictionary*)atts {
     
 #if defined(__x86_64__)
@@ -128,7 +171,7 @@
     return argumentEncoding;
 }
 
-- (NSArray*)functionEncodings {
+- (NSMutableArray*)functionEncodings {
     
     NSMutableArray *argumentEncodings = [NSMutableArray array];
     
@@ -153,9 +196,6 @@
     
     return argumentEncodings;
 }
-
-
-
 
 
 
