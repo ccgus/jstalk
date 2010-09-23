@@ -27,6 +27,7 @@ static NSMutableArray *JSTalkPluginList;
 @synthesize printController=_printController;
 @synthesize errorController=_errorController;
 @synthesize jsController=_jsController;
+@synthesize bridge=_bridge;
 @synthesize env=_env;
 
 + (void)load {
@@ -49,6 +50,7 @@ static NSMutableArray *JSTalkPluginList;
 	self = [super init];
 	if ((self != nil)) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
+        self.bridge = [[[JSTBridge alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
         
         NSString *bridgeSupport = [[NSBundle bundleForClass:[self class]] pathForResource:@"JSTalk" ofType:@"bridgesupport"];
@@ -77,6 +79,10 @@ static NSMutableArray *JSTalkPluginList;
     
     [_env release];
     _env = 0x00;
+    
+    [_bridge release];
+    _bridge = 0x00;
+    
     
     [super dealloc];
 }
@@ -180,7 +186,7 @@ static NSMutableArray *JSTalkPluginList;
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
     JSObjectRef jsObject            = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-    JSTBridgedObject *private   = JSObjectGetPrivate(jsObject);
+    JSTBridgedObject *private       = JSObjectGetPrivate(jsObject);
     private.type = @"@";
     [private setObject:obj];
     
@@ -215,7 +221,10 @@ static NSMutableArray *JSTalkPluginList;
     @try {
         [_jsController setUseAutoCall:NO];
         [_jsController setUseJSLint:NO];
-        resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+        //resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+        
+        resultRef = [_bridge evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+        
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);

@@ -211,6 +211,8 @@
 		CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */; };
 		CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
+		CC6E47DB124C1A2500D31D30 /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC6E47D9124C1A2500D31D30 /* JSTBridge.h */; };
+		CC6E47DC124C1A2500D31D30 /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC6E47DA124C1A2500D31D30 /* JSTBridge.m */; };
 		CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CC725EB71238026D00EA83BF /* TETextUtils.h */; };
 		CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725EB81238026D00EA83BF /* TETextUtils.m */; };
 		CC7576B40F6DF3B7003AE279 /* JSTFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */; };
@@ -454,6 +456,8 @@
 		CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = jstalkmain.m; path = src/jstalkmain.m; sourceTree = "<group>"; };
 		CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk.h; path = src/JSTalk.h; sourceTree = "<group>"; };
 		CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTalk.m; path = src/JSTalk.m; sourceTree = "<group>"; };
+		CC6E47D9124C1A2500D31D30 /* JSTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridge.h; path = src/JSTBridge.h; sourceTree = "<group>"; };
+		CC6E47DA124C1A2500D31D30 /* JSTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridge.m; path = src/JSTBridge.m; sourceTree = "<group>"; };
 		CC725EB71238026D00EA83BF /* TETextUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TETextUtils.h; path = src/TETextUtils.h; sourceTree = "<group>"; };
 		CC725EB81238026D00EA83BF /* TETextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TETextUtils.m; path = src/TETextUtils.m; sourceTree = "<group>"; };
 		CC7576B20F6DF3B7003AE279 /* JSTFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTFileWatcher.h; path = src/JSTFileWatcher.h; sourceTree = "<group>"; };
@@ -822,6 +826,8 @@
 				CCA9C1E01241D5A2003EB4C5 /* JSTBridgedObject.h */,
 				CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */,
 				CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */,
+				CC6E47D9124C1A2500D31D30 /* JSTBridge.h */,
+				CC6E47DA124C1A2500D31D30 /* JSTBridge.m */,
 			);
 			name = JSCocoa;
 			sourceTree = "<group>";
@@ -902,6 +908,7 @@
 				CC41845D12447743004144B7 /* RTMethod.h in Headers */,
 				CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */,
 				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
+				CC6E47DB124C1A2500D31D30 /* JSTBridge.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,6 +1140,7 @@
 				CC41845E12447743004144B7 /* RTMethod.m in Sources */,
 				CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */,
 				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
+				CC6E47DC124C1A2500D31D30 /* JSTBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

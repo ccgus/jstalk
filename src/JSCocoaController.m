@@ -2613,8 +2613,6 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         return nil;
     }
     
-    jstrace(@"%s:%d: %@", __FUNCTION__, __LINE__, propertyName);
-    
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
     
@@ -3655,15 +3653,18 @@ call:
         // Get ready for method call
         JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
         JSTBridgedObject* private = JSObjectGetPrivate(o);
-        //private.type = @"method";
+        private.type = @"method";
         private.methodName = methodName;
         /*
         if (![private runtimeInfo]) {
             [private setRuntimeInfo:[[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([self class])]];
         }*/
         
-        #warning we took out type, now test this.
-        assert(false);
+        //debug(@"private: '%@'", private);
+        //debug(@"[private runtimeInfo]: '%@'", [private runtimeInfo]);
+        
+        //#warning we took out type, now test this.
+        //assert(false);
         
         return o;
     }
