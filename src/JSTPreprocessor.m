@@ -134,7 +134,7 @@
             if (currentGroup.parent) {
                 [currentGroup.parent addSymbol:currentGroup];
             }
-            else {
+            else if ([currentGroup description]) {
                 [buffer appendString:[currentGroup description]];
             }
             
