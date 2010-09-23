@@ -12,7 +12,7 @@
 //#import "NoodleLineNumberView.h"
 #import "TDParseKit.h"
 
-@interface VPJSTViewController : VPItemController {
+@interface VPJSTViewController : VPItemController <NSTextStorageDelegate> {
     IBOutlet JSTTextView *textView;
     //NoodleLineNumberView *lineNumberView;
 
