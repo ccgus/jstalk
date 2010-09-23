@@ -234,6 +234,7 @@
 		CCC5B94E0F1EFC4500126722 /* JSTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */; };
 		CCE16C3E12188AE500F6D312 /* JSTPluginMover.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE16C3D12188AE500F6D312 /* JSTPluginMover.m */; };
 		CCE16C8312188F5000F6D312 /* JSTDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE16C8212188F5000F6D312 /* JSTDocumentController.m */; };
+		CCED5DD1124BE60800E40F2B /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
 		CCF68F1E0F4E3E4F00925FCA /* JSTalkDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = CCF68F1D0F4E3E4F00925FCA /* JSTalkDocument.icns */; };
 /* End PBXBuildFile section */
 
@@ -1204,6 +1205,7 @@
 				CC506DFC12415B28005AD5E6 /* JSCocoaLib.m in Sources */,
 				CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
 				CCA9C2261241D7E5003EB4C5 /* JSTBridgedObject.m in Sources */,
+				CCED5DD1124BE60800E40F2B /* JSTRuntimeInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

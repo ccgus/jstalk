@@ -103,7 +103,7 @@ if [ $? != 0 ]; then
 fi
 
 cd /tmp/jstalk/plugins/voodoopadplugin
-$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+#$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
 if [ $? != 0 ]; then
     echo "****** Bad build for vp plugin ********"
     exit

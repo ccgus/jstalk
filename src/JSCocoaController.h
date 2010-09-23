@@ -152,12 +152,6 @@ typedef struct JSValueRefAndContextRef JSValueRefAndContextRef;
 - (int)runTests:(NSString*)path withSelector:(SEL)sel;
 
 //
-// Autorelease pool
-//
-+ (void)allocAutoreleasePool;
-+ (void)deallocAutoreleasePool;
-
-//
 // Global boxer : only one JSValueRef for multiple box requests of one pointer
 //
 + (JSObjectRef)boxedJSObject:(id)o inContext:(JSContextRef)ctx;

@@ -72,7 +72,7 @@
     else if ([tagName isEqualToString:@"enum"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTEnum];
-        [nextObject setEnumValue:[[atts objectForKey:@"value"] intValue]]; // enums are always ints, not longs in 64 bit.
+        [nextObject grabEnumValueFromAttributes:atts];
     }
     else if ([tagName isEqualToString:@"function"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];

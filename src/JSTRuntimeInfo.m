@@ -140,6 +140,21 @@
     }
 }
 
+
+- (void)grabEnumValueFromAttributes:(NSDictionary*)atts {
+    
+#if defined(__x86_64__)
+    if ([atts objectForKey:@"value64"]) {
+        [self setEnumValue:[[atts objectForKey:@"value64"] intValue]];
+    }
+    else
+#endif
+    {
+        [self setEnumValue:[[atts objectForKey:@"value"] intValue]];
+    }
+}
+
+
 - (JSCocoaFFIArgument*)ffiArgumentForRuntimeInfo:(JSTRuntimeInfo *)arg {
     
     NSString *typeEncoding                  = [arg typeEncoding];

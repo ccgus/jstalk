@@ -156,9 +156,13 @@
 
 + (NSString*)preprocessCode:(NSString*)sourceString {
     
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     sourceString = [self processMultilineStrings:sourceString];
     sourceString = [self preprocessForObjCStrings:sourceString];
     sourceString = [self preprocessForObjCMessagesToJS:sourceString];
+    
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     
     return sourceString;
 }
