@@ -7,7 +7,8 @@
 //
 
 #import "JSTBridge.h"
-
+#import "JSTClosure.h"
+#import "MABlockClosure.h"
 // JSObjectGetPropertyCallback
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
 JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception);
@@ -78,13 +79,13 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
     [super dealloc];
 }
 
-- (JSValueRef)evalJSString:(NSString*)script {
+- (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path {
     
     debug(@"script: '%@'", script);
     
     JSStringRef scriptJS    = JSStringCreateWithCFString((CFStringRef)script);
     JSValueRef exception    = nil;
-    JSStringRef scriptPath  = nil; //path ? JSStringCreateWithUTF8CString([path UTF8String]) : nil;
+    JSStringRef scriptPath  = path ? JSStringCreateWithUTF8CString([path UTF8String]) : nil;
     JSValueRef result       = JSEvaluateScript(_jsContext, scriptJS, nil, scriptPath, 1, &exception);
     JSStringRelease(scriptJS);
     
@@ -143,30 +144,14 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
     
     if (info) {
         
-        debug(@"Found bridge info for: '%@'", propertyName);
-        
         if ([info objectType] == JSTClass) {
-            debug(@"It's a class!");
             returnJSObject = [self makeBridgedObject:&bridgedObject runtimeInfo:info];
-            
-            
         }
         else if ([info objectType] == JSTFunction) {
-            
             returnJSObject = [self makeBridgedFunction:&bridgedObject runtimeInfo:info];
-            
-            debug(@"it's a function");
-            /*
-            JSObjectRef jsRef               = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
-            private.runtimeInfo             = bridgedObjectInfo;
-            
-            jstrace(@"%@ is a function (jsRef: %p)", propertyName, jsRef);
-            
-            return jsRef;
-            */
         }
         else if ([info objectType] == JSTStruct) {
-            debug(@"it's a struct");
+            
             
         }
         else if (([info objectType] == JSTConstant)) {
@@ -209,7 +194,6 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
         
         Class runtimeClass = NSClassFromString(propertyName);
         if (runtimeClass) {
-            debug(@"%@ found in runtime", propertyName);
             returnJSObject = [self makeBridgedObject:&bridgedObject runtimeInfo:0x00];
             [bridgedObject setObject:runtimeClass];
         }
@@ -218,30 +202,105 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
     }
     
     if (!returnJSObject) {
-        debug(@"Can't find any info for '%@'", propertyName);
+        //debug(@"Can't find any info for '%@'", propertyName);
     }
     
     return returnJSObject;
+}
+
+- (JSValueRef)callMsgSendWithArgCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
+    /*
+    Let's say I've got x number of arguments to objc_msgSend in an array- what's the best way to set everything up to call it, libffi?
+    
+    */
+    
+    return nil;
 }
 
 - (JSValueRef)callFunction:(JSObjectRef)function onObject:(JSObjectRef)thisObject argCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
     
     JSTBridgedObject *bridgedFunction       = [self bridgedObjectForJSObject:function];
     JSTBridgedObject *bridgedFunctionCaller = [self bridgedObjectForJSObject:thisObject];
-    
-    debug(@"bridgedFunctionCaller: '%@'", bridgedFunctionCaller);
+    NSString *functionName                  = [[bridgedFunction runtimeInfo] symbolName];
+    JSTAssert(functionName);
     
     bridgedFunctionCaller = ((id)bridgedFunctionCaller == self) ? nil : bridgedFunctionCaller;
     
+    JSTRuntimeInfo *runtimeInfo = [bridgedFunction runtimeInfo];
+    
+    /*
+[3:36pm] mikeash: first, you need to construct an array of ffi_type* that describes all the argument types
+[3:36pm] mikeash: also one for the return type if you have one
+[3:36pm] mikeash: this is easy for primitives and pointers, can get hairy for pass-by-value structs
+[3:36pm] ccgus: k
+[3:37pm] mikeash: next, you need a pointer to each argument and put it all into an array of pointers
+[3:37pm] mikeash: so you end up with a void ** for the arguments
+[3:37pm] mikeash: finally, ffi_prep_cif to get the type info properly packed, and then ffi_call to actually make the call
+[3:37pm] ccgus: danke
+[3:37pm] mikeash: all of these pieces can be seen in MABlockClosure.m
+[3:37pm] ccgus: _ffiArgForEncode looks like it'll be helpful
+[3:38pm] mikeash: they are somewhat scattered though
+[3:38pm] mikeash: and if you have float/struct returns, don't forget that you'll need to conditionally invoke objc_msgSend_fpret or _strect
+[3:38pm] ccgus: yea- I'll let my preprocessor deal with that bit :)
+[3:39pm] ccgus: luckily, the bridge info stuff will help me out there.
+[3:40pm] mikeash: oh yeah
+[3:40pm] mikeash: _ffiArgForEncode: is probably a big help, should take care of every single primitive that @encode can represent
+[3:40pm] mikeash: and pointer
+*/
+    //ffi_type **argTypes = malloc(sizeof(ffi_type*) * argumentCount);
+    
+    //debug(@"function call: %@ %@", bridgedFunction, functionName);
+    
+    /*
+    JSTClosure *closure = [[[JSTClosure alloc] initWithFunctionName:functionName] autorelease];
+    
+    if (!closure) {
+        // FIXME: throw a JS exception, saying we couldn't find the function.
+        return nil;
+    }
+    */
+    
+    if (runtimeInfo) {
+        
+        assert([runtimeInfo objectType] == JSTFunction);
+        
+        debug(@"typeEncoding: '%@'", [runtimeInfo typeEncoding]);
+        debug(@"typeEncoding: '%@'", [runtimeInfo arguments]);
+        
+        if (![runtimeInfo isVariadic] && ([[runtimeInfo arguments] count] != argumentCount)) {
+            // FIXME: blow up and throw an exception about the wrong number of args.
+            NSLog(@"Wrong number of arguments to %@", functionName);
+            return nil;
+        }
+        
+        for (int j = 0; j < argumentCount; j++) {
+            JSValueRef argument = arguments[j];
+            
+            JSType type = JSValueGetType(_jsContext, argument);
+            JSTRuntimeInfo *argRuntimeInfo = [[runtimeInfo arguments] objectAtIndex:j];
+            
+            debug(@"[argRuntimeInfo typeEncoding]: '%@'", [argRuntimeInfo typeEncoding]);
+            
+            
+            
+            
+        }
+        
+        
+    }
     
     
-    debug(@"function call: %@ %@", bridgedFunction, [[bridgedFunction runtimeInfo] symbolName]);
     
-    //debug(@"bridgedFunctionCaller: %@ %@", bridgedFunctionCaller, [[bridgedFunctionCaller runtimeInfo] symbolName]);
     
+    
+    id block = ^(id fff, SEL cmd, NSString *arg) { NSLog(@"arg is %@", arg); };
+    BlockFptrAuto(block);
+    
+    //debug(@"closure: '%@'", closure);
     
     return nil;
 }
+
 
 - (void)initializeObject:(JSObjectRef)jsObject {
     //JSTBridgedObject *bridgedObject = [self bridgedObjectForJSObject:jsObject];

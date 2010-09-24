@@ -236,6 +236,8 @@
 		CCC5B8CD0F1EFAAA00126722 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B8CC0F1EFAAA00126722 /* main.m */; };
 		CCC5B8D00F1EFABA00126722 /* JSTDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */; };
 		CCC5B94E0F1EFC4500126722 /* JSTAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */; };
+		CCD7C530124D674A00657984 /* JSTClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CCD7C52E124D674A00657984 /* JSTClosure.h */; };
+		CCD7C531124D674A00657984 /* JSTClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD7C52F124D674A00657984 /* JSTClosure.m */; };
 		CCE16C3E12188AE500F6D312 /* JSTPluginMover.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE16C3D12188AE500F6D312 /* JSTPluginMover.m */; };
 		CCE16C8312188F5000F6D312 /* JSTDocumentController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCE16C8212188F5000F6D312 /* JSTDocumentController.m */; };
 		CCF68F1E0F4E3E4F00925FCA /* JSTalkDocument.icns in Resources */ = {isa = PBXBuildFile; fileRef = CCF68F1D0F4E3E4F00925FCA /* JSTalkDocument.icns */; };
@@ -483,6 +485,8 @@
 		CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTAppDelegate.m; path = src/JSTAppDelegate.m; sourceTree = "<group>"; };
 		CCC5B95A0F1EFCFE00126722 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = src/JSTListener.h; sourceTree = "<group>"; };
 		CCC5B95B0F1EFCFE00126722 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = src/JSTListener.m; sourceTree = "<group>"; };
+		CCD7C52E124D674A00657984 /* JSTClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTClosure.h; path = src/JSTClosure.h; sourceTree = "<group>"; };
+		CCD7C52F124D674A00657984 /* JSTClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTClosure.m; path = src/JSTClosure.m; sourceTree = "<group>"; };
 		CCE16C3C12188AE500F6D312 /* JSTPluginMover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPluginMover.h; path = src/JSTPluginMover.h; sourceTree = "<group>"; };
 		CCE16C3D12188AE500F6D312 /* JSTPluginMover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPluginMover.m; path = src/JSTPluginMover.m; sourceTree = "<group>"; };
 		CCE16C8112188F5000F6D312 /* JSTDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTDocumentController.h; path = src/JSTDocumentController.h; sourceTree = "<group>"; };
@@ -624,6 +628,8 @@
 				CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */,
 				CC3CC7F1124C3406001A349E /* JSTBridge.h */,
 				CC3CC7F2124C3406001A349E /* JSTBridge.m */,
+				CCD7C52E124D674A00657984 /* JSTClosure.h */,
+				CCD7C52F124D674A00657984 /* JSTClosure.m */,
 				CC4143C10F2529F200E46669 /* JSTExtras.h */,
 				CC4143C00F2529F200E46669 /* JSTExtras.m */,
 				CCC5B95A0F1EFCFE00126722 /* JSTListener.h */,
@@ -910,6 +916,7 @@
 				CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */,
 				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
 				CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */,
+				CCD7C530124D674A00657984 /* JSTClosure.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1142,6 +1149,7 @@
 				CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */,
 				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
 				CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */,
+				CCD7C531124D674A00657984 /* JSTClosure.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1300,7 +1308,6 @@
 					x86_64,
 					i386,
 				);
-				CC = /opt/bin/clang;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
@@ -1319,7 +1326,6 @@
 					x86_64,
 					i386,
 				);
-				CC = /opt/bin/clang;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1363,7 +1369,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_SHADOW = YES;
@@ -1395,7 +1400,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
-				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_SHADOW = YES;

@@ -1,12 +1,12 @@
 
-#import "MABlockClosure.h"
+#import "JSTClosure.h"
 
 #import <assert.h>
 #import <objc/runtime.h>
 #import <sys/mman.h>
+#import <dlfcn.h>
 
-
-@implementation MABlockClosure
+@implementation JSTClosure
 
 struct BlockDescriptor
 {
@@ -49,7 +49,7 @@ static const char *BlockSig(id blockObj)
 
 static void BlockClosure(ffi_cif *cif, void *ret, void **args, void *userdata)
 {
-    MABlockClosure *self = userdata;
+    JSTClosure *self = userdata;
     
     int count = self->_closureArgCount;
     void **innerArgs = malloc((count + 1) * sizeof(*innerArgs));
@@ -223,8 +223,6 @@ static int ArgCount(const char *str)
 
 - (int)_prepCIF: (ffi_cif *)cif withEncodeString: (const char *)str skipArg: (BOOL)skip
 {
-    debug(@"str: %s", str);
-    
     int argCount;
     ffi_type **argTypes = [self _argsWithEncodeString: str getCount: &argCount];
     
@@ -284,11 +282,34 @@ static int ArgCount(const char *str)
     return self;
 }
 
+- (id)initWithFunctionName:(NSString*)name {
+    
+    if((self = [self init]))
+    {
+        _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
+        if (!_callAddress) {
+            [self release];
+            return nil;
+        }
+        
+        _functionName = [name retain];
+        _closure = AllocateClosure();
+        
+        [self _prepClosureCIF];
+        
+    }
+    
+    return self;
+    
+    
+}
+
 - (void)dealloc
 {
     if(_closure)
         DeallocateClosure(_closure);
     [_allocations release];
+    [_functionName release];
     [super dealloc];
 }
 
@@ -299,22 +320,22 @@ static int ArgCount(const char *str)
 
 @end
 
-void *BlockFptr(id block)
+void *JSTBlockFptr(id block)
 {
     @synchronized(block)
     {
-        MABlockClosure *closure = objc_getAssociatedObject(block, BlockFptr);
+        JSTClosure *closure = objc_getAssociatedObject(block, JSTBlockFptr);
         if(!closure)
         {
-            closure = [[MABlockClosure alloc] initWithBlock: block];
-            objc_setAssociatedObject(block, BlockFptr, closure, OBJC_ASSOCIATION_RETAIN);
+            closure = [[JSTClosure alloc] initWithBlock: block];
+            objc_setAssociatedObject(block, JSTBlockFptr, closure, OBJC_ASSOCIATION_RETAIN);
             [closure release]; // retained by the associated object assignment
         }
         return [closure fptr];
     }
 }
 
-void *BlockFptrAuto(id block)
+void *JSTBlockFptrAuto(id block)
 {
-    return BlockFptr([[block copy] autorelease]);
+    return JSTBlockFptr([[block copy] autorelease]);
 }

@@ -77,6 +77,7 @@
     else if ([tagName isEqualToString:@"function"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
         [nextObject setObjectType:JSTFunction];
+        [nextObject setIsVariadic:[[atts objectForKey:@"variadic"] isEqualToString:@"true"]];
     }
     else if ([tagName isEqualToString:@"class"]) {
         

@@ -224,7 +224,10 @@ static NSMutableArray *JSTalkPluginList;
         [_jsController setUseJSLint:NO];
         //resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
         
-        resultRef = [_bridge evalJSString:[NSString stringWithFormat:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); } %@", str]];
+        // quick helper function.
+        [_bridge evalJSString:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); }" withPath:nil];
+        
+        resultRef = [_bridge evalJSString:str withPath:nil];
         
     }
     @catch (NSException * e) {

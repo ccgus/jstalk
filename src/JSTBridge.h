@@ -22,7 +22,7 @@
 
 @property (assign) JSGlobalContextRef jsContext;
 
-- (JSValueRef)evalJSString:(NSString*)script;
+- (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path;
 - (JSTBridgedObject*)bridgedObjectForJSObject:(JSObjectRef)jsObj;
 - (void)pushObject:(id)obj withName:(NSString*)name;
 

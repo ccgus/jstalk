@@ -36,6 +36,8 @@ enum {
     NSMutableDictionary *_classMethods;
     
     NSString            *_methodSelector;
+    
+    BOOL                _isVariadic;
 }
 
 @property (assign) int objectType;
@@ -45,6 +47,7 @@ enum {
 @property (assign) int enumValue;
 @property (retain) JSTRuntimeInfo *returnValue;
 @property (retain) NSString *methodSelector;
+@property (assign) BOOL isVariadic;
 
 - (NSArray *)structFields;
 - (void)addStructField:(NSString*)s;

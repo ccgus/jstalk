@@ -20,6 +20,7 @@
 @synthesize enumValue=_enumValue;
 @synthesize returnValue=_returnValue;
 @synthesize methodSelector=_methodSelector;
+@synthesize isVariadic=_isVariadic;
 
 
 - (void)dealloc {
