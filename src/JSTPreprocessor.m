@@ -286,7 +286,7 @@
     }
     
     
-    BOOL useMsgSend = YES;
+    BOOL useMsgSend = NO;
     
     if (useMsgSend) {
         NSMutableString *ret = [NSMutableString stringWithString:@"objc_msgSend"];

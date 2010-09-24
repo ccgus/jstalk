@@ -43,6 +43,7 @@ int main(int argc, char *argv[]) {
     jsController.delegate = eh;
     
     [t.env setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
+    [t.env setObject:[[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];
     
     if ([s hasPrefix:@"#!"]) {
         

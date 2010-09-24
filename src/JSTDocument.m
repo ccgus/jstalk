@@ -184,6 +184,7 @@
         
         if ([self fileURL]) {
             [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
+            [jstalk.env setObject:[[self fileURL] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];
         }
         
         if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
