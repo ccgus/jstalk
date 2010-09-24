@@ -161,6 +161,9 @@
 		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
+		CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3CC7F1124C3406001A349E /* JSTBridge.h */; };
+		CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
+		CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -418,6 +421,8 @@
 		CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
 		CC1C7E3F0F48C34D007A2941 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = res/images/Play.tiff; sourceTree = "<group>"; };
 		CC1C7E570F48C76B007A2941 /* Clear.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Clear.tiff; path = res/images/Clear.tiff; sourceTree = "<group>"; };
+		CC3CC7F1124C3406001A349E /* JSTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridge.h; path = src/JSTBridge.h; sourceTree = "<group>"; };
+		CC3CC7F2124C3406001A349E /* JSTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridge.m; path = src/JSTBridge.m; sourceTree = "<group>"; };
 		CC41431A0F25254200E46669 /* JSTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4143C00F2529F200E46669 /* JSTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTExtras.m; path = src/JSTExtras.m; sourceTree = "<group>"; };
 		CC4143C10F2529F200E46669 /* JSTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTExtras.h; path = src/JSTExtras.h; sourceTree = "<group>"; };
@@ -626,6 +631,8 @@
 				CCC5B95B0F1EFCFE00126722 /* JSTListener.m */,
 				CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */,
 				CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */,
+				CC3CC7F1124C3406001A349E /* JSTBridge.h */,
+				CC3CC7F2124C3406001A349E /* JSTBridge.m */,
 			);
 			name = Framework;
 			sourceTree = "<group>";
@@ -902,6 +909,7 @@
 				CC41845D12447743004144B7 /* RTMethod.h in Headers */,
 				CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */,
 				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
+				CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1133,6 +1141,7 @@
 				CC41845E12447743004144B7 /* RTMethod.m in Sources */,
 				CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */,
 				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
+				CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1206,6 +1215,7 @@
 				CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
 				CCA9C2261241D7E5003EB4C5 /* JSTBridgedObject.m in Sources */,
 				CC69B5831245536600E735F6 /* JSTRuntimeInfo.m in Sources */,
+				CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

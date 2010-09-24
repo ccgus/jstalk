@@ -14,6 +14,8 @@
 @interface JSTBridge : NSObject {
     JSGlobalContextRef  _jsContext;
     JSClassRef _globalObjectClass;
+    JSClassRef _bridgedObjectClass;
+    
 }
 
 

@@ -11,23 +11,44 @@
 // Global resolver : main class used as 'this' in Javascript's global scope. Name requests go through here.
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
 
-
 @implementation JSTBridge
 @synthesize jsContext=_jsContext;
 
 
-- (id) init {
+- (id)init {
 	self = [super init];
 	
     if (self != nil) {
         JSClassDefinition globalObjectDefinition    = kJSClassDefinitionEmpty;
         globalObjectDefinition.className            = "JSTBridge";
         globalObjectDefinition.getProperty          = JSTBridge_getProperty;
+        
+        _globalObjectClass                          = JSClassCreate(&globalObjectDefinition);
         _jsContext                                  = JSGlobalContextCreate(_globalObjectClass);
+                
+        JSObjectSetPrivate(JSContextGetGlobalObject(_jsContext), self);
         
-        //JSObjectMake(_jsContext, _globalObjectClass, self);
+        JSClassDefinition bridgedObjectDefinition    = kJSClassDefinitionEmpty;
+        bridgedObjectDefinition.className            = "JSTBridgedObject";
+        /*
+        jsCocoaObjectDefinition.initialize            = jsCocoaObject_initialize;
+        jsCocoaObjectDefinition.finalize            = jsCocoaObject_finalize;
+        //    jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
+        jsCocoaObjectDefinition.getProperty            = jsCocoaObject_getProperty;
+        jsCocoaObjectDefinition.setProperty            = jsCocoaObject_setProperty;
+        jsCocoaObjectDefinition.deleteProperty        = jsCocoaObject_deleteProperty;
+        jsCocoaObjectDefinition.getPropertyNames    = jsCocoaObject_getPropertyNames;
+        //    jsCocoaObjectDefinition.callAsFunction        = jsCocoaObject_callAsFunction;
+        jsCocoaObjectDefinition.callAsConstructor    = jsCocoaObject_callAsConstructor;
+        //    jsCocoaObjectDefinition.hasInstance            = jsCocoaObject_hasInstance;
+        jsCocoaObjectDefinition.convertToType        = jsCocoaObject_convertToType;
+        */
         
-        //JSObjectSetPrivate(_jsContext, self);
+        _bridgedObjectClass = JSClassCreate(&bridgedObjectDefinition);
+        
+        
+        
+        
         
 	}
     
@@ -75,25 +96,35 @@ JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
     return result;
 }
 
-
-@end
-
-
-
-JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
+- (void)pushObject:(id)obj withName:(NSString*)name  {
     
-    JSTBridge *bridge = JSObjectGetPrivate(object);
     
-    debug(@"bridge: '%@'", bridge);
+    JSStringRef propName            = JSStringCreateWithUTF8CString([name UTF8String]);
+    JSTBridgedObject *bridgedObject = [[JSTBridgedObject alloc] init];
+    JSObjectRef jsObject            = JSObjectMake(_jsContext, _bridgedObjectClass, bridgedObject);
+    //private.type = @"@";
+    [bridgedObject setObject:obj];
     
-    NSString* propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
+    JSObjectSetProperty(_jsContext, JSContextGetGlobalObject(_jsContext), propName, jsObject, 0, NULL);
+    JSStringRelease(propName);
+}
+
+- (JSValueRef)propertyForObject:(JSObjectRef)object named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
     
+    NSString* propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
     debug(@"propertyName: '%@'", propertyName);
     
     return nil;
 }
 
 
+@end
+
+
+
+JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
+    return [(JSTBridge*)JSObjectGetPrivate(object) propertyForObject:object named:propertyName outException:exception];
+}
 
 
 
