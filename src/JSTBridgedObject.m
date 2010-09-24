@@ -18,14 +18,25 @@
 @synthesize structureName;
 @synthesize isAutoCall;
 @synthesize runtimeInfo=_runtimeInfo;
+@synthesize runtimeType=_runtimeType;
 
 
-- (id) init {
+- (id)init {
 	self = [super init];
 	if (self != nil) {
         retainObject = YES;
         [JSCocoaController upJSTBridgedObjectCount];
 	}
+	return self;
+}
+
+- (id)initWithRuntimeInfo:(JSTRuntimeInfo*)rinfo {
+    
+	self = [self init];
+	if (self != nil) {
+        [self setRuntimeInfo:rinfo];
+	}
+    
 	return self;
 }
 
@@ -75,6 +86,7 @@
     [structureName release];
     [declaredType release];
     [_runtimeInfo release];
+    [_runtimeType release];
 
 }
 
@@ -90,6 +102,10 @@
 
 - (void)setObject:(id)o {
     object = o;
+    
+    if (o) {
+        [self setRuntimeType:@"@"];
+    }
     
     if (object && [object retainCount] == -1) {
         return;
@@ -189,8 +205,13 @@
 }
 
 
-- (id)description {
+- (NSString*)description {
     
+    
+    return [NSString stringWithFormat:@"%@ (%@)", [super description], [[self runtimeInfo] symbolName]];
+    
+    
+    /*
     NSString *extra;
     
     if ([type isEqualToString:@"rawPointer"]) {
@@ -206,6 +227,7 @@
                 type,
                 extra
                 ];
+    */
 }
 
 - (id)dereferencedObject {
@@ -225,8 +247,6 @@
     
     return YES;
 }
-
-
 
 
 @end

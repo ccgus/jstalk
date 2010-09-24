@@ -64,6 +64,7 @@
     
     
     JSTRuntimeInfo *_runtimeInfo;
+    NSString       *_runtimeType;
     
 }
 
@@ -73,11 +74,11 @@
 @property (copy) NSString*	structureName;
 @property (copy) NSString*	declaredType;
 @property (retain) JSTRuntimeInfo *runtimeInfo;
+@property (retain) NSString *runtimeType;
 
 @property BOOL	isAutoCall;
 
-//- (void)setPtr:(void*)ptrValue;
-//- (void*)ptr;
+- (id)initWithRuntimeInfo:(JSTRuntimeInfo*)rinfo;
 
 - (void)setObject:(id)o;
 - (void)setObjectNoRetain:(id)o;

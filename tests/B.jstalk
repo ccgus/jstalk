@@ -1,1 +1,11 @@
-var s = [NSString string];
+var nilValue    = nil;
+var randomConst = NSBundleDidLoadNotification;
+var boolVal     = NSZombieEnabled;
+var enumVal     = NSMinYEdge;
+var s           = [NSString string];
+var ri          = [[[JSTRuntimeInfo alloc] init] autorelease];
+
+print(s);
+print(ri);
+
+[jstalk print:s];

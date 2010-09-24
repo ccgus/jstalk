@@ -25,6 +25,7 @@
 - (BOOL)isBridgeSupportLoaded:(NSString*)path;
 - (NSUInteger)bridgeSupportIndexForString:(NSString*)string;
 
++ (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol;
 - (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol;
 
 - (NSMutableDictionary*)variadicSelectors;

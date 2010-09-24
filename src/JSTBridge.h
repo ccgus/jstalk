@@ -15,6 +15,7 @@
     JSGlobalContextRef  _jsContext;
     JSClassRef _globalObjectClass;
     JSClassRef _bridgedObjectClass;
+    JSClassRef _bridgedFunctionClass;
     
 }
 
@@ -22,5 +23,7 @@
 @property (assign) JSGlobalContextRef jsContext;
 
 - (JSValueRef)evalJSString:(NSString*)script;
+- (JSTBridgedObject*)bridgedObjectForJSObject:(JSObjectRef)jsObj;
+- (void)pushObject:(id)obj withName:(NSString*)name;
 
 @end

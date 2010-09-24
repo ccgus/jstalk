@@ -9,7 +9,7 @@
 #endif
 
 #ifdef DEBUG
-    #define debug(...) NSLog(__VA_ARGS__)
+    #define debug( _fmt_, _args_... )   NSLog( @"%s:%d %@", __FUNCTION__, __LINE__, [NSString stringWithFormat:_fmt_, ## _args_] )
     #define JSTAssert assert
 #else
     #define debug(...)

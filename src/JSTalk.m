@@ -181,6 +181,7 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
+/*
 - (void)pushObject:(id)obj withName:(NSString*)name  {
     
     JSContextRef ctx                = [_jsController ctx];
@@ -193,7 +194,7 @@ static NSMutableArray *JSTalkPluginList;
     JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, jsObject, 0, NULL);
     JSStringRelease(jsName);  
 }
-
+*/
 - (void)deleteObjectWithName:(NSString*)name {
     
     JSContextRef ctx                = [_jsController ctx];
@@ -213,7 +214,7 @@ static NSMutableArray *JSTalkPluginList;
     
     str = [JSTPreprocessor preprocessCode:str];
     
-    [self pushObject:self withName:@"jstalk"];
+    [_bridge pushObject:self withName:@"jstalk"];
     
     JSValueRef resultRef = 0x00;
     id resultObj = 0x00;
@@ -223,7 +224,7 @@ static NSMutableArray *JSTalkPluginList;
         [_jsController setUseJSLint:NO];
         //resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
         
-        resultRef = [_bridge evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+        resultRef = [_bridge evalJSString:[NSString stringWithFormat:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); } %@", str]];
         
     }
     @catch (NSException * e) {

@@ -119,8 +119,6 @@
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
-        //debug(@"tok: '%@' %d", [tok description], tok.word);
-        
         if ([tok isSymbol] && [self isOpenSymbol:[tok stringValue]]) {
             
             JSTPSymbolGroup *nextGroup  = [[[JSTPSymbolGroup alloc] init] autorelease];
@@ -147,7 +145,13 @@
             [currentGroup addSymbol:tok];
         }
         else {
-            [buffer appendString:[tok stringValue]];
+            NSString *v = [tok stringValue];
+            
+            if ([@"nil" isEqualToString:v]) {
+                v = @"null";
+            }
+            
+            [buffer appendString:v];
         }
     }
     
@@ -286,7 +290,7 @@
     }
     
     
-    BOOL useMsgSend = NO;
+    BOOL useMsgSend = YES;
     
     if (useMsgSend) {
         NSMutableString *ret = [NSMutableString stringWithString:@"objc_msgSend"];

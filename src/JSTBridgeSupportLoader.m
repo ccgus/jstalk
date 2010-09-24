@@ -200,6 +200,10 @@
     return [self oldloadBridgeSupport:path];
 }
 
++ (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol {
+    return [[self sharedController] runtimeInfoForSymbol:symbol];
+}
+
 - (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol {
     return [_symbolLookup objectForKey:symbol];
 }
