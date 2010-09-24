@@ -501,17 +501,26 @@
 #endif    
 //    if (typeEncoding == '{')    p = [self storage];
     id encoding = structureTypeEncoding ? structureTypeEncoding : pointerTypeEncoding;
+    
+    debug(@"structureTypeEncoding: '%@'", structureTypeEncoding);
+    debug(@"encoding: '%@'", encoding);
+    
     BOOL r = [JSCocoaFFIArgument toJSValueRef:value inContext:ctx typeEncoding:typeEncoding fullTypeEncoding:encoding fromStorage:p];
-    if (!r)    NSLog(@"toJSValueRef FAILED");
-    return    r;
+    if (!r) {
+        NSLog(@"toJSValueRef FAILED");
+    }
+    
+    return r;
 }
 
 
 + (BOOL)toJSValueRef:(JSValueRef*)value inContext:(JSContextRef)ctx typeEncoding:(char)typeEncoding fullTypeEncoding:(NSString*)fullTypeEncoding fromStorage:(void*)ptr
 {
-    if (!typeEncoding)    return    NO;
+    if (!typeEncoding) {
+        return NO;
+    }
     
-//    NSLog(@"toJSValueRef: %c ptr=%x", typeEncoding, ptr);
+    debug(@"toJSValueRef: %c ptr=%x", typeEncoding, ptr);
     switch  (typeEncoding)
     {
         case    _C_ID:    

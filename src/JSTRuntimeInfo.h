@@ -61,6 +61,7 @@ enum {
 // This is a convenience function, so we don't have to have multiple ifdef's 
 // in our parser code.
 - (void)grabTypeFromAttributes:(NSDictionary*)atts;
+- (void)grabEnumValueFromAttributes:(NSDictionary*)atts;
 
 - (JSTRuntimeInfo*)runtimeInfoForClassMethodName:(NSString*)name;
 - (JSTRuntimeInfo*)runtimeInfoForInstanceMethodName:(NSString*)name;

@@ -1,0 +1,9 @@
+function jsassert(val, msg) {
+    if (!val) {
+        print("Assertion failure!");
+        print(msg);
+        NSBeep();
+    }
+}
+
+

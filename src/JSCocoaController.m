@@ -1721,9 +1721,17 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0, nil, nil, nil, nil, ni
     
     // Box the ObjC object in a JSObjectRef
     JSObjectRef jsObject = [self jsCocoaPrivateObjectInContext:ctx];
-    JSTBridgedObject* private = JSObjectGetPrivate(jsObject);
-    private.type = @"@";
-    [private setObject:o];
+    JSTBridgedObject *bridgedObject = JSObjectGetPrivate(jsObject);
+    
+    #warning fuck?
+    //bridgedObject.type = @"@";
+    #warning get rid of .type stuff
+    
+    if (![bridgedObject runtimeInfo]) {
+        [bridgedObject setRuntimeInfo:[[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([o class])]];
+    }
+    
+    [bridgedObject setObject:o];
     
     // Box the JSObjectRef in our ObjC object
     value = [[BoxedJSObject alloc] initWithJSObject:jsObject];
@@ -1853,9 +1861,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0, nil, nil, nil, nil, ni
 }
 
 
-#pragma mark Tests
-- (int)runTests:(NSString*)path withSelector:(SEL)sel
-{
+- (int)runTests:(NSString*)path withSelector:(SEL)sel {
+    
     int count = 0;
 #if TARGET_OS_IPHONE
 #elif TARGET_IPHONE_SIMULATOR
@@ -1901,22 +1908,11 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0, nil, nil, nil, nil, ni
 #endif    
     return    count;
 }
-- (int)runTests:(NSString*)path
-{
+
+- (int)runTests:(NSString*)path {
     return [self runTests:path withSelector:@selector(evalJSFile:)];
 }
 
-#pragma mark Autorelease pool
-static id autoreleasePool;
-+ (void)allocAutoreleasePool
-{
-    autoreleasePool = [[NSAutoreleasePool alloc] init];
-}
-
-+ (void)deallocAutoreleasePool
-{
-    [autoreleasePool release];
-}
 
 
 #pragma mark Garbage Collection
@@ -2548,7 +2544,15 @@ static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
     // Set it as new object
     JSObjectRef thisObject = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
     JSTBridgedObject* private = JSObjectGetPrivate(thisObject);
-    private.type = @"@";
+    
+    if (![private runtimeInfo]) {
+        [private setRuntimeInfo:[[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([self class])]];
+    }
+    
+    #warning should we kill instanceWithContext?
+    
+    //private.type = @"@";
+    
     [private setObjectNoRetain:newInstance];
     // No — will retain allocated object and trigger "did you forget to call init" warning
     // Object will be automatically boxed when returned to Javascript by 
@@ -2557,7 +2561,7 @@ static BOOL __warningSuppressorAsFinalizeIsCalledBy_objc_msgSendSuper = NO;
     // Create function object boxing our init method
     JSObjectRef function = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
     private = JSObjectGetPrivate(function);
-    private.type = @"method";
+    //private.type = @"method";
     private.methodName = methodName;
 
     // Call callAsFunction on our new instance with our init method
@@ -2609,8 +2613,6 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         return nil;
     }
     
-    jstrace(@"%s:%d: %@", __FUNCTION__, __LINE__, propertyName);
-    
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
     
@@ -2650,24 +2652,13 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
     if (bridgedObjectInfo) {
         jstrace(@"Using bridge support lookup for %@", propertyName);
         
-        NSString *xml = [[JSTBridgeSupportLoader sharedController] queryName:propertyName];
-        
-        NSError *error;
-        NSXMLDocument *xmlDocument = [[[NSXMLDocument alloc] initWithXMLString:xml options:0 error:&error] autorelease];
-        if (!xmlDocument) {
-            NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-            NSLog(@"Malformed xml while getting property %@ : %@", propertyName, error);
-            return nil;
-        }
-        
-        NSString *type = [[xmlDocument rootElement] name];
 
         // Let's see if it's a function
         if ([bridgedObjectInfo objectType] == JSTFunction) {
             JSObjectRef jsRef               = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
             JSTBridgedObject* private       = JSObjectGetPrivate(jsRef);
-            private.type                    = @"function";
-            private.xml                     = xml;
+            //private.type                    = @"function";
+            //private.xml                     = xml;
             private.runtimeInfo             = bridgedObjectInfo;
             
             jstrace(@"%@ is a function (jsRef: %p)", propertyName, jsRef);
@@ -2679,33 +2670,44 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         else if ([bridgedObjectInfo objectType] == JSTStruct) {
             JSObjectRef jsRef = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
             JSTBridgedObject* private = JSObjectGetPrivate(jsRef);
-            private.type = @"struct";
-            private.xml = xml;
+            //private.type = @"struct";
+            //private.xml = xml;
             private.runtimeInfo = bridgedObjectInfo;
             return jsRef;
         }
         
         // How about a constant?
-        else if (([bridgedObjectInfo objectType] == JSTConstant))
-        {
+        else if (([bridgedObjectInfo objectType] == JSTConstant)) {
+            
+            debug(@"[bridgedObjectInfo typeEncoding]: '%@'", [bridgedObjectInfo typeEncoding]);
+            
             // ##fix : NSZeroPoint, NSZeroRect, NSZeroSize would need special (struct) + type64 handling
             // Check if constant's declared_type is NSString*
-            NSXMLNode *declared_type = [[xmlDocument rootElement] attributeForName:@"declared_type"];
+            NSString *typeEncoding = [bridgedObjectInfo typeEncoding];
             
-            if (!declared_type) {
-                declared_type = [[xmlDocument rootElement] attributeForName:@"type"];
-            }
+            JSTRuntimeInfo *constInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:[bridgedObjectInfo declaredType]];
             
-            if (!declared_type || !([[declared_type stringValue] isEqualToString:@"NSString*"] ||
-                                    [[declared_type stringValue] isEqualToString:@"@"] ||
-                                    [[declared_type stringValue] isEqualToString:@"^{__CFString=}"])) {
+            
+            /*
+            if ([typeEncoding isEqualToString:@"^{__CFString=}"]) {
+                typeEncoding = @"@";
                 
+             ([typeEncoding isEqualToString:@"NSString*"] ||
+             [typeEncoding isEqualToString:@"@"] ||
+             [typeEncoding isEqualToString:@"^{__CFString=}"])
+                
+            }
+            */
+            
+            if (!typeEncoding) {
                 NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-                NSLog(@"%@ not a NSString* constant : %@", propertyName, xml);
+                NSLog(@"%@ Can't find type info", propertyName);
+                #ifdef DEBUG
+                NSBeep();
+                #endif
                 return nil;
             }
-                
-
+            
             // Grab symbol
             void* symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
             if (!symbol) {
@@ -2715,11 +2717,47 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
             }
             
             // ObjC objects, like NSApp : pointer to NSApplication.sharedApplication
-            if ([[declared_type stringValue] isEqualToString:@"@"]) {
+            if ([typeEncoding isEqualToString:@"@"]) {
                 id o = *(id*)symbol;
                 return [JSCocoaController boxedJSObject:o inContext:ctx];
             }
-
+            else if ([constInfo objectType] == JSTStruct) {
+                
+                debug(@"ok, it's a struct, so I'm doing that thing.");
+                
+                assert(false);
+                
+                /*
+                NSArray *ar = [JSCocoaFFIArgument typeEncodingsFromStructureTypeEncoding:typeEncoding];
+                
+                debug(@"ar: '%@'", ar);
+                                
+                char typeE = [typeEncoding UTF8String][0];
+                JSObjectRef jsRef;
+                BOOL r = [JSCocoaFFIArgument toJSValueRef:&jsRef inContext:ctx typeEncoding:typeE fullTypeEncoding:typeEncoding fromStorage:nil];
+                
+                */
+                /*
+                JSObjectRef jsRef = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
+                JSTBridgedObject* newBridgedObject = JSObjectGetPrivate(jsRef);
+                
+                #warning hey gus delete the type value.
+                
+                newBridgedObject.type = @"struct";
+                newBridgedObject.runtimeInfo = constInfo;
+                
+                // testing
+                if ([typeEncoding isEqualToString:@"{CGPoint=dd}"]) {
+                    NSPoint p = *(NSPoint*)symbol;
+                    debug(@"p: '%@'", NSStringFromPoint(p));
+                }
+                
+                [newBridgedObject setRawPointer:symbol encoding:typeEncoding];
+                */
+                
+                //return jsRef;
+            }
+            
             // Return symbol as a Javascript string
             NSString* str           = *(NSString**)symbol;
             JSStringRef jsName      = JSStringCreateWithUTF8CString([str UTF8String]);
@@ -2729,29 +2767,9 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         }
 
         // Enum
-        else if ([type isEqualToString:@"enum"]) {
-            
-            // Check if constant's declared_type is NSString*
-            id value = [[xmlDocument rootElement] attributeForName:@"value"];
-            if (!value) {
-                value = [[xmlDocument rootElement] attributeForName:@"value64"];
-                if (!value) {
-                    NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-                    NSLog(@"%@ enum has no value set", propertyName);
-                    return nil;
-                }
-            }
-
-            // Try parsing value
-            double doubleValue = 0;
-            value = [value stringValue];
-            if (![[NSScanner scannerWithString:value] scanDouble:&doubleValue]) {
-                NSLog(@"%s:%d", __FUNCTION__, __LINE__);
-                NSLog(@"Scanning %@ enum failed", propertyName);
-                return nil;
-            }
-            
-            return JSValueMakeNumber(ctx, doubleValue);
+        else if ([bridgedObjectInfo objectType] == JSTEnum) {
+            debug(@"[bridgedObjectInfo enumValue]: %d", [bridgedObjectInfo enumValue]);
+            return JSValueMakeNumber(ctx, [bridgedObjectInfo enumValue]);
         }
     }
 
@@ -3064,7 +3082,7 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
     }
 
     // Struct
-    if ([thisPrivateObject.type isEqualToString:@"struct"])
+    if ([[thisPrivateObject runtimeInfo] objectType] == JSTStruct)// .type isEqualToString:@"struct"])
     {
         id structDescription = nil;
         id self = [JSCocoaController controllerFromContext:ctx];
@@ -3193,17 +3211,29 @@ static bool jsCocoaObject_hasProperty(JSContextRef ctx, JSObjectRef object, JSSt
 static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception) {
     jstrace(@"%s:%d", __FUNCTION__, __LINE__);
     
-    NSString*    propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
+    NSString *propertyName = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
     
-    JSTBridgedObject* privateObject = JSObjectGetPrivate(object);
-//    NSLog(@"Asking for property %@ %@(%@)", propertyName, privateObject, privateObject.type);
-
+    JSTBridgedObject *bridgedObject = JSObjectGetPrivate(object);
+    JSTRuntimeInfo   *runtimeInfo   = [bridgedObject runtimeInfo];
+    
+    //debug(@"Asking for property %@ %@(%@)", propertyName, bridgedObject, bridgedObject.type);
+    
     // Get delegate
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
-
-    if ([privateObject.type isEqualToString:@"@"])
+    
+    if ([runtimeInfo objectType] == JSTStruct) {
+        debug(@"IT'S A FUCKING STRUCT!");
+        
+        
+        
+        
+    }
+    
+    
+    
+    if ([bridgedObject.type isEqualToString:@"@"])
     {
 call:        
         //
@@ -3214,27 +3244,27 @@ call:
             // Check if getting is allowed
             if ([delegate respondsToSelector:@selector(JSCocoa:canGetProperty:ofObject:inContext:exception:)])
             {
-                BOOL canGet = [delegate JSCocoa:jsc canGetProperty:propertyName ofObject:privateObject.object inContext:ctx exception:exception];
+                BOOL canGet = [delegate JSCocoa:jsc canGetProperty:propertyName ofObject:bridgedObject.object inContext:ctx exception:exception];
                 if (!canGet)
                 {
-                    if (!*exception)    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow getting %@.%@", privateObject.object, propertyName]);
+                    if (!*exception)    throwException(ctx, exception, [NSString stringWithFormat:@"Delegate does not allow getting %@.%@", bridgedObject.object, propertyName]);
                     return    nil;
                 }
             }
             // Check if delegate handles getting
             if ([delegate respondsToSelector:@selector(JSCocoa:getProperty:ofObject:inContext:exception:)])
             {
-                JSValueRef delegateGet = [delegate JSCocoa:jsc getProperty:propertyName ofObject:privateObject.object inContext:ctx exception:exception];
+                JSValueRef delegateGet = [delegate JSCocoa:jsc getProperty:propertyName ofObject:bridgedObject.object inContext:ctx exception:exception];
                 if (delegateGet)        return    delegateGet;
             }
         }
 
         // Special case for NSMutableArray get and Javascript array methods
-//        if ([privateObject.object isKindOfClass:[NSArray class]])
+//        if ([bridgedObject.object isKindOfClass:[NSArray class]])
         // Use respondsToSelector for custom indexed access
-        if ([privateObject.object respondsToSelector:@selector(objectAtIndex:)])
+        if ([bridgedObject.object respondsToSelector:@selector(objectAtIndex:)])
         {
-            id array    = privateObject.object;
+            id array    = bridgedObject.object;
             id scan        = [NSScanner scannerWithString:propertyName];
             NSInteger propertyIndex;
             // Is asked property an int ?
@@ -3253,7 +3283,7 @@ call:
             if ([propertyName isEqualToString:@"length"])    propertyName = @"count";
         
             // NSArray bridge
-            id callee    = [privateObject object];
+            id callee    = [bridgedObject object];
             SEL sel        = NSSelectorFromString(propertyName);
             if ([propertyName rangeOfString:@":"].location == NSNotFound && ![callee respondsToSelector:sel]
                 && ![propertyName isEqualToString:@"valueOf"] 
@@ -3282,11 +3312,11 @@ call:
         
         
         // Special case for NSMutableDictionary get
-//        if ([privateObject.object isKindOfClass:[NSDictionary class]])
+//        if ([bridgedObject.object isKindOfClass:[NSDictionary class]])
         // Use respondsToSelector for custom indexed access
-        if ([privateObject.object respondsToSelector:@selector(objectForKey:)])
+        if ([bridgedObject.object respondsToSelector:@selector(objectForKey:)])
         {
-            id dictionary    = privateObject.object;
+            id dictionary    = bridgedObject.object;
             id o = [dictionary objectForKey:propertyName];
             if (o)
             {
@@ -3297,9 +3327,9 @@ call:
         }
 
         // Special case for JSCocoaMemoryBuffer get
-        if ([privateObject.object isKindOfClass:[JSCocoaMemoryBuffer class]])
+        if ([bridgedObject.object isKindOfClass:[JSCocoaMemoryBuffer class]])
         {
-            id buffer = privateObject.object;
+            id buffer = bridgedObject.object;
             
             id scan        = [NSScanner scannerWithString:propertyName];
             NSInteger propertyIndex;
@@ -3313,7 +3343,7 @@ call:
         }
         
         // Check object's internal property in its jsHash
-        id callee    = [privateObject object];
+        id callee    = [bridgedObject object];
         if ([callee respondsToSelector:@selector(JSValueForJSName:)])
         {
             JSValueRefAndContextRef    name    = { JSValueMakeString(ctx, propertyNameJS), ctx } ;
@@ -3361,7 +3391,7 @@ call:
         BOOL useAutoCall = NO;
         if (useAutoCall)
         {
-            callee    = [privateObject object];
+            callee    = [bridgedObject object];
             SEL sel        = NSSelectorFromString(propertyName);
             
             BOOL isInstanceCall = [propertyName isEqualToString:@"instance"];
@@ -3386,7 +3416,7 @@ call:
                     // Check if delegate handles calling
                     if ([delegate respondsToSelector:@selector(JSCocoa:callMethod:ofObject:privateObject:argumentCount:arguments:inContext:exception:)])
                     {
-                        JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+                        JSValueRef delegateCall = [delegate JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:bridgedObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
                         if (delegateCall)    
                             return    delegateCall;
                     }
@@ -3426,7 +3456,7 @@ call:
                 // If we didn't find a method, try Distant Object
                 if (!method)
                 {
-                    JSValueRef res = [jsc JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:privateObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
+                    JSValueRef res = [jsc JSCocoa:jsc callMethod:propertyName ofObject:callee privateObject:bridgedObject argumentCount:0 arguments:NULL inContext:ctx exception:exception];
                     if (res)    return    res;
                                 
                     throwException(ctx, exception, [NSString stringWithFormat:@"Could not get property[%@ %@]", callee, propertyName]);
@@ -3485,9 +3515,9 @@ call:
         }
         
         // Check if we're holding an out value
-        if ([privateObject.object isKindOfClass:[JSCocoaOutArgument class]])
+        if ([bridgedObject.object isKindOfClass:[JSCocoaOutArgument class]])
         {
-            JSValueRef outValue = [(JSCocoaOutArgument*)privateObject.object outJSValueRefInContext:ctx];
+            JSValueRef outValue = [(JSCocoaOutArgument*)bridgedObject.object outJSValueRefInContext:ctx];
             if (outValue && JSValueGetType(ctx, outValue) == kJSTypeObject)
             {
                 JSObjectRef outObject = JSValueToObject(ctx, outValue, nil);
@@ -3502,7 +3532,7 @@ call:
             JSObjectRef o = JSObjectMake(ctx, jsCocoaInfoClass, nil);
 
             JSStringRef    classNameProperty    = JSStringCreateWithUTF8CString("className");
-            JSStringRef    className            = JSStringCreateWithUTF8CString([[[[privateObject object] class] description] UTF8String]);
+            JSStringRef    className            = JSStringCreateWithUTF8CString([[[[bridgedObject object] class] description] UTF8String]);
             JSObjectSetProperty(ctx, o, classNameProperty, JSValueMakeString(ctx, className), 
                             kJSPropertyAttributeReadOnly|kJSPropertyAttributeDontEnum|kJSPropertyAttributeDontDelete, nil);
             JSStringRelease(classNameProperty);
@@ -3625,53 +3655,67 @@ call:
         JSTBridgedObject* private = JSObjectGetPrivate(o);
         private.type = @"method";
         private.methodName = methodName;
-
-        return    o;
+        /*
+        if (![private runtimeInfo]) {
+            [private setRuntimeInfo:[[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([self class])]];
+        }*/
+        
+        //debug(@"private: '%@'", private);
+        //debug(@"[private runtimeInfo]: '%@'", [private runtimeInfo]);
+        
+        //#warning we took out type, now test this.
+        //assert(false);
+        
+        return o;
     }
     
     // Struct + rawPointer valueOf
-    if (/*[privateObject.type isEqualToString:@"struct"] &&*/ ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]))
+    if (/*[bridgedObject.type isEqualToString:@"struct"] &&*/ ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]))
     {
         JSObjectRef o = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
         JSTBridgedObject* private = JSObjectGetPrivate(o);
-        private.type = @"method";
+        //private.type = @"method";
         private.methodName = propertyName;
-        return    o;
+        
+        #warning we took out type!  test me
+        assert(false);
+        
+        return o;
     }
 
 
     // Pointer ops
     //    * If we have an external Javascript context, query it
     //    * Handle pointer reference / dereference with JSCocoaFFIArgument
-    if ([privateObject.type isEqualToString:@"rawPointer"])
+    if ([bridgedObject.type isEqualToString:@"rawPointer"])
     {
         BOOL responds = NO;
         id methodName = propertyName;
-        responds = [privateObject respondsToSelector:NSSelectorFromString(propertyName)];
-        if (!responds)
-        {
+        responds = [bridgedObject respondsToSelector:NSSelectorFromString(propertyName)];
+        if (!responds) {
             methodName = [NSString stringWithFormat:@"%@:", methodName];
-            responds = [privateObject respondsToSelector:NSSelectorFromString(methodName)];
+            responds = [bridgedObject respondsToSelector:NSSelectorFromString(methodName)];
         }
-        if ([privateObject.type isEqualToString:@"rawPointer"] && responds)
-        {
+        
+        
+        if ([bridgedObject.type isEqualToString:@"rawPointer"] && responds) {
             // When calling a method with arguments, this will be used to get the instance on which to call
-            id callee = privateObject;
-            privateObject.object = callee;
+            id callee = bridgedObject;
+            bridgedObject.object = callee;
             // Box the private object
-            privateObject = [[JSTBridgedObject new] autorelease];
-            privateObject.object = callee;
-            privateObject.type = @"@";
+            bridgedObject = [[JSTBridgedObject new] autorelease];
+            bridgedObject.object = callee;
+            bridgedObject.type = @"@";
             propertyName = methodName;
             goto call;
         }
     }
 
     // External WebView value
-    if ([privateObject.type isEqualToString:@"externalJSValueRef"] || [[privateObject rawPointerEncoding] isEqualToString:@"^{OpaqueJSContext=}"])
+    if ([bridgedObject.type isEqualToString:@"externalJSValueRef"] || [[bridgedObject rawPointerEncoding] isEqualToString:@"^{OpaqueJSContext=}"])
     {
-        JSValueRef externalValue = [privateObject jsValueRef];
-        JSContextRef externalCtx = externalValue ? [privateObject ctx] : [privateObject rawPointer];
+        JSValueRef externalValue = [bridgedObject jsValueRef];
+        JSContextRef externalCtx = externalValue ? [bridgedObject ctx] : [bridgedObject rawPointer];
         JSObjectRef externalObject = externalValue ? JSValueToObject(externalCtx, externalValue, nil) : JSContextGetGlobalObject(externalCtx);
         
         if (!JSObjectHasProperty(externalCtx, externalObject, propertyNameJS))    return nil;
@@ -3701,8 +3745,6 @@ call:
 //
 static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef jsValue, JSValueRef* exception) {
     
-    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
-    
     JSTBridgedObject    *bridgedObject = JSObjectGetPrivate(object);
     NSString            *propertyName  = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, propertyNameJS);
     [NSMakeCollectable(propertyName) autorelease];
@@ -3714,6 +3756,9 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
     id delegate = jsc.delegate;
 
     if ([bridgedObject.type isEqualToString:@"@"]) {
+        
+        // we want to get rid of type above.
+        assert(false);
         
         // Check if setting is allowed
         if ([delegate respondsToSelector:@selector(JSCocoa:canSetProperty:ofObject:toValue:inContext:exception:)]) {
@@ -3919,6 +3964,8 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
     }
     
     
+    /*
+    // What is this used for?
     // External WebView value
     if ([bridgedObject.type isEqualToString:@"externalJSValueRef"] || [[bridgedObject rawPointerEncoding] isEqualToString:@"^{OpaqueJSContext=}"])
     {
@@ -3940,9 +3987,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
         
         return    true;
     }
-    
-    
-    [pool release];
+    */
     
     //
     // From here we return false to have Javascript set values on Javascript objects : valueOf, thisObject, structures
@@ -3962,6 +4007,10 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
     
     // Allow general setting on structs
     if ([bridgedObject.type isEqualToString:@"struct"]) {
+    debug(@"bridgedObject: '%@'", bridgedObject);
+    //assert([bridgedObject runtimeInfo]);
+    //if ([[bridgedObject runtimeInfo] objectType] == JSTStruct) {
+        //assert(NO);
         return NO;
     }
     
@@ -4212,10 +4261,12 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     // Straight C function setup
     if (!callingObjC) {
         
+        /*
         if (!bridgedFunction.xml) {
             throwException(ctx, exception, @"jsCocoaObject_callAsFunction : no xml in object = nothing to call (Autocall problem ? To call argless objCobject.method(), remove the parens if autocall is ON)");
             return nil;
         }
+        */
         
         argumentEncodings   = [[bridgedFunction runtimeInfo] functionEncodings];
         functionName        = [[bridgedFunction runtimeInfo] symbolName];
@@ -4236,10 +4287,6 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
                     targetInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass(c)];
                     c = class_getSuperclass(c);
                 }
-                
-                
-                
-                
             }
             
             BOOL isClassMethod = class_isMetaClass(object_getClass(target));
@@ -4560,6 +4607,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     // Else, convert return value
     JSValueRef jsReturnValue = nil;
     BOOL converted = [returnValue toJSValueRef:&jsReturnValue inContext:ctx];
+    
     if (!converted)  {
         throwException(ctx, exception, [NSString stringWithFormat:@"Return value not converted in %@", methodName?methodName:functionName]);
         return nil;

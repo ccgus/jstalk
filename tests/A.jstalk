@@ -1,0 +1,48 @@
+[jstalk include:"testsetup.jstalk"];
+
+var name = NSUserName();
+jsassert(name);
+
+var d = [NSArray arrayWithObject:NSUserName()]];
+jsassert([d count] == 1);
+
+
+var r = NSMakeRect(1, 2, 3, 4);
+jsassert(r, "Can't make a rect");
+jsassert(r.origin.x    == 1, "Wrong value for x");
+jsassert(r.origin.y    == 2, "Wrong value for y");
+jsassert(r.size.width  == 3, "Wrong value for width");
+jsassert(r.size.height == 4, "Wrong value for height");
+
+
+var randomConst = NSBundleDidLoadNotification;
+jsassert(randomConst, "Can't find NSBundleDidLoadNotification");
+
+jsassert(NSMinYEdge == 1, "Can't find NSMinYEdge");
+jsassert(CGRectMinYEdge == 1, "Can't find NSMinYEdge");
+
+var p = NSMakePoint(0,0);
+
+jsassert(p, "Can't make a point");
+jsassert(p.x == 0, "Can't verify a point");
+
+p.x = 1;
+jsassert(p.x == 1, "Set a point");
+
+//var data = [NSMutableData instance];
+//jsassert(data, "Can't call instance");
+
+/*
+var zp = NSZeroPoint;
+jsassert(zp, "Can't make a zero point");
+jsassert(zp.x == 0, "Can't grab NSZeroPoint");
+
+
+if (![private runtimeInfo]) {
+    [private setRuntimeInfo:[[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:NSStringFromClass([self class])]];
+}
+
+
+
+*/
+

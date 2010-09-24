@@ -139,8 +139,6 @@
 
 - (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
-    lineNumber -= 1;
-    
     if (!error) {
         return;
     }
