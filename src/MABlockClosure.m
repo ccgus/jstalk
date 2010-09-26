@@ -223,8 +223,6 @@ static int ArgCount(const char *str)
 
 - (int)_prepCIF: (ffi_cif *)cif withEncodeString: (const char *)str skipArg: (BOOL)skip
 {
-    debug(@"str: %s", str);
-    
     int argCount;
     ffi_type **argTypes = [self _argsWithEncodeString: str getCount: &argCount];
     

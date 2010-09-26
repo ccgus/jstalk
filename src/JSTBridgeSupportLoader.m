@@ -121,6 +121,9 @@
     // is it an arg or a ret for a method on a class?
     else if (_currentBridgeClass && [_currentBridgeObject objectType] == JSTMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
+        
+        
+        
         JSTRuntimeInfo *arg = [[JSTRuntimeInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
         [arg grabTypeFromAttributes:atts];
@@ -131,6 +134,14 @@
         else {
             [_currentBridgeObject setReturnValue:arg];
         }
+        
+        
+        if ([[_currentBridgeObject methodSelector] isEqualToString:@"testClassBoolValue"]) {
+            debug(@"returnValue         : '%@'", [_currentBridgeObject returnValue]);
+            debug(@"_currentBridgeObject: '%@'", _currentBridgeObject);
+            debug(@"typeEncoding:         '%@'", [[_currentBridgeObject returnValue] typeEncoding]);
+        }
+        
         
         [arg release];
     }

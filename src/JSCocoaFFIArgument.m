@@ -520,7 +520,6 @@
         return NO;
     }
     
-    debug(@"toJSValueRef: %c ptr=%x", typeEncoding, ptr);
     switch  (typeEncoding)
     {
         case    _C_ID:    

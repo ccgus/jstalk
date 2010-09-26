@@ -4429,7 +4429,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
     if (effectiveArgumentCount > 0) {
         args   = malloc(sizeof(ffi_type*)*effectiveArgumentCount);
         values = malloc(sizeof(void*)*effectiveArgumentCount);
-
+        
         // If calling ObjC, setup instance and selector
         int i;
         int idx = 0;

@@ -1,11 +1,27 @@
+var b = [JSTClosure testClassBoolValue];
+
+if (b) {
+    print("\nHurray motherfucker!\n\n");
+}
+
+//b = [[JSTClosure alloc] init];
+
+/*
+var b = [[[JSTClosure alloc] init] testBoolValue];
+var b = [JSTClosure testBoolValue];
+var b = [JSTClosure testBoolValue];
+*/
+//var s           = [NSString string];
+
+/*
 var nilValue    = nil;
 var randomConst = NSBundleDidLoadNotification;
 var boolVal     = NSZombieEnabled;
 var enumVal     = NSMinYEdge;
-var s           = [NSString string];
 var ri          = [[[JSTRuntimeInfo alloc] init] autorelease];
 
 print(s);
 print(ri);
 
 [jstalk print:s];
+*/

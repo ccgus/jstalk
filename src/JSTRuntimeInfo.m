@@ -213,6 +213,22 @@
     return argumentEncodings;
 }
 
+- (NSString*)description {
+    
+    NSString *prefix = [super description];
+    
+    if (_objectType == JSTClass) {
+        return [NSString stringWithFormat:@"%@ class '%@'", prefix, _symbolName];
+    }
+    else if (_objectType == JSTFunction) {
+        return [NSString stringWithFormat:@"%@ function '%@'",prefix, _symbolName];
+    
+    }
+    
+    
+    return prefix;
+    
+}
 
 
 @end

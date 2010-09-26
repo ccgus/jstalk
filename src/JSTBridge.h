@@ -9,7 +9,11 @@
 #import <Cocoa/Cocoa.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "JSTBridgeSupportLoader.h"
-#import "JSTBridgedObject.h"
+#import <objc/runtime.h>
+#import <objc/message.h>
+#import <sys/mman.h>
+#import <assert.h>
+#import <dlfcn.h>
 
 @interface JSTBridge : NSObject {
     JSGlobalContextRef  _jsContext;
@@ -22,8 +26,13 @@
 
 @property (assign) JSGlobalContextRef jsContext;
 
-- (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path;
-- (JSTBridgedObject*)bridgedObjectForJSObject:(JSObjectRef)jsObj;
 - (void)pushObject:(id)obj withName:(NSString*)name;
+
+- (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path;
+
+- (id)NSObjectForJSObject:(JSObjectRef)jsObj;
+- (JSTRuntimeInfo*)runtimeInfoForObject:(id)obj;
+
+- (JSObjectRef)makeJSObjectWithNSObject:(id)obj runtimeInfo:(JSTRuntimeInfo*)info;
 
 @end

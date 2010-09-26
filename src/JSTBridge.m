@@ -8,7 +8,8 @@
 
 #import "JSTBridge.h"
 #import "JSTClosure.h"
-#import "MABlockClosure.h"
+#import "JSTUtils.h"
+
 // JSObjectGetPropertyCallback
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
 JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception);
@@ -16,6 +17,7 @@ JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSOb
 void JSTBridge_objectInitialize(JSContextRef ctx, JSObjectRef object); // JSObjectInitializeCallback
 void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
 
+static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 
 @implementation JSTBridge
 @synthesize jsContext=_jsContext;
@@ -107,48 +109,67 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
     return result;
 }
 
-- (JSObjectRef)makeBridgedObject:(JSTBridgedObject **)bridgedObject runtimeInfo:(JSTRuntimeInfo*)info {
-    *bridgedObject = [[JSTBridgedObject alloc] initWithRuntimeInfo:info];
+- (JSObjectRef)makeJSObjectWithNSObject:(id)obj runtimeInfo:(JSTRuntimeInfo*)info {
+    objc_setAssociatedObject(obj, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
+    [obj retain];
+    return JSObjectMake(_jsContext, _bridgedObjectClass, obj);
+}
+
+/*
+- (JSObjectRef)makeJSObjectWithNSObject:(id*)bridgedObject runtimeInfo:(JSTRuntimeInfo*)info {
+    objc_setAssociatedObject(*obj, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
     return JSObjectMake(_jsContext, _bridgedObjectClass, *bridgedObject);
 }
+*/
 
-- (JSObjectRef)makeBridgedFunction:(JSTBridgedObject **)bridgedObject runtimeInfo:(JSTRuntimeInfo*)info {
-    *bridgedObject = [[JSTBridgedObject alloc] initWithRuntimeInfo:info];
-    return JSObjectMake(_jsContext, _bridgedFunctionClass, *bridgedObject);
+- (JSObjectRef)makeBridgedFunctionWithRuntimeInfo:(JSTRuntimeInfo*)info name:(NSString*)functionName {
+    
+    JSTClosure *closure = [[JSTClosure alloc] initWithFunctionName:functionName bridge:self runtimeInfo:info];
+    objc_setAssociatedObject(closure, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
+    return JSObjectMake(_jsContext, _bridgedFunctionClass, closure);
+    
 }
 
-- (JSTBridgedObject*)bridgedObjectForJSObject:(JSObjectRef)jsObj {
-    return (JSTBridgedObject*)JSObjectGetPrivate(jsObj);
+- (JSTRuntimeInfo*)runtimeInfoForObject:(id)obj {
+    return objc_getAssociatedObject(obj, &JSTRuntimeAssociatedInfoKey);
+}
+
+- (id)NSObjectForJSObject:(JSObjectRef)jsObj {
+    return (id)JSObjectGetPrivate(jsObj);
+}
+
+
+- (JSTClosure*)closureForJSFunction:(JSObjectRef)jsObj {
+    return (id)JSObjectGetPrivate(jsObj);
 }
 
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
     
     JSStringRef propName = JSStringCreateWithUTF8CString([name UTF8String]);
-    
-    JSTBridgedObject *bridgedObject;
-    JSObjectRef jsObject = [self makeBridgedObject:&bridgedObject runtimeInfo:nil];
-    [bridgedObject setObject:obj];
-    
+    JSObjectRef jsObject = [self makeJSObjectWithNSObject:obj runtimeInfo:nil];
     JSObjectSetProperty(_jsContext, JSContextGetGlobalObject(_jsContext), propName, jsObject, 0, NULL);
     JSStringRelease(propName);
 }
 
 - (JSValueRef)propertyForObject:(JSObjectRef)object named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
     
-    NSString *propertyName          = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
-    JSValueRef returnJSObject       = 0x00;
-    JSTBridgedObject *bridgedObject = 0x00;
+    NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
+    JSValueRef returnJSObject   = 0x00;
+    id returnNSObject           = 0x00;
+    JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
-    JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
+    //debug(@"Trying to find info on %@", propertyName);
     
     if (info) {
         
         if ([info objectType] == JSTClass) {
-            returnJSObject = [self makeBridgedObject:&bridgedObject runtimeInfo:info];
+            returnNSObject = NSClassFromString(propertyName);
+            returnJSObject = [self makeJSObjectWithNSObject:returnNSObject runtimeInfo:info];
         }
         else if ([info objectType] == JSTFunction) {
-            returnJSObject = [self makeBridgedFunction:&bridgedObject runtimeInfo:info];
+            returnJSObject = [self makeBridgedFunctionWithRuntimeInfo:info name:propertyName];
+            returnNSObject = [self NSObjectForJSObject:(JSObjectRef)returnJSObject];
         }
         else if ([info objectType] == JSTStruct) {
             
@@ -176,8 +197,8 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
             }
             
             if ([constInfo objectType] == JSTClass) {
-                returnJSObject = [self makeBridgedObject:&bridgedObject runtimeInfo:constInfo];
-                [bridgedObject setObject:*(id*)symbol];
+                id obj = *(id*)symbol;
+                returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:constInfo];
             }
             else if ([[constInfo typeEncoding] isEqualToString:@"B"]) {
                 returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
@@ -194,111 +215,52 @@ void JSTBridge_objectFinalize(JSObjectRef object); // JSObjectFinalizeCallback
         
         Class runtimeClass = NSClassFromString(propertyName);
         if (runtimeClass) {
-            returnJSObject = [self makeBridgedObject:&bridgedObject runtimeInfo:0x00];
-            [bridgedObject setObject:runtimeClass];
+            returnJSObject = [self makeJSObjectWithNSObject:runtimeClass runtimeInfo:0x00];
         }
         
-        // bummer.  Let's see if we can look it up in the runtime
+        if (!returnJSObject) {
+            void *symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
+            
+            if (symbol) {
+                NSLog(@"FOUND THE SYMBOL IN THE RUNTIME, BUT DOING NOTHING WITH IT.");
+            }
+        }
     }
     
-    if (!returnJSObject) {
-        //debug(@"Can't find any info for '%@'", propertyName);
-    }
     
     return returnJSObject;
 }
 
-- (JSValueRef)callMsgSendWithArgCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
-    /*
-    Let's say I've got x number of arguments to objc_msgSend in an array- what's the best way to set everything up to call it, libffi?
-    
-    */
-    
-    return nil;
-}
 
 - (JSValueRef)callFunction:(JSObjectRef)function onObject:(JSObjectRef)thisObject argCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
     
-    JSTBridgedObject *bridgedFunction       = [self bridgedObjectForJSObject:function];
-    JSTBridgedObject *bridgedFunctionCaller = [self bridgedObjectForJSObject:thisObject];
-    NSString *functionName                  = [[bridgedFunction runtimeInfo] symbolName];
+    JSTClosure *closure         = [self closureForJSFunction:function];
+    JSTRuntimeInfo *runtimeInfo = [self runtimeInfoForObject:closure];
+    NSString *functionName      = [closure functionName];
     JSTAssert(functionName);
+    JSTAssert(closure);
     
-    bridgedFunctionCaller = ((id)bridgedFunctionCaller == self) ? nil : bridgedFunctionCaller;
-    
-    JSTRuntimeInfo *runtimeInfo = [bridgedFunction runtimeInfo];
-    
-    /*
-[3:36pm] mikeash: first, you need to construct an array of ffi_type* that describes all the argument types
-[3:36pm] mikeash: also one for the return type if you have one
-[3:36pm] mikeash: this is easy for primitives and pointers, can get hairy for pass-by-value structs
-[3:36pm] ccgus: k
-[3:37pm] mikeash: next, you need a pointer to each argument and put it all into an array of pointers
-[3:37pm] mikeash: so you end up with a void ** for the arguments
-[3:37pm] mikeash: finally, ffi_prep_cif to get the type info properly packed, and then ffi_call to actually make the call
-[3:37pm] ccgus: danke
-[3:37pm] mikeash: all of these pieces can be seen in MABlockClosure.m
-[3:37pm] ccgus: _ffiArgForEncode looks like it'll be helpful
-[3:38pm] mikeash: they are somewhat scattered though
-[3:38pm] mikeash: and if you have float/struct returns, don't forget that you'll need to conditionally invoke objc_msgSend_fpret or _strect
-[3:38pm] ccgus: yea- I'll let my preprocessor deal with that bit :)
-[3:39pm] ccgus: luckily, the bridge info stuff will help me out there.
-[3:40pm] mikeash: oh yeah
-[3:40pm] mikeash: _ffiArgForEncode: is probably a big help, should take care of every single primitive that @encode can represent
-[3:40pm] mikeash: and pointer
-*/
-    //ffi_type **argTypes = malloc(sizeof(ffi_type*) * argumentCount);
-    
-    //debug(@"function call: %@ %@", bridgedFunction, functionName);
-    
-    /*
-    JSTClosure *closure = [[[JSTClosure alloc] initWithFunctionName:functionName] autorelease];
+    debug(@"functionName: '%@'", functionName);
     
     if (!closure) {
         // FIXME: throw a JS exception, saying we couldn't find the function.
         return nil;
     }
-    */
     
     if (runtimeInfo) {
         
         assert([runtimeInfo objectType] == JSTFunction);
-        
-        debug(@"typeEncoding: '%@'", [runtimeInfo typeEncoding]);
-        debug(@"typeEncoding: '%@'", [runtimeInfo arguments]);
         
         if (![runtimeInfo isVariadic] && ([[runtimeInfo arguments] count] != argumentCount)) {
             // FIXME: blow up and throw an exception about the wrong number of args.
             NSLog(@"Wrong number of arguments to %@", functionName);
             return nil;
         }
-        
-        for (int j = 0; j < argumentCount; j++) {
-            JSValueRef argument = arguments[j];
-            
-            JSType type = JSValueGetType(_jsContext, argument);
-            JSTRuntimeInfo *argRuntimeInfo = [[runtimeInfo arguments] objectAtIndex:j];
-            
-            debug(@"[argRuntimeInfo typeEncoding]: '%@'", [argRuntimeInfo typeEncoding]);
-            
-            
-            
-            
-        }
-        
-        
     }
     
+    [closure setArguments:arguments withCount:argumentCount];
     
-    
-    
-    
-    id block = ^(id fff, SEL cmd, NSString *arg) { NSLog(@"arg is %@", arg); };
-    BlockFptrAuto(block);
-    
-    //debug(@"closure: '%@'", closure);
-    
-    return nil;
+    return [closure call];
 }
 
 
@@ -321,7 +283,9 @@ void JSTBridge_objectInitialize(JSContextRef ctx, JSObjectRef object) {
 // @abstract The callback invoked when an object is finalized (prepared for garbage collection). An object may be finalized on any thread.
 // So yea, don't do much here thank you very much.
 void JSTBridge_objectFinalize(JSObjectRef object) {
-    [(JSTBridge*)JSObjectGetPrivate(object) release];
+    id o = JSObjectGetPrivate(object);
+    debug(@"releasing: %@", o);
+    [o release];
 }
 
 JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {

@@ -24,4 +24,46 @@
 <retval type='@'/>
 </function>
 -->
+
+<!--
+<class name='JSTalk'>
+<method selector='print:' class_method='true'>
+    <arg name='aString' declared_type='NSString*' type='@' index='0'/>
+</method>
+</class>
+-->
+
+<class name='JSTClosure'>
+<method selector='testBoolValue'>
+    <retval declared_type='BOOL' type='B'/>
+</method>
+
+<method selector='testClassBoolValue' class_method='true'>
+    <retval declared_type='BOOL' type='B'/>
+</method>
+
+<method selector='testStringValue'>
+    <retval declared_type='NSString*' type='@'/>
+</method>
+
+<method selector='testClassStringValue' class_method='true'>
+    <retval declared_type='NSString*' type='@'/>
+</method>
+
+<method selector='testAppendString'>
+    <arg name='aString' declared_type='NSString*' type='@' index='0'/>
+    <retval declared_type='NSString*' type='@'/>
+</method>
+
+<method selector='testClassAppendString' class_method='true'>
+    <arg name='aString' declared_type='NSString*' type='@' index='0'/>
+    <retval declared_type='NSString*' type='@'/>
+</method>
+
+
+</class>
+
+
+
+
 </signatures>

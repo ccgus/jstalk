@@ -295,6 +295,15 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
++ (void)print:(NSString*)s {
+    
+    if (![s isKindOfClass:[NSString class]]) {
+        s = [s description];
+    }
+    
+    printf("%s\n", [s UTF8String]);
+}
+
 - (void)print:(NSString*)s {
     
     if (_printController && [_printController respondsToSelector:@selector(print:)]) {

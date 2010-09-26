@@ -229,6 +229,8 @@
 		CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
 		CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
 		CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CCB5EB10124D922E0052BCD9 /* JSTUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */; };
+		CCB5EB11124D922E0052BCD9 /* JSTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */; };
 		CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BA0F1EFA9700126722 /* JSTDocument.xib */; };
 		CCC5B8C90F1EFA9700126722 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BE0F1EFA9700126722 /* MainMenu.xib */; };
@@ -472,6 +474,8 @@
 		CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgedObject.m; path = src/JSTBridgedObject.m; sourceTree = "<group>"; };
 		CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridgeSupportLoader.h; path = src/JSTBridgeSupportLoader.h; sourceTree = "<group>"; };
 		CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgeSupportLoader.m; path = src/JSTBridgeSupportLoader.m; sourceTree = "<group>"; };
+		CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTUtils.h; path = src/JSTUtils.h; sourceTree = "<group>"; };
+		CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTUtils.m; path = src/JSTUtils.m; sourceTree = "<group>"; };
 		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CCC5B8B00F1EFA9700126722 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = res/Info.plist; sourceTree = "<group>"; };
 		CCC5B8BB0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/JSTDocument.xib; sourceTree = "<group>"; };
@@ -625,6 +629,8 @@
 			children = (
 				CCC5B92C0F1EFB5900126722 /* JSCocoa */,
 				CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */,
+				CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */,
+				CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */,
 				CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */,
 				CC3CC7F1124C3406001A349E /* JSTBridge.h */,
 				CC3CC7F2124C3406001A349E /* JSTBridge.m */,
@@ -917,6 +923,7 @@
 				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
 				CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */,
 				CCD7C530124D674A00657984 /* JSTClosure.h in Headers */,
+				CCB5EB10124D922E0052BCD9 /* JSTUtils.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1150,6 +1157,7 @@
 				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
 				CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */,
 				CCD7C531124D674A00657984 /* JSTClosure.m in Sources */,
+				CCB5EB11124D922E0052BCD9 /* JSTUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1326,6 +1334,7 @@
 					x86_64,
 					i386,
 				);
+				CC = /opt/bin/clang;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1345,6 +1354,7 @@
 					x86_64,
 					i386,
 				);
+				CC = /opt/bin/clang;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
