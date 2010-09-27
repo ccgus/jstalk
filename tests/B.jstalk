@@ -19,12 +19,12 @@ jsassert(name, "NSFullUserName failed");
 jsassert((name + "").toLowerCase() == [name lowercaseString], "Lowercase stuff failed");
 
 
+
 jsassert(([JSTTests nonBridgedClassMethodReturnInt] == 34), "nonBridgedClassMethodReturnInt failed");
 jsassert(([ti nonBridgedInstanceMethodReturnInt] == 36), "nonBridgedInstanceMethodReturnInt failed");
-
 jsassert(([JSTTests nonBridgedClassMethodAddIntTo34:2] == 36), "nonBridgedClassMethodAddIntTo34 failed");
+jsassert(([ti nonBridgedInstanceMethodAddIntTo34:4] == 38), "nonBridgedInstanceMethodAddIntTo34 failed");
 
-jsassert(([ti nonBridgedInstanceMethodAddIntTo34:4] == 36), "nonBridgedInstanceMethodAddIntTo34 failed");
 
 var nilValue = nil;
 jsassert(!nilValue, "nilValue is not nil");

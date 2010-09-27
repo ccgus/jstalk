@@ -22,6 +22,8 @@
     JSValueRef          *_jsArguments;
     JSTBridge           *_bridge;
     Method              _objcMethod;
+    BOOL                _askedForFFIArgsForEncoding;
+    ffi_type            **_encodedArgsForUnbridgedMsgSend;
 }
 
 - (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo;

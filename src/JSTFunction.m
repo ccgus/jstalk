@@ -237,7 +237,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 - (void)checkForMsgSendMethodRuntimeInfo {
     
     if ((_callAddress != &objc_msgSend) || (_argumentCount < 2)) {
-        debug(@"Can't possibly be objc_msgSend");
+        //debug(@"%@ Can't possibly be objc_msgSend", _functionName);
         return;
     }
     
@@ -271,31 +271,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     }
 }
 
-
-
-/*
-void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
-    
-    void **foo = allocate(sizeof(void*));
-    
-    if (index == 0) {
-        arg_types[index] = &ffi_type_pointer;
-        *foo = [[NSClassFromString(@"TestObject") alloc] init];
-    }
-    else if (index == 1) {
-        arg_types[index] = &ffi_type_pointer;
-        *foo = NSSelectorFromString(@"instanceReturnIntAndTakeArg:argTwo:");
-    }
-    else {
-        arg_types[index] = &ffi_type_uint32;
-        *foo = (void*)index;
-    }
-    
-    arg_values[index] = foo;    
-    
-}
-
-*/
 
 - (Method)objcMethod {
     
@@ -363,12 +338,49 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
         }
         
         
+        if (!_encodedArgsForUnbridgedMsgSend) {
+            debug(@"polling for _encodedArgsForUnbridgedMsgSend");
+            
+            JSTAssert(_objcMethod);
+            const char *c = method_getTypeEncoding(_objcMethod);
+            JSTAssert(c);
+            
+            debug(@"c: %s", c);
+            
+            int argCount;
+            _encodedArgsForUnbridgedMsgSend = [self _argsWithEncodeString:c getCount:&argCount];
+            
+            debug(@"%@ argCount: %d", _functionName, argCount);
+            
+            if (argCount != _argumentCount) {
+                NSLog(@"WHOA WHOA WHOA THE ARGUMENT COUNT IS OFF!");
+                JSTAssert(false);
+            }
+        }
         
-        // we're going to assume everything is an id right now.
-        *foo = JSTNSObjectFromValue(_bridge, argument);
-        argVals[idx] = foo;
+        assert(_encodedArgsForUnbridgedMsgSend);
         
-        return &ffi_type_pointer;
+        ffi_type *retType = _encodedArgsForUnbridgedMsgSend[idx];
+        
+        if (retType == &ffi_type_pointer) {
+            *foo = JSTNSObjectFromValue(_bridge, argument);
+            argVals[idx] = foo;
+        }
+        else if (retType == &ffi_type_sint32) {
+            *foo = (void*)((int32_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = foo;
+        }
+        else if (retType == &ffi_type_uint32) {
+            *foo = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = foo;
+        }
+        else {
+            debug(@"retType: '%@'", JSTStringForFFIType(retType));
+            debug(@"not sure what to do with this guy!");
+            assert(false);
+        }
+        
+        return retType;
     }
     else {
         

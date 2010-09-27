@@ -97,6 +97,14 @@ SEL JSTSelectorFromValue(JSTBridge *bridge, JSValueRef value) {
     return nil;
 }
 
+long JSTLongFromValue(JSTBridge *bridge, JSValueRef value) {
+    return (long)JSTDoubleFromValue(bridge, value);
+}
+
+double JSTDoubleFromValue(JSTBridge *bridge, JSValueRef value) {
+    return JSValueToNumber([bridge jsContext], value, nil);
+}
+
 ffi_type* JSTFFITypeForBridgeDeclaredType(NSString *type) {
     
     if (![type length]) {
