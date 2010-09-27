@@ -11,9 +11,11 @@
 #import "JSTBridge.h"
 #include <ffi/ffi.h>
 
+void JSTAssignException(JSTBridge *bridge, JSValueRef *exception, NSString *reason);
 id JSTNSObjectFromValue(JSTBridge *bridge, JSValueRef value);
 SEL JSTSelectorFromValue(JSTBridge *bridge, JSValueRef value);
 ffi_type* JSTFFITypeForTypeEncoding(NSString *encoding);
 int JSTSizeOfTypeEncoding(NSString *encoding);
 NSString *JSTStringForFFIType(ffi_type* type);
 ffi_type* JSTFFITypeForBridgeDeclaredType(NSString *type);
+JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, ffi_arg value, JSTBridge *bridge);

@@ -2654,7 +2654,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         
 
         // Let's see if it's a function
-        if ([bridgedObjectInfo objectType] == JSTFunction) {
+        if ([bridgedObjectInfo jstType] == JSTTypeFunction) {
             JSObjectRef jsRef               = [JSCocoaController jsCocoaPrivateFunctionInContext:ctx];
             JSTBridgedObject* private       = JSObjectGetPrivate(jsRef);
             //private.type                    = @"function";
@@ -2667,7 +2667,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         }
 
         // ok, is it a struct maybe?
-        else if ([bridgedObjectInfo objectType] == JSTStruct) {
+        else if ([bridgedObjectInfo jstType] == JSTTypeStruct) {
             JSObjectRef jsRef = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
             JSTBridgedObject* private = JSObjectGetPrivate(jsRef);
             //private.type = @"struct";
@@ -2677,7 +2677,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         }
         
         // How about a constant?
-        else if (([bridgedObjectInfo objectType] == JSTConstant)) {
+        else if (([bridgedObjectInfo jstType] == JSTTypeConstant)) {
             
             debug(@"[bridgedObjectInfo typeEncoding]: '%@'", [bridgedObjectInfo typeEncoding]);
             
@@ -2721,7 +2721,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
                 id o = *(id*)symbol;
                 return [JSCocoaController boxedJSObject:o inContext:ctx];
             }
-            else if ([constInfo objectType] == JSTStruct) {
+            else if ([constInfo jstType] == JSTTypeStruct) {
                 
                 debug(@"ok, it's a struct, so I'm doing that thing.");
                 
@@ -2767,7 +2767,7 @@ JSValueRef OSXObject_getProperty(JSContextRef ctx, JSObjectRef object, JSStringR
         }
 
         // Enum
-        else if ([bridgedObjectInfo objectType] == JSTEnum) {
+        else if ([bridgedObjectInfo jstType] == JSTTypeEnum) {
             debug(@"[bridgedObjectInfo enumValue]: %d", [bridgedObjectInfo enumValue]);
             return JSValueMakeNumber(ctx, [bridgedObjectInfo enumValue]);
         }
@@ -3082,7 +3082,7 @@ JSValueRef valueOfCallback(JSContextRef ctx, JSObjectRef function, JSObjectRef t
     }
 
     // Struct
-    if ([[thisPrivateObject runtimeInfo] objectType] == JSTStruct)// .type isEqualToString:@"struct"])
+    if ([[thisPrivateObject runtimeInfo] jstType] == JSTTypeStruct)// .type isEqualToString:@"struct"])
     {
         id structDescription = nil;
         id self = [JSCocoaController controllerFromContext:ctx];
@@ -3223,7 +3223,7 @@ static JSValueRef jsCocoaObject_getProperty(JSContextRef ctx, JSObjectRef object
     JSCocoaController* jsc = [JSCocoaController controllerFromContext:ctx];
     id delegate = jsc.delegate;
     
-    if ([runtimeInfo objectType] == JSTStruct) {
+    if ([runtimeInfo jstType] == JSTTypeStruct) {
         debug(@"IT'S A FUCKING STRUCT!");
         
         
@@ -4009,7 +4009,7 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
     if ([bridgedObject.type isEqualToString:@"struct"]) {
     debug(@"bridgedObject: '%@'", bridgedObject);
     //assert([bridgedObject runtimeInfo]);
-    //if ([[bridgedObject runtimeInfo] objectType] == JSTStruct) {
+    //if ([[bridgedObject runtimeInfo] jstType] == JSTTypeStruct) {
         //assert(NO);
         return NO;
     }

@@ -9,6 +9,42 @@
 #import "JSTUtils.h"
 
 
+void JSTAssignException(JSTBridge *bridge, JSValueRef *exception, NSString *reason) {
+    
+    JSContextRef ctx              = [bridge jsContext];
+    /*
+    // Gather call stack
+    JSValueRef callStackException = nil;
+    JSStringRef scriptJS          = JSStringCreateWithUTF8CString("return dumpCallStack()");
+    JSObjectRef fn                = JSObjectMakeFunction(ctx, nil, 0, nil, scriptJS, nil, 0, nil);
+    JSValueRef result             = JSObjectCallAsFunction(ctx, fn, nil, 0, nil, &callStackException);
+    JSStringRelease(scriptJS);
+    
+    if (!callStackException) {
+        
+        // Convert call stack to string
+        JSStringRef resultStringJS = JSValueToStringCopy(ctx, result, nil);
+        NSString* callStack        = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, resultStringJS);
+        JSStringRelease(resultStringJS);
+        [NSMakeCollectable(callStack) autorelease];
+        
+        // Append call stack to exception
+        if ([callStack length]) {
+            reason = [NSString stringWithFormat:@"%@\n%@", reason, callStack];
+        }
+    }
+    */
+    
+    // Convert exception to string
+    JSStringRef jsName  = JSStringCreateWithUTF8CString([reason UTF8String]);
+    JSValueRef jsString = JSValueMakeString(ctx, jsName);
+    JSStringRelease(jsName);
+    
+    // Convert to object to allow JavascriptCore to add line and sourceURL
+    *exception = JSValueToObject(ctx, jsString, nil);
+}
+
+
 id JSTNSObjectFromValue(JSTBridge *bridge, JSValueRef value) {
     
     JSContextRef ctx = [bridge jsContext];
@@ -59,7 +95,6 @@ SEL JSTSelectorFromValue(JSTBridge *bridge, JSValueRef value) {
     }
     
     return nil;
-    
 }
 
 ffi_type* JSTFFITypeForBridgeDeclaredType(NSString *type) {
@@ -227,3 +262,62 @@ NSString *JSTStringForFFIType(ffi_type* type) {
     
     return @"unknown ffi type";
 }
+
+
+
+JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, ffi_arg value, JSTBridge *bridge) {
+    
+    if (type == &ffi_type_void) {
+        return JSValueMakeNull([bridge jsContext]);
+    }
+    else if (type == &ffi_type_pointer) {
+        return [bridge makeJSObjectWithNSObject:(id)value runtimeInfo:nil];
+    }
+    else if (type == &ffi_type_float) {
+        return JSValueMakeNumber([bridge jsContext], (float)value);
+    }
+    else if (type == &ffi_type_double) {
+        return JSValueMakeNumber([bridge jsContext], (double)value);
+    }
+    else if (type == &ffi_type_longdouble) {
+        return JSValueMakeNumber([bridge jsContext], (long double)value);
+    }
+    else if (type == &ffi_type_uint8) {
+        return JSValueMakeNumber([bridge jsContext], (uint8_t)value);
+    }
+    else if (type == &ffi_type_sint8) {
+        // well, it's a bool or a char or a ... hrm.  Let's just say it's a bool.
+        return JSValueMakeBoolean([bridge jsContext], (bool)value);
+    }
+    else if (type == &ffi_type_sint32) {
+        return JSValueMakeNumber([bridge jsContext], (int32_t)value);
+    }
+    else if (type == &ffi_type_uint32) {
+        return JSValueMakeNumber([bridge jsContext], (uint32_t)value);
+    }
+    else if (type == &ffi_type_sint16) {
+        return JSValueMakeNumber([bridge jsContext], (int16_t)value);
+    }
+    else if (type == &ffi_type_uint16) {
+        return JSValueMakeNumber([bridge jsContext], (uint16_t)value);
+    }
+    else if (type == &ffi_type_sint64) {
+        return JSValueMakeNumber([bridge jsContext], (int64_t)value);
+    }
+    else if (type == &ffi_type_uint64) {
+        return JSValueMakeNumber([bridge jsContext], (uint64_t)value);
+    }
+    
+    return 0x00;
+}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,27 +1,41 @@
-var b = [JSTClosure testClassBoolValue];
+[jstalk include:"testsetup.jstalk"];
 
-if (b) {
-    print("\nHurray motherfucker!\n\n");
-}
+var ti = [[JSTTests alloc] init];
 
-//b = [[JSTClosure alloc] init];
+jsassert([ti testBoolValue], "[ti testBoolValue] failed");
+jsassert([JSTTests testClassBoolValue], "[JSTTests testClassBoolValue] failed");
 
-/*
-var b = [[[JSTClosure alloc] init] testBoolValue];
-var b = [JSTClosure testBoolValue];
-var b = [JSTClosure testBoolValue];
-*/
-//var s           = [NSString string];
+jsassert([ti testStringValue] == "String from testStringValue", "[ti testStringValue] failed");
 
-/*
-var nilValue    = nil;
+jsassert([JSTTests nonBridgedClassMethodReturnString] == "String from nonBridgedClassMethodReturnString",
+         "[JSTTests nonBridgedClassMethodReturnString] failed");
+
+jsassert([ti nonBridgedInstanceMethodReturnString] == "String from nonBridgedInstanceMethodReturnString",
+         "[ti nonBridgedInstanceMethodReturnString] failed");
+
+
+var name = NSFullUserName();
+jsassert(name, "NSFullUserName failed");
+jsassert((name + "").toLowerCase() == [name lowercaseString], "Lowercase stuff failed");
+
+
+jsassert(([JSTTests nonBridgedClassMethodReturnInt] == 34), "nonBridgedClassMethodReturnInt failed");
+jsassert(([ti nonBridgedInstanceMethodReturnInt] == 36), "nonBridgedInstanceMethodReturnInt failed");
+
+jsassert(([JSTTests nonBridgedClassMethodAddIntTo34:2] == 36), "nonBridgedClassMethodAddIntTo34 failed");
+
+jsassert(([ti nonBridgedInstanceMethodAddIntTo34:4] == 36), "nonBridgedInstanceMethodAddIntTo34 failed");
+
+var nilValue = nil;
+jsassert(!nilValue, "nilValue is not nil");
+
 var randomConst = NSBundleDidLoadNotification;
-var boolVal     = NSZombieEnabled;
-var enumVal     = NSMinYEdge;
-var ri          = [[[JSTRuntimeInfo alloc] init] autorelease];
+jsassert(randomConst == "NSBundleDidLoadNotification", "Can't find the NSBundleDidLoadNotification const");
 
-print(s);
-print(ri);
+var boolVal = NSZombieEnabled;
+jsassert(!boolVal, "Why would NSZombieEnabled be enabled?");
 
-[jstalk print:s];
-*/
+jsassert(NSMinYEdge == 1, "Can't find NSMinYEdge");
+jsassert(CGRectMinYEdge == 1, "Can't find NSMinYEdge");
+
+//print("Done with " + [jstalk env]);

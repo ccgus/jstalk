@@ -9,17 +9,17 @@
 #import <Cocoa/Cocoa.h>
 
 enum {
-    JSTUnknown,
-    JSTStruct,
-    JSTConstant,
-    JSTEnum,
-    JSTFunction,
-    JSTMethod,
-    JSTClass,
+    JSTTypeUnknown,
+    JSTTypeStruct,
+    JSTTypeConstant,
+    JSTTypeEnum,
+    JSTTypeFunction,
+    JSTTypeMethod,
+    JSTTypeClass,
 };
 
 @interface JSTRuntimeInfo : NSObject {
-    int                 _objectType;
+    int                 _jstType;
     NSString            *_symbolName;
     NSString            *_typeEncoding;
     
@@ -40,7 +40,8 @@ enum {
     BOOL                _isVariadic;
 }
 
-@property (assign) int objectType;
+
+@property (assign, setter=setJSTType:) int jstType;
 @property (retain) NSString *symbolName;
 @property (retain) NSString *typeEncoding;
 @property (retain) NSString *declaredType;

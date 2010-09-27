@@ -1,14 +1,15 @@
-#import "JSTClosure.h"
-#import "JSTUtils.h"
+#import "JSTFunction.h"
 
+@interface JSTFunction ()
+- (Method)objcMethod;
+@end
 
-
-@implementation JSTClosure
+@implementation JSTFunction
 @synthesize functionName=_functionName;
     
 static void BlockClosure(ffi_cif *cif, void *ret, void **args, void *userdata)
 {
-    JSTClosure *self = userdata;
+    JSTFunction *self = userdata;
     
     debug(@"self: '%@'", self);
     /*
@@ -228,7 +229,7 @@ static int ArgCount(const char *str)
     _argumentCount = count;
 }
 
-void JSTClosureFunction(ffi_cif* cif, void* resp, void** args, void* userdata) {
+void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) {
     debug(@"%s:%d", __FUNCTION__, __LINE__);
 	//[(id)userdata calledByClosureWithArgs:args returnValue:resp];
 }
@@ -236,15 +237,19 @@ void JSTClosureFunction(ffi_cif* cif, void* resp, void** args, void* userdata) {
 - (void)checkForMsgSendMethodRuntimeInfo {
     
     if ((_callAddress != &objc_msgSend) || (_argumentCount < 2)) {
+        debug(@"Can't possibly be objc_msgSend");
         return;
     }
     
-    id target       = JSTNSObjectFromValue(_bridge, _jsArguments[0]);
-    NSString *sel   = JSTNSObjectFromValue(_bridge, _jsArguments[1]);
+    id target           = JSTNSObjectFromValue(_bridge, _jsArguments[0]);
+    NSString *sel       = JSTNSObjectFromValue(_bridge, _jsArguments[1]);
+    BOOL isClassMethod  = class_isMetaClass(object_getClass(target));
     
     JSTRuntimeInfo *instanceInfo = [_bridge runtimeInfoForObject:target];
-    
-    BOOL isClassMethod = class_isMetaClass(object_getClass(target));
+    if (!instanceInfo) {
+        NSString *classString = NSStringFromClass(isClassMethod ? target :[target class]);
+        instanceInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:classString];
+    }
     
     if (isClassMethod) { // are we dealing with an Class method?
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForClassMethodName:sel];
@@ -253,8 +258,17 @@ void JSTClosureFunction(ffi_cif* cif, void* resp, void** args, void* userdata) {
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForInstanceMethodName:sel];
     }
     
-    debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
     
+    if (!_msgSendMethodRuntimeInfo) {
+        [self objcMethod]; // go ahead and cache that guy.
+        
+        if (!_objcMethod) {
+            debug(@"Can't find runtime info for: %c[%@ %@]", isClassMethod ? '+' : '-', target, sel);
+        }
+    }
+    else {
+        debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
+    }
 }
 
 
@@ -283,6 +297,28 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
 
 */
 
+- (Method)objcMethod {
+    
+    if (_objcMethod) {
+        return _objcMethod;
+    }
+    
+    JSTAssert((_callAddress == &objc_msgSend));
+    JSTAssert(_argumentCount > 1);
+    
+    id target = JSTNSObjectFromValue(_bridge, _jsArguments[0]);
+    SEL sel   = JSTSelectorFromValue(_bridge, _jsArguments[1]);
+    
+    if (class_isMetaClass(object_getClass(target))) { // are we dealing with an Class method?
+        _objcMethod = class_getClassMethod(target, sel);
+    }
+    else {
+        _objcMethod = class_getInstanceMethod(object_getClass(target), sel);
+    }
+    
+    return _objcMethod;
+}
+
 -(ffi_type*)setValue:(void**)argVals atIndex:(int)idx {
     
     JSValueRef argument = _jsArguments[idx];
@@ -291,12 +327,18 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
         
         if (idx < 0) {
             
-            if (!_msgSendMethodRuntimeInfo) {
-                // FIXME: look up the return type in the runtime
-                return &ffi_type_pointer; // we always assume it's a pointer to id here if we can't find the interface
+            if (_msgSendMethodRuntimeInfo) {
+                return JSTFFITypeForTypeEncoding([[_msgSendMethodRuntimeInfo returnValue] typeEncoding]);
             }
             
-            return JSTFFITypeForTypeEncoding([[_msgSendMethodRuntimeInfo returnValue] typeEncoding]);
+            const char *c = method_getTypeEncoding([self objcMethod]);
+            if (c) {
+                return [self _ffiArgForEncode:c];
+            }
+            
+            JSTAssert(false); // wtf really?
+            
+            return &ffi_type_pointer;
         }
         
         void **foo = [self _allocate:(sizeof(void*))];
@@ -312,20 +354,37 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
             return &ffi_type_pointer;
         }
         
-        if (!_msgSendMethodRuntimeInfo) {
-            // we're going to assume everything is an id right now.
-            *foo = JSTNSObjectFromValue(_bridge, argument);
-            argVals[idx] = foo;
+        if (_msgSendMethodRuntimeInfo) {
             
-            return &ffi_type_pointer;
+            *foo                = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
+            JSTRuntimeInfo *ri  = [[_msgSendMethodRuntimeInfo arguments] objectAtIndex:idx-2];
+            
+            return JSTFFITypeForTypeEncoding([ri typeEncoding]);
         }
         
-        *foo                = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
-        JSTRuntimeInfo *ri  = [[_msgSendMethodRuntimeInfo arguments] objectAtIndex:idx-2];
         
-        return JSTFFITypeForTypeEncoding([ri typeEncoding]);
+        
+        // we're going to assume everything is an id right now.
+        *foo = JSTNSObjectFromValue(_bridge, argument);
+        argVals[idx] = foo;
+        
+        return &ffi_type_pointer;
     }
     else {
+        
+        if (idx < 0) {
+            
+            JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName];
+            
+            if ([info returnValue]) { // sometimes, we have info, but not the return value.  Like for NSBeep()
+                return JSTFFITypeForTypeEncoding([[info returnValue] typeEncoding]);
+            }
+            
+            return &ffi_type_void;
+            
+        }
+        
+        
         JSTAssert(false);
     }
     
@@ -333,12 +392,12 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
 }
 
 
-- (JSValueRef)call {
+- (JSValueRef)call:(JSValueRef*)exception {
     
     [self checkForMsgSendMethodRuntimeInfo];
-    
-    ffi_type **argTypes  = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
-    void     **argVals   = _argumentCount ? malloc(_argumentCount * sizeof(void*)) : 0x00;
+    BOOL success        = YES;
+    ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
+    void **argVals      = _argumentCount ? malloc(_argumentCount * sizeof(void*)) : 0x00;
     
     for (int j = 0; j < _argumentCount; j++) {
         argTypes[j] = [self setValue:*(void**)&argVals atIndex:j];
@@ -359,7 +418,8 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
         ffi_call(&cif, _callAddress, &result, argVals);
     }
     @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+        success = NO;
+        JSTAssignException(_bridge, exception, [e description]);
     }
     
     if (argTypes) {
@@ -372,20 +432,15 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
     
     [_allocations release];
     
-    if (returnFIIType == &ffi_type_void) {
-        return JSValueMakeNull([_bridge jsContext]);
-    }
-    else if (returnFIIType == &ffi_type_pointer) {
-        return [_bridge makeJSObjectWithNSObject:(id)result runtimeInfo:nil];
-    }
-    else if (returnFIIType == &ffi_type_sint8) {
-        // well, it's a bool or a char or a ... hrm.
-        return JSValueMakeBoolean([_bridge jsContext], (bool)result);
+    if (!success) {
+        return nil;
     }
     
-    JSTAssert(false);
+    JSValueRef retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, result, _bridge);
+    
+    JSTAssert(retJS);
      
-    return nil;
+    return retJS;
 }
 
 
@@ -429,58 +484,107 @@ void setterFor4(ffi_type **arg_types, void **arg_values, int index) {
 
 @end
 
+@implementation JSTValueOfFunction
 
-@implementation JSTClosure (TestExtras)
+@synthesize target=_target;
 
-- (BOOL)testBoolValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return YES;
+- (id)initWithTarget:(id)target bridge:(JSTBridge*)bridge {
+	self = [super init];
+	if (self != nil) {
+		_target = [target retain];
+        _bridge = [bridge retain];
+        _functionName = [@"<internal valueOf function" retain];
+	}
+	return self;
 }
 
-- (BOOL)testClassBoolValue {
-    assert(false);
+- (void)dealloc {
+    [_target release];
+    [super dealloc];
 }
 
-+ (BOOL)testClassBoolValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return YES;
-}
-
-- (NSString*)testStringValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return @"String from testStringValue";
-}
-
-+ (NSString*)testClassStringValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return @"String from testClassStringValue";
-}
-
-- (NSString*)testAppendString:(NSString*)string {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return [NSString stringWithFormat:@"String from testAppendString: %@", string];
-}
-
-- (NSString*)testClassAppendString:(NSString*)string {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    return [NSString stringWithFormat:@"String from testClassAppendString: %@", string];
-}
-
+- (JSValueRef)call:(JSValueRef*)exception {
+    
+    JSValueRef ret = 0x00;
+    
+    if ([_target isKindOfClass:[NSString class]]) {
+        JSStringRef jsString  = JSStringCreateWithUTF8CString([_target UTF8String]);
+        ret = JSValueMakeString([_bridge jsContext], jsString);
+        JSStringRelease(jsString);
+    }
+    else if ([_target isKindOfClass:[NSNull class]]) {
+        ret = JSValueMakeNull([_bridge jsContext]);
+    }
+    else if ([_target isKindOfClass:[NSNumber class]]) {
+        
+        if (strcmp([_target objCType], @encode(BOOL)) == 0) {
+            ret = JSValueMakeBoolean([_bridge jsContext], [_target boolValue]);
+        }
+        else {
+            ret = JSValueMakeNumber([_bridge jsContext], [_target floatValue]);
+        }
+    }
+    
+    return ret;
+}    
 
 @end
 
+@implementation JSTToStringFunction
 
+@synthesize target=_target;
 
+- (id)initWithTarget:(id)target bridge:(JSTBridge*)bridge {
+	self = [super init];
+	if (self != nil) {
+		_target = [target retain];
+        _bridge = [bridge retain];
+        _functionName = [@"<internal toString function" retain];
+	}
+	return self;
+}
 
+- (void)dealloc {
+    [_target release];
+    [super dealloc];
+}
 
+- (JSValueRef)call:(JSValueRef*)exception {
+    
+    NSString *ret = 0x00;
+    
+    if ([_target isKindOfClass:[NSString class]]) {
+        ret = _target;
+    }
+    else if ([_target isKindOfClass:[NSNull class]]) {
+        ret = @"null";
+    }
+    else if ([_target isKindOfClass:[NSNumber class]]) {
+        
+        if (strcmp([_target objCType], @encode(BOOL)) == 0) {
+            ret = [_target boolValue] ? @"true" : @"false";
+        }
+        else if (strcmp([_target objCType], @encode(int)) == 0) {
+            ret = [NSString stringWithFormat:@"%d", [_target intValue]];
+        }
+        else {
+            ret = [NSString stringWithFormat:@"%f", [_target doubleValue]];
+        }
+    }
+    else {
+        ret = [_target description];
+    }
+    
+    if (!ret) {
+        return JSValueMakeNull([_bridge jsContext]);
+    }
+    
+    JSStringRef jsString  = JSStringCreateWithUTF8CString([ret UTF8String]);
+    JSValueRef jsRet = JSValueMakeString([_bridge jsContext], jsString);
+    JSStringRelease(jsString);
+    
+    return jsRet;
+}    
 
-
-
-
-
-
-
-
-
-
+@end
 

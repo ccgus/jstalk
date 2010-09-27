@@ -206,7 +206,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-- (id)executeString:(NSString*) str {
+- (id)executeString:(NSString*)str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
         [self loadPlugins];
@@ -290,7 +290,7 @@ static NSMutableArray *JSTalkPluginList;
     
     str = [JSTPreprocessor preprocessCode:str];
                    
-    if (![[self jsController] evalJSString:str withScriptPath:[scriptURL path]]) {
+    if (![_bridge evalJSString:str withPath:[scriptURL path]]) {
         NSLog(@"Could not include '%@'", fileName);
     }
 }

@@ -1,10 +1,10 @@
-#import <ffi/ffi.h>
 #import <Foundation/Foundation.h>
 #import <JavaScriptCore/JavaScriptCore.h>
 #import "JSTRuntimeInfo.h"
+#import "JSTUtils.h"
 
 @class JSTBridge;
-@interface JSTClosure : NSObject
+@interface JSTFunction : NSObject
 {
     NSMutableArray *_allocations;
     ffi_cif _closureCIF;
@@ -21,7 +21,7 @@
     size_t              _argumentCount;
     JSValueRef          *_jsArguments;
     JSTBridge           *_bridge;
-    //void                **argValues;
+    Method              _objcMethod;
 }
 
 - (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo;
@@ -30,8 +30,24 @@
 
 - (void)setArguments:(const JSValueRef *)args withCount:(size_t)count;
 
-- (JSValueRef)call;
+- (JSValueRef)call:(JSValueRef*)exception;
 
 @property (retain) NSString *functionName;
+
+@end
+
+@interface JSTValueOfFunction : JSTFunction {
+    id _target;
+}
+@property (retain) id target;
+- (id)initWithTarget:(id)target bridge:(JSTBridge*)bridge;
+
+@end
+
+@interface JSTToStringFunction : JSTFunction {
+    id _target;
+}
+@property (retain) id target;
+- (id)initWithTarget:(id)target bridge:(JSTBridge*)bridge;
 
 @end

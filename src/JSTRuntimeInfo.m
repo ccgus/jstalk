@@ -13,7 +13,7 @@
 
 @implementation JSTRuntimeInfo
 
-@synthesize objectType=_objectType;
+@synthesize jstType=_jstType;
 @synthesize symbolName=_symbolName;
 @synthesize typeEncoding=_typeEncoding;
 @synthesize declaredType=_declaredType;
@@ -95,7 +95,6 @@
         Class s = class_getSuperclass(NSClassFromString(_symbolName));
         
         if (!s) {
-            NSLog(@"Can't find superclass for %@", _symbolName);
             return nil;
         }
         
@@ -115,7 +114,6 @@
         Class s = class_getSuperclass(NSClassFromString(_symbolName));
         
         if (!s) {
-            NSLog(@"Can't find superclass for %@", _symbolName);
             return nil;
         }
         
@@ -217,10 +215,10 @@
     
     NSString *prefix = [super description];
     
-    if (_objectType == JSTClass) {
+    if (_jstType == JSTTypeClass) {
         return [NSString stringWithFormat:@"%@ class '%@'", prefix, _symbolName];
     }
-    else if (_objectType == JSTFunction) {
+    else if (_jstType == JSTTypeFunction) {
         return [NSString stringWithFormat:@"%@ function '%@'",prefix, _symbolName];
     
     }

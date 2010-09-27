@@ -62,21 +62,21 @@
     
     if ([tagName isEqualToString:@"struct"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
-        [nextObject setObjectType:JSTStruct];
+        [nextObject setJSTType:JSTTypeStruct];
     }
     else if ([tagName isEqualToString:@"constant"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
-        [nextObject setObjectType:JSTConstant];
+        [nextObject setJSTType:JSTTypeConstant];
         [nextObject setDeclaredType:[atts objectForKey:@"declared_type"]];
     }
     else if ([tagName isEqualToString:@"enum"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
-        [nextObject setObjectType:JSTEnum];
+        [nextObject setJSTType:JSTTypeEnum];
         [nextObject grabEnumValueFromAttributes:atts];
     }
     else if ([tagName isEqualToString:@"function"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
-        [nextObject setObjectType:JSTFunction];
+        [nextObject setJSTType:JSTTypeFunction];
         [nextObject setIsVariadic:[[atts objectForKey:@"variadic"] isEqualToString:@"true"]];
     }
     else if ([tagName isEqualToString:@"class"]) {
@@ -85,12 +85,12 @@
         nextObject = [_symbolLookup objectForKey:[atts objectForKey:@"name"]];
         nextObject = nextObject ? [nextObject retain] : [[JSTRuntimeInfo alloc] init];
         
-        [nextObject setObjectType:JSTClass];
+        [nextObject setJSTType:JSTTypeClass];
         _currentBridgeClass = nextObject;
     }
     else if (_currentBridgeClass && [tagName isEqualToString:@"method"]) {
         nextObject = [[JSTRuntimeInfo alloc] init];
-        [nextObject setObjectType:JSTMethod];
+        [nextObject setJSTType:JSTTypeMethod];
         [nextObject setMethodSelector:[atts objectForKey:@"selector"]];
         
         if ([[atts objectForKey:@"class_method"] boolValue]) {
@@ -100,10 +100,10 @@
             [_currentBridgeClass addInstanceMethod:nextObject];
         }
     }
-    else if ([_currentBridgeObject objectType] == JSTStruct && [tagName isEqualToString:@"field"]) {
+    else if ([_currentBridgeObject jstType] == JSTTypeStruct && [tagName isEqualToString:@"field"]) {
         [_currentBridgeObject addStructField:[atts objectForKey:@"name"]];
     }
-    else if ([_currentBridgeObject objectType] == JSTFunction && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
+    else if ([_currentBridgeObject jstType] == JSTTypeFunction && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
         JSTRuntimeInfo *arg = [[JSTRuntimeInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];
@@ -119,7 +119,7 @@
         [arg release];
     }
     // is it an arg or a ret for a method on a class?
-    else if (_currentBridgeClass && [_currentBridgeObject objectType] == JSTMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
+    else if (_currentBridgeClass && [_currentBridgeObject jstType] == JSTTypeMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
         
         
@@ -156,9 +156,9 @@
         
         _currentBridgeObject = nextObject;
         
-        if ([nextObject objectType] == JSTStruct || [nextObject objectType] == JSTConstant ||
-            [nextObject objectType] == JSTEnum   || [nextObject objectType] == JSTFunction ||
-            [nextObject objectType] == JSTClass) {
+        if ([nextObject jstType] == JSTTypeStruct || [nextObject jstType] == JSTTypeConstant ||
+            [nextObject jstType] == JSTTypeEnum   || [nextObject jstType] == JSTTypeFunction ||
+            [nextObject jstType] == JSTTypeClass) {
             
             //debug(@"Adding: %@ - %@", [nextObject name], [nextObject type]);
             
