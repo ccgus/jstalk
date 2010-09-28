@@ -38,4 +38,32 @@ jsassert(!boolVal, "Why would NSZombieEnabled be enabled?");
 jsassert(NSMinYEdge == 1, "Can't find NSMinYEdge");
 jsassert(CGRectMinYEdge == 1, "Can't find NSMinYEdge");
 
+
+var twelve = [NSNumber numberWithInt:12];
+var fifteen = twelve + 3;
+jsassert(fifteen == 15, "Can't add NSNumbers to js number!");
+
+var scriptURL = [[jstalk env] objectForKey:"scriptURL"];
+scriptURL = [scriptURL lastPathComponent];
+jsassert(scriptURL == "B.jstalk", "lastPathComponent failed");
+
+var a = [[jstalk env] objectForKey:"scriptURL"] + ""
+var b = [[jstalk env] objectForKey:"scriptURL"];
+
+jsassert(a == b, "scriptURL conversions failed");
+
+a = [ti testStringValue] + ""
+b = ti.testStringValue() + "";
+
+jsassert(a == b, "JS style method A call failed");
+
+var twelve = NSNumber.numberWithInt(12);
+var fifteen = twelve + 3;
+jsassert(fifteen == 15, "JS style method B call failed!");
+
+var twelve = NSNumber.numberWithInt_(12);
+var fifteen = twelve + 3;
+jsassert(fifteen == 15, "JS style method C call failed!");
+
+
 //print("Done with " + [jstalk env]);

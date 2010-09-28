@@ -135,13 +135,13 @@
             [_currentBridgeObject setReturnValue:arg];
         }
         
-        
+        /*
         if ([[_currentBridgeObject methodSelector] isEqualToString:@"testClassBoolValue"]) {
             debug(@"returnValue         : '%@'", [_currentBridgeObject returnValue]);
             debug(@"_currentBridgeObject: '%@'", _currentBridgeObject);
             debug(@"typeEncoding:         '%@'", [[_currentBridgeObject returnValue] typeEncoding]);
         }
-        
+        */
         
         [arg release];
     }

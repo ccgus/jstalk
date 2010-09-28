@@ -273,8 +273,6 @@ static NSMutableArray *JSTalkPluginList;
 
 - (void)include:(NSString*)fileName {
     
-    debug(@"fileName: '%@'", fileName);
-    
     if (![fileName hasPrefix:@"/"] && [_env objectForKey:@"scriptURL"]) {
         NSString *parentDir = [[[_env objectForKey:@"scriptURL"] path] stringByDeletingLastPathComponent];
         fileName = [parentDir stringByAppendingPathComponent:fileName];

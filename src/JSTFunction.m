@@ -6,7 +6,9 @@
 
 @implementation JSTFunction
 @synthesize functionName=_functionName;
-    
+@synthesize forcedObjcTarget=_forcedObjcTarget;
+@synthesize forcedObjcSelector=_forcedObjcSelector;
+
 static void BlockClosure(ffi_cif *cif, void *ret, void **args, void *userdata)
 {
     JSTFunction *self = userdata;
@@ -227,6 +229,23 @@ static int ArgCount(const char *str)
 - (void)setArguments:(const JSValueRef *)args withCount:(size_t)count {
     _jsArguments = (JSValueRef *)args;
     _argumentCount = count;
+    
+    if (_forcedObjcTarget) {
+        
+        JSValueRef *newArgs = malloc(sizeof(JSValueRef *) * (_argumentCount + 2));
+        
+        newArgs[0] = JSObjectMake([_bridge jsContext], [_bridge bridgedObjectClass], _forcedObjcTarget);
+        newArgs[1] = JSObjectMake([_bridge jsContext], [_bridge bridgedObjectClass], _forcedObjcSelector);
+        
+        for (int j = 0; j < _argumentCount; j++) {
+            newArgs[j+2] = args[j];
+        }
+        
+        _jsArguments = newArgs;
+        _argumentCount += 2;
+    }
+    
+    
 }
 
 void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) {
@@ -329,28 +348,35 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             return &ffi_type_pointer;
         }
         
+        
         if (_msgSendMethodRuntimeInfo) {
             
-            *foo                = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
+            // FIXME: this is lame.
+            // FIXME: Why sholdn't we just fall back on the _objcMethod stuff?
+            [self objcMethod];
+            
+            
+            /*
             JSTRuntimeInfo *ri  = [[_msgSendMethodRuntimeInfo arguments] objectAtIndex:idx-2];
             
+            debug(@"JSTRuntimeInfo: '%@'", [ri typeEncoding]);
+            
+            *foo                = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
+            
             return JSTFFITypeForTypeEncoding([ri typeEncoding]);
+            */
         }
         
         
+        
         if (!_encodedArgsForUnbridgedMsgSend) {
-            debug(@"polling for _encodedArgsForUnbridgedMsgSend");
             
             JSTAssert(_objcMethod);
             const char *c = method_getTypeEncoding(_objcMethod);
             JSTAssert(c);
             
-            debug(@"c: %s", c);
-            
             int argCount;
             _encodedArgsForUnbridgedMsgSend = [self _argsWithEncodeString:c getCount:&argCount];
-            
-            debug(@"%@ argCount: %d", _functionName, argCount);
             
             if (argCount != _argumentCount) {
                 NSLog(@"WHOA WHOA WHOA THE ARGUMENT COUNT IS OFF!");
@@ -455,12 +481,12 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     return retJS;
 }
 
-
 - (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo {
     
     if ((self = [self init])) {
         _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
         if (!_callAddress) {
+            debug(@"Can't find the function named '%@', returning nil", name);
             [self release];
             return nil;
         }
@@ -487,6 +513,13 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     [_runtimeInfo release];
     [_bridge release];
     
+    if (_forcedObjcTarget) {
+        free(_jsArguments);
+    }
+    
+    [_forcedObjcTarget release];
+    [_forcedObjcSelector release];
+    
     [super dealloc];
 }
 
@@ -505,7 +538,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 	if (self != nil) {
 		_target = [target retain];
         _bridge = [bridge retain];
-        _functionName = [@"<internal valueOf function" retain];
+        _functionName = [@"<internal valueOf function>" retain];
 	}
 	return self;
 }
@@ -536,6 +569,11 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             ret = JSValueMakeNumber([_bridge jsContext], [_target floatValue]);
         }
     }
+    else {
+        JSStringRef jsString  = JSStringCreateWithUTF8CString([[_target description] UTF8String]);
+        ret = JSValueMakeString([_bridge jsContext], jsString);
+        JSStringRelease(jsString);
+    }
     
     return ret;
 }    
@@ -551,7 +589,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 	if (self != nil) {
 		_target = [target retain];
         _bridge = [bridge retain];
-        _functionName = [@"<internal toString function" retain];
+        _functionName = [@"<internal toString function>" retain];
 	}
 	return self;
 }

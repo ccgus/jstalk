@@ -13,7 +13,6 @@
 
 
 - (BOOL)testBoolValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return YES;
 }
 
@@ -23,37 +22,30 @@
 }
 
 + (BOOL)testClassBoolValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return YES;
 }
 
 - (NSString*)testStringValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return @"String from testStringValue";
 }
 
 + (NSString*)testClassStringValue {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return @"String from testClassStringValue";
 }
 
 - (NSString*)testAppendString:(NSString*)string {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return [NSString stringWithFormat:@"String from testAppendString: %@", string];
 }
 
 - (NSString*)testClassAppendString:(NSString*)string {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return [NSString stringWithFormat:@"String from testClassAppendString: %@", string];
 }
 
 + (NSString*)nonBridgedClassMethodReturnString {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return @"String from nonBridgedClassMethodReturnString";
 }
 
 - (NSString*)nonBridgedInstanceMethodReturnString {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
     return @"String from nonBridgedInstanceMethodReturnString";
 }
 

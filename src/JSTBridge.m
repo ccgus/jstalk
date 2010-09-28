@@ -74,8 +74,6 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 	return self;
 }
 
-
-
 - (void)dealloc {
     
     if (_jsContext) {
@@ -87,9 +85,11 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     [super dealloc];
 }
 
+- (JSClassRef)bridgedObjectClass {
+    return _bridgedObjectClass;
+}
+
 - (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path {
-    
-    debug(@"script: '%@'", script);
     
     JSStringRef scriptJS    = JSStringCreateWithCFString((CFStringRef)script);
     JSValueRef exception    = nil;
@@ -106,7 +106,10 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
         JSStringRef exceptionString = JSValueToStringCopy(_jsContext, exception, nil);
         NSString *nsExceptionString = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, exceptionString);
         JSStringRelease(exceptionString);
-        
+        #ifdef debug
+        NSBeep();
+        #endif
+        debug(@"******************************************");
         debug(@"nsExceptionString: '%@'", nsExceptionString);
         
         [nsExceptionString release];
@@ -139,8 +142,38 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
 }
 
+
+- (JSObjectRef)makeJSStyleBridgedFunction:(NSString*)functionName onObject:(id)target {
+    
+    // Change the _'s into :'s, and verify that the object responds to it.
+    
+    functionName = [functionName stringByReplacingOccurrencesOfString:@"_" withString:@":"];
+    if (![target respondsToSelector:NSSelectorFromString(functionName)]) {
+        functionName = [functionName stringByAppendingString:@":"];
+    }
+    
+    if (![target respondsToSelector:NSSelectorFromString(functionName)]) {
+        NSLog(@"Can't find the method named '%@'", functionName);
+        return (JSObjectRef)JSValueMakeNull(_jsContext);
+    }
+    
+    JSTRuntimeInfo *info  = [self runtimeInfoForObject:target];
+    JSTFunction *function = [[JSTFunction alloc] initWithFunctionName:@"objc_msgSend" bridge:self runtimeInfo:info];
+    
+    [function setForcedObjcTarget:target];
+    [function setForcedObjcSelector:functionName];
+    
+    return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
+}
+
 - (JSTRuntimeInfo*)runtimeInfoForObject:(id)obj {
-    return objc_getAssociatedObject(obj, &JSTRuntimeAssociatedInfoKey);
+    JSTRuntimeInfo *info = objc_getAssociatedObject(obj, &JSTRuntimeAssociatedInfoKey);
+    
+    if (!info) {
+        info = [JSTBridgeSupportLoader runtimeInfoForSymbol:NSStringFromClass([obj class])];
+    }
+    
+    return info;
 }
 
 - (id)NSObjectForJSObject:(JSObjectRef)jsObj {
@@ -185,31 +218,33 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
 }
 
-- (JSValueRef)propertyForObject:(JSObjectRef)object named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
+- (JSValueRef)propertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
     
     NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
     JSValueRef returnJSObject   = 0x00;
-    id returnNSObject           = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
-    
     if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]) {
-        return [self internalFunctionForJSObject:object functionName:propertyName outException:exception];
+        return [self internalFunctionForJSObject:jsObject functionName:propertyName outException:exception];
+    }
+    
+    id caller = [self NSObjectForJSObject:jsObject];
+    
+    if (caller != self) {
+        // looks like it's a foo.some_objc_method(call, wow, neat);
+        return [self makeJSStyleBridgedFunction:propertyName onObject:caller];
     }
     
     
     if (info) {
-        
         if ([info jstType] == JSTTypeClass) {
-            returnNSObject = NSClassFromString(propertyName);
-            returnJSObject = [self makeJSObjectWithNSObject:returnNSObject runtimeInfo:info];
+            returnJSObject = [self makeJSObjectWithNSObject:NSClassFromString(propertyName) runtimeInfo:info];
         }
         else if ([info jstType] == JSTTypeFunction) {
             returnJSObject = [self makeBridgedFunctionWithRuntimeInfo:info name:propertyName];
-            returnNSObject = [self NSObjectForJSObject:(JSObjectRef)returnJSObject];
         }
         else if ([info jstType] == JSTTypeStruct) {
-            
+            assert(false);
         }
         else if (([info jstType] == JSTTypeConstant)) {
             
@@ -276,8 +311,6 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     JSTAssert(functionName);
     JSTAssert(function);
     
-    //debug(@"functionName: '%@'", functionName);
-    
     if (!function) {
         // FIXME: throw a JS exception, saying we couldn't find the function.
         return nil;
@@ -312,22 +345,28 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 @end
 
 
+//#define jsfdebug NSLog
+#define jsfdebug(...)
 
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     return [(JSTBridge*)JSObjectGetPrivate(object) propertyForObject:object named:propertyName outException:exception];
 }
 
 void JSTClass_initialize(JSContextRef ctx, JSObjectRef object) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) initializeObject:object];
 }
 
 JSValueRef JSTClass_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     assert(false);
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) convertObject:object toType:type outException:exception];
     
 }
 
 JSValueRef JSTClass_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) propertyForObject:object named:propertyName outException:exception];
 }
 
@@ -340,6 +379,7 @@ void JSTClass_finalize(JSObjectRef object) {
 }
 
 JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) callFunction:function onObject:thisObject argCount:argumentCount arguments:arguments outException:exception];
 }
 

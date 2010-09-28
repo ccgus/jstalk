@@ -23,6 +23,9 @@
     JSTBridge           *_bridge;
     Method              _objcMethod;
     BOOL                _askedForFFIArgsForEncoding;
+    id                  _forcedObjcTarget;
+    NSString            *_forcedObjcSelector;
+    
     ffi_type            **_encodedArgsForUnbridgedMsgSend;
 }
 
@@ -35,12 +38,15 @@
 - (JSValueRef)call:(JSValueRef*)exception;
 
 @property (retain) NSString *functionName;
+@property (retain) id forcedObjcTarget;
+@property (assign) NSString *forcedObjcSelector;
 
 @end
 
 @interface JSTValueOfFunction : JSTFunction {
     id _target;
 }
+
 @property (retain) id target;
 - (id)initWithTarget:(id)target bridge:(JSTBridge*)bridge;
 

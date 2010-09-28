@@ -35,4 +35,6 @@
 
 - (JSObjectRef)makeJSObjectWithNSObject:(id)obj runtimeInfo:(JSTRuntimeInfo*)info;
 
+- (JSClassRef)bridgedObjectClass;
+
 @end
