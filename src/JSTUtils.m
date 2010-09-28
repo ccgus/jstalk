@@ -101,7 +101,7 @@ long JSTLongFromValue(JSTBridge *bridge, JSValueRef value) {
     return (long)JSTDoubleFromValue(bridge, value);
 }
 
-double JSTDoubleFromValue(JSTBridge *bridge, JSValueRef value) {
+long double JSTDoubleFromValue(JSTBridge *bridge, JSValueRef value) {
     return JSValueToNumber([bridge jsContext], value, nil);
 }
 

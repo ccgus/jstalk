@@ -72,8 +72,6 @@
 
 
 - (float)nonBridgedInstanceMethodReturnAddAndReturnFloat:(float)val {
-    debug(@"got %f", val);
-    debug(@"returning %f", val + 4.5f);
     return val + 4.5f;
 }
 
@@ -84,6 +82,11 @@
 
 - (double)nonBridgedInstanceMethodReturnAddAndReturnDouble:(double)val {
     return val + 14.5f;
+}
+
+- (long double)nonBridgedInstanceMethodReturnAddAndReturnLongDouble:(long double)val {
+    debug(@"val: %Lf", val);
+    return val + 50.f;
 }
 
 @end

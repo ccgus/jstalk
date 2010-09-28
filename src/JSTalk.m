@@ -19,7 +19,7 @@ static BOOL JSTalkShouldLoadJSTPlugins = YES;
 static NSMutableArray *JSTalkPluginList;
 
 @interface JSTalk (Private)
-- (void) print:(NSString*)s;
+- (void)print:(NSString*)s;
 @end
 
 
@@ -316,6 +316,8 @@ static NSMutableArray *JSTalkPluginList;
         
         printf("%s\n", [s UTF8String]);
     }
+    
+    printf("%s\n", [s UTF8String]);
 }
 
 + (id)applicationOnPort:(NSString*)port {

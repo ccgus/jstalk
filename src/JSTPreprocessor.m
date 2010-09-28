@@ -200,6 +200,22 @@
         [_args addObject:aSymbol];
     }
 }
+- (int)nonWhitespaceCountInArray:(NSArray*)ar {
+    
+    int count = 0;
+    
+    for (id f in ar) {
+        
+        f = [[f description] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if ([f length]) {
+            count++;
+        }
+    } 
+    
+    return count;
+    
+}
 
 - (NSString*)description {
     
@@ -236,7 +252,10 @@
         
         TDToken *currentToken = [currentPassedArg isKindOfClass:[TDToken class]] ? currentPassedArg : 0x00;
         
+        NSString *value = currentToken ? [currentToken stringValue] : [currentPassedArg description];
+        
         if ([currentToken isWhitespace]) {
+            //[currentArgs addObject:value];
             continue;
         }
         
@@ -244,7 +263,6 @@
             hadSymbolAsArg = YES;
         }
         
-        NSString *value = currentToken ? [currentToken stringValue] : [currentPassedArg description];
         
         if ([@":" isEqualToString:value]) {
             
@@ -295,12 +313,6 @@
     if (useMsgSend) {
         NSMutableString *ret = [NSMutableString stringWithString:@"objc_msgSend"];
         
-        /*
-        if ([methodArgs count]) {
-            [ret appendFormat:@"%d", [methodArgs count]];
-        }
-        */
-        
         [ret appendFormat:@"(%@, \"%@\"", target, selector];
         
         for (NSString *arg in methodArgs) {
@@ -312,12 +324,35 @@
         return ret;
     }
     
+    #warning this is completely fucked:
+    /*
+[NSApp a:1 fake:function() {
+    [someClass runBlock:[NSApp blockForJSFunction:function(err) {
+        var foo = Foo();
+    }]];
+}];
+*/
+
+
+    
     [selector replaceOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [selector length])];
     
     NSMutableString *ret = [NSMutableString stringWithFormat:@"%@.%@(", target, selector];
     
-    if ([methodArgs count]) {
-        [ret appendString:[methodArgs componentsJoinedByString:@", "]];
+    if ([self nonWhitespaceCountInArray:methodArgs]) {
+        
+        for (int i = 0; i < [methodArgs count]; i++) {
+            
+            NSString *arg = [methodArgs objectAtIndex:i];
+            NSString *s = [arg description];
+            NSString *t = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            [ret appendString:s];
+            
+            if ([t length] && i < [methodArgs count] - 1) {
+                [ret appendString:@","];
+            }
+        }
     }
     
     [ret appendString:@")"];

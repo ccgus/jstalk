@@ -154,6 +154,13 @@ static int ArgCount(const char *str)
     
     COND(float, float);
     COND(double, double);
+    //COND(long double, longdouble);
+    
+    //printf("%s\n", @encode(float));
+    
+    //if(str[0] == @encode(long double)[0])
+    //    return &ffi_type_longdouble;
+    
     
     COND(void, void);
     
@@ -333,7 +340,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         }
         
         // leme just check something here...
-        if (retType == &ffi_type_float || retType == &ffi_type_double) {
+        if (retType == &ffi_type_float || retType == &ffi_type_double || retType == &ffi_type_longdouble) {
             _returnStorage = [self _allocate:(sizeof(long double*))];
             _callAddress = &objc_msgSend_fpret;
         }
@@ -421,15 +428,25 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             argVals[idx] = foo;
         }
         else if (retType == &ffi_type_uint32) {
-            *foo = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = foo;
+            void **storage = [self _allocate:(sizeof(void*))];
+            *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = storage;
         }
-        else if (retType == &ffi_type_double || retType == &ffi_type_float) {
-            void **floatStorage = [self _allocate:(sizeof(long double*))];
-            double d = JSTDoubleFromValue(_bridge, argument);
-            *floatStorage = (double*)&d;
+        else if (retType == &ffi_type_float) {
+            float **floatStorage = [self _allocate:(sizeof(float*))];
+            *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
             argVals[idx] = floatStorage;
-            
+        }
+        else if (retType == &ffi_type_double) {
+            double **floatStorage = [self _allocate:(sizeof(double*))];
+            *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
+            argVals[idx] = floatStorage;
+        }
+        else if (retType == &ffi_type_longdouble) {
+            long double **floatStorage = [self _allocate:(sizeof(long double*))];
+            *(long double*)floatStorage = JSTDoubleFromValue(_bridge, argument);
+            debug(@"*(long double*)floatStorage: %Lf", *(long double*)floatStorage);
+            argVals[idx] = floatStorage;
         }
         else {
             debug(@"retType: '%@'", JSTStringForFFIType(retType));
@@ -440,7 +457,23 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         return retType;
     }
     else {
-        JSTAssert(false);
+        
+        if (_runtimeInfo) {
+            if ([_runtimeInfo isVariadic]) {
+                // everything is pointers here...
+                void **foo = [self _allocate:(sizeof(void*))];
+                
+                *foo = JSTNSObjectFromValue(_bridge, argument);
+                argVals[idx] = foo;   
+                return &ffi_type_pointer;
+            }
+            else {
+                JSTAssert(false);
+            }
+        }
+        else {
+            JSTAssert(false);
+        }
     }
     
     return 0x00;
