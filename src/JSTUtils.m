@@ -273,7 +273,7 @@ NSString *JSTStringForFFIType(ffi_type* type) {
 
 
 
-JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, ffi_arg value, JSTBridge *bridge) {
+JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBridge *bridge) {
     
     if (type == &ffi_type_void) {
         return JSValueMakeNull([bridge jsContext]);
@@ -282,13 +282,13 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, ffi_arg value, JSTB
         return [bridge makeJSObjectWithNSObject:(id)value runtimeInfo:nil];
     }
     else if (type == &ffi_type_float) {
-        return JSValueMakeNumber([bridge jsContext], (float)value);
+        return JSValueMakeNumber([bridge jsContext], *(float*)&value);
     }
     else if (type == &ffi_type_double) {
-        return JSValueMakeNumber([bridge jsContext], (double)value);
+        return JSValueMakeNumber([bridge jsContext], *(double*)&value);
     }
     else if (type == &ffi_type_longdouble) {
-        return JSValueMakeNumber([bridge jsContext], (long double)value);
+        return JSValueMakeNumber([bridge jsContext], *(double*)&value);
     }
     else if (type == &ffi_type_uint8) {
         return JSValueMakeNumber([bridge jsContext], (uint8_t)value);

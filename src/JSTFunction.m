@@ -313,27 +313,51 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     return _objcMethod;
 }
 
+-(ffi_type*)setupReturnType {
+    
+    if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend)) {
+        
+        ffi_type *retType = &ffi_type_pointer;
+        
+        if (_msgSendMethodRuntimeInfo) {
+            retType = JSTFFITypeForTypeEncoding([[_msgSendMethodRuntimeInfo returnValue] typeEncoding]);
+        }
+        else {
+            const char *c = method_getTypeEncoding([self objcMethod]);
+            if (c) {
+                retType = [self _ffiArgForEncode:c];
+            }
+            else {
+                NSLog(@"Whoa, couldn't find the return type at all for %@", _functionName);
+            }
+        }
+        
+        // leme just check something here...
+        if (retType == &ffi_type_float || retType == &ffi_type_double) {
+            _returnStorage = [self _allocate:(sizeof(long double*))];
+            _callAddress = &objc_msgSend_fpret;
+        }
+        else {
+            _returnStorage = [self _allocate:(sizeof(void*))];
+        }
+        
+        return retType;
+    }
+    
+    JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName];
+    
+    if ([info returnValue]) { // sometimes, we have info, but not the return value.  Like for NSBeep()
+        return JSTFFITypeForTypeEncoding([[info returnValue] typeEncoding]);
+    }
+    
+    return &ffi_type_void;
+}
+
 -(ffi_type*)setValue:(void**)argVals atIndex:(int)idx {
     
     JSValueRef argument = _jsArguments[idx];
     
     if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend)) {
-        
-        if (idx < 0) {
-            
-            if (_msgSendMethodRuntimeInfo) {
-                return JSTFFITypeForTypeEncoding([[_msgSendMethodRuntimeInfo returnValue] typeEncoding]);
-            }
-            
-            const char *c = method_getTypeEncoding([self objcMethod]);
-            if (c) {
-                return [self _ffiArgForEncode:c];
-            }
-            
-            JSTAssert(false); // wtf really?
-            
-            return &ffi_type_pointer;
-        }
         
         void **foo = [self _allocate:(sizeof(void*))];
         
@@ -400,6 +424,13 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             *foo = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
             argVals[idx] = foo;
         }
+        else if (retType == &ffi_type_double || retType == &ffi_type_float) {
+            void **floatStorage = [self _allocate:(sizeof(long double*))];
+            double d = JSTDoubleFromValue(_bridge, argument);
+            *floatStorage = (double*)&d;
+            argVals[idx] = floatStorage;
+            
+        }
         else {
             debug(@"retType: '%@'", JSTStringForFFIType(retType));
             debug(@"not sure what to do with this guy!");
@@ -409,20 +440,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         return retType;
     }
     else {
-        
-        if (idx < 0) {
-            
-            JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName];
-            
-            if ([info returnValue]) { // sometimes, we have info, but not the return value.  Like for NSBeep()
-                return JSTFFITypeForTypeEncoding([[info returnValue] typeEncoding]);
-            }
-            
-            return &ffi_type_void;
-            
-        }
-        
-        
         JSTAssert(false);
     }
     
@@ -441,7 +458,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         argTypes[j] = [self setValue:*(void**)&argVals atIndex:j];
     }
     
-    ffi_type *returnFIIType = [self setValue:nil atIndex:-1];
+    ffi_type *returnFIIType = [self setupReturnType];
     
     ffi_cif cif;
     ffi_status status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned)_argumentCount, returnFIIType, argTypes);
@@ -450,10 +467,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         abort();
     }
     
-    ffi_arg result;
     
     @try {
-        ffi_call(&cif, _callAddress, &result, argVals);
+        ffi_call(&cif, _callAddress, &_returnStorage, argVals);
     }
     @catch (NSException * e) {
         success = NO;
@@ -468,16 +484,15 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         free(argVals);
     }
     
-    [_allocations release];
+    JSValueRef retJS = nil;
     
-    if (!success) {
-        return nil;
+    if (success) {
+        retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, _returnStorage, _bridge);
+        JSTAssert(retJS);
     }
     
-    JSValueRef retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, result, _bridge);
+    [_allocations release];
     
-    JSTAssert(retJS);
-     
     return retJS;
 }
 

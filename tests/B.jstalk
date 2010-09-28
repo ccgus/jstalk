@@ -2,6 +2,13 @@
 
 var ti = [[JSTTests alloc] init];
 
+jsassert(4.5 == [ti nonBridgedInstanceMethodReturnFloat], "nonBridgedInstanceMethodReturnFloat failed");
+jsassert(14.5 == [ti nonBridgedInstanceMethodReturnDouble], "nonBridgedInstanceMethodReturnDouble failed");
+jsassert(24.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnFloat:20],
+        "nonBridgedInstanceMethodReturnAddAndReturnFloat: failed");
+jsassert(34.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnDouble:20],
+        "nonBridgedInstanceMethodReturnAddAndReturnDouble: failed");
+
 jsassert([ti testBoolValue], "[ti testBoolValue] failed");
 jsassert([JSTTests testClassBoolValue], "[JSTTests testClassBoolValue] failed");
 
@@ -64,6 +71,5 @@ jsassert(fifteen == 15, "JS style method B call failed!");
 var twelve = NSNumber.numberWithInt_(12);
 var fifteen = twelve + 3;
 jsassert(fifteen == 15, "JS style method C call failed!");
-
 
 //print("Done with " + [jstalk env]);
