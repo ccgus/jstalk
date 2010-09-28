@@ -468,7 +468,33 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
                 return &ffi_type_pointer;
             }
             else {
-                JSTAssert(false);
+                
+                #warning refactor this with the crap above.
+                
+                JSTRuntimeInfo *ri = [[_runtimeInfo arguments] objectAtIndex:idx];
+                
+                ffi_type *retType = JSTFFITypeForTypeEncoding([ri typeEncoding]);
+                
+                if (retType == &ffi_type_float) {
+                    float **floatStorage = [self _allocate:(sizeof(float*))];
+                    *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
+                    argVals[idx] = floatStorage;
+                }
+                else if (retType == &ffi_type_double) {
+                    double **floatStorage = [self _allocate:(sizeof(double*))];
+                    *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
+                    argVals[idx] = floatStorage;
+                }
+                else {
+                    assert(false);
+                }
+                
+                
+                debug(@"typeEncoding: '%@'", [ri typeEncoding]);
+                
+                
+                //*foo = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
+                //return ;
             }
         }
         else {

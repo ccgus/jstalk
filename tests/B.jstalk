@@ -1,7 +1,9 @@
 [jstalk include:"testsetup.jstalk"];
 
-var ti = [[JSTTests alloc] init];
+var r = NSMakeRect(1, 2, 3, 4);
 
+
+var ti = [[JSTTests alloc] init];
 
 //print("Trying the long double");
 //jsassert(55.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnLongDouble:50],
