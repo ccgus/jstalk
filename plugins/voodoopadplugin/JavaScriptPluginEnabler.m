@@ -464,20 +464,20 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
 
 @end
 
-
+// These next guys are private APIs that I use in VoodooPad for testing purposes.
+// Just ignore!
 @implementation NSApplication (JSTalkExtras)
 
-+ (id)newScriptingErrorBlockForJSFunction:(JSValueRefAndContextRef)callbackFunction {
++ (id)newErrorBlockForJSFunction:(JSValueRefAndContextRef)callbackFunction {
     
+	JSContextRef mainContext = [[JSCocoa controllerFromContext:callbackFunction.ctx] ctx];
+	JSValueProtect(mainContext, callbackFunction.value);
     void (^theBlock)(NSError *) = ^(NSError *err) {
-        
-        id jsc = [JSCocoa controllerFromContext:callbackFunction.ctx];
-        [jsc callJSFunction:callbackFunction.value withArguments:[NSArray arrayWithObjects:err, nil]];
+        [[JSCocoa controllerFromContext:mainContext] callJSFunction:callbackFunction.value withArguments:[NSArray arrayWithObjects:err, nil]];
     };
     
     return [theBlock copy];
 }
-
 
 + (void)testFunction:(void (^)(NSError *))theBlock {
     
@@ -485,6 +485,14 @@ JavaScriptPluginEnabler *JavaScriptPluginEnablerGlobalHACKHACKHACK;
     
 }
 
++ (void)runInBackground:(JSValueRefAndContextRef)callbackFunction {
+    
+    JSContextRef mainContext = [[JSCocoa controllerFromContext:callbackFunction.ctx] ctx];
+    JSValueProtect(mainContext, callbackFunction.value);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[JSCocoa controllerFromContext:mainContext] callJSFunction:callbackFunction.value withArguments:nil];
+    });
+}
 
 
 @end

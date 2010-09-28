@@ -197,6 +197,23 @@
     }
 }
 
+- (int)nonWhitespaceCountInArray:(NSArray*)ar {
+    
+    int count = 0;
+    
+    for (id f in ar) {
+        
+        f = [[f description] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if ([f length]) {
+            count++;
+        }
+    } 
+    
+    return count;
+    
+}
+
 - (NSString*)description {
     
     NSUInteger argsCount = [_args count];
@@ -232,7 +249,14 @@
         
         TDToken *currentToken = [currentPassedArg isKindOfClass:[TDToken class]] ? currentPassedArg : 0x00;
         
+        NSString *value = currentToken ? [currentToken stringValue] : [currentPassedArg description];
+        
         if ([currentToken isWhitespace]) {
+            
+            //if ([value isEqualToString:@" "]) {
+                [currentArgs addObject:value];
+            //}
+            
             continue;
         }
         
@@ -240,7 +264,7 @@
             hadSymbolAsArg = YES;
         }
         
-        NSString *value = currentToken ? [currentToken stringValue] : [currentPassedArg description];
+        
         
         if ([@":" isEqualToString:value]) {
             
@@ -310,8 +334,20 @@
     
     NSMutableString *ret = [NSMutableString stringWithFormat:@"%@.%@(", target, selector];
     
-    if ([methodArgs count]) {
-        [ret appendString:[methodArgs componentsJoinedByString:@", "]];
+    if ([self nonWhitespaceCountInArray:methodArgs]) {
+        
+        for (int i = 0; i < [methodArgs count]; i++) {
+            
+            NSString *arg = [methodArgs objectAtIndex:i];
+            NSString *s = [arg description];
+            NSString *t = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+            [ret appendString:s];
+            
+            if ([t length] && i < [methodArgs count] - 1) {
+                [ret appendString:@","];
+            }
+        }
     }
     
     [ret appendString:@")"];
