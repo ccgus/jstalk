@@ -242,12 +242,16 @@ static NSMutableArray *JSTalkPluginList;
         [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
     
-    [self deleteObjectWithName:@"jstalk"];
     
+    // what if we want to call callFunctionNamed: later, and we can't find the jstalk object?
+    // [self deleteObjectWithName:@"jstalk"];
+    
+    /*
     // this will free up the reference to ourself
     if ([_jsController ctx]) {
         JSGarbageCollect([_jsController ctx]);
     }
+    */
     
     return resultObj;
 }
