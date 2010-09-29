@@ -159,6 +159,11 @@ ffi_type* JSTFFITypeForTypeEncoding(NSString *encoding) {
         return &ffi_type_void;
     }
     
+    if ([encoding length] > 1) {
+        debug(@"WHOA BIG ENCODING?!");
+        return &ffi_type_pointer;
+    }
+    
     char c = [encoding characterAtIndex:0];
     
     switch (c) {
@@ -322,6 +327,80 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
 
 
 
-
+NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncoding) {
+    
+    NSMutableArray *types = [[[NSMutableArray alloc] init] autorelease];
+    char *c = (char*)[structureTypeEncoding UTF8String];
+    char *c0 = c;
+    int openedBracesCount = 0;
+    int closedBracesCount = 0;
+    for (;*c; c++) {
+        if (*c == '{') {
+            openedBracesCount++;
+            while (*c && *c != '=') {
+                c++;
+            }
+            
+            if (!*c) {
+                continue;
+            }
+        }
+        
+        if (*c == '}') {
+            closedBracesCount++;
+            
+            // If we parsed something (c>c0) and have an equal amount of opened and closed braces, we're done
+            if (c0 != c && openedBracesCount == closedBracesCount)     {
+                c++;
+                break;
+            }
+            
+            continue;
+        }
+        
+        if (*c == '=') {
+            continue;
+        }
+        
+        [types addObject:[NSString stringWithFormat:@"%c", *c]];
+        
+        // Special case for pointers
+        if (*c == '^') {
+            // Skip pointers to pointers (^^^)
+            while (*c && *c == '^') {
+                c++;
+            }
+            
+            // Skip type, special case for structure
+            if (*c == '{') {
+                int openedBracesCount2 = 1;
+                int closedBracesCount2 = 0;
+                c++;
+                
+                for (; *c && closedBracesCount2 != openedBracesCount2; c++) {
+                    if (*c == '{') {
+                        openedBracesCount2++;
+                    }
+                    
+                    if (*c == '}') {
+                        closedBracesCount2++;
+                    }
+                }
+                c--;
+            }
+            else {
+                c++;
+            }
+        }
+    }
+    
+    if (closedBracesCount != openedBracesCount) {
+        JSTAssert(NO);
+        NSLog(@"Could not parse structure type encodings for %@", structureTypeEncoding);
+        return nil;
+    }
+    
+    return types;
+}
 
 

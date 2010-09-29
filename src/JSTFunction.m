@@ -354,6 +354,16 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName];
     
     if ([info returnValue]) { // sometimes, we have info, but not the return value.  Like for NSBeep()
+        
+        
+        if ([[[info returnValue] typeEncoding] hasPrefix:@"{"]) {
+            debug(@"[[info returnValue] typeEncoding]: '%@'", [[info returnValue] typeEncoding]);
+            NSArray *encodings = JSTTypeEncodingsFromStructureTypeEncoding([[info returnValue] typeEncoding]);
+            debug(@"encodings: '%@'", encodings);
+            assert(false);
+        }
+        
+        
         return JSTFFITypeForTypeEncoding([[info returnValue] typeEncoding]);
     }
     
@@ -509,6 +519,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 - (JSValueRef)call:(JSValueRef*)exception {
     
     [self checkForMsgSendMethodRuntimeInfo];
+    
+    debug(@"Calling %@", _functionName);
+    
     BOOL success        = YES;
     ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
     void **argVals      = _argumentCount ? malloc(_argumentCount * sizeof(void*)) : 0x00;

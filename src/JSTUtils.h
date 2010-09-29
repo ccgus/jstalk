@@ -21,5 +21,5 @@ ffi_type* JSTFFITypeForBridgeDeclaredType(NSString *type);
 JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBridge *bridge);
 long JSTLongFromValue(JSTBridge *bridge, JSValueRef value);
 long double JSTDoubleFromValue(JSTBridge *bridge, JSValueRef value);
-
+NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncoding);
 
