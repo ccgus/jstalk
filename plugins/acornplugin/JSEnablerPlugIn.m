@@ -5,8 +5,7 @@
 
 #import "JSEnablerPlugIn.h"
 #import "ACPlugin.h"
-#import <JSTalk/JSTalk.h>
-#import <JSTalk/JSCocoaController.h>
+#import "JSTalk.h"
 
 @interface JSEnablerPlugIn (SuperSecret)
 - (void) findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager;
@@ -15,22 +14,31 @@
 
 @implementation JSEnablerPlugIn
 
-+ (id) plugin {
++ (id)plugin {
     return [[[self alloc] init] autorelease];
 }
 
 
-- (void) didRegister {
+- (void)didRegister {
     
     // this guy openes up a Distributed Objects port to listen for outside JSTalk commands commands
     [JSTalk listen];
+    
+    
+    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
+    
+    [jstalk executeString:@"print('hai');"];
+    
+    
+    
+    
 }
 
-- (void) willRegister:(id<ACPluginManager>)pluginManager {
+- (void)willRegister:(id<ACPluginManager>)pluginManager {
     [self findJSCocoaScriptsForPluginManager:pluginManager];
 }
 
-- (void) findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager {
+- (void)findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager {
     
     NSString *pluginDir = [@"~/Library/Application Support/Acorn/Plug-Ins/" stringByExpandingTildeInPath];
     NSFileManager *fm   = [NSFileManager defaultManager];
@@ -58,7 +66,7 @@
 
 
 
-- (CIImage*) executeScriptForImage:(CIImage*)image scriptPath:(NSString*)scriptPath {
+- (CIImage*)executeScriptForImage:(CIImage*)image scriptPath:(NSString*)scriptPath {
     
     NSError *err            = 0x00;
     NSString *theJavaScript = [NSString stringWithContentsOfFile:scriptPath encoding:NSUTF8StringEncoding error:&err];

@@ -10,11 +10,66 @@
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
 		CC0EC5DA0F22A21A0094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC5D90F22A21A0094F69D /* ScriptingBridge.framework */; };
+		CC168BB11253B05A0072FE99 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB01253B05A0072FE99 /* JSTalk.m */; };
+		CC168BBA1253B0780072FE99 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB51253B0780072FE99 /* JSTExtras.m */; };
+		CC168BBB1253B0780072FE99 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB71253B0780072FE99 /* JSTListener.m */; };
+		CC168BBC1253B0780072FE99 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB91253B0780072FE99 /* JSTPreprocessor.m */; };
+		CC168BCD1253B07F0072FE99 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */; };
+		CC168BD01253B07F0072FE99 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC41253B07F0072FE99 /* JSCocoaController.m */; };
+		CC168BD11253B07F0072FE99 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */; };
+		CC168BD21253B07F0072FE99 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */; };
+		CC168BD31253B07F0072FE99 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */; };
+		CC168BD41253B07F0072FE99 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */; };
+		CC168C331253B0920072FE99 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BD91253B0920072FE99 /* TDAlternation.m */; };
+		CC168C341253B0920072FE99 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BDB1253B0920072FE99 /* TDAny.m */; };
+		CC168C351253B0920072FE99 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BDD1253B0920072FE99 /* TDAssembly.m */; };
+		CC168C361253B0920072FE99 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BDF1253B0920072FE99 /* TDCaseInsensitiveLiteral.m */; };
+		CC168C371253B0920072FE99 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BE11253B0920072FE99 /* TDChar.m */; };
+		CC168C381253B0920072FE99 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BE31253B0920072FE99 /* TDCharacterAssembly.m */; };
+		CC168C391253B0920072FE99 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BE51253B0920072FE99 /* TDCollectionParser.m */; };
+		CC168C3A1253B0920072FE99 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BE71253B0920072FE99 /* TDComment.m */; };
+		CC168C3B1253B0920072FE99 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BE91253B0920072FE99 /* TDCommentState.m */; };
+		CC168C3C1253B0920072FE99 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BEB1253B0920072FE99 /* TDDigit.m */; };
+		CC168C3D1253B0920072FE99 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BED1253B0920072FE99 /* TDEmpty.m */; };
+		CC168C3E1253B0920072FE99 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BEF1253B0920072FE99 /* TDLetter.m */; };
+		CC168C3F1253B0920072FE99 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BF11253B0920072FE99 /* TDLiteral.m */; };
+		CC168C401253B0920072FE99 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BF31253B0920072FE99 /* TDLowercaseWord.m */; };
+		CC168C411253B0920072FE99 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BF51253B0920072FE99 /* TDMultiLineCommentState.m */; };
+		CC168C421253B0920072FE99 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BF71253B0920072FE99 /* TDNonReservedWord.m */; };
+		CC168C431253B0920072FE99 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BF91253B0920072FE99 /* TDNum.m */; };
+		CC168C441253B0920072FE99 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BFB1253B0920072FE99 /* TDNumberState.m */; };
+		CC168C451253B0920072FE99 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BFE1253B0920072FE99 /* TDParser.m */; };
+		CC168C461253B0920072FE99 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C001253B0920072FE99 /* TDQuotedString.m */; };
+		CC168C471253B0920072FE99 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C021253B0920072FE99 /* TDQuoteState.m */; };
+		CC168C481253B0920072FE99 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C041253B0920072FE99 /* TDReader.m */; };
+		CC168C491253B0920072FE99 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C061253B0920072FE99 /* TDRepetition.m */; };
+		CC168C4A1253B0920072FE99 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C081253B0920072FE99 /* TDReservedWord.m */; };
+		CC168C4B1253B0920072FE99 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C0A1253B0920072FE99 /* TDScientificNumberState.m */; };
+		CC168C4C1253B0920072FE99 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C0C1253B0920072FE99 /* TDSequence.m */; };
+		CC168C4D1253B0920072FE99 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C0E1253B0920072FE99 /* TDSingleLineCommentState.m */; };
+		CC168C4E1253B0920072FE99 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C101253B0920072FE99 /* TDSpecificChar.m */; };
+		CC168C4F1253B0920072FE99 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C121253B0920072FE99 /* TDSymbol.m */; };
+		CC168C501253B0920072FE99 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C141253B0920072FE99 /* TDSymbolNode.m */; };
+		CC168C511253B0920072FE99 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C161253B0920072FE99 /* TDSymbolRootNode.m */; };
+		CC168C521253B0920072FE99 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C181253B0920072FE99 /* TDSymbolState.m */; };
+		CC168C531253B0920072FE99 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C1A1253B0920072FE99 /* TDTerminal.m */; };
+		CC168C541253B0920072FE99 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C1C1253B0920072FE99 /* TDToken.m */; };
+		CC168C551253B0920072FE99 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C1E1253B0920072FE99 /* TDTokenArraySource.m */; };
+		CC168C561253B0920072FE99 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C201253B0920072FE99 /* TDTokenAssembly.m */; };
+		CC168C571253B0920072FE99 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C221253B0920072FE99 /* TDTokenizer.m */; };
+		CC168C581253B0920072FE99 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C241253B0920072FE99 /* TDTokenizerState.m */; };
+		CC168C591253B0920072FE99 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C261253B0920072FE99 /* TDTrack.m */; };
+		CC168C5A1253B0920072FE99 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C281253B0920072FE99 /* TDTrackException.m */; };
+		CC168C5B1253B0920072FE99 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C2A1253B0920072FE99 /* TDUppercaseWord.m */; };
+		CC168C5C1253B0920072FE99 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C2C1253B0920072FE99 /* TDWhitespaceState.m */; };
+		CC168C5D1253B0920072FE99 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C2E1253B0920072FE99 /* TDWord.m */; };
+		CC168C5E1253B0920072FE99 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C301253B0920072FE99 /* TDWordOrReservedState.m */; };
+		CC168C5F1253B0920072FE99 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C321253B0920072FE99 /* TDWordState.m */; };
+		CC168C681253B0D20072FE99 /* jslint-jscocoa.js in Resources */ = {isa = PBXBuildFile; fileRef = CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */; };
+		CC168C691253B0D20072FE99 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CC168BC11253B07F0072FE99 /* class.js */; };
 		CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */; };
 		CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */; };
 		CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */ = {isa = PBXBuildFile; fileRef = CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */; };
-		CCCFE0F70F83489E005161C9 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0F60F83489E005161C9 /* JSTalk.framework */; };
-		CCCFE0FC0F8348A2005161C9 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CCCFE0F60F83489E005161C9 /* JSTalk.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +79,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CCCFE0FC0F8348A2005161C9 /* JSTalk.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,13 +93,126 @@
 		8D5B49B6048680CD000E48DA /* JSTalk.acplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSTalk.acplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC0EC5D90F22A21A0094F69D /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = /System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<absolute>"; };
+		CC168BAF1253B05A0072FE99 /* JSTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk.h; path = ../../src/JSTalk.h; sourceTree = SOURCE_ROOT; };
+		CC168BB01253B05A0072FE99 /* JSTalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTalk.m; path = ../../src/JSTalk.m; sourceTree = SOURCE_ROOT; };
+		CC168BB41253B0780072FE99 /* JSTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTExtras.h; path = ../../src/JSTExtras.h; sourceTree = SOURCE_ROOT; };
+		CC168BB51253B0780072FE99 /* JSTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTExtras.m; path = ../../src/JSTExtras.m; sourceTree = SOURCE_ROOT; };
+		CC168BB61253B0780072FE99 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = ../../src/JSTListener.h; sourceTree = SOURCE_ROOT; };
+		CC168BB71253B0780072FE99 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = ../../src/JSTListener.m; sourceTree = SOURCE_ROOT; };
+		CC168BB81253B0780072FE99 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = ../../src/JSTPreprocessor.h; sourceTree = SOURCE_ROOT; };
+		CC168BB91253B0780072FE99 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = ../../src/JSTPreprocessor.m; sourceTree = SOURCE_ROOT; };
+		CC168BBE1253B07F0072FE99 /* BridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgeSupportController.h; path = ../../jscocoa/JSCocoa/BridgeSupportController.h; sourceTree = SOURCE_ROOT; };
+		CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BridgeSupportController.m; path = ../../jscocoa/JSCocoa/BridgeSupportController.m; sourceTree = SOURCE_ROOT; };
+		CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jslint-jscocoa.js"; path = "../../jscocoa/JSCocoa/jslint-jscocoa.js"; sourceTree = SOURCE_ROOT; };
+		CC168BC11253B07F0072FE99 /* class.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = class.js; path = ../../jscocoa/JSCocoa/class.js; sourceTree = SOURCE_ROOT; };
+		CC168BC21253B07F0072FE99 /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = ../../jscocoa/JSCocoa/JSCocoa.h; sourceTree = SOURCE_ROOT; };
+		CC168BC31253B07F0072FE99 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = ../../jscocoa/JSCocoa/JSCocoaController.h; sourceTree = SOURCE_ROOT; };
+		CC168BC41253B07F0072FE99 /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = ../../jscocoa/JSCocoa/JSCocoaController.m; sourceTree = SOURCE_ROOT; };
+		CC168BC51253B07F0072FE99 /* JSCocoaFFIArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIArgument.h; path = ../../jscocoa/JSCocoa/JSCocoaFFIArgument.h; sourceTree = SOURCE_ROOT; };
+		CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIArgument.m; path = ../../jscocoa/JSCocoa/JSCocoaFFIArgument.m; sourceTree = SOURCE_ROOT; };
+		CC168BC71253B07F0072FE99 /* JSCocoaFFIClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIClosure.h; path = ../../jscocoa/JSCocoa/JSCocoaFFIClosure.h; sourceTree = SOURCE_ROOT; };
+		CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = ../../jscocoa/JSCocoa/JSCocoaFFIClosure.m; sourceTree = SOURCE_ROOT; };
+		CC168BC91253B07F0072FE99 /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = ../../jscocoa/JSCocoa/JSCocoaLib.h; sourceTree = SOURCE_ROOT; };
+		CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = ../../jscocoa/JSCocoa/JSCocoaLib.m; sourceTree = SOURCE_ROOT; };
+		CC168BCB1253B07F0072FE99 /* JSCocoaPrivateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaPrivateObject.h; path = ../../jscocoa/JSCocoa/JSCocoaPrivateObject.h; sourceTree = SOURCE_ROOT; };
+		CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaPrivateObject.m; path = ../../jscocoa/JSCocoa/JSCocoaPrivateObject.m; sourceTree = SOURCE_ROOT; };
+		CC168BD81253B0920072FE99 /* TDAlternation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAlternation.h; sourceTree = "<group>"; };
+		CC168BD91253B0920072FE99 /* TDAlternation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAlternation.m; sourceTree = "<group>"; };
+		CC168BDA1253B0920072FE99 /* TDAny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAny.h; sourceTree = "<group>"; };
+		CC168BDB1253B0920072FE99 /* TDAny.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAny.m; sourceTree = "<group>"; };
+		CC168BDC1253B0920072FE99 /* TDAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAssembly.h; sourceTree = "<group>"; };
+		CC168BDD1253B0920072FE99 /* TDAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAssembly.m; sourceTree = "<group>"; };
+		CC168BDE1253B0920072FE99 /* TDCaseInsensitiveLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCaseInsensitiveLiteral.h; sourceTree = "<group>"; };
+		CC168BDF1253B0920072FE99 /* TDCaseInsensitiveLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCaseInsensitiveLiteral.m; sourceTree = "<group>"; };
+		CC168BE01253B0920072FE99 /* TDChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDChar.h; sourceTree = "<group>"; };
+		CC168BE11253B0920072FE99 /* TDChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDChar.m; sourceTree = "<group>"; };
+		CC168BE21253B0920072FE99 /* TDCharacterAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCharacterAssembly.h; sourceTree = "<group>"; };
+		CC168BE31253B0920072FE99 /* TDCharacterAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCharacterAssembly.m; sourceTree = "<group>"; };
+		CC168BE41253B0920072FE99 /* TDCollectionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCollectionParser.h; sourceTree = "<group>"; };
+		CC168BE51253B0920072FE99 /* TDCollectionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCollectionParser.m; sourceTree = "<group>"; };
+		CC168BE61253B0920072FE99 /* TDComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDComment.h; sourceTree = "<group>"; };
+		CC168BE71253B0920072FE99 /* TDComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDComment.m; sourceTree = "<group>"; };
+		CC168BE81253B0920072FE99 /* TDCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCommentState.h; sourceTree = "<group>"; };
+		CC168BE91253B0920072FE99 /* TDCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCommentState.m; sourceTree = "<group>"; };
+		CC168BEA1253B0920072FE99 /* TDDigit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDigit.h; sourceTree = "<group>"; };
+		CC168BEB1253B0920072FE99 /* TDDigit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDigit.m; sourceTree = "<group>"; };
+		CC168BEC1253B0920072FE99 /* TDEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDEmpty.h; sourceTree = "<group>"; };
+		CC168BED1253B0920072FE99 /* TDEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDEmpty.m; sourceTree = "<group>"; };
+		CC168BEE1253B0920072FE99 /* TDLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLetter.h; sourceTree = "<group>"; };
+		CC168BEF1253B0920072FE99 /* TDLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLetter.m; sourceTree = "<group>"; };
+		CC168BF01253B0920072FE99 /* TDLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLiteral.h; sourceTree = "<group>"; };
+		CC168BF11253B0920072FE99 /* TDLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLiteral.m; sourceTree = "<group>"; };
+		CC168BF21253B0920072FE99 /* TDLowercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLowercaseWord.h; sourceTree = "<group>"; };
+		CC168BF31253B0920072FE99 /* TDLowercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLowercaseWord.m; sourceTree = "<group>"; };
+		CC168BF41253B0920072FE99 /* TDMultiLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiLineCommentState.h; sourceTree = "<group>"; };
+		CC168BF51253B0920072FE99 /* TDMultiLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiLineCommentState.m; sourceTree = "<group>"; };
+		CC168BF61253B0920072FE99 /* TDNonReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNonReservedWord.h; sourceTree = "<group>"; };
+		CC168BF71253B0920072FE99 /* TDNonReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNonReservedWord.m; sourceTree = "<group>"; };
+		CC168BF81253B0920072FE99 /* TDNum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNum.h; sourceTree = "<group>"; };
+		CC168BF91253B0920072FE99 /* TDNum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNum.m; sourceTree = "<group>"; };
+		CC168BFA1253B0920072FE99 /* TDNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNumberState.h; sourceTree = "<group>"; };
+		CC168BFB1253B0920072FE99 /* TDNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNumberState.m; sourceTree = "<group>"; };
+		CC168BFC1253B0920072FE99 /* TDParseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParseKit.h; sourceTree = "<group>"; };
+		CC168BFD1253B0920072FE99 /* TDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParser.h; sourceTree = "<group>"; };
+		CC168BFE1253B0920072FE99 /* TDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDParser.m; sourceTree = "<group>"; };
+		CC168BFF1253B0920072FE99 /* TDQuotedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuotedString.h; sourceTree = "<group>"; };
+		CC168C001253B0920072FE99 /* TDQuotedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuotedString.m; sourceTree = "<group>"; };
+		CC168C011253B0920072FE99 /* TDQuoteState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuoteState.h; sourceTree = "<group>"; };
+		CC168C021253B0920072FE99 /* TDQuoteState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuoteState.m; sourceTree = "<group>"; };
+		CC168C031253B0920072FE99 /* TDReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReader.h; sourceTree = "<group>"; };
+		CC168C041253B0920072FE99 /* TDReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReader.m; sourceTree = "<group>"; };
+		CC168C051253B0920072FE99 /* TDRepetition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDRepetition.h; sourceTree = "<group>"; };
+		CC168C061253B0920072FE99 /* TDRepetition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDRepetition.m; sourceTree = "<group>"; };
+		CC168C071253B0920072FE99 /* TDReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReservedWord.h; sourceTree = "<group>"; };
+		CC168C081253B0920072FE99 /* TDReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReservedWord.m; sourceTree = "<group>"; };
+		CC168C091253B0920072FE99 /* TDScientificNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDScientificNumberState.h; sourceTree = "<group>"; };
+		CC168C0A1253B0920072FE99 /* TDScientificNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDScientificNumberState.m; sourceTree = "<group>"; };
+		CC168C0B1253B0920072FE99 /* TDSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSequence.h; sourceTree = "<group>"; };
+		CC168C0C1253B0920072FE99 /* TDSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSequence.m; sourceTree = "<group>"; };
+		CC168C0D1253B0920072FE99 /* TDSingleLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingleLineCommentState.h; sourceTree = "<group>"; };
+		CC168C0E1253B0920072FE99 /* TDSingleLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingleLineCommentState.m; sourceTree = "<group>"; };
+		CC168C0F1253B0920072FE99 /* TDSpecificChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSpecificChar.h; sourceTree = "<group>"; };
+		CC168C101253B0920072FE99 /* TDSpecificChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSpecificChar.m; sourceTree = "<group>"; };
+		CC168C111253B0920072FE99 /* TDSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbol.h; sourceTree = "<group>"; };
+		CC168C121253B0920072FE99 /* TDSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbol.m; sourceTree = "<group>"; };
+		CC168C131253B0920072FE99 /* TDSymbolNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolNode.h; sourceTree = "<group>"; };
+		CC168C141253B0920072FE99 /* TDSymbolNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolNode.m; sourceTree = "<group>"; };
+		CC168C151253B0920072FE99 /* TDSymbolRootNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolRootNode.h; sourceTree = "<group>"; };
+		CC168C161253B0920072FE99 /* TDSymbolRootNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolRootNode.m; sourceTree = "<group>"; };
+		CC168C171253B0920072FE99 /* TDSymbolState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolState.h; sourceTree = "<group>"; };
+		CC168C181253B0920072FE99 /* TDSymbolState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolState.m; sourceTree = "<group>"; };
+		CC168C191253B0920072FE99 /* TDTerminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTerminal.h; sourceTree = "<group>"; };
+		CC168C1A1253B0920072FE99 /* TDTerminal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTerminal.m; sourceTree = "<group>"; };
+		CC168C1B1253B0920072FE99 /* TDToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDToken.h; sourceTree = "<group>"; };
+		CC168C1C1253B0920072FE99 /* TDToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDToken.m; sourceTree = "<group>"; };
+		CC168C1D1253B0920072FE99 /* TDTokenArraySource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenArraySource.h; sourceTree = "<group>"; };
+		CC168C1E1253B0920072FE99 /* TDTokenArraySource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenArraySource.m; sourceTree = "<group>"; };
+		CC168C1F1253B0920072FE99 /* TDTokenAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenAssembly.h; sourceTree = "<group>"; };
+		CC168C201253B0920072FE99 /* TDTokenAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenAssembly.m; sourceTree = "<group>"; };
+		CC168C211253B0920072FE99 /* TDTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizer.h; sourceTree = "<group>"; };
+		CC168C221253B0920072FE99 /* TDTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizer.m; sourceTree = "<group>"; };
+		CC168C231253B0920072FE99 /* TDTokenizerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizerState.h; sourceTree = "<group>"; };
+		CC168C241253B0920072FE99 /* TDTokenizerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizerState.m; sourceTree = "<group>"; };
+		CC168C251253B0920072FE99 /* TDTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrack.h; sourceTree = "<group>"; };
+		CC168C261253B0920072FE99 /* TDTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrack.m; sourceTree = "<group>"; };
+		CC168C271253B0920072FE99 /* TDTrackException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrackException.h; sourceTree = "<group>"; };
+		CC168C281253B0920072FE99 /* TDTrackException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrackException.m; sourceTree = "<group>"; };
+		CC168C291253B0920072FE99 /* TDUppercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDUppercaseWord.h; sourceTree = "<group>"; };
+		CC168C2A1253B0920072FE99 /* TDUppercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDUppercaseWord.m; sourceTree = "<group>"; };
+		CC168C2B1253B0920072FE99 /* TDWhitespaceState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWhitespaceState.h; sourceTree = "<group>"; };
+		CC168C2C1253B0920072FE99 /* TDWhitespaceState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWhitespaceState.m; sourceTree = "<group>"; };
+		CC168C2D1253B0920072FE99 /* TDWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWord.h; sourceTree = "<group>"; };
+		CC168C2E1253B0920072FE99 /* TDWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWord.m; sourceTree = "<group>"; };
+		CC168C2F1253B0920072FE99 /* TDWordOrReservedState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordOrReservedState.h; sourceTree = "<group>"; };
+		CC168C301253B0920072FE99 /* TDWordOrReservedState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordOrReservedState.m; sourceTree = "<group>"; };
+		CC168C311253B0920072FE99 /* TDWordState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordState.h; sourceTree = "<group>"; };
+		CC168C321253B0920072FE99 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
 		CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libffi.dylib; path = usr/lib/libffi.dylib; sourceTree = SDKROOT; };
 		CC726D6A0F1568BC00EB02AF /* JSEnablerPlugIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSEnablerPlugIn.h; sourceTree = "<group>"; };
 		CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEnablerPlugIn.m; sourceTree = "<group>"; };
 		CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsenabler_Prefix.pch; sourceTree = "<group>"; };
 		CC726DF80F156BE500EB02AF /* ACPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPlugin.h; sourceTree = "<group>"; };
-		CCCFE0F60F83489E005161C9 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -58,7 +225,6 @@
 				CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */,
 				CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */,
 				CC0EC5DA0F22A21A0094F69D /* ScriptingBridge.framework in Frameworks */,
-				CCCFE0F70F83489E005161C9 /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,7 +246,6 @@
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				CCCFE0F60F83489E005161C9 /* JSTalk.framework */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
 				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
 			);
@@ -99,6 +264,16 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CC168BD71253B0920072FE99 /* todparsekit */,
+				CC168BBD1253B07F0072FE99 /* JSCocoa */,
+				CC168BAF1253B05A0072FE99 /* JSTalk.h */,
+				CC168BB01253B05A0072FE99 /* JSTalk.m */,
+				CC168BB41253B0780072FE99 /* JSTExtras.h */,
+				CC168BB51253B0780072FE99 /* JSTExtras.m */,
+				CC168BB61253B0780072FE99 /* JSTListener.h */,
+				CC168BB71253B0780072FE99 /* JSTListener.m */,
+				CC168BB81253B0780072FE99 /* JSTPreprocessor.h */,
+				CC168BB91253B0780072FE99 /* JSTPreprocessor.m */,
 				CC726D6A0F1568BC00EB02AF /* JSEnablerPlugIn.h */,
 				CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */,
 			);
@@ -143,6 +318,127 @@
 			name = "Other Sources";
 			sourceTree = "<group>";
 		};
+		CC168BBD1253B07F0072FE99 /* JSCocoa */ = {
+			isa = PBXGroup;
+			children = (
+				CC168BBE1253B07F0072FE99 /* BridgeSupportController.h */,
+				CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */,
+				CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */,
+				CC168BC11253B07F0072FE99 /* class.js */,
+				CC168BC21253B07F0072FE99 /* JSCocoa.h */,
+				CC168BC31253B07F0072FE99 /* JSCocoaController.h */,
+				CC168BC41253B07F0072FE99 /* JSCocoaController.m */,
+				CC168BC51253B07F0072FE99 /* JSCocoaFFIArgument.h */,
+				CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */,
+				CC168BC71253B07F0072FE99 /* JSCocoaFFIClosure.h */,
+				CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */,
+				CC168BC91253B07F0072FE99 /* JSCocoaLib.h */,
+				CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */,
+				CC168BCB1253B07F0072FE99 /* JSCocoaPrivateObject.h */,
+				CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */,
+			);
+			name = JSCocoa;
+			sourceTree = "<group>";
+		};
+		CC168BD71253B0920072FE99 /* todparsekit */ = {
+			isa = PBXGroup;
+			children = (
+				CC168BD81253B0920072FE99 /* TDAlternation.h */,
+				CC168BD91253B0920072FE99 /* TDAlternation.m */,
+				CC168BDA1253B0920072FE99 /* TDAny.h */,
+				CC168BDB1253B0920072FE99 /* TDAny.m */,
+				CC168BDC1253B0920072FE99 /* TDAssembly.h */,
+				CC168BDD1253B0920072FE99 /* TDAssembly.m */,
+				CC168BDE1253B0920072FE99 /* TDCaseInsensitiveLiteral.h */,
+				CC168BDF1253B0920072FE99 /* TDCaseInsensitiveLiteral.m */,
+				CC168BE01253B0920072FE99 /* TDChar.h */,
+				CC168BE11253B0920072FE99 /* TDChar.m */,
+				CC168BE21253B0920072FE99 /* TDCharacterAssembly.h */,
+				CC168BE31253B0920072FE99 /* TDCharacterAssembly.m */,
+				CC168BE41253B0920072FE99 /* TDCollectionParser.h */,
+				CC168BE51253B0920072FE99 /* TDCollectionParser.m */,
+				CC168BE61253B0920072FE99 /* TDComment.h */,
+				CC168BE71253B0920072FE99 /* TDComment.m */,
+				CC168BE81253B0920072FE99 /* TDCommentState.h */,
+				CC168BE91253B0920072FE99 /* TDCommentState.m */,
+				CC168BEA1253B0920072FE99 /* TDDigit.h */,
+				CC168BEB1253B0920072FE99 /* TDDigit.m */,
+				CC168BEC1253B0920072FE99 /* TDEmpty.h */,
+				CC168BED1253B0920072FE99 /* TDEmpty.m */,
+				CC168BEE1253B0920072FE99 /* TDLetter.h */,
+				CC168BEF1253B0920072FE99 /* TDLetter.m */,
+				CC168BF01253B0920072FE99 /* TDLiteral.h */,
+				CC168BF11253B0920072FE99 /* TDLiteral.m */,
+				CC168BF21253B0920072FE99 /* TDLowercaseWord.h */,
+				CC168BF31253B0920072FE99 /* TDLowercaseWord.m */,
+				CC168BF41253B0920072FE99 /* TDMultiLineCommentState.h */,
+				CC168BF51253B0920072FE99 /* TDMultiLineCommentState.m */,
+				CC168BF61253B0920072FE99 /* TDNonReservedWord.h */,
+				CC168BF71253B0920072FE99 /* TDNonReservedWord.m */,
+				CC168BF81253B0920072FE99 /* TDNum.h */,
+				CC168BF91253B0920072FE99 /* TDNum.m */,
+				CC168BFA1253B0920072FE99 /* TDNumberState.h */,
+				CC168BFB1253B0920072FE99 /* TDNumberState.m */,
+				CC168BFC1253B0920072FE99 /* TDParseKit.h */,
+				CC168BFD1253B0920072FE99 /* TDParser.h */,
+				CC168BFE1253B0920072FE99 /* TDParser.m */,
+				CC168BFF1253B0920072FE99 /* TDQuotedString.h */,
+				CC168C001253B0920072FE99 /* TDQuotedString.m */,
+				CC168C011253B0920072FE99 /* TDQuoteState.h */,
+				CC168C021253B0920072FE99 /* TDQuoteState.m */,
+				CC168C031253B0920072FE99 /* TDReader.h */,
+				CC168C041253B0920072FE99 /* TDReader.m */,
+				CC168C051253B0920072FE99 /* TDRepetition.h */,
+				CC168C061253B0920072FE99 /* TDRepetition.m */,
+				CC168C071253B0920072FE99 /* TDReservedWord.h */,
+				CC168C081253B0920072FE99 /* TDReservedWord.m */,
+				CC168C091253B0920072FE99 /* TDScientificNumberState.h */,
+				CC168C0A1253B0920072FE99 /* TDScientificNumberState.m */,
+				CC168C0B1253B0920072FE99 /* TDSequence.h */,
+				CC168C0C1253B0920072FE99 /* TDSequence.m */,
+				CC168C0D1253B0920072FE99 /* TDSingleLineCommentState.h */,
+				CC168C0E1253B0920072FE99 /* TDSingleLineCommentState.m */,
+				CC168C0F1253B0920072FE99 /* TDSpecificChar.h */,
+				CC168C101253B0920072FE99 /* TDSpecificChar.m */,
+				CC168C111253B0920072FE99 /* TDSymbol.h */,
+				CC168C121253B0920072FE99 /* TDSymbol.m */,
+				CC168C131253B0920072FE99 /* TDSymbolNode.h */,
+				CC168C141253B0920072FE99 /* TDSymbolNode.m */,
+				CC168C151253B0920072FE99 /* TDSymbolRootNode.h */,
+				CC168C161253B0920072FE99 /* TDSymbolRootNode.m */,
+				CC168C171253B0920072FE99 /* TDSymbolState.h */,
+				CC168C181253B0920072FE99 /* TDSymbolState.m */,
+				CC168C191253B0920072FE99 /* TDTerminal.h */,
+				CC168C1A1253B0920072FE99 /* TDTerminal.m */,
+				CC168C1B1253B0920072FE99 /* TDToken.h */,
+				CC168C1C1253B0920072FE99 /* TDToken.m */,
+				CC168C1D1253B0920072FE99 /* TDTokenArraySource.h */,
+				CC168C1E1253B0920072FE99 /* TDTokenArraySource.m */,
+				CC168C1F1253B0920072FE99 /* TDTokenAssembly.h */,
+				CC168C201253B0920072FE99 /* TDTokenAssembly.m */,
+				CC168C211253B0920072FE99 /* TDTokenizer.h */,
+				CC168C221253B0920072FE99 /* TDTokenizer.m */,
+				CC168C231253B0920072FE99 /* TDTokenizerState.h */,
+				CC168C241253B0920072FE99 /* TDTokenizerState.m */,
+				CC168C251253B0920072FE99 /* TDTrack.h */,
+				CC168C261253B0920072FE99 /* TDTrack.m */,
+				CC168C271253B0920072FE99 /* TDTrackException.h */,
+				CC168C281253B0920072FE99 /* TDTrackException.m */,
+				CC168C291253B0920072FE99 /* TDUppercaseWord.h */,
+				CC168C2A1253B0920072FE99 /* TDUppercaseWord.m */,
+				CC168C2B1253B0920072FE99 /* TDWhitespaceState.h */,
+				CC168C2C1253B0920072FE99 /* TDWhitespaceState.m */,
+				CC168C2D1253B0920072FE99 /* TDWord.h */,
+				CC168C2E1253B0920072FE99 /* TDWord.m */,
+				CC168C2F1253B0920072FE99 /* TDWordOrReservedState.h */,
+				CC168C301253B0920072FE99 /* TDWordOrReservedState.m */,
+				CC168C311253B0920072FE99 /* TDWordState.h */,
+				CC168C321253B0920072FE99 /* TDWordState.m */,
+			);
+			name = todparsekit;
+			path = ../../src/todparsekit;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -172,7 +468,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "jsenabler" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* Capitalize */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -187,6 +490,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC168C681253B0D20072FE99 /* jslint-jscocoa.js in Resources */,
+				CC168C691253B0D20072FE99 /* class.js in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -199,6 +504,61 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */,
+				CC168BB11253B05A0072FE99 /* JSTalk.m in Sources */,
+				CC168BBA1253B0780072FE99 /* JSTExtras.m in Sources */,
+				CC168BBB1253B0780072FE99 /* JSTListener.m in Sources */,
+				CC168BBC1253B0780072FE99 /* JSTPreprocessor.m in Sources */,
+				CC168BCD1253B07F0072FE99 /* BridgeSupportController.m in Sources */,
+				CC168BD01253B07F0072FE99 /* JSCocoaController.m in Sources */,
+				CC168BD11253B07F0072FE99 /* JSCocoaFFIArgument.m in Sources */,
+				CC168BD21253B07F0072FE99 /* JSCocoaFFIClosure.m in Sources */,
+				CC168BD31253B07F0072FE99 /* JSCocoaLib.m in Sources */,
+				CC168BD41253B07F0072FE99 /* JSCocoaPrivateObject.m in Sources */,
+				CC168C331253B0920072FE99 /* TDAlternation.m in Sources */,
+				CC168C341253B0920072FE99 /* TDAny.m in Sources */,
+				CC168C351253B0920072FE99 /* TDAssembly.m in Sources */,
+				CC168C361253B0920072FE99 /* TDCaseInsensitiveLiteral.m in Sources */,
+				CC168C371253B0920072FE99 /* TDChar.m in Sources */,
+				CC168C381253B0920072FE99 /* TDCharacterAssembly.m in Sources */,
+				CC168C391253B0920072FE99 /* TDCollectionParser.m in Sources */,
+				CC168C3A1253B0920072FE99 /* TDComment.m in Sources */,
+				CC168C3B1253B0920072FE99 /* TDCommentState.m in Sources */,
+				CC168C3C1253B0920072FE99 /* TDDigit.m in Sources */,
+				CC168C3D1253B0920072FE99 /* TDEmpty.m in Sources */,
+				CC168C3E1253B0920072FE99 /* TDLetter.m in Sources */,
+				CC168C3F1253B0920072FE99 /* TDLiteral.m in Sources */,
+				CC168C401253B0920072FE99 /* TDLowercaseWord.m in Sources */,
+				CC168C411253B0920072FE99 /* TDMultiLineCommentState.m in Sources */,
+				CC168C421253B0920072FE99 /* TDNonReservedWord.m in Sources */,
+				CC168C431253B0920072FE99 /* TDNum.m in Sources */,
+				CC168C441253B0920072FE99 /* TDNumberState.m in Sources */,
+				CC168C451253B0920072FE99 /* TDParser.m in Sources */,
+				CC168C461253B0920072FE99 /* TDQuotedString.m in Sources */,
+				CC168C471253B0920072FE99 /* TDQuoteState.m in Sources */,
+				CC168C481253B0920072FE99 /* TDReader.m in Sources */,
+				CC168C491253B0920072FE99 /* TDRepetition.m in Sources */,
+				CC168C4A1253B0920072FE99 /* TDReservedWord.m in Sources */,
+				CC168C4B1253B0920072FE99 /* TDScientificNumberState.m in Sources */,
+				CC168C4C1253B0920072FE99 /* TDSequence.m in Sources */,
+				CC168C4D1253B0920072FE99 /* TDSingleLineCommentState.m in Sources */,
+				CC168C4E1253B0920072FE99 /* TDSpecificChar.m in Sources */,
+				CC168C4F1253B0920072FE99 /* TDSymbol.m in Sources */,
+				CC168C501253B0920072FE99 /* TDSymbolNode.m in Sources */,
+				CC168C511253B0920072FE99 /* TDSymbolRootNode.m in Sources */,
+				CC168C521253B0920072FE99 /* TDSymbolState.m in Sources */,
+				CC168C531253B0920072FE99 /* TDTerminal.m in Sources */,
+				CC168C541253B0920072FE99 /* TDToken.m in Sources */,
+				CC168C551253B0920072FE99 /* TDTokenArraySource.m in Sources */,
+				CC168C561253B0920072FE99 /* TDTokenAssembly.m in Sources */,
+				CC168C571253B0920072FE99 /* TDTokenizer.m in Sources */,
+				CC168C581253B0920072FE99 /* TDTokenizerState.m in Sources */,
+				CC168C591253B0920072FE99 /* TDTrack.m in Sources */,
+				CC168C5A1253B0920072FE99 /* TDTrackException.m in Sources */,
+				CC168C5B1253B0920072FE99 /* TDUppercaseWord.m in Sources */,
+				CC168C5C1253B0920072FE99 /* TDWhitespaceState.m in Sources */,
+				CC168C5D1253B0920072FE99 /* TDWord.m in Sources */,
+				CC168C5E1253B0920072FE99 /* TDWordOrReservedState.m in Sources */,
+				CC168C5F1253B0920072FE99 /* TDWordState.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,15 +582,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_LOCATION = NO;
 				DSTROOT = "$(HOME)/Library/Application Support/Acorn/Plug-Ins";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../builds/Debug\"",
-					"\"$(SRCROOT)/../../../../../builds/Debug\"",
-					"\"$(SRCROOT)/../../build\"",
-					"\"$(SRCROOT)/../../dist\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
-					/tmp/jstalk/build/Release,
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -238,14 +590,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = jsenabler_Prefix.pch;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/JSCocoa\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "";
 				OTHER_CFLAGS = "-DDEBUG";
-				OTHER_LDFLAGS = (
-					"-framework",
-					JSTalk,
-				);
 				PRODUCT_NAME = JSTalk;
 				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = acplugin;
@@ -262,27 +609,14 @@
 				);
 				DEPLOYMENT_LOCATION = NO;
 				DSTROOT = "$(HOME)/Library/Application Support/Acorn/Plug-Ins";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../../builds/Debug\"",
-					"\"$(SRCROOT)/../../../../../builds/Debug\"",
-					"\"$(SRCROOT)/../../build\"",
-					"\"$(SRCROOT)/../../dist\"",
-					"\"$(SRCROOT)/../../../../../builds/Release\"",
-					/tmp/jstalk/build/Release,
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = jsenabler_Prefix.pch;
-				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/JSCocoa\"";
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "";
-				OTHER_LDFLAGS = (
-					"-framework",
-					JSTalk,
-				);
 				PRODUCT_NAME = JSTalk;
 				SKIP_INSTALL = NO;
 				WRAPPER_EXTENSION = acplugin;

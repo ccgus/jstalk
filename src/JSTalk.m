@@ -221,12 +221,12 @@ static NSMutableArray *JSTalkPluginList;
         [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
     
-    [self deleteObjectWithName:@"jstalk"];
+    //[self deleteObjectWithName:@"jstalk"];
     
     // this will free up the reference to ourself
-    if ([_jsController ctx]) {
-        JSGarbageCollect([_jsController ctx]);
-    }
+    //if ([_jsController ctx]) {
+    //    JSGarbageCollect([_jsController ctx]);
+    //}
     
     return resultObj;
 }
