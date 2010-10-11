@@ -1,5 +1,7 @@
 #import "JSTFunction.h"
 
+static const char * JSTRuntimeAssociatedAllocatedMemoryKey = "jstmem";
+
 @interface JSTFunction ()
 - (Method)objcMethod;
 @end
@@ -38,15 +40,23 @@ static void DeallocateClosure(void *closure) {
     munmap(closure, sizeof(ffi_closure));
 }
 
-- (void *)_allocate: (size_t)howmuch {
-    
+
+- (NSMutableData *)_allocateData:(size_t)howmuch {
     if (!_allocations) {
         _allocations = [[NSMutableArray alloc] init];
     }
     
+    
     NSMutableData *data = [[NSMutableData alloc] initWithLength:howmuch];
     [_allocations addObject:data];
     [data release];
+    
+    return data;
+}
+
+- (void *)_allocate:(size_t)howmuch {
+    
+    NSMutableData *data = [self _allocateData:howmuch];
     return [data mutableBytes];
 }
 
@@ -341,11 +351,11 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         
         // leme just check something here...
         if (retType == &ffi_type_float || retType == &ffi_type_double || retType == &ffi_type_longdouble) {
-            _returnStorage = [self _allocate:(sizeof(long double*))];
+            //_returnStorage = [self _allocate:(sizeof(long double*))];
             _callAddress = &objc_msgSend_fpret;
         }
         else {
-            _returnStorage = [self _allocate:(sizeof(void*))];
+            //_returnStorage = [self _allocate:(sizeof(void*))];
         }
         
         return retType;
@@ -353,14 +363,30 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     JSTRuntimeInfo *info = [JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName];
     
-    if ([info returnValue]) { // sometimes, we have info, but not the return value.  Like for NSBeep()
-        
+    if ([info returnValue]) {
         
         if ([[[info returnValue] typeEncoding] hasPrefix:@"{"]) {
+           
             debug(@"[[info returnValue] typeEncoding]: '%@'", [[info returnValue] typeEncoding]);
-            NSArray *encodings = JSTTypeEncodingsFromStructureTypeEncoding([[info returnValue] typeEncoding]);
-            debug(@"encodings: '%@'", encodings);
-            assert(false);
+            
+            NSArray *encodings       = JSTTypeEncodingsFromStructureTypeEncoding([[info returnValue] typeEncoding]);
+            
+            ffi_type *structInfo     = [self _allocate:sizeof(ffi_type)];
+            structInfo->alignment    = 0; // wow this is probably wrong.
+            structInfo->type         = FFI_TYPE_STRUCT;
+            structInfo->elements     = [self _allocate:(sizeof(ffi_type*) * ([encodings count] + 1))];
+
+            int idx = 0;
+            
+            for (NSString *e in encodings) {
+                structInfo->size += JSTSizeOfTypeEncoding(e);
+                structInfo->elements[idx] = JSTFFITypeForTypeEncoding(e);
+                idx++;
+            }
+            
+            structInfo->elements[idx]   = nil; // this guy is nil terminated
+            
+            return structInfo;
         }
         
         
@@ -393,22 +419,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         if (_msgSendMethodRuntimeInfo) {
             
             // FIXME: this is lame.
-            // FIXME: Why sholdn't we just fall back on the _objcMethod stuff?
+            // FIXME: Why shouldn't we just fall back on the _objcMethod stuff?
             [self objcMethod];
-            
-            
-            /*
-            JSTRuntimeInfo *ri  = [[_msgSendMethodRuntimeInfo arguments] objectAtIndex:idx-2];
-            
-            debug(@"JSTRuntimeInfo: '%@'", [ri typeEncoding]);
-            
-            *foo                = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
-            
-            return JSTFFITypeForTypeEncoding([ri typeEncoding]);
-            */
         }
-        
-        
         
         if (!_encodedArgsForUnbridgedMsgSend) {
             
@@ -489,11 +502,13 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
                     float **floatStorage = [self _allocate:(sizeof(float*))];
                     *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
                     argVals[idx] = floatStorage;
+                    return &ffi_type_float;
                 }
                 else if (retType == &ffi_type_double) {
                     double **floatStorage = [self _allocate:(sizeof(double*))];
                     *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
                     argVals[idx] = floatStorage;
+                    return &ffi_type_double;
                 }
                 else {
                     assert(false);
@@ -535,13 +550,25 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     ffi_cif cif;
     ffi_status status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned)_argumentCount, returnFIIType, argTypes);
     if (status != FFI_OK) {
-        NSLog(@"Got result %ld from ffi_prep_cif", (long)status);
-        abort();
+        if (status == FFI_BAD_TYPEDEF) {
+            debug(@"FFI_BAD_TYPEDEF");
+        }
+        else if (status == FFI_BAD_ABI) {
+            debug(@"FFI_BAD_ABI");
+        }
+        else {
+            debug(@"unknown ffi status: %d", status);
+        }
+        
+        
+        JSTAssert(NO);
     }
     
     
+    void *returnValue;
+    
     @try {
-        ffi_call(&cif, _callAddress, &_returnStorage, argVals);
+        ffi_call(&cif, _callAddress, &returnValue, argVals);
     }
     @catch (NSException * e) {
         success = NO;
@@ -559,7 +586,30 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     JSValueRef retJS = nil;
     
     if (success) {
-        retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, _returnStorage, _bridge);
+        
+        
+        if (returnFIIType->type == FFI_TYPE_STRUCT) {
+            // crap must hold on to the memory!
+            
+            NSMutableData *data = [self _allocateData:returnFIIType->size];
+            void *value = [data mutableBytes];
+            memcpy(value, &returnValue, returnFIIType->size);
+            
+            if ([_functionName isEqualToString:@"NSMakeRect"]) {
+                NSLog(@"the rect: %@", NSStringFromRect(*(NSRect*)value));
+            }
+            
+            #warning maybe we shouldn't use NSValue, but rather some sort of object that holds on to the struct memory.
+            
+            NSValue *v = [NSValue valueWithPointer:value];
+            retJS = [_bridge makeJSObjectWithNSObject:v runtimeInfo:nil];
+            
+            objc_setAssociatedObject(v, &JSTRuntimeAssociatedAllocatedMemoryKey, data, OBJC_ASSOCIATION_RETAIN);
+        }
+        else {
+            retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, returnValue, _bridge);
+        }
+        
         JSTAssert(retJS);
     }
     
@@ -572,6 +622,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     if ((self = [self init])) {
         _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
+        
         if (!_callAddress) {
             debug(@"Can't find the function named '%@', returning nil", name);
             [self release];

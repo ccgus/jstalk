@@ -1,6 +1,8 @@
 [jstalk include:"testsetup.jstalk"];
 
 var r = NSMakeRect(1, 2, 3, 4);
+var r2 = NSMakeRect(5, 6, 7, 8);
+jsassert(r.origin.x == 1);
 
 var ti = [[JSTTests alloc] init];
 

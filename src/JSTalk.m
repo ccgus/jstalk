@@ -293,10 +293,8 @@ static NSMutableArray *JSTalkPluginList;
     }
     
     str = [JSTPreprocessor preprocessCode:str];
-                   
-    if (![_bridge evalJSString:str withPath:[scriptURL path]]) {
-        NSLog(@"Could not include '%@'", fileName);
-    }
+    
+    [_bridge evalJSString:str withPath:[scriptURL path]];
 }
 
 + (void)print:(NSString*)s {

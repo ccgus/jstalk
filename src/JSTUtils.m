@@ -320,11 +320,12 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
     else if (type == &ffi_type_uint64) {
         return JSValueMakeNumber([bridge jsContext], (uint64_t)value);
     }
+    else if (type->type == FFI_TYPE_STRUCT) {
+        JSTAssert(NO);
+    }
     
     return 0x00;
 }
-
-
 
 
 NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncoding) {
