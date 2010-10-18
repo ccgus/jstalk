@@ -1,8 +1,51 @@
 [jstalk include:"testsetup.jstalk"];
 
+
+
 var r = NSMakeRect(1, 2, 3, 4);
+r.size.width = 10;
+r.size.height = 20;
+
+print(r.size.width);
+
+jsassert(r.size.width == 10, "r.size.width");
+
+//[[NSApplication sharedApplication] terminate:0];
+
+
+/*
+var r = NSMakeRect(1, 2, 3, 4);
+
+print(r.origin.x);
+
+
+jsassert(r.origin.x == 1, "r.origin.x");
+jsassert(r.origin.y == 2, "r.origin.y");
+jsassert(r.size.width == 3, "r.size.width");
+jsassert(r.size.height == 4, "r.size.height");
+
+
+var r = NSMakeRange(10, 11);
+jsassert(r.location == 10, "r.location is wrong");
+jsassert(r.length == 11, "r.length is wrong");
+
+
+
+/*
+
+
 var r2 = NSMakeRect(5, 6, 7, 8);
-jsassert(r.origin.x == 1);
+
+jsassert(r.size.height == 4, "r.size.height");
+jsassert(r.size.width == 3, "r.size.width");
+jsassert(r.origin.x == 1, "r.origin.x");
+jsassert(r.origin.y == 2, "r.origin.y");
+
+jsassert(r2.origin.x == 5, "r2.origin.x");
+jsassert(r2.origin.y == 6, "r2.origin.y");
+jsassert(r2.size.width == 7, "r2.size.width");
+jsassert(r2.size.height == 8, "r2.size.height");
+
 
 var ti = [[JSTTests alloc] init];
 
@@ -83,3 +126,4 @@ jsassert(fifteen == 15, "JS style method C call failed!");
 NSLog("Hey! %@ %p", "What's shaking?", ti);
 
 //print("Done with " + [jstalk env]);
+*/

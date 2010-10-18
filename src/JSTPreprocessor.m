@@ -109,8 +109,8 @@
     NSMutableString *buffer = [NSMutableString string];
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
     
-    tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-    tokenizer.commentState.reportsCommentTokens = YES;
+    [[tokenizer whitespaceState] setReportsWhitespaceTokens:YES];
+    [[tokenizer commentState] setReportsCommentTokens:YES];
     
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = nil;
@@ -127,7 +127,7 @@
             currentGroup                = nextGroup;
 
         }
-        else if (tok.isSymbol && [self isCloseSymbol:tok.stringValue]) {
+        else if ([tok isSymbol] && [self isCloseSymbol:[tok stringValue]]) {
             
             if (currentGroup.parent) {
                 [currentGroup.parent addSymbol:currentGroup];

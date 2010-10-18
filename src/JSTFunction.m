@@ -1,6 +1,5 @@
 #import "JSTFunction.h"
-
-static const char * JSTRuntimeAssociatedAllocatedMemoryKey = "jstmem";
+#import "JSTStructure.h"
 
 @interface JSTFunction ()
 - (Method)objcMethod;
@@ -303,7 +302,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         }
     }
     else {
-        debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
+        //debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
     }
 }
 
@@ -367,8 +366,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         
         if ([[[info returnValue] typeEncoding] hasPrefix:@"{"]) {
            
-            debug(@"[[info returnValue] typeEncoding]: '%@'", [[info returnValue] typeEncoding]);
-            
             NSArray *encodings       = JSTTypeEncodingsFromStructureTypeEncoding([[info returnValue] typeEncoding]);
             
             ffi_type *structInfo     = [self _allocate:sizeof(ffi_type)];
@@ -502,13 +499,21 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
                     float **floatStorage = [self _allocate:(sizeof(float*))];
                     *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
                     argVals[idx] = floatStorage;
-                    return &ffi_type_float;
+                    return retType;
                 }
                 else if (retType == &ffi_type_double) {
                     double **floatStorage = [self _allocate:(sizeof(double*))];
                     *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
                     argVals[idx] = floatStorage;
-                    return &ffi_type_double;
+                    return retType;
+                }
+                else if (retType == &ffi_type_uint64) {
+                    
+                    uint32_t **storage = [self _allocate:(sizeof(uint32_t*))]; 
+                    
+                    *(uint32_t*)storage = (uint32_t)JSTDoubleFromValue(_bridge, argument);
+                    argVals[idx] = storage;
+                    return retType;
                 }
                 else {
                     assert(false);
@@ -535,7 +540,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     [self checkForMsgSendMethodRuntimeInfo];
     
-    debug(@"Calling %@", _functionName);
+    //debug(@"Calling %@", _functionName);
     
     BOOL success        = YES;
     ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
@@ -596,15 +601,20 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             memcpy(value, &returnValue, returnFIIType->size);
             
             if ([_functionName isEqualToString:@"NSMakeRect"]) {
-                NSLog(@"the rect: %@", NSStringFromRect(*(NSRect*)value));
+                //NSLog(@"the rect: %@", NSStringFromRect(*(NSRect*)value));
             }
             
-            #warning maybe we shouldn't use NSValue, but rather some sort of object that holds on to the struct memory.
+            JSTStructure *structure = [JSTStructure structureWithData:data bridge:_bridge];
+            JSTRuntimeInfo *info    = [JSTBridgeSupportLoader runtimeInfoForSymbol:[[_runtimeInfo returnValue] declaredType]];
             
-            NSValue *v = [NSValue valueWithPointer:value];
-            retJS = [_bridge makeJSObjectWithNSObject:v runtimeInfo:nil];
+            if (!info) {
+                info = [[JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName] returnValue];
+            }
             
-            objc_setAssociatedObject(v, &JSTRuntimeAssociatedAllocatedMemoryKey, data, OBJC_ASSOCIATION_RETAIN);
+            [structure setRuntimeInfo:info];
+            
+            retJS = [_bridge makeJSObjectWithNSObject:structure runtimeInfo:nil];
+            
         }
         else {
             retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, returnValue, _bridge);

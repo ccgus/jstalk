@@ -319,7 +319,7 @@ static NSMutableArray *JSTalkPluginList;
         printf("%s\n", [s UTF8String]);
     }
     
-    printf("%s\n", [s UTF8String]);
+    printf("%s\n", [[s description] UTF8String]);
 }
 
 + (id)applicationOnPort:(NSString*)port {

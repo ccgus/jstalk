@@ -72,4 +72,6 @@ enum {
 
 - (NSMutableArray*)functionEncodings;
 
+- (int)sizeOfFields;
+
 @end

@@ -9,6 +9,7 @@
 #import "JSTBridge.h"
 #import "JSTFunction.h"
 #import "JSTUtils.h"
+#import "JSTStructure.h"
 
 // JSObjectGetPropertyCallback
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
@@ -19,6 +20,7 @@ void       JSTClass_initialize(JSContextRef ctx, JSObjectRef object); // JSObjec
 void       JSTClass_finalize(JSObjectRef object); // JSObjectFinalizeCallback
 JSValueRef JSTClass_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception);
 JSValueRef JSTClass_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
+bool       JSTClass_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef value, JSValueRef* exception);
 
 static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 
@@ -46,6 +48,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
         bridgedObjectDefinition.finalize             = JSTClass_finalize;
         bridgedObjectDefinition.convertToType        = JSTClass_convertToType;
         bridgedObjectDefinition.getProperty          = JSTClass_getProperty;
+        bridgedObjectDefinition.setProperty          = JSTClass_setProperty;
         
         
         /*
@@ -230,6 +233,10 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     
     id caller = [self NSObjectForJSObject:jsObject];
     
+    if ([caller isKindOfClass:[JSTStructure class]]) {
+        return [(JSTStructure*)caller cantThinkOfAGoodNameForThisYet:propertyName outException:exception];
+    }
+    
     if (caller != self) {
         // looks like it's a foo.some_objc_method(call, wow, neat);
         return [self makeJSStyleBridgedFunction:propertyName onObject:caller];
@@ -303,6 +310,27 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 }
 
 
+- (BOOL)setPropertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName value:(JSValueRef)value outException:(JSValueRef*)exception {
+    
+    /*
+    JSType type = JSValueGetType(_jsContext, value);
+    if (type == kJSTypeNumber) {
+        debug(@"JSValueToNumber(ctx, value, nil): %f", JSValueToNumber(_jsContext, value, nil));
+    }
+    */
+    
+    NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
+    id objectToSet = [self NSObjectForJSObject:jsObject];
+    
+    if ([objectToSet isKindOfClass:[JSTStructure class]]) {
+        return [(JSTStructure*)objectToSet setValue:value forFieldNamed:propertyName outException:exception];
+    }
+    
+    
+    return NO;
+}
+
+
 - (JSValueRef)callFunction:(JSObjectRef)jsFunction onObject:(JSObjectRef)thisObject argCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
     
     JSTFunction *function       = [self functionForJSFunction:jsFunction];
@@ -368,6 +396,11 @@ JSValueRef JSTClass_convertToType(JSContextRef ctx, JSObjectRef object, JSType t
 JSValueRef JSTClass_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
     jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) propertyForObject:object named:propertyName outException:exception];
+}
+
+bool JSTClass_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef value, JSValueRef* exception) {
+    jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
+    return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) setPropertyForObject:object named:propertyName value:value outException:exception];
 }
 
 // @abstract The callback invoked when an object is finalized (prepared for garbage collection). An object may be finalized on any thread.

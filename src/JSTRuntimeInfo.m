@@ -48,6 +48,13 @@
     [_structFields addObject:s];
 }
 
+- (int)sizeOfFields {
+    
+    
+    
+    return 0;
+}
+
 - (NSArray *)arguments {
     return _arguments;
 }

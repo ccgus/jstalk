@@ -115,6 +115,10 @@ ffi_type* JSTFFITypeForBridgeDeclaredType(NSString *type) {
         return &ffi_type_sint8;
     }
     
+    else if ([type isEqualToString:@"d"]) {
+        return &ffi_type_double;
+    }
+    
     
     /*
     char c = [encoding characterAtIndex:0];
@@ -290,6 +294,70 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
         return JSValueMakeNumber([bridge jsContext], *(float*)&value);
     }
     else if (type == &ffi_type_double) {
+        //debug(@"*(double*)&value: %f", *(double*)&value);
+        //debug(@"*(double*)&value: %f", *(double*)value);
+        
+        return JSValueMakeNumber([bridge jsContext], *(double*)&value);
+    }
+    else if (type == &ffi_type_longdouble) {
+        return JSValueMakeNumber([bridge jsContext], *(double*)&value);
+    }
+    else if (type == &ffi_type_uint8) {
+        return JSValueMakeNumber([bridge jsContext], (uint8_t)value);
+    }
+    else if (type == &ffi_type_sint8) {
+        // well, it's a bool or a char or a ... hrm.  Let's just say it's a bool.
+        return JSValueMakeBoolean([bridge jsContext], (bool)value);
+    }
+    else if (type == &ffi_type_sint32) {
+        return JSValueMakeNumber([bridge jsContext], (int32_t)value);
+    }
+    else if (type == &ffi_type_uint32) {
+        return JSValueMakeNumber([bridge jsContext], (uint32_t)value);
+    }
+    else if (type == &ffi_type_sint16) {
+        return JSValueMakeNumber([bridge jsContext], (int16_t)value);
+    }
+    else if (type == &ffi_type_uint16) {
+        return JSValueMakeNumber([bridge jsContext], (uint16_t)value);
+    }
+    else if (type == &ffi_type_sint64) {
+        return JSValueMakeNumber([bridge jsContext], (int64_t)value);
+    }
+    else if (type == &ffi_type_uint64) {
+        //debug(@"*(double*)&value: %ld", value);
+        //debug(@"*(double*)&value: %ld", *(unsigned long*)value);
+        return JSValueMakeNumber([bridge jsContext], (uint64_t)value);
+    }
+    else if (type->type == FFI_TYPE_STRUCT) {
+        JSTAssert(NO);
+    }
+    
+    return 0x00;
+}
+
+/*
+JSValueRef JSTMakeJSValueWithTypeAndValue(NSString *type, void *value, JSTBridge *bridge) {
+    
+    if ([@"d" isEqualToString:type]) {
+        return JSValueMakeNumber([bridge jsContext], *(double*)value);
+    }
+    
+    return 0x00;
+    
+    
+    if (type == &ffi_type_void) {
+        return JSValueMakeNull([bridge jsContext]);
+    }
+    else if (type == &ffi_type_pointer) {
+        return [bridge makeJSObjectWithNSObject:(id)value runtimeInfo:nil];
+    }
+    else if (type == &ffi_type_float) {
+        return JSValueMakeNumber([bridge jsContext], *(float*)&value);
+    }
+    else if (type == &ffi_type_double) {
+        debug(@"*(double*)&value: %f", *(double*)&value);
+        debug(@"*(double*)&value: %f", *(double*)value);
         return JSValueMakeNumber([bridge jsContext], *(double*)&value);
     }
     else if (type == &ffi_type_longdouble) {
@@ -325,8 +393,9 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
     }
     
     return 0x00;
+    
 }
-
+*/
 
 NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncoding) {
     
