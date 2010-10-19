@@ -128,7 +128,7 @@
     
     *typeInfo = [self typeForFieldAtIndex:idx getOffset:&offset];
     
-    void *foo = [_bytes mutableBytes];
+    void *foo = (void*)[_bytes bytes];
     foo += offset;
     
     return foo;
@@ -146,15 +146,15 @@
     NSString *typeInfo;
     void *foo = [self bytesForFieldAtIndex:fieldIndex getTypeInfo:&typeInfo];
     
+    #warning move this stuff out to a general function
+    
     if ([typeInfo isEqualToString:@"d"]) {
         
         *(double*)foo = JSValueToNumber([_bridge jsContext], value, nil);
-        
-        if ([[_runtimeInfo symbolName] isEqualToString:@"CGSize"]) {
-            foo = [_bytes mutableBytes];
-            debug(@"NSStringFromSize '%@'", NSStringFromSize(*(NSSize*)foo));
-        }
-        
+        return YES;
+    }
+    else if ([typeInfo isEqualToString:@"Q"]) {
+        *(unsigned long*)foo = (unsigned long)JSValueToNumber([_bridge jsContext], value, nil);
         return YES;
     }
     
@@ -170,7 +170,6 @@
     
     NSUInteger fieldIndex = [[_runtimeInfo structFields] indexOfObject:prop];
     
-    
     int offset = 0;
     JSTRuntimeInfo *fieldInfo = [self runtimeInfoForFieldAtIndex:fieldIndex getOffset:&offset];
     
@@ -182,19 +181,11 @@
         return JSTMakeJSValueWithFFITypeAndValue(JSTFFITypeForTypeEncoding(typeInfo), (void*)*foo2, _bridge);
     }
     
+    NSData *newData = [NSData dataWithBytesNoCopy:((void*)[_bytes bytes] + offset)
+                                           length:[_bytes length] - offset
+                                     freeWhenDone:NO];
     
-    void *foo = [_bytes mutableBytes];
-    foo += offset;
-    
-    /*
-    if ([[fieldInfo symbolName] isEqualToString:@"CGSize"]) {
-        debug(@"NSStringFromSize '%@'", NSStringFromSize(*(NSSize*)foo));
-    }
-    */
-    
-    NSMutableData *newData = [NSMutableData dataWithBytesNoCopy:foo length:[_bytes length] - offset freeWhenDone:NO];
-    
-    JSTStructure *structure = [JSTStructure structureWithData:newData bridge:_bridge];
+    JSTStructure *structure = [JSTStructure structureWithData:(id)newData bridge:_bridge];
     [structure setRuntimeInfo:fieldInfo];
     
     JSObjectRef retJS = [_bridge makeJSObjectWithNSObject:structure runtimeInfo:nil];
