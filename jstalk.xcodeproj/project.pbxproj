@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC09CAC51242B98C00B41D15 /* JSTalk.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC09CAC41242B98C00B41D15 /* JSTalk.bridgesupport */; };
-		CC09CB531242C91F00B41D15 /* JSTRuntimeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */; };
-		CC09CB541242C91F00B41D15 /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
 		CC0EC3290F226F550094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC0EC32A0F226F550094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC0FEEE21086740F008FF7DD /* JSTTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1322FD0F23F3C10032FEB8 /* JSTTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -161,6 +159,10 @@
 		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
+		CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
+		CC3937CD126E2F270029645D /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */; };
+		CC3937D9126E2F5C0029645D /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
 		CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3CC7F1124C3406001A349E /* JSTBridge.h */; };
 		CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
 		CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
@@ -192,21 +194,6 @@
 		CC43C1090F4BBC4D0044BA41 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC43C11E0F4BBDF40044BA41 /* main.jstalk in Resources */ = {isa = PBXBuildFile; fileRef = CC43C11D0F4BBDF40044BA41 /* main.jstalk */; };
 		CC43C12F0F4BBE8B0044BA41 /* JSTalkRunner.app in Resources */ = {isa = PBXBuildFile; fileRef = CC43C0DB0F4BBA820044BA41 /* JSTalkRunner.app */; };
-		CC506DEB12415B28005AD5E6 /* JSCocoa.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DDC12415B28005AD5E6 /* JSCocoa.h */; };
-		CC506DEC12415B28005AD5E6 /* JSCocoaController.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DDD12415B28005AD5E6 /* JSCocoaController.h */; };
-		CC506DED12415B28005AD5E6 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDE12415B28005AD5E6 /* JSCocoaController.m */; };
-		CC506DEE12415B28005AD5E6 /* JSCocoaFFIArgument.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DDF12415B28005AD5E6 /* JSCocoaFFIArgument.h */; };
-		CC506DEF12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE012415B28005AD5E6 /* JSCocoaFFIArgument.m */; };
-		CC506DF012415B28005AD5E6 /* JSCocoaFFIClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DE112415B28005AD5E6 /* JSCocoaFFIClosure.h */; };
-		CC506DF112415B28005AD5E6 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE212415B28005AD5E6 /* JSCocoaFFIClosure.m */; };
-		CC506DF212415B28005AD5E6 /* JSCocoaLib.h in Headers */ = {isa = PBXBuildFile; fileRef = CC506DE312415B28005AD5E6 /* JSCocoaLib.h */; };
-		CC506DF312415B28005AD5E6 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE412415B28005AD5E6 /* JSCocoaLib.m */; };
-		CC506DF912415B28005AD5E6 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DDE12415B28005AD5E6 /* JSCocoaController.m */; };
-		CC506DFA12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE012415B28005AD5E6 /* JSCocoaFFIArgument.m */; };
-		CC506DFB12415B28005AD5E6 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE212415B28005AD5E6 /* JSCocoaFFIClosure.m */; };
-		CC506DFC12415B28005AD5E6 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC506DE412415B28005AD5E6 /* JSCocoaLib.m */; };
-		CC506E3812415C9F005AD5E6 /* jslint-jscocoa.js in Resources */ = {isa = PBXBuildFile; fileRef = CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */; };
-		CC506E3912415CA2005AD5E6 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CC506DDB12415B28005AD5E6 /* class.js */; };
 		CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */; };
 		CC5EDD531237F71300E0D965 /* JSTalkStatusIconAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */; };
 		CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -227,11 +214,6 @@
 		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
 		CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
-		CCA9C1E21241D5A2003EB4C5 /* JSTBridgedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CCA9C1E01241D5A2003EB4C5 /* JSTBridgedObject.h */; };
-		CCA9C1E31241D5A2003EB4C5 /* JSTBridgedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */; };
-		CCA9C2261241D7E5003EB4C5 /* JSTBridgedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */; };
-		CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
-		CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
 		CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
 		CCB5EB10124D922E0052BCD9 /* JSTUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */; };
 		CCB5EB11124D922E0052BCD9 /* JSTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */; };
@@ -639,6 +621,10 @@
 			isa = PBXGroup;
 			children = (
 				CCC5B92C0F1EFB5900126722 /* JSCocoa */,
+				CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */,
+				CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */,
+				CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */,
+				CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */,
 				CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */,
 				CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */,
 				CC3CC7F1124C3406001A349E /* JSTBridge.h */,
@@ -839,10 +825,6 @@
 		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
 			isa = PBXGroup;
 			children = (
-				CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */,
-				CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */,
-				CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */,
-				CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */,
 				CC506DDB12415B28005AD5E6 /* class.js */,
 				CC506DDC12415B28005AD5E6 /* JSCocoa.h */,
 				CC506DDD12415B28005AD5E6 /* JSCocoaController.h */,
@@ -923,14 +905,6 @@
 				CC0FEEE610867410008FF7DD /* NoodleLineNumberMarker.h in Headers */,
 				CC0FEEE810867411008FF7DD /* NoodleLineNumberView.h in Headers */,
 				CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */,
-				CC506DEB12415B28005AD5E6 /* JSCocoa.h in Headers */,
-				CC506DEC12415B28005AD5E6 /* JSCocoaController.h in Headers */,
-				CC506DEE12415B28005AD5E6 /* JSCocoaFFIArgument.h in Headers */,
-				CC506DF012415B28005AD5E6 /* JSCocoaFFIClosure.h in Headers */,
-				CC506DF212415B28005AD5E6 /* JSCocoaLib.h in Headers */,
-				CCB444B612416E2D000EECB5 /* JSTBridgeSupportLoader.h in Headers */,
-				CCA9C1E21241D5A2003EB4C5 /* JSTBridgedObject.h in Headers */,
-				CC09CB531242C91F00B41D15 /* JSTRuntimeInfo.h in Headers */,
 				CC41845912447743004144B7 /* MARTNSObject.h in Headers */,
 				CC41845B12447743004144B7 /* RTIvar.h in Headers */,
 				CC41845D12447743004144B7 /* RTMethod.h in Headers */,
@@ -941,6 +915,8 @@
 				CC7528F3124FE64D005546B0 /* JSTFunction.h in Headers */,
 				CC75296E1250066F005546B0 /* JSTTests.h in Headers */,
 				CCBF477A1266A4AB0037A15A /* JSTStructure.h in Headers */,
+				CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */,
+				CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1072,8 +1048,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC506E3912415CA2005AD5E6 /* class.js in Resources */,
-				CC506E3812415C9F005AD5E6 /* jslint-jscocoa.js in Resources */,
 				CC09CAC51242B98C00B41D15 /* JSTalk.bridgesupport in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1160,13 +1134,6 @@
 				CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */,
 				CC0FEEE910867412008FF7DD /* NoodleLineNumberView.m in Sources */,
 				CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */,
-				CC506DED12415B28005AD5E6 /* JSCocoaController.m in Sources */,
-				CC506DEF12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */,
-				CC506DF112415B28005AD5E6 /* JSCocoaFFIClosure.m in Sources */,
-				CC506DF312415B28005AD5E6 /* JSCocoaLib.m in Sources */,
-				CCB444B712416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
-				CCA9C1E31241D5A2003EB4C5 /* JSTBridgedObject.m in Sources */,
-				CC09CB541242C91F00B41D15 /* JSTRuntimeInfo.m in Sources */,
 				CC41845A12447743004144B7 /* MARTNSObject.m in Sources */,
 				CC41845C12447743004144B7 /* RTIvar.m in Sources */,
 				CC41845E12447743004144B7 /* RTMethod.m in Sources */,
@@ -1177,6 +1144,8 @@
 				CC7528F4124FE64D005546B0 /* JSTFunction.m in Sources */,
 				CC75296F1250066F005546B0 /* JSTTests.m in Sources */,
 				CCBF477B1266A4AB0037A15A /* JSTStructure.m in Sources */,
+				CC3937CD126E2F270029645D /* JSTBridgeSupportLoader.m in Sources */,
+				CC3937D9126E2F5C0029645D /* JSTRuntimeInfo.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1243,12 +1212,7 @@
 				CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */,
 				CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
 				CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */,
-				CC506DF912415B28005AD5E6 /* JSCocoaController.m in Sources */,
-				CC506DFA12415B28005AD5E6 /* JSCocoaFFIArgument.m in Sources */,
-				CC506DFB12415B28005AD5E6 /* JSCocoaFFIClosure.m in Sources */,
-				CC506DFC12415B28005AD5E6 /* JSCocoaLib.m in Sources */,
 				CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
-				CCA9C2261241D7E5003EB4C5 /* JSTBridgedObject.m in Sources */,
 				CC69B5831245536600E735F6 /* JSTRuntimeInfo.m in Sources */,
 				CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */,
 				CCCA67A11250422700522EFA /* JSTFunction.m in Sources */,

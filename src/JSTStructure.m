@@ -70,6 +70,17 @@
                 }
             }
             else if ([@"=" isEqualToString:val] && (bracketDepth == 2) && idx == fieldIndex) {
+                
+                #warning this is dumb- make sure to add an alias somewhere in the bridge support stuff.
+                if ([@"NSRect" isEqualToString:[_runtimeInfo symbolName]]) {
+                    if ([lastVal isEqualToString:@"CGPoint"]) {
+                        lastVal = @"NSPoint";
+                    }
+                    else if ([lastVal isEqualToString:@"CGSize"]) {
+                        lastVal = @"NSSize";
+                    }
+                }
+                
                 returnInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:lastVal];
             }
         }
@@ -79,6 +90,8 @@
     }
     
     [lastVal release];
+    
+    
     
     return returnInfo;
 }
@@ -146,19 +159,7 @@
     NSString *typeInfo;
     void *foo = [self bytesForFieldAtIndex:fieldIndex getTypeInfo:&typeInfo];
     
-    #warning move this stuff out to a general function
-    
-    if ([typeInfo isEqualToString:@"d"]) {
-        
-        *(double*)foo = JSValueToNumber([_bridge jsContext], value, nil);
-        return YES;
-    }
-    else if ([typeInfo isEqualToString:@"Q"]) {
-        *(unsigned long*)foo = (unsigned long)JSValueToNumber([_bridge jsContext], value, nil);
-        return YES;
-    }
-    
-    return NO;
+    return JSTSetJSValueToPointerForType(value, foo, typeInfo, _bridge);
 }
 
 - (JSValueRef)cantThinkOfAGoodNameForThisYet:(NSString*)prop outException:(JSValueRef*)exception {
@@ -177,7 +178,6 @@
         // oh, it's a value I guess?
         NSString *typeInfo;
         NSInteger *foo2 = (NSInteger*)[self bytesForFieldAtIndex:fieldIndex getTypeInfo:&typeInfo];
-        
         return JSTMakeJSValueWithFFITypeAndValue(JSTFFITypeForTypeEncoding(typeInfo), (void*)*foo2, _bridge);
     }
     

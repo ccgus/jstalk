@@ -38,11 +38,13 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     // Let's preload some bridge files.
     // wait, let's not, at least until we manage to also load the framework at the same time.
-    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/AppKit.framework/Resources/BridgeSupport/AppKitFull.bridgeSupport"];
-    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/CoreFoundation.framework/Resources/BridgeSupport/CoreFoundationFull.bridgeSupport"];
-    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/Foundation.framework/Resources/BridgeSupport/FoundationFull.bridgeSupport"];
-    //[[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Frameworks/CoreGraphics.framework/Resources/BridgeSupport/CoreGraphicsFull.bridgeSupport"];
     
+    
+    [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/Foundation.framework"];
+    [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/CoreFoundation.framework"];
+    [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/AppKit.framework"];
+    [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework"];
+    [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework"];
 }
 
 - (void)awakeFromNib {

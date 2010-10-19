@@ -8,7 +8,7 @@
 
 #import "JSTRuntimeInfo.h"
 #import "JSTBridgeSupportLoader.h"
-#import "JSCocoaFFIArgument.h"
+//#import "JSCocoaFFIArgument.h"
 #import <objc/runtime.h>
 
 @implementation JSTRuntimeInfo
@@ -160,7 +160,7 @@
     }
 }
 
-
+/*
 - (JSCocoaFFIArgument*)ffiArgumentForRuntimeInfo:(JSTRuntimeInfo *)arg {
     
     NSString *typeEncoding                  = [arg typeEncoding];
@@ -191,8 +191,13 @@
     
     return argumentEncoding;
 }
-
+*/
+/*
 - (NSMutableArray*)functionEncodings {
+    
+    JSTAssert(NO);
+    
+    return 0x00;
     
     NSMutableArray *argumentEncodings = [NSMutableArray array];
     
@@ -216,7 +221,8 @@
     }
     
     return argumentEncodings;
-}
+    
+}*/
 
 - (NSString*)description {
     

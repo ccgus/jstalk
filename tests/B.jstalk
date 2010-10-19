@@ -1,5 +1,12 @@
 [jstalk include:"testsetup.jstalk"];
 
+var r = NSMakeRange(1, 1);
+r.location = 12;
+r.length   = 11;
+jsassert(r.location == 12, "r.location is wrong");
+jsassert(r.length == 11, "r.length is wrong");
+
+
 var r = NSMakeRect(1, 2, 3, 4);
 
 jsassert(r.origin.x == 1, "r.origin.x");
@@ -22,11 +29,6 @@ jsassert(s.width == 3, "s.width is wrong");
 jsassert(s.height == 4, "s.height is wrong");
 
 
-var r = NSMakeRange(1, 1);
-r.location = 12;
-r.length   = 11;
-jsassert(r.location == 12, "r.location is wrong");
-jsassert(r.length == 11, "r.length is wrong");
 
 
 
@@ -84,7 +86,7 @@ var boolVal = NSZombieEnabled;
 jsassert(!boolVal, "Why would NSZombieEnabled be enabled?");
 
 jsassert(NSMinYEdge == 1, "Can't find NSMinYEdge");
-jsassert(CGRectMinYEdge == 1, "Can't find NSMinYEdge");
+jsassert(CGRectMinYEdge == 1, "Can't find CGRectMinYEdge");
 
 
 var twelve = [NSNumber numberWithInt:12];

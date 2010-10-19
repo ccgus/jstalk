@@ -2,9 +2,10 @@
 // Modified by Gus Mueller
 
 #import "JSTBridgeSupportLoader.h"
+#import <dlfcn.h>
 
 @interface JSTBridgeSupportLoader ()
-- (BOOL)oldloadBridgeSupport:(NSString*)path;
+//- (BOOL)oldloadBridgeSupport:(NSString*)path;
 @end
 
 
@@ -29,7 +30,6 @@
 	if ((self != nil)) {
         
         _paths              = [[NSMutableArray alloc] init];
-        _xmlDocuments       = [[NSMutableArray alloc] init];
         _hash               = [[NSMutableDictionary alloc] init];
         _variadicSelectors  = [[NSMutableDictionary alloc] init];
         _variadicFunctions  = [[NSMutableDictionary alloc] init];
@@ -45,7 +45,6 @@
     [_variadicSelectors release];
     [_hash release];
     [_paths release];
-    [_xmlDocuments release];
     [_symbolLookup release];
 
     [super dealloc];
@@ -182,6 +181,32 @@
     }
 }
 
+- (BOOL)loadFrameworkAtPath:(NSString*)frameworkPath {
+    
+    NSString *name = [[frameworkPath lastPathComponent] stringByDeletingPathExtension];
+    
+    NSString *path = [NSString stringWithFormat:@"%@/Resources/BridgeSupport/%@Full.bridgeSupport", frameworkPath, name];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        path = [NSString stringWithFormat:@"%@/Resources/BridgeSupport/%@.bridgeSupport", frameworkPath, name];
+    }
+    
+    // Return YES if already loaded
+    if ([[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:path]) {
+        return YES;
+    }
+    
+    [self loadBridgeSupportAtPath:path];
+    
+    [[NSBundle bundleWithPath:frameworkPath] load];
+    
+    NSString *dylibPath = [NSString stringWithFormat:@"%@/Resources/BridgeSupport/%@.dylib", frameworkPath, name];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:dylibPath]) {
+        dlopen([dylibPath UTF8String], RTLD_LAZY);
+    }
+    
+    return YES;
+}
+
 - (BOOL)loadBridgeSupportAtPath:(NSString*)path {
     
     NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]] autorelease];
@@ -209,7 +234,9 @@
         return NO;
     }
     
-    return [self oldloadBridgeSupport:path];
+    [_paths addObject:path];
+    
+    return YES;
 }
 
 + (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol {
@@ -221,161 +248,9 @@
 }
 
 
-//
-// Load a bridgeSupport file into a hash as { name : xmlTagString } 
-//
-- (BOOL)oldloadBridgeSupport:(NSString*)path
-{
-    NSError*    error = nil;
-    /*
-        Adhoc parser
-            NSXMLDocument is too slow
-            loading xml document as string then querying on-demand is too slow
-            can't get CFXMLParserRef to work
-            don't wan't to delve into expat
-            -> ad hoc : load file, build a hash of { name : xmlTagString }
-    */
-    NSString* xmlDocument = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
-    if (error)    return    NSLog(@"loadBridgeSupport : %@", error), NO;
-
-    char* c = (char*)[xmlDocument UTF8String];
-#ifdef __OBJC_GC__
-    char* originalC = c;
-    [[NSGarbageCollector defaultCollector] disableCollectorForPointer:originalC];
-#endif
-
-//    double t0 = CFAbsoluteTimeGetCurrent();
-    // Start parsing
-    for (; *c; c++)
-    {
-        if (*c == '<')
-        {
-            char startTagChar = c[1];
-            if (startTagChar == 0)    return    NO;
-
-            // 'co'    constant
-            // 'cl'    class
-            // 'e'    enum
-            // 'fu'    function
-            // 'st'    struct
-            if ((c[1] == 'c' && (c[2] == 'o' || c[2] == 'l')) || c[1] == 'e' || (c[1] == 'f' && c[2] == 'u') || (c[1] == 's' && c[2] == 't'))
-            {
-                // Extract name
-                char* tagStart = c;
-                for (; *c && *c != '\''; c++);
-                c++;
-                char* c0 = c;
-                for (; *c && *c != '\''; c++);
-                
-                id name = [[NSString alloc] initWithBytes:c0 length:c-c0 encoding:NSUTF8StringEncoding];
-                
-                // Move to tag end
-                BOOL foundEndTag = NO;
-                BOOL foundOpenTag = NO;
-                c++;
-                for (; *c && !foundEndTag; c++)
-                {
-                    if (*c == '<')            foundOpenTag = YES;
-                    else    
-                    if (*c == '/')
-                    {
-                        if (!foundOpenTag)
-                        {
-                            if(c[1] == '>')    foundEndTag = YES, c++;
-                        }
-                        else
-                        {
-                            if (startTagChar == c[1])    
-                            {
-                                foundEndTag = YES;
-                                // Skip to end of tag
-                                for (; *c && *c != '>'; c++);
-                            }
-                        }
-                    }
-                    else
-                    // Variadic parsing
-                    if (c[0] == 'v' && c[1] == 'a' && c[2] == 'r')
-                    {
-                        if (strncmp(c, "variadic", 8) == 0)
-                        {
-                            // Skip back to tag start
-                            c0 = c;
-                            for (; *c0 != '<'; c0--);
-
-                            // Tag name starts with 'm' : variadic method
-                            // <method variadic='true' selector='alertWithMessageText:defaultButton:alternateButton:otherButton:informativeTextWithFormat:' class_method='true'>
-                            if (c0[1] == 'm')
-                            {
-                                c = c0;
-                                id variadicMethodName = nil;
-                                // Extract selector name
-                                for (; *c != '>'; c++)
-                                {
-                                    if (c[0] == ' ' && c[1] == 's' && c[2] == 'e' && c[3] == 'l')
-                                    {
-                                        for (; *c && *c != '\''; c++);
-                                        c++;
-                                        c0 = c;
-                                        for (; *c && *c != '\''; c++);
-                                        variadicMethodName = [[[NSString alloc] initWithBytes:c0 length:c-c0 encoding:NSUTF8StringEncoding] autorelease];
-                                    }
-                                }
-                                [_variadicSelectors setValue:[NSNumber numberWithBool:YES] forKey:variadicMethodName];
-                                
-                            }
-                            else {
-                                [_variadicFunctions setValue:[NSNumber numberWithBool:YES] forKey:name];
-                            }
-                        }
-                    }
-                }
-                
-                c0 = tagStart;
-                id value = [[NSString alloc] initWithBytes:c0 length:c-c0 encoding:NSUTF8StringEncoding];
-    
-                [_hash setValue:value forKey:name];
-                [value release];
-                [name release];
-            }
-        }
-    }
-    
-#ifdef __OBJC_GC__
-    [[NSGarbageCollector defaultCollector] enableCollectorForPointer:originalC];
-#endif
-    
-    [_paths addObject:path];
-    [_xmlDocuments addObject:xmlDocument];
-
-    return YES;
-}
-
 
 - (BOOL)isBridgeSupportLoaded:(NSString*)path {
-    
-    NSUInteger idx = [self bridgeSupportIndexForString:path];
-    
-    return idx == NSNotFound ? NO : YES;
-}
-
-//
-// bridgeSupportIndexForString
-//    given 'AppKit', return index of '/System/Library/Frameworks/AppKit.framework/Versions/C/Resources/BridgeSupport/AppKitFull.bridgesupport'
-//
-- (NSUInteger)bridgeSupportIndexForString:(NSString*)string {
-    
-    NSUInteger i, l = [_paths count];
-    for (i=0; i<l; i++) {
-        NSString* path = [_paths objectAtIndex:i];
-        NSRange range  = [path rangeOfString:string];
-        
-        if (range.location != NSNotFound) {
-            return range.location;
-        } 
-    }
-    
-    return NSNotFound;
+    return [_paths containsObject:path];
 }
 
 - (NSMutableDictionary*)variadicSelectors {

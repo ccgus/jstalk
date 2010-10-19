@@ -336,6 +336,23 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
     return 0x00;
 }
 
+BOOL JSTSetJSValueToPointerForType(JSValueRef jsValue, void *pointer, NSString *typeInfo, JSTBridge *bridge) {
+    #warning fill in the rest here (JSTSetJSValueToPointerForType), and test
+    
+    if ([[NSString stringWithUTF8String:@encode(double)] isEqualToString:typeInfo]) {
+        *(double*)pointer = JSValueToNumber([bridge jsContext], jsValue, nil);
+    }
+    else if ([[NSString stringWithUTF8String:@encode(unsigned long)] isEqualToString:typeInfo]) {
+        *(unsigned long*)pointer = (unsigned long)JSValueToNumber([bridge jsContext], jsValue, nil);
+    }
+    else {
+        JSTAssert(NO);
+        return NO;
+    }
+    
+    return YES;
+}
+
 /*
 JSValueRef JSTMakeJSValueWithTypeAndValue(NSString *type, void *value, JSTBridge *bridge) {
     

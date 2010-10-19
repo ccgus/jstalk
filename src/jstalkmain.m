@@ -9,13 +9,14 @@
 @end
 
 @implementation JSCErrorHandler
-
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+/*
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     NSLog(@"Error line %d, %@", (int)lineNumber, error);
     
     exit(1);
 }
+*/
 
 
 @end
@@ -35,12 +36,14 @@ int main(int argc, char *argv[]) {
                                             encoding:NSUTF8StringEncoding
                                                error:nil];
     
-    JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
+    //JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
     
     JSTalk *t = [[[JSTalk alloc] init] autorelease];
     
-    JSCocoaController *jsController = [t jsController];
-    jsController.delegate = eh;
+    #warning add this delegate back in
+    
+    //JSCocoaController *jsController = [t jsController];
+    //jsController.delegate = eh;
     
     [t.env setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
     [t.env setObject:[[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];

@@ -70,7 +70,7 @@ enum {
 - (JSTRuntimeInfo*)runtimeInfoForClassMethodName:(NSString*)name;
 - (JSTRuntimeInfo*)runtimeInfoForInstanceMethodName:(NSString*)name;
 
-- (NSMutableArray*)functionEncodings;
+//- (NSMutableArray*)functionEncodings;
 
 - (int)sizeOfFields;
 

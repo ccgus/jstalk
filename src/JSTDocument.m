@@ -10,7 +10,7 @@
 #import "JSTAppDelegate.h"
 #import "JSTListener.h"
 #import "JSTalk.h"
-#import "JSCocoaController.h"
+//#import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
@@ -136,7 +136,8 @@
     }
     
 }
-
+#warning add errors back in
+/*
 - (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     if (!error) {
@@ -163,7 +164,7 @@
         }
     }
 }
-
+*/
 
 - (void)runScript:(NSString*)s {
     
@@ -173,8 +174,8 @@
         
         [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         
-        JSCocoaController *jsController = [jstalk jsController];
-        jsController.delegate = self;
+        //JSCocoaController *jsController = [jstalk jsController];
+        //jsController.delegate = self;
         
         jstalk.printController = self;
         

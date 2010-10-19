@@ -26,7 +26,7 @@ static NSMutableArray *JSTalkPluginList;
 @implementation JSTalk
 @synthesize printController=_printController;
 @synthesize errorController=_errorController;
-@synthesize jsController=_jsController;
+//@synthesize jsController=_jsController;
 @synthesize bridge=_bridge;
 @synthesize env=_env;
 
@@ -49,7 +49,7 @@ static NSMutableArray *JSTalkPluginList;
 - (id)init {
 	self = [super init];
 	if ((self != nil)) {
-        self.jsController = [[[JSCocoaController alloc] init] autorelease];
+        //self.jsController = [[[JSCocoaController alloc] init] autorelease];
         self.bridge = [[[JSTBridge alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
         
@@ -60,6 +60,15 @@ static NSMutableArray *JSTalkPluginList;
                 NSLog(@"Could not load JSTalk's bridge support file: %@", bridgeSupport);
             }
         }
+        
+        
+        [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/Foundation.framework"];
+        [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/CoreFoundation.framework"];
+        [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/AppKit.framework"];
+        [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework"];
+        [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework"];
+        
+        
 	}
     
 	return self;
@@ -70,12 +79,8 @@ static NSMutableArray *JSTalkPluginList;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if ([_jsController ctx]) {
-        JSGarbageCollect([_jsController ctx]);
-    }
-    
-    [_jsController release];
-    _jsController = 0x00;
+    [_bridge release];
+    _bridge = 0x00;
     
     [_env release];
     _env = 0x00;
@@ -195,9 +200,10 @@ static NSMutableArray *JSTalkPluginList;
     JSStringRelease(jsName);  
 }
 */
+
 - (void)deleteObjectWithName:(NSString*)name {
     
-    JSContextRef ctx                = [_jsController ctx];
+    JSContextRef ctx                = [_bridge jsContext];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
 
     JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, NULL);
@@ -220,8 +226,8 @@ static NSMutableArray *JSTalkPluginList;
     id resultObj = 0x00;
     
     @try {
-        [_jsController setUseAutoCall:NO];
-        [_jsController setUseJSLint:NO];
+        //[_jsController setUseAutoCall:NO];
+        //[_jsController setUseJSLint:NO];
         //resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
         
         // quick helper function.
@@ -238,8 +244,13 @@ static NSMutableArray *JSTalkPluginList;
         //
     }
     
+    
+    
+    
     if (resultRef) {
-        [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
+        #warning need to unbox our obj on the stack.
+        NSLog(@"Object left around that we're not returning!");
+        //[JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
     
     
@@ -258,8 +269,13 @@ static NSMutableArray *JSTalkPluginList;
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
-    JSCocoaController *jsController = [self jsController];
-    JSContextRef ctx                = [jsController ctx];
+    #warning add callFunctionNamed back in.
+    
+    JSTAssert(NO);
+    return 0x00;
+    
+    /*
+    JSContextRef ctx                = [_bridge jsContext];
     
     JSValueRef exception            = 0x00;   
     JSStringRef functionName        = JSStringCreateWithUTF8CString([name UTF8String]);
@@ -273,6 +289,7 @@ static NSMutableArray *JSTalkPluginList;
     [JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&returnObject inContext:ctx];
     
     return returnObject;
+    */
 }
 
 - (void)include:(NSString*)fileName {

@@ -7,7 +7,6 @@
 @interface JSTBridgeSupportLoader : NSObject <NSXMLParserDelegate> {
     
     NSMutableArray          *_paths;
-    NSMutableArray          *_xmlDocuments;
 
     NSMutableDictionary     *_hash;
     NSMutableDictionary     *_variadicSelectors;
@@ -21,9 +20,9 @@
 
 + (id)sharedController;
 
+- (BOOL)loadFrameworkAtPath:(NSString*)frameworkPath;
 - (BOOL)loadBridgeSupportAtPath:(NSString*)path;
 - (BOOL)isBridgeSupportLoaded:(NSString*)path;
-- (NSUInteger)bridgeSupportIndexForString:(NSString*)string;
 
 + (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol;
 - (JSTRuntimeInfo*)runtimeInfoForSymbol:(NSString*)symbol;
