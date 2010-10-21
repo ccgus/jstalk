@@ -21,9 +21,11 @@
     JSClassRef _bridgedObjectClass;
     JSClassRef _bridgedFunctionClass;
     
+    id _delegate;
 }
 
 
+@property (assign) id delegate;
 @property (assign) JSGlobalContextRef jsContext;
 
 - (void)pushObject:(id)obj withName:(NSString*)name;
@@ -37,4 +39,8 @@
 
 - (JSClassRef)bridgedObjectClass;
 
+@end
+
+@interface NSObject (JSTDelegate)
+- (void)bridge:(JSTBridge*)bridge hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourcePath:(id)url;
 @end

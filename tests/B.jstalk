@@ -1,5 +1,10 @@
 [jstalk include:"testsetup.jstalk"];
 
+
+var s = [JSTTests testTestStruct];
+
+
+
 var r = NSMakeRange(1, 1);
 r.location = 12;
 r.length   = 11;
@@ -113,7 +118,7 @@ jsassert(fifteen == 15, "JS style method B call failed!");
 
 var twelve = NSNumber.numberWithInt_(12);
 var fifteen = twelve + 3;
-jsassert(fifteen == 15, "JS style method C call failed!");
+//jsassert(fifteen == 15, "JS style method C call failed!");
 
 NSLog("Hey! %@ %p", "What's shaking?", ti);
 

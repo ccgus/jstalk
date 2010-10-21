@@ -244,13 +244,8 @@ static NSMutableArray *JSTalkPluginList;
         //
     }
     
-    
-    
-    
-    if (resultRef) {
-        #warning need to unbox our obj on the stack.
-        NSLog(@"Object left around that we're not returning!");
-        //[JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
+    if (resultRef && (int)resultRef > 0xa) {
+        resultObj = [_bridge NSObjectForJSObject:(JSObjectRef)resultRef];
     }
     
     

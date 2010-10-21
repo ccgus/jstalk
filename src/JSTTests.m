@@ -9,6 +9,7 @@
 #import "JSTTests.h"
 
 
+
 @implementation JSTTests
 
 
@@ -87,6 +88,14 @@
 - (long double)nonBridgedInstanceMethodReturnAddAndReturnLongDouble:(long double)val {
     debug(@"val: %Lf", val);
     return val + 50.f;
+}
+
++ (JSTTestStruct)testTestStruct {
+    JSTTestStruct foo;
+   
+    foo.b = 1;
+   
+    return foo; 
 }
 
 @end

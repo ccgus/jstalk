@@ -164,7 +164,7 @@ ffi_type* JSTFFITypeForTypeEncoding(NSString *encoding) {
     }
     
     if ([encoding length] > 1) {
-        debug(@"WHOA BIG ENCODING?!");
+        debug(@"WHOA BIG ENCODING?! (%@)", encoding);
         return &ffi_type_pointer;
     }
     

@@ -408,6 +408,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         }
         else if (idx == 1) { // arg 2 is always a selector
             *foo = JSTSelectorFromValue(_bridge, argument);
+            
+            debug(@"*foo: '%@'", NSStringFromSelector(*foo));
+            
             argVals[idx] = foo;
             return &ffi_type_pointer;
         }

@@ -26,7 +26,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 
 @implementation JSTBridge
 @synthesize jsContext=_jsContext;
-
+@synthesize delegate=_delegate;
 
 - (id)init {
 	self = [super init];
@@ -52,14 +52,14 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
         
         
         /*
-        //    jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
+        //jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
         jsCocoaObjectDefinition.getProperty            = jsCocoaObject_getProperty;
         jsCocoaObjectDefinition.setProperty            = jsCocoaObject_setProperty;
         jsCocoaObjectDefinition.deleteProperty        = jsCocoaObject_deleteProperty;
         jsCocoaObjectDefinition.getPropertyNames    = jsCocoaObject_getPropertyNames;
-        //    jsCocoaObjectDefinition.callAsFunction        = jsCocoaObject_callAsFunction;
+        //jsCocoaObjectDefinition.callAsFunction        = jsCocoaObject_callAsFunction;
         jsCocoaObjectDefinition.callAsConstructor    = jsCocoaObject_callAsConstructor;
-        //    jsCocoaObjectDefinition.hasInstance            = jsCocoaObject_hasInstance;
+        //jsCocoaObjectDefinition.hasInstance            = jsCocoaObject_hasInstance;
         jsCocoaObjectDefinition.convertToType        = jsCocoaObject_convertToType;
         */
         
@@ -92,6 +92,58 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     return _bridgedObjectClass;
 }
 
+- (void)callDelegateErrorWithException:(JSValueRef)exception {
+    
+    JSStringRef exceptionString = JSValueToStringCopy(_jsContext, exception, nil);
+    NSString *nsExceptionString = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, exceptionString);
+    JSStringRelease(exceptionString);
+    
+    if (![_delegate respondsToSelector:@selector(bridge:hadError:onLineNumber:atSourcePath:)]) {
+        
+        
+#ifdef debug
+        NSBeep();
+#endif
+        
+        debug(@"Exception: '%@'", nsExceptionString);
+        
+        [nsExceptionString release];
+        
+        return;
+    }
+    
+    if (JSValueGetType(_jsContext, exception) != kJSTypeObject) {
+        [_delegate bridge:self hadError:nsExceptionString onLineNumber:0 atSourcePath:nil];
+    }
+    
+    // Iterate over all properties of the exception
+    JSObjectRef jsObject            = JSValueToObject(_jsContext, exception, nil);
+    JSPropertyNameArrayRef jsNames  = JSObjectCopyPropertyNames(_jsContext, jsObject);
+    size_t i, nameCount             = JSPropertyNameArrayGetCount(jsNames);
+    NSString *line                  = 0x00;
+    NSString *sourcePath            = 0x00;
+    
+    for (i = 0; i < nameCount; i++) {
+        JSStringRef jsName      = JSPropertyNameArrayGetNameAtIndex(jsNames, i);
+        NSString *name          = [(id)JSStringCopyCFString(kCFAllocatorDefault, jsName) autorelease];
+        
+        JSValueRef jsValueRef   = JSObjectGetProperty(_jsContext, jsObject, jsName, nil);
+        JSStringRef valueJS     = JSValueToStringCopy(_jsContext, jsValueRef, nil);
+        NSString *value         = [(NSString*)JSStringCopyCFString(kCFAllocatorDefault, valueJS) autorelease];
+        JSStringRelease(valueJS);
+        
+        if ([name isEqualToString:@"line"]) {
+            line = value;
+        }
+        else if ([name isEqualToString:@"sourceURL"]) {
+            sourcePath = value;
+        }
+    }
+    
+    JSPropertyNameArrayRelease(jsNames);
+    [_delegate bridge:self hadError:nsExceptionString onLineNumber:[line intValue] atSourcePath:sourcePath];
+}
+
 - (JSValueRef)evalJSString:(NSString*)script withPath:(NSString*)path {
     
     JSStringRef scriptJS    = JSStringCreateWithCFString((CFStringRef)script);
@@ -105,17 +157,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     }
     
     if (exception) {
-        
-        JSStringRef exceptionString = JSValueToStringCopy(_jsContext, exception, nil);
-        NSString *nsExceptionString = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, exceptionString);
-        JSStringRelease(exceptionString);
-        #ifdef debug
-        NSBeep();
-        #endif
-        debug(@"******************************************");
-        debug(@"nsExceptionString: '%@'", nsExceptionString);
-        
-        [nsExceptionString release];
+        [self callDelegateErrorWithException:exception];
     }
     
     return result;
@@ -369,6 +411,8 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     debug(@"%s:%d", __FUNCTION__, __LINE__);
     return nil;
 }
+
+
 
 @end
 

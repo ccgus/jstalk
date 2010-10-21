@@ -136,9 +136,8 @@
     }
     
 }
-#warning add errors back in
-/*
-- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+
+- (void)bridge:(JSTBridge*)bridge hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourcePath:(NSString*)path {
     
     if (!error) {
         return;
@@ -164,7 +163,6 @@
         }
     }
 }
-*/
 
 - (void)runScript:(NSString*)s {
     
@@ -174,10 +172,8 @@
         
         [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         
-        //JSCocoaController *jsController = [jstalk jsController];
-        //jsController.delegate = self;
-        
-        jstalk.printController = self;
+        [jstalk setPrintController:self];
+        [[jstalk bridge] setDelegate:self];
         
         [errorLabel setStringValue:@""];
         
