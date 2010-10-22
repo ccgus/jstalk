@@ -37,14 +37,23 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification {
     // Let's preload some bridge files.
-    // wait, let's not, at least until we manage to also load the framework at the same time.
     
+    NSString *bridgeSupport = [[NSBundle bundleForClass:[JSTalk class]] pathForResource:@"JSTalk" ofType:@"bridgesupport"];
     
+    if (bridgeSupport && ![[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:bridgeSupport]) {
+        if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:bridgeSupport]) {
+            NSLog(@"Could not load JSTalk's bridge support file: %@", bridgeSupport);
+        }
+    }
+            
+    
+    /*
     [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/Foundation.framework"];
     [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/CoreFoundation.framework"];
     [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/AppKit.framework"];
     [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework"];
     [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework"];
+    */
 }
 
 - (void)awakeFromNib {

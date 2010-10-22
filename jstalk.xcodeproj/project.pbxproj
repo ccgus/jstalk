@@ -159,11 +159,11 @@
 		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
-		CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
 		CC3937CD126E2F270029645D /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
-		CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */; };
 		CC3937D9126E2F5C0029645D /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
-		CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3CC7F1124C3406001A349E /* JSTBridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3CC7F1124C3406001A349E /* JSTBridge.h */; };
 		CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
 		CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -206,7 +206,7 @@
 		CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725EB81238026D00EA83BF /* TETextUtils.m */; };
 		CC7528F3124FE64D005546B0 /* JSTFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = CC7528F1124FE64D005546B0 /* JSTFunction.h */; };
 		CC7528F4124FE64D005546B0 /* JSTFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7528F2124FE64D005546B0 /* JSTFunction.m */; };
-		CC75296E1250066F005546B0 /* JSTTests.h in Headers */ = {isa = PBXBuildFile; fileRef = CC75296C1250066F005546B0 /* JSTTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC75296E1250066F005546B0 /* JSTTests.h in Headers */ = {isa = PBXBuildFile; fileRef = CC75296C1250066F005546B0 /* JSTTests.h */; };
 		CC75296F1250066F005546B0 /* JSTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75296D1250066F005546B0 /* JSTTests.m */; };
 		CC7576B40F6DF3B7003AE279 /* JSTFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */; };
 		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };

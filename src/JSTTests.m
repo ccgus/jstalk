@@ -90,12 +90,16 @@
     return val + 50.f;
 }
 
-+ (JSTTestStruct)testTestStruct {
++ (JSTTestStruct)classTestStruct {
     JSTTestStruct foo;
    
     foo.b = 1;
    
     return foo; 
+}
+
++ (NSRect)classTestNSRect {
+    return NSMakeRect(1,2,3,4);
 }
 
 @end

@@ -11,6 +11,8 @@
 #import "JSTBridge.h"
 #include <ffi/ffi.h>
 
+extern ffi_type ffi_type_jst_structure;
+
 void JSTAssignException(JSTBridge *bridge, JSValueRef *exception, NSString *reason);
 id JSTNSObjectFromValue(JSTBridge *bridge, JSValueRef value);
 SEL JSTSelectorFromValue(JSTBridge *bridge, JSValueRef value);

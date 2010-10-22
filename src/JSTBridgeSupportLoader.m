@@ -120,8 +120,7 @@
     // is it an arg or a ret for a method on a class?
     else if (_currentBridgeClass && [_currentBridgeObject jstType] == JSTTypeMethod && ([tagName isEqualToString:@"arg"] || [tagName isEqualToString:@"retval"])) {
         
-        
-        
+        //debug(@"adding %@ for %@", tagName, [_currentBridgeObject methodSelector]);
         
         JSTRuntimeInfo *arg = [[JSTRuntimeInfo alloc] init];
         [arg setDeclaredType:[atts objectForKey:@"declared_type"]];

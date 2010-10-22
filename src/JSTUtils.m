@@ -8,6 +8,7 @@
 
 #import "JSTUtils.h"
 
+ffi_type ffi_type_jst_structure;
 
 void JSTAssignException(JSTBridge *bridge, JSValueRef *exception, NSString *reason) {
     
@@ -163,6 +164,12 @@ ffi_type* JSTFFITypeForTypeEncoding(NSString *encoding) {
         return &ffi_type_void;
     }
     
+    if ([encoding hasPrefix:@"{"]) {
+        return &ffi_type_jst_structure;
+    }
+    
+    
+    
     if ([encoding length] > 1) {
         debug(@"WHOA BIG ENCODING?! (%@)", encoding);
         return &ffi_type_pointer;
@@ -276,6 +283,9 @@ NSString *JSTStringForFFIType(ffi_type* type) {
     else if (type == &ffi_type_pointer) {
         return @"ffi_type_pointer";
     }
+    else if (type == &ffi_type_jst_structure) {
+        return @"ffi_type_jst_structure";
+    }
     
     return @"unknown ffi type";
 }
@@ -332,6 +342,8 @@ JSValueRef JSTMakeJSValueWithFFITypeAndValue(ffi_type *type, void *value, JSTBri
     else if (type->type == FFI_TYPE_STRUCT) {
         JSTAssert(NO);
     }
+    
+    JSTAssert(NO);
     
     return 0x00;
 }

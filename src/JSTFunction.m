@@ -286,6 +286,8 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         instanceInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:classString];
     }
     
+    debug(@"instanceInfo: '%@'", instanceInfo);
+    
     if (isClassMethod) { // are we dealing with an Class method?
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForClassMethodName:sel];
     }
@@ -329,6 +331,36 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     return _objcMethod;
 }
 
+-(ffi_type*)encodingsForStructure:(NSString*)typeEncoding {
+    
+    debug(@"generating encodings for %@", typeEncoding);
+    
+    NSArray *encodings       = JSTTypeEncodingsFromStructureTypeEncoding(typeEncoding);
+    
+    ffi_type *structInfo     = [self _allocate:sizeof(ffi_type)];
+    structInfo->alignment    = 0; // wow this is probably wrong.
+    structInfo->type         = FFI_TYPE_STRUCT;
+    structInfo->elements     = [self _allocate:(sizeof(ffi_type*) * ([encodings count] + 1))];
+    
+    int idx = 0;
+    
+    for (NSString *e in encodings) {
+        int size = JSTSizeOfTypeEncoding(e);
+        /*
+        if (size < sizeof(ffi_arg)) {
+            size = sizeof(ffi_arg);
+        }
+        */
+        structInfo->size += size;
+        structInfo->elements[idx] = JSTFFITypeForTypeEncoding(e);
+        idx++;
+    }
+    
+    structInfo->elements[idx]   = nil; // this guy is nil terminated
+    
+    return structInfo;
+}
+
 -(ffi_type*)setupReturnType {
     
     if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend)) {
@@ -337,6 +369,12 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         
         if (_msgSendMethodRuntimeInfo) {
             retType = JSTFFITypeForTypeEncoding([[_msgSendMethodRuntimeInfo returnValue] typeEncoding]);
+            
+            if (retType == &ffi_type_jst_structure) {
+                debug(@"we need to setup for a struct");
+                _callAddress = &objc_msgSend_stret;
+                return [self encodingsForStructure:[[_msgSendMethodRuntimeInfo returnValue] typeEncoding]];
+            }
         }
         else {
             const char *c = method_getTypeEncoding([self objcMethod]);
@@ -365,25 +403,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     if ([info returnValue]) {
         
         if ([[[info returnValue] typeEncoding] hasPrefix:@"{"]) {
-           
-            NSArray *encodings       = JSTTypeEncodingsFromStructureTypeEncoding([[info returnValue] typeEncoding]);
-            
-            ffi_type *structInfo     = [self _allocate:sizeof(ffi_type)];
-            structInfo->alignment    = 0; // wow this is probably wrong.
-            structInfo->type         = FFI_TYPE_STRUCT;
-            structInfo->elements     = [self _allocate:(sizeof(ffi_type*) * ([encodings count] + 1))];
-
-            int idx = 0;
-            
-            for (NSString *e in encodings) {
-                structInfo->size += JSTSizeOfTypeEncoding(e);
-                structInfo->elements[idx] = JSTFFITypeForTypeEncoding(e);
-                idx++;
-            }
-            
-            structInfo->elements[idx]   = nil; // this guy is nil terminated
-            
-            return structInfo;
+           return [self encodingsForStructure:[[info returnValue] typeEncoding]];
         }
         
         
@@ -409,7 +429,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         else if (idx == 1) { // arg 2 is always a selector
             *foo = JSTSelectorFromValue(_bridge, argument);
             
-            debug(@"*foo: '%@'", NSStringFromSelector(*foo));
+            debug(@"selector: '%@'", NSStringFromSelector(*foo));
             
             argVals[idx] = foo;
             return &ffi_type_pointer;
@@ -543,7 +563,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     [self checkForMsgSendMethodRuntimeInfo];
     
-    //debug(@"Calling %@", _functionName);
+    debug(@"Calling %@", _functionName);
     
     BOOL success        = YES;
     ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
@@ -568,10 +588,8 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             debug(@"unknown ffi status: %d", status);
         }
         
-        
         JSTAssert(NO);
     }
-    
     
     void *returnValue;
     
@@ -595,9 +613,12 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     if (success) {
         
+        debug(@"success!");
         
         if (returnFIIType->type == FFI_TYPE_STRUCT) {
             // crap must hold on to the memory!
+            
+            debug(@"returning a struct.");
             
             NSMutableData *data = [self _allocateData:returnFIIType->size];
             void *value = [data mutableBytes];
@@ -611,15 +632,22 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             JSTRuntimeInfo *info    = [JSTBridgeSupportLoader runtimeInfoForSymbol:[[_runtimeInfo returnValue] declaredType]];
             
             if (!info) {
+                info = [JSTBridgeSupportLoader runtimeInfoForSymbol:[[_msgSendMethodRuntimeInfo returnValue] declaredType]];
+            }
+            
+            if (!info) {
                 info = [[JSTBridgeSupportLoader runtimeInfoForSymbol:_functionName] returnValue];
             }
             
             [structure setRuntimeInfo:info];
             
+            debug(@"structure: '%@'", structure);
+            
             retJS = [_bridge makeJSObjectWithNSObject:structure runtimeInfo:nil];
             
         }
         else {
+            debug(@"oh?");
             retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, returnValue, _bridge);
         }
         

@@ -1,8 +1,15 @@
 [jstalk include:"testsetup.jstalk"];
 
+var r = [JSTTests classTestNSRect];
+jsassert(r.origin.x == 1, "r.origin.x");
+jsassert(r.origin.y == 2, "r.origin.y");
+jsassert(r.size.width == 3, "r.size.width");
+jsassert(r.size.height == 4, "r.size.height");
 
-var s = [JSTTests testTestStruct];
+NSLog("Woo!");
 
+var s = [JSTTests classTestStruct];
+jsassert(s.b, "s.b is wrong");
 
 
 var r = NSMakeRange(1, 1);

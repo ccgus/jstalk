@@ -232,8 +232,10 @@
         return [NSString stringWithFormat:@"%@ class '%@'", prefix, _symbolName];
     }
     else if (_jstType == JSTTypeFunction) {
-        return [NSString stringWithFormat:@"%@ function '%@'",prefix, _symbolName];
-    
+        return [NSString stringWithFormat:@"%@ function '%@'", prefix, _symbolName];
+    }
+    else if (_jstType == JSTTypeStruct) {
+        return [NSString stringWithFormat:@"%@ struct '%@'", prefix, _symbolName];
     }
     
     

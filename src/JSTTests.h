@@ -20,6 +20,7 @@
 
 struct JSTTestStruct {
     BOOL        b;
+    /*
     float       f;
     double      d;
     int8_t      i8;
@@ -32,6 +33,7 @@ struct JSTTestStruct {
     uint64_t    ui64;
     
     struct JSTTestStruct *next;
+    */
 };
 typedef struct JSTTestStruct JSTTestStruct;
 
@@ -39,7 +41,8 @@ typedef struct JSTTestStruct JSTTestStruct;
 
 }
 
-+ (JSTTestStruct)testTestStruct;
++ (JSTTestStruct)classTestStruct;
++ (NSRect)classTestNSRect;
 
 /*
 + (BOOL)testClassBoolValue;
