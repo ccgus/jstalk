@@ -1,0 +1,89 @@
+<html>
+	<style>
+		div
+		{
+			margin: 1em;
+		}
+	</style>
+<body>
+
+	<p>JSCocoa will interact with this webpage.
+	<p>This page should show two DIVs with a green background-color. Last div should contain the digit 8, not the word eight.
+	<hr>
+	
+	<div id='hideMe'>This should be hidden.</div>
+
+	<div id='showMe' style='display: none; background-color: lime'>This should be shown.</div>
+
+	<div id='colorMe' style='background-color: red'>This should be green.</div>
+
+	<div>The digit eight should follow : <span style='border: solid 1px black' id='replaceMe'>eight</span></div>
+	
+	<script>
+		function	doStuff(color)
+		{
+			document.body.style.backgroundColor = color || 'red'
+		}
+		
+		function	displayObject(object, value)
+		{
+			document.getElementById(object).innerHTML = value
+//			document.body.style.backgroundColor = 'lime'
+		}
+
+
+		function	replaceNodeValue(node, value)
+		{
+//			if (node && ('nodeType' in node)) 
+				node.innerHTML = value
+//			throw new String('>>> throwing from webview')
+//return { 'hello' : 'world' }
+/*
+return { 'hello' : 'world' }
+return 1.23
+return undefined
+return null
+return 'hello'
+*/
+		}
+//		replaceNodeValue(document.body, 'hello')
+	</script>
+	
+	<a href='http://google.com'>Google</a>
+	<p>
+	<div id='dump'>
+	</div>
+	
+	<script>
+		function	d()
+		{
+			var str = (new Date).getTime()
+			
+			try
+			{
+				var str2 = ''
+				var count = 0
+				for (var i in __gcprotect) count++
+				
+				str2 += '<br>__gcprotect live=' + count
+				str2 += '<br>__gcprotectidx-1=' + (__gcprotectidx-1)
+				str2 += '<br>alive=' + Math.round(10000*(count/(__gcprotectidx-1)))/100 + '%'
+				
+				str += str2
+			}
+			catch (e)
+			{
+				str += ' __gcprotect dump failed'
+			}
+			
+			document.getElementById('dump').innerHTML = str
+		}
+		
+		setInterval(d, 100)
+		
+		var externalString = 'Hello world from WebView !'
+	
+	</script>
+	
+</body>
+</html>

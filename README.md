@@ -152,8 +152,6 @@ Here's what is currently being worked on, what's broken:
 Checking out the code:
 ----------------------
 	$ git clone git://github.com/ccgus/jstalk.git
-	$ cd jstalk
-	$ git clone http://github.com/parmanoir/jscocoa.git jscocoa
 
 
 TODO:
