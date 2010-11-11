@@ -338,6 +338,9 @@ static NSMutableArray *JSTalkPluginList;
     return [self applicationOnPort:[NSString stringWithFormat:@"%@.JSTalk", bundleId]];
 }
 
++ (id)app:(NSString*)app {
+    return [self application:app];
+}
 
 + (id)proxyForApp:(NSString*)app {
     return [self application:app];
