@@ -469,6 +469,35 @@ static void initBraces() {
 
 
 
+- (NSRange)selectionRangeForProposedRange:(NSRange)proposedSelRange granularity:(NSSelectionGranularity)granularity {
+    
+    // check for cases where we've got: [foo setValue:bar forKey:"x"]; and we double click on setValue.  The default way NSTextView does the selection
+    // is to have it highlight all of setValue:bar, which isn't what we want.  So.. we mix it up a bit.
+    // There's probably a better way to do this, but I don't currently know what it is.
+    
+    if (granularity == NSSelectByWord && ([[NSApp currentEvent] type] == NSLeftMouseUp || [[NSApp currentEvent] type] == NSLeftMouseDown) && [[NSApp currentEvent] clickCount] > 1) {
+        
+        NSRange r           = [super selectionRangeForProposedRange:proposedSelRange granularity:granularity];
+        NSString *s         = [[[self textStorage] mutableString] substringWithRange:r];
+        NSRange colLocation = [s rangeOfString:@":"];
+        
+        if (colLocation.location != NSNotFound) {
+            
+            if (proposedSelRange.location > (r.location + colLocation.location)) {
+                r.location = r.location + colLocation.location + 1;
+                r.length = [s length] - colLocation.location - 1;
+            }
+            else {
+                r.length = colLocation.location;
+            }
+        }
+        
+        return r;
+    }
+    
+    return [super selectionRangeForProposedRange:proposedSelRange granularity:granularity];
+}
+
 
 
 @end
