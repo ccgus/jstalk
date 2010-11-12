@@ -172,6 +172,41 @@
     [self insertText:@"    "];
 }
 
+- (void)insertText:(id)insertString {
+    
+    [super insertText:insertString];
+    
+    NSRange currentRange = [self selectedRange];
+    
+    if ([@"{" isEqualToString:insertString]) {
+        
+        NSRange r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
+        NSString *myLine = [[[self textStorage] mutableString] substringWithRange:r];
+        
+        NSMutableString *indent = [NSMutableString string];
+        
+        int j = 0;
+        
+        while (j < [myLine length] && ([myLine characterAtIndex:j] == ' ' || [myLine characterAtIndex:j] == '\t')) {
+            [indent appendFormat:@"%C", [myLine characterAtIndex:j]];
+            j++;
+        }
+        
+        [super insertText:[NSString stringWithFormat:@"\n%@    \n%@}", indent, indent]];
+        
+        currentRange.location += [indent length] + 5;
+        
+        [self setSelectedRange:currentRange];
+    }
+    else if ([@"(" isEqualToString:insertString]) {
+        [super insertText:@")"];
+        [self setSelectedRange:currentRange];
+    }
+    else if ([@"[" isEqualToString:insertString]) {
+        [super insertText:@"]"];
+        [self setSelectedRange:currentRange];
+    }
+}
 
 - (void)insertNewline:(id)sender {
     

@@ -63,7 +63,7 @@ git clone git://github.com/ccgus/jstalk.git
 
 cd /tmp/jstalk
 
-git clone http://github.com/parmanoir/jscocoa.git jscocoa
+#git clone http://github.com/parmanoir/jscocoa.git jscocoa
 #git submodule init && git submodule update
 
 v=`date "+%s"`
