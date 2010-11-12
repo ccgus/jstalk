@@ -199,8 +199,14 @@
         [self setSelectedRange:currentRange];
     }
     else if ([@"(" isEqualToString:insertString]) {
-        [super insertText:@")"];
-        [self setSelectedRange:currentRange];
+        
+        // make sure to only do it on the end of the line.
+        NSRange r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
+        if (NSMaxRange(r) - 1 == NSMaxRange(currentRange)) {
+            [super insertText:@")"];
+            [self setSelectedRange:currentRange];
+        }
+        
     }
     else if ([@"[" isEqualToString:insertString]) {
         [super insertText:@"]"];
@@ -460,7 +466,13 @@ static void initBraces() {
             if (TE_isClosingBrace(origChar)) {
                 NSRange matchRange = TE_findMatchingBraceForRangeInString(origRange, [textView string]);
                 if (matchRange.location != NSNotFound) {
-                    [self showFindIndicatorForRange:matchRange];
+                    
+                    // do this with a delay, since for some reason it only works when we use the arrow keys otherwise.
+                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self showFindIndicatorForRange:matchRange];
+                        });
+                    });
                 }
             }
         }
