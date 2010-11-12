@@ -1,0 +1,60 @@
+[jstalk include:"testsetup.jstalk"];
+
+
+var d = [NSMutableDictionary dictionary];
+
+[d setObject:'seeeee' forKey:'c'];
+d['a'] = 'eh';
+d['b'] = 'beee';
+for (var key in d) {
+    
+    var value = d[key];
+    
+    if (key === 'a') {
+        jsassert(value == 'eh', "Got " + value + " for a");
+    }
+    if (key === 'b') {
+        jsassert(value == 'beee', "Got " + value + " for b");
+    }
+    if (key === 'c') {
+        jsassert(value == 'seeeee', "Got " + value + " for c");
+    }
+}
+
+
+var args = [NSMutableArray array];
+
+[args addObject:"one"];
+[args addObject:"two"];
+[args addObject:"three"];
+
+
+for (idx in args) {
+    
+    var checker = function(value, s) {
+        if (idx == 0) {
+            jsassert(value == 'one', "Got " + value + " for 1 " + s);
+        }
+        if (idx == 1) {
+            jsassert(value == 'two', "Got " + value + " for 2 " + s);
+        }
+        if (idx == 2) {
+            jsassert(value == 'three', "Got " + value + " for 3 " + s);
+        }
+    }
+    
+    checker([args objectAtIndex:idx], "objectAtIndex");
+    checker(args[idx], "direct whatever");
+    
+}
+
+var gotException = false;
+
+try {
+    var x = args[5];
+}
+catch(err) {
+    gotException = true;
+}
+
+jsassert(gotException, "Didn't get the exception when trying to grab an array index that was out of bounds");

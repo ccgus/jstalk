@@ -37,3 +37,8 @@
 + (id)application:(NSString*)app;
 
 @end
+
+// this is used by the preprocessor, to return strings back for cases of @"foo".
+// so, [@"foo" uppercaseString] will be turned into objc_msgSend(JSTNSString("foo"), "uppercaseString");
+// and it just does the right thing.  It'll return itself, but it forces the conversion of the js string into a cocoa string
+NSString *JSTNSString(NSString *s);

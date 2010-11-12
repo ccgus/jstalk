@@ -14,7 +14,7 @@ var process = function (a, b) {
         return false;
     }
     
-    print("Success for test " + count);
+    //print("Success for test " + count);
     
     count++;
     
@@ -31,28 +31,39 @@ addTest('print([4 - 5, b]);',
         'print([4 - 5, b]);');
 
 addTest('print([a, b]);',
-        'print([a,b]);');
+        'print([a, b]);');
         
 addTest('[db executeUpdate:"insert into foo values (?, ?, ?)",\n   1, // comment!\n   @"Hello",\n   [NSDate date]];',
-        'db.executeUpdate_("insert into foo values (?, ?, ?)",1,NSString.stringWithString_("Hello"),NSDate.date());');
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?, ?)",1,objc_msgSend(NSString, "stringWithString:", "Hello"),objc_msgSend(NSDate, "date"));');
 
 addTest('[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];',
-        'db.executeUpdate_("insert into foo values (?, ?)",1,"Hello");');
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?)",1,"Hello");');
 
 addTest('var acorn = [JSTalk application:"Acorn"];',
-        'var acorn = JSTalk.application_("Acorn");');
+        'var acorn = objc_msgSend(JSTalk, "application:", "Acorn");');
 
 addTest('print([]);',
         'print([]);');
 
 addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
-        'fo.doSomething_in_(" a " + b.fun() + " c ", nil);');
+        'objc_msgSend(fo, "doSomething:in:", " a " + objc_msgSend(b, "fun") + " c ", nil);');
 
 addTest('print([NSString stringWithString:@"a"+"b"])',
-        'print(NSString.stringWithString_(NSString.stringWithString_("a")+"b"))');
-
+        'print(objc_msgSend(NSString, "stringWithString:", objc_msgSend(NSString, "stringWithString:", "a"+"b")))');
+        
 addTest('[NSFullUserName() lowercaseString];',
-        'NSFullUserName().lowercaseString();');
+        'objc_msgSend(NSFullUserName()), "lowercaseString");');
+
+addTest("""[NSApp a:1 fake:function() {
+    [someClass runBlock:[NSApp blockForJSFunction:function(err) {
+        var foo = Foo();
+    }]];
+}];""", """objc_msgSend(NSApp, "a:fake:", function() {
+    objc_msgSend(someClass, "runBlock:", objc_msgSend(NSApp, "blockForJSFunction:", function(err) {
+        var foo = Foo();
+    }));
+});""");
+
 
 
 
@@ -74,3 +85,5 @@ while (shouldContinue && idx < len) {
 print("Done");
 
 // what about "foo ? bar : xyz" ?  Yea, gotta fix that.
+
+

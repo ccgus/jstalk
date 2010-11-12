@@ -543,7 +543,15 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
                     argVals[idx] = storage;
                     return retType;
                 }
+                if (retType == &ffi_type_pointer) {
+                    void **foo = [self _allocate:(sizeof(void*))];
+                    
+                    *foo = JSTNSObjectFromValue(_bridge, argument);
+                    argVals[idx] = foo;   
+                    return retType;
+                }
                 else {
+                    
                     assert(false);
                 }
                 

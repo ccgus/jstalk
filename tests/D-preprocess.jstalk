@@ -1,0 +1,21 @@
+[jstalk() foo];
+
+
+var a = tests[idx+1][0];
+
+[jstalk() foo:12];
+
+[jstalk include:"testsetup.jstalk"];
+
+print([JSTNSString("hey") lowercaseString]);
+
+[NSFullUserName() lowercaseString];
+
+
+/*
+[NSApp a:1 fake:function() {
+    [someClass runBlock:[NSApp blockForJSFunction:function(err) {
+        var foo = Foo();
+    }]];
+}];
+*/

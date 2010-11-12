@@ -390,3 +390,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 @end
+
+NSString *JSTNSString(NSString *s) {
+    return s;
+}

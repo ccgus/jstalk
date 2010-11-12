@@ -67,7 +67,7 @@
     TDTokenizer *tokenizer  = [TDTokenizer tokenizerWithString:sourceString];
     
     tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-    tokenizer.commentState.reportsCommentTokens = NO;
+    tokenizer.commentState.reportsCommentTokens = YES;
     
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = 0x00;
@@ -81,7 +81,8 @@
             
             nextToken = [tokenizer nextToken];
             if (nextToken.quotedString) {
-                [buffer appendFormat:@"[NSString stringWithString:%@]", [nextToken stringValue]];
+                //[buffer appendFormat:@"[NSString stringWithString:%@]", [nextToken stringValue]];
+                [buffer appendFormat:@"JSTNSString(%@)", [nextToken stringValue]];
             }
             else {
                 [buffer appendString:[tok stringValue]];
@@ -113,8 +114,8 @@
     [[tokenizer commentState] setReportsCommentTokens:YES];
     
     TDToken *eof                    = [TDToken EOFToken];
-    TDToken *tok                    = nil;
-    
+    TDToken *tok                    = 0x00;
+    NSString *desc                  = 0x00;
     JSTPSymbolGroup *currentGroup   = 0x00;
     
     while ((tok = [tokenizer nextToken]) != eof) {
@@ -129,11 +130,11 @@
         }
         else if ([tok isSymbol] && [self isCloseSymbol:[tok stringValue]]) {
             
-            if (currentGroup.parent) {
-                [currentGroup.parent addSymbol:currentGroup];
+            if ([currentGroup parent]) {
+                [[currentGroup parent] addSymbol:currentGroup];
             }
-            else if ([currentGroup description]) {
-                [buffer appendString:[currentGroup description]];
+            else if ((desc = [currentGroup description])) {
+                [buffer appendString:desc];
             }
             
             currentGroup = currentGroup.parent;
@@ -217,7 +218,7 @@
     
 }
 
-- (NSString*)description {
+- (NSString*)descriptionThatSortOfWorks {
     
     NSUInteger argsCount = [_args count];
     
@@ -324,6 +325,160 @@
         return ret;
     }
     
+    [selector replaceOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [selector length])];
+    
+    NSMutableString *ret = [NSMutableString stringWithFormat:@"%@.%@(", target, selector];
+    
+    if ([self nonWhitespaceCountInArray:methodArgs]) {
+        
+        for (int i = 0; i < [methodArgs count]; i++) {
+            
+            NSString *arg = [methodArgs objectAtIndex:i];
+            NSString *s = [arg description];
+            NSString *t = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            
+            [ret appendString:s];
+            
+            if ([t length] && i < [methodArgs count] - 1) {
+                [ret appendString:@","];
+            }
+        }
+    }
+    
+    [ret appendString:@")"];
+    
+    return ret;
+    
+}
+
+- (NSString*)description {
+    
+    NSUInteger argsCount = [_args count];
+    
+    if (_openSymbol == '(') {
+        return [NSString stringWithFormat:@"(%@)", [_args componentsJoinedByString:@""]];
+    }
+    
+    if (_openSymbol != '[') {
+        return [NSString stringWithFormat:@"Bad JSTPSymbolGroup! %@", _args];
+    }
+    
+    BOOL firstArgIsWord         = [_args count] && ([[_args objectAtIndex:0] isKindOfClass:[TDToken class]] && [[_args objectAtIndex:0] isWord]);
+    BOOL firstArgIsSymbolGroup  = [_args count] && [[_args objectAtIndex:0] isKindOfClass:[JSTPSymbolGroup class]];
+    
+    // objc messages start with a word.  So, if it isn't- then let's just fling things back the way they were.
+    if (!firstArgIsWord && !firstArgIsSymbolGroup) {
+        return [NSString stringWithFormat:@"[%@]", [_args componentsJoinedByString:@""]];
+    }
+    
+    if ([_args count] == 1) {
+        return [NSString stringWithFormat:@"[%@]", [_args objectAtIndex:0]];
+    }
+    
+    
+    BOOL startedSelector      = NO;
+    NSString *lastArg         = 0x00;
+    NSMutableArray *fixedArgs = [NSMutableArray array];
+    NSMutableString *selector = [NSMutableString string];
+    NSString *preSelArg       = 0x00;
+    
+    id targetObj              = [_args objectAtIndex:0];
+    NSString *target          = [targetObj isKindOfClass:[TDToken class]] ? [targetObj stringValue] : [targetObj description];
+    
+    NSUInteger idx            = 1;
+    while (idx < argsCount) {
+        id arg                  = [_args objectAtIndex:idx];
+        TDToken *currentToken   = [arg isKindOfClass:[TDToken class]] ? arg : 0x00;
+        
+        NSString *s = currentToken ? [currentToken stringValue] : [arg description];
+        s = [s stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if ([s isEqualToString:@":"]) {
+            [selector appendString:lastArg];
+            [selector appendString:s];
+            
+            if (startedSelector) {
+                [fixedArgs removeLastObject];
+            }
+            
+            if (preSelArg == lastArg) {
+                preSelArg = 0x00;
+            }
+            
+            startedSelector = YES;
+        }
+        else if ([s length]) {
+            
+            if (startedSelector) {
+                [fixedArgs addObject:s];
+            }
+            else if (!preSelArg) {
+                preSelArg = s;
+            }
+        }
+        
+        lastArg = s;
+        idx++;
+    }
+    
+    if (!startedSelector) {
+        
+        for (id arg in _args) {
+            
+            TDToken *tok = [arg isKindOfClass:[TDToken class]] ? arg : 0x00;
+            
+            if ([tok isSymbol]) {
+                // looks like an array of some sort then.
+                return [NSString stringWithFormat:@"[%@]", [_args componentsJoinedByString:@""]];
+            }
+        }
+        
+        
+    }
+    
+    
+    
+    if (!startedSelector) {
+        selector = (id)lastArg;
+        if (selector == preSelArg) {
+            preSelArg = 0x00;
+        }
+    }
+    
+    debug(@"selector: '%@'", selector);
+    debug(@"_args: '%@'", _args);
+    
+    /*
+    if (![selector length] && [methodArgs count] == 1) {
+        return [NSString stringWithFormat:@"[%@%@]", target, [methodArgs lastObject]];
+    }
+    */
+    
+    
+    
+    
+    
+    debug(@"selector: '%@'", selector);
+    
+    NSMutableString *ret = [NSMutableString stringWithString:@"objc_msgSend"];
+    
+    [ret appendFormat:@"(%@%@, \"%@\"", target, preSelArg ? preSelArg : @"", selector];
+    
+    for (NSString *arg in fixedArgs) {
+        
+        NSString *f = [arg stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        if ([f length]) {
+            [ret appendFormat:@", %@", arg];
+        }
+    }
+    
+    [ret appendString:@")"];
+    
+    debug(@"ret: '%@'", ret);
+    
+    return ret;
+    
     #warning this is completely fucked:
     /*
 [NSApp a:1 fake:function() {
@@ -333,7 +488,94 @@
 }];
 */
 
+}
 
+- (NSString*)descriptionOld {
+    
+    NSUInteger argsCount = [_args count];
+    
+    if (_openSymbol == '(') {
+        return [NSString stringWithFormat:@"(%@)", [_args componentsJoinedByString:@""]];
+    }
+    
+    if (_openSymbol != '[') {
+        return [NSString stringWithFormat:@"Bad JSTPSymbolGroup! %@", _args];
+    }
+    
+    BOOL firstArgIsWord         = [_args count] && ([[_args objectAtIndex:0] isKindOfClass:[TDToken class]] && [[_args objectAtIndex:0] isWord]);
+    BOOL firstArgIsSymbolGroup  = [_args count] && [[_args objectAtIndex:0] isKindOfClass:[JSTPSymbolGroup class]];
+    
+    // objc messages start with a word.  So, if it isn't- then let's just fling things back the way they were.
+    if (!firstArgIsWord && !firstArgIsSymbolGroup) {
+        return [NSString stringWithFormat:@"[%@]", [_args componentsJoinedByString:@""]];
+    }
+    
+    NSMutableString *selector   = [NSMutableString string];
+    NSMutableArray *currentArgs = [NSMutableArray array];
+    NSMutableArray *methodArgs  = [NSMutableArray array];
+    NSString *target            = [_args objectAtIndex:0];
+    NSString *lastWord          = 0x00;
+    BOOL hadSymbolAsArg         = NO;
+    NSUInteger idx = 1;
+    
+    while (idx < argsCount) {
+        
+        id currentPassedArg = [_args objectAtIndex:idx++];
+        
+        TDToken *currentToken = [currentPassedArg isKindOfClass:[TDToken class]] ? currentPassedArg : 0x00;
+        
+        NSString *value = currentToken ? [currentToken stringValue] : [currentPassedArg description];
+        
+        if ([currentToken isWhitespace]) {
+            [currentArgs addObject:value];
+            continue;
+        }
+        
+        if (!hadSymbolAsArg && [currentToken isSymbol]) {
+            hadSymbolAsArg = YES;
+        }
+        
+        if ([@":" isEqualToString:value]) {
+            
+            [currentArgs removeLastObject];
+            
+            if ([currentArgs count]) {
+                [methodArgs addObject:[currentArgs componentsJoinedByString:@" "]];
+                [currentArgs removeAllObjects];
+            }
+            
+            [selector appendString:lastWord];
+            [selector appendString:value];
+        }
+        else {
+            [currentArgs addObject:[value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
+        }
+        
+        lastWord = value;
+    }
+    
+    if ([currentArgs count]) {
+        [methodArgs addObject:[currentArgs componentsJoinedByString:@""]];
+    }
+    
+    if (![selector length] && !hadSymbolAsArg && ([methodArgs count] == 1)) {
+        [selector appendString:[methodArgs lastObject]];
+        [methodArgs removeAllObjects];
+    }
+    
+    if (![selector length] && [methodArgs count] == 1) {
+        return [NSString stringWithFormat:@"[%@%@]", target, [methodArgs lastObject]];
+    }
+    
+    if (![methodArgs count] && ![selector length]) {
+        return [NSString stringWithFormat:@"[%@]", target];
+    }
+    
+    if (![selector length] && lastWord) {
+        [selector appendString:lastWord];
+        [methodArgs removeLastObject];
+    }
+    
     
     [selector replaceOccurrencesOfString:@":" withString:@"_" options:0 range:NSMakeRange(0, [selector length])];
     
