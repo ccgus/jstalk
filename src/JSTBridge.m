@@ -19,6 +19,7 @@ JSValueRef JSTBridge_callAsFunction(JSContextRef ctx, JSObjectRef function, JSOb
 void       JSTClass_initialize(JSContextRef ctx, JSObjectRef object); // JSObjectInitializeCallback
 void       JSTClass_finalize(JSObjectRef object); // JSObjectFinalizeCallback
 JSValueRef JSTClass_convertToType(JSContextRef ctx, JSObjectRef object, JSType type, JSValueRef* exception);
+void       JSTClass_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames);
 JSValueRef JSTClass_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyNameJS, JSValueRef* exception);
 bool       JSTClass_setProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef value, JSValueRef* exception);
 
@@ -49,7 +50,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
         bridgedObjectDefinition.convertToType        = JSTClass_convertToType;
         bridgedObjectDefinition.getProperty          = JSTClass_getProperty;
         bridgedObjectDefinition.setProperty          = JSTClass_setProperty;
-        
+        bridgedObjectDefinition.getPropertyNames     = JSTClass_getPropertyNames;
         
         /*
         //jsCocoaObjectDefinition.hasProperty            = jsCocoaObject_hasProperty;
@@ -166,7 +167,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 - (JSObjectRef)makeJSObjectWithNSObject:(id)obj runtimeInfo:(JSTRuntimeInfo*)info {
     
     if (!obj) {
-        return nil;
+        return (JSObjectRef)JSValueMakeNull(_jsContext);
     }
     
     objc_setAssociatedObject(obj, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
@@ -263,11 +264,61 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
 }
 
+- (void)propertyNamesForObject:(JSObjectRef)jsObject propertyNameAccumulator:(JSPropertyNameAccumulatorRef)propertyNames {
+    
+    id object = [self NSObjectForJSObject:jsObject];
+    
+    if ([object isKindOfClass:[NSArray class]]) {
+#warning add this to the tests:
+        /*
+         for (idx in args) {
+         print("argument " + [args objectAtIndex:idx]);
+         }
+         
+         */
+        NSArray *ar = (id)object;
+        for (int i = 0; i < [ar count]; i++) {
+            
+            
+            JSStringRef jsString = JSStringCreateWithUTF8CString([[NSString stringWithFormat:@"%d", i] UTF8String]);
+            JSPropertyNameAccumulatorAddName(propertyNames, jsString);
+            JSStringRelease(jsString);  
+        }
+    }
+    
+    if ([object isKindOfClass:[NSDictionary class]]) {
+
+#warning add a test for this:
+/*
+var d = [NSMutableDictionary dictionary];
+
+d['a'] = 'eh';
+d['b'] = 'beee';
+
+for (var key in d) {
+    print(key + ": " + [d valueForKey:key]);
+}
+*/
+
+        NSDictionary *d = (id)object;
+        for (id key in [d allKeys]) {
+            JSStringRef jsString = JSStringCreateWithUTF8CString([[key description] UTF8String]);
+            JSPropertyNameAccumulatorAddName(propertyNames, jsString);
+            JSStringRelease(jsString);  
+        }
+        
+    }
+    
+    
+}
+
 - (JSValueRef)propertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
     
     NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
+    
+    debug(@"propertyName: '%@'", propertyName);
     
     if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]) {
         return [self internalFunctionForJSObject:jsObject functionName:propertyName outException:exception];
@@ -278,6 +329,25 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     if ([caller isKindOfClass:[JSTStructure class]]) {
         return [(JSTStructure*)caller cantThinkOfAGoodNameForThisYet:propertyName outException:exception];
     }
+    
+    if ([caller isKindOfClass:[NSDictionary class]]) {
+        id value = [caller objectForKey:propertyName];
+        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
+    }
+    
+    if ([caller isKindOfClass:[NSArray class]]) {
+        NSInteger idx  = [propertyName integerValue];
+        
+        if (idx < 0 || idx > [caller count] - 1) {
+            JSTAssignException(self, exception, [NSString stringWithFormat:@"index (%d) out of range for array %@", idx, caller]);
+            return nil;
+        }
+        
+        id value        = [caller objectAtIndex:idx];
+        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
+    }
+    
+    
     
     if (caller != self) {
         // looks like it's a foo.some_objc_method(call, wow, neat);
@@ -361,13 +431,17 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     }
     */
     
-    NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
-    id objectToSet = [self NSObjectForJSObject:jsObject];
+    NSString *propertyName  = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
+    id objectToSet          = [self NSObjectForJSObject:jsObject];
     
     if ([objectToSet isKindOfClass:[JSTStructure class]]) {
         return [(JSTStructure*)objectToSet setValue:value forFieldNamed:propertyName outException:exception];
     }
     
+    if ([objectToSet isKindOfClass:[NSDictionary class]]) {
+        [objectToSet setValue:JSTNSObjectFromValue(self, value) forKey:propertyName];
+        return YES;
+    }
     
     return NO;
 }
@@ -380,6 +454,8 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     NSString *functionName      = [function functionName];
     JSTAssert(functionName);
     JSTAssert(function);
+    
+    debug(@"functionName: '%@'", functionName);
     
     if (!function) {
         // FIXME: throw a JS exception, saying we couldn't find the function.
@@ -417,8 +493,8 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 @end
 
 
-//#define jsfdebug NSLog
-#define jsfdebug(...)
+#define jsfdebug NSLog
+//#define jsfdebug(...)
 
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
     jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);
@@ -436,6 +512,12 @@ JSValueRef JSTClass_convertToType(JSContextRef ctx, JSObjectRef object, JSType t
     return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) convertObject:object toType:type outException:exception];
     
 }
+
+void JSTClass_getPropertyNames(JSContextRef ctx, JSObjectRef object, JSPropertyNameAccumulatorRef propertyNames) {
+    NSLog(@"%s:%d", __FUNCTION__, __LINE__);
+    return [(JSTBridge*)JSObjectGetPrivate(JSContextGetGlobalObject(ctx)) propertyNamesForObject:object propertyNameAccumulator:propertyNames];
+}
+
 
 JSValueRef JSTClass_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
     jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);

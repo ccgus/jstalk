@@ -28,6 +28,7 @@
     
 	if (self != nil) {
         [self performSelector:@selector(setupLineViewAndStuff) withObject:nil afterDelay:0];
+        [self setSmartInsertDeleteEnabled:NO];
     }
     
     return self;
@@ -39,6 +40,7 @@
 	if (self != nil) {
         // what's the right way to do this?
         [self performSelector:@selector(setupLineViewAndStuff) withObject:nil afterDelay:0];
+        [self setSmartInsertDeleteEnabled:NO];
     }
     
     return self;

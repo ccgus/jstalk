@@ -286,7 +286,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         instanceInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:classString];
     }
     
-    debug(@"instanceInfo: '%@'", instanceInfo);
+    //debug(@"instanceInfo: '%@'", instanceInfo);
     
     if (isClassMethod) { // are we dealing with an Class method?
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForClassMethodName:sel];
@@ -475,6 +475,11 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
             argVals[idx] = storage;
         }
+        else if (retType == &ffi_type_uint64) {
+            void **storage = [self _allocate:(sizeof(void*))];
+            *storage = (void*)((uint64_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = storage;
+        }
         else if (retType == &ffi_type_float) {
             float **floatStorage = [self _allocate:(sizeof(float*))];
             *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
@@ -613,7 +618,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     if (success) {
         
-        debug(@"success!");
+        //debug(@"success!");
         
         if (returnFIIType->type == FFI_TYPE_STRUCT) {
             // crap must hold on to the memory!
@@ -647,7 +652,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             
         }
         else {
-            debug(@"oh?");
+            //debug(@"oh?");
             retJS = JSTMakeJSValueWithFFITypeAndValue(returnFIIType, returnValue, _bridge);
         }
         
