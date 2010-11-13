@@ -14,12 +14,14 @@
     id _errorController;
     JSCocoaController *_jsController;
     NSMutableDictionary *_env;
+    BOOL _shouldPreprocess;
 }
 
 @property (assign) id printController;
 @property (assign) id errorController;
 @property (retain) JSCocoaController *jsController;
 @property (retain) NSMutableDictionary *env;
+@property (assign) BOOL shouldPreprocess;
 
 - (id)executeString:(NSString*) str;
 - (void)pushObject:(id)obj withName:(NSString*)name;
