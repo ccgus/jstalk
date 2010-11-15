@@ -346,15 +346,13 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     for (NSString *e in encodings) {
         int size = JSTSizeOfTypeEncoding(e);
-        /*
-        if (size < sizeof(ffi_arg)) {
-            size = sizeof(ffi_arg);
-        }
-        */
+        
         structInfo->size += size;
         structInfo->elements[idx] = JSTFFITypeForTypeEncoding(e);
         idx++;
     }
+    
+    structInfo->size = MAX(structInfo->size, sizeof(ffi_arg));
     
     structInfo->elements[idx]   = nil; // this guy is nil terminated
     

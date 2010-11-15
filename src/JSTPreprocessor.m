@@ -236,14 +236,11 @@
             
             id foo = [[self parent] lastNonWhitespaceOrCommentSymbol];
             
-            debug(@"foo: '%@'", foo);
-            
             if (!foo || [foo isKindOfClass:[TDToken class]] && [foo isSymbol]) {
                 _msgSend = YES;
             }
         }
         else if (_openSymbol == '{') {
-            debug(@"IMABLOCK!");
             
             id foo = [[self parent] lastNonWhitespaceOrCommentSymbol];
             
@@ -252,8 +249,6 @@
                 [_args addObject:foo];
                 [[self parent] removeUpToToken:foo];
             }
-            
-            debug(@"foo: '%@'", foo);
         }
         
         [_args addObject:aSymbol];

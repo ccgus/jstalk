@@ -309,7 +309,6 @@ for (var key in d) {
         
     }
     
-    
 }
 
 - (JSValueRef)propertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
@@ -317,8 +316,6 @@ for (var key in d) {
     NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
-    
-    debug(@"propertyName: '%@'", propertyName);
     
     if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]) {
         return [self internalFunctionForJSObject:jsObject functionName:propertyName outException:exception];
@@ -455,8 +452,6 @@ for (var key in d) {
     JSTAssert(functionName);
     JSTAssert(function);
     
-    debug(@"functionName: '%@'", functionName);
-    
     if (!function) {
         // FIXME: throw a JS exception, saying we couldn't find the function.
         return nil;
@@ -493,8 +488,8 @@ for (var key in d) {
 @end
 
 
-#define jsfdebug NSLog
-//#define jsfdebug(...)
+//#define jsfdebug NSLog
+#define jsfdebug(...)
 
 JSValueRef JSTBridge_getProperty(JSContextRef ctx, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception) {
     jsfdebug(@"%s:%d", __FUNCTION__, __LINE__);

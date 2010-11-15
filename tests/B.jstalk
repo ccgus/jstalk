@@ -1,3 +1,6 @@
+var s = [JSTTests classTestStruct];
+jsassert(s.b, "s.b is wrong");
+
 [jstalk include:"testsetup.jstalk"];
 
 var r = [JSTTests classTestNSRect];
@@ -7,11 +10,6 @@ jsassert(r.size.width == 3, "r.size.width");
 jsassert(r.size.height == 4, "r.size.height");
 
 NSLog("Woo!");
-
-var s = [JSTTests classTestStruct];
-jsassert(s.b, "s.b is wrong");
-
-/*
 
 var r = NSMakeRange(1, 1);
 r.location = 12;
@@ -130,5 +128,3 @@ var fifteen = twelve + 3;
 
 NSLog("Hey! %@ %p", "What's shaking?", ti);
 
-//print("Done with " + [jstalk env]);
-*/
