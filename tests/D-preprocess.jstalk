@@ -1,21 +1,45 @@
-[jstalk() foo];
+[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];
+[fo doSomething:" a " + [b fun] + " c " in:nil];
+print([NSString stringWithString:@"a"+"b"]);
 
+/*
+[db executeUpdate:"insert into foo values (?, ?, ?)", 1, 2, function() {
+    return 1;
+}()];
+
+[[JSTTests alloc] init]
+
+print([NSFullUserName() lowercaseString]);
+
+print("Hello" + name()(foo, "bakon"));
+args[bakon(3 + x[23], [NSString stringWithFoo:"foo"])];
+
+args[];
+
+[NSDate date];
+
+function foo() {
+    blah();
+}
+
+[db executeUpdate:"insert into foo values (?, ?, ?)", 1, 2, @"Hello"];
 
 var a = tests[idx+1][0];
 
+[jstalk include:"testsetup.jstalk"];
+
+print([NSFullUserName() lowercaseString]);
+
+[db executeUpdate:"insert into foo values (?, ?, ?)",
+1, // comment!
+@"Hello",
+[NSDate date]];
+
+
 [jstalk() foo:12];
 
-[jstalk include:"testsetup.jstalk"];
+
 
 print([JSTNSString("hey") lowercaseString]);
 
-[NSFullUserName() lowercaseString];
-
-
-/*
-[NSApp a:1 fake:function() {
-    [someClass runBlock:[NSApp blockForJSFunction:function(err) {
-        var foo = Foo();
-    }]];
-}];
 */

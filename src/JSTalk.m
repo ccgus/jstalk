@@ -26,9 +26,9 @@ static NSMutableArray *JSTalkPluginList;
 @implementation JSTalk
 @synthesize printController=_printController;
 @synthesize errorController=_errorController;
-//@synthesize jsController=_jsController;
 @synthesize bridge=_bridge;
 @synthesize env=_env;
+@synthesize shouldPreprocess=_shouldPreprocess;
 
 + (void)load {
     //debug(@"%s:%d", __FUNCTION__, __LINE__);
@@ -49,9 +49,9 @@ static NSMutableArray *JSTalkPluginList;
 - (id)init {
 	self = [super init];
 	if ((self != nil)) {
-        //self.jsController = [[[JSCocoaController alloc] init] autorelease];
         self.bridge = [[[JSTBridge alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
+        _shouldPreprocess = YES;
         
         NSString *bridgeSupport = [[NSBundle bundleForClass:[self class]] pathForResource:@"JSTalk" ofType:@"bridgesupport"];
         
@@ -218,7 +218,9 @@ static NSMutableArray *JSTalkPluginList;
         [self loadPlugins];
     }
     
-    str = [JSTPreprocessor preprocessCode:str];
+    if (_shouldPreprocess) {
+        str = [JSTPreprocessor preprocessCode:str];
+    }
     
     [_bridge pushObject:self withName:@"jstalk"];
     
@@ -304,7 +306,9 @@ static NSMutableArray *JSTalkPluginList;
         return;
     }
     
-    str = [JSTPreprocessor preprocessCode:str];
+    if (_shouldPreprocess) {
+        str = [JSTPreprocessor preprocessCode:str];
+    }
     
     [_bridge evalJSString:str withPath:[scriptURL path]];
 }

@@ -10,7 +10,7 @@
 
 
 @interface JSTPreprocessor : NSObject {
-
+    
 }
 
 + (NSString*)preprocessCode:(NSString*)sourceString;
@@ -24,10 +24,14 @@
     unichar _openSymbol;
     NSMutableArray *_args;
     JSTPSymbolGroup *_parent;
+    BOOL _isBaseGroup;
+    BOOL _msgSend;
 }
 
 @property (retain) NSMutableArray *args;
 @property (retain) JSTPSymbolGroup *parent;
+@property (assign) BOOL isBaseGroup;
+@property (retain) id functionHead;
 
 - (void)addSymbol:(id)aSymbol;
 

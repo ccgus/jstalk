@@ -3,7 +3,8 @@
 var name = NSUserName();
 jsassert(name);
 
-var d = [NSArray arrayWithObject:NSUserName()]];
+
+var d = [NSArray arrayWithObject:NSUserName()];
 jsassert([d count] == 1);
 
 
