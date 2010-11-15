@@ -1,45 +1,92 @@
-[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];
-[fo doSomething:" a " + [b fun] + " c " in:nil];
-print([NSString stringWithString:@"a"+"b"]);
+var count = 0;
+var tests = new Array();
 
-/*
-[db executeUpdate:"insert into foo values (?, ?, ?)", 1, 2, function() {
-    return 1;
-}()];
-
-[[JSTTests alloc] init]
-
-print([NSFullUserName() lowercaseString]);
-
-print("Hello" + name()(foo, "bakon"));
-args[bakon(3 + x[23], [NSString stringWithFoo:"foo"])];
-
-args[];
-
-[NSDate date];
-
-function foo() {
-    blah();
+var process = function (a, b) {
+    
+    //print("running test " + count);
+    
+    a = [JSTPreprocessor preprocessCode:a];
+    
+    count++;
+    
+        
+    if (a != b) {
+        NSBeep();
+        print("Failure for test " + count);
+        print(a + "\nshould be equal to:\n" + b);
+        return false;
+    }
+    
+    //print("Success for test " + count);
+    
+    
+    
+    return true;
 }
 
-[db executeUpdate:"insert into foo values (?, ?, ?)", 1, 2, @"Hello"];
+var addTest = function (a, b) {
+    tests.push(new Array(a, b));
+}
 
-var a = tests[idx+1][0];
+print("Staring preprocessing tests.")
 
-[jstalk include:"testsetup.jstalk"];
+addTest('print([4 - 5, b]);',
+        'print([4 - 5, b]);');
 
-print([NSFullUserName() lowercaseString]);
+addTest('print([a, b]);',
+        'print([a, b]);');
+        
+addTest('[db executeUpdate:"insert into foo values (?, ?, ?)",\n   1, // comment!\n   @"Hello",\n   [NSDate date]];',
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?, ?)",1,JSTNSString("Hello"),objc_msgSend(NSDate, "date"));');
 
-[db executeUpdate:"insert into foo values (?, ?, ?)",
-1, // comment!
-@"Hello",
-[NSDate date]];
+addTest('[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];',
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?)",1,"Hello");');
+
+addTest('var acorn = [JSTalk application:"Acorn"];',
+        'var acorn = objc_msgSend(JSTalk, "application:", "Acorn");');
+
+addTest('print([]);',
+        'print([]);');
+
+addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
+        'objc_msgSend(fo, "doSomething:in:", " a "+objc_msgSend(b, "fun")+" c ", null);');
+
+addTest('print([NSString stringWithString:@"a"+"b"])',
+        'print(objc_msgSend(NSString, "stringWithString:", JSTNSString("a")+"b"))');
+        
+addTest('[NSFullUserName() lowercaseString];',
+        'objc_msgSend(NSFullUserName(), "lowercaseString");');
+
+addTest('[NSApp a:1 fake:function() {\n\
+    [someClass runBlock:[NSApp blockForJSFunction:function(err) {\n\
+        var foo = Foo();\n\
+    }]];\n\
+}];', 'objc_msgSend(NSApp, "a:fake:", 1, function(){\n\
+    objc_msgSend(someClass, "runBlock:", objc_msgSend(NSApp, "blockForJSFunction:", function(err){\n\
+        var foo = Foo();\n\
+    }));\n\
+});');
 
 
-[jstalk() foo:12];
 
 
+var stopOnFirstFail = false;
+var shouldContinue = true;
+var len = tests.length;
+var idx = 0;
+while (shouldContinue && idx < len) {
+    var a = tests[idx][0];
+    var b = tests[idx][1];
+    
+    shouldContinue = process(a, b);
+    
+    shouldContinue = stopOnFirstFail ? shouldContinue : true;
+    
+    idx++;
+}
 
-print([JSTNSString("hey") lowercaseString]);
+print("Done");
 
-*/
+// what about "foo ? bar : xyz" ?  Yea, gotta fix that.
+
+

@@ -364,8 +364,6 @@
                 if (![selector length]) { // looks like it's an array: print([3+4, 5]);
                     return [NSString stringWithFormat:@"[%@]", [argsCopy componentsJoinedByString:@""]];
                 }
-                
-                //continue;
             }
             
             if (arg == selectorWasHere) {
@@ -377,24 +375,9 @@
         }
     }
     
-    
-    
     [buf appendString:@")"];
     
-    debug(@"buf: '%@'", buf);
-    
-    
     return buf;
-    
-    #warning this is completely fucked:
-    /*
-[NSApp a:1 fake:function() {
-    [someClass runBlock:[NSApp blockForJSFunction:function(err) {
-        var foo = Foo();
-    }]];
-}];
-*/
-
 }
 
 
