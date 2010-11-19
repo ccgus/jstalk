@@ -47,6 +47,13 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     [JSTalk listen];
     
     NSSetUncaughtExceptionHandler(JSTUncaughtExceptionHandler);
+    
+    
+    // register this object to handle the services stuff.
+    [NSApp setServicesProvider:self];
+    
+    // have all the services menus get updated.
+    //NSUpdateDynamicServices();
 }
 
 - (IBAction)showPrefs:(id)sender {
@@ -208,6 +215,60 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     }
     
     return defaultFont;
+}
+
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+    _serviceError = [error retain];
+}
+
+
+- (void)runAsJSTalkScript:(NSPasteboard *)pb userData:(NSDictionary *)userData error:(NSString **)error {
+    
+    _serviceError = 0x00;
+    
+    // Test for strings on the pasteboard.
+    NSArray *classes = [NSArray arrayWithObject:[NSString class]];
+    NSDictionary *options = [NSDictionary dictionary];
+    if (![pb canReadObjectForClasses:classes options:options])  {
+        *error = NSLocalizedString(@"Error: couldn't read the text.", @"pboard couldn't give string.");
+        return;
+    }
+    
+    NSString *result = 0x00;
+    NSString *script = [pb stringForType:NSPasteboardTypeString];
+    
+    @try {
+        
+        JSTalk *jstalk = [[JSTalk alloc] init];
+        
+        JSCocoaController *jsController = [jstalk jsController];
+        jsController.delegate = self;
+        
+        [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
+        
+        result = [[jstalk executeString:script] description];
+        
+        [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
+        
+        [jstalk release];
+        
+    }
+    @catch (NSException *e) {
+        *error = [e reason];
+        return;
+    }
+    
+    if (_serviceError) {
+        result = _serviceError;
+    }
+    
+    [pb clearContents];
+    
+    if (result) {
+        [pb writeObjects:[NSArray arrayWithObject:result]];
+    }
+    
+    [_serviceError autorelease];
 }
 
 @end

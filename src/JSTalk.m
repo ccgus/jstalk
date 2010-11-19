@@ -191,7 +191,7 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-- (id)executeString:(NSString*) str {
+- (id)executeString:(NSString*)str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
         [self loadPlugins];

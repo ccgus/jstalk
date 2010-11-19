@@ -17,7 +17,7 @@
     
     IBOutlet NSMenu         *statusMenu;
     NSStatusItem            *statusItem;
-    
+    NSString                *_serviceError;
 }
 
 - (void)chooseExternalEditor:(id)sender;
