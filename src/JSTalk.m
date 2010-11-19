@@ -28,6 +28,7 @@ static NSMutableArray *JSTalkPluginList;
 @synthesize errorController=_errorController;
 @synthesize jsController=_jsController;
 @synthesize env=_env;
+@synthesize shouldPreprocess=_shouldPreprocess;
 
 + (void)load {
     //debug(@"%s:%d", __FUNCTION__, __LINE__);
@@ -50,6 +51,7 @@ static NSMutableArray *JSTalkPluginList;
 	if ((self != nil)) {
         self.jsController = [[[JSCocoaController alloc] init] autorelease];
         self.env = [NSMutableDictionary dictionary];
+        _shouldPreprocess = YES;
 	}
     
 	return self;
@@ -197,7 +199,9 @@ static NSMutableArray *JSTalkPluginList;
         [self loadPlugins];
     }
     
-    str = [JSTPreprocessor preprocessCode:str];
+    if (_shouldPreprocess) {
+        str = [JSTPreprocessor preprocessCode:str];
+    }
     
     [self pushObject:self withName:@"jstalk"];
     
@@ -267,7 +271,9 @@ static NSMutableArray *JSTalkPluginList;
         return;
     }
     
-    str = [JSTPreprocessor preprocessCode:str];
+    if (_shouldPreprocess) {
+        str = [JSTPreprocessor preprocessCode:str];
+    }
                    
     if (![[self jsController] evalJSString:str withScriptPath:[scriptURL path]]) {
         NSLog(@"Could not include '%@'", fileName);
