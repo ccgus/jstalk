@@ -57,14 +57,7 @@ void runREPL(JSTalk *t) {
 
 int main(int argc, char *argv[]) {
     
-    if (argc < 2) {
-        printf("usage: %s <path to file>\n", argv[0]);
-        return 1;
-    }
-    
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    
-    NSString *arg = [NSString stringWithUTF8String:argv[1]];
     
     JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
     
@@ -73,13 +66,19 @@ int main(int argc, char *argv[]) {
     JSCocoaController *jsController = [t jsController];
     jsController.delegate = eh;
     
-    
-    if ([arg isEqualToString:@"-e"]) {
+    if (argc < 2) {
         runREPL(t);
         exit(0);
     }
     
+    
+    NSString *arg = [NSString stringWithUTF8String:argv[1]];
     NSString *s = [NSString stringWithContentsOfFile:arg encoding:NSUTF8StringEncoding error:nil];
+    
+    if (!s) {
+        printf("usage: %s <path to file>\n", argv[0]);
+        exit(0);
+    }
     
     [t.env setObject:[NSURL fileURLWithPath:arg] forKey:@"scriptURL"];
     
