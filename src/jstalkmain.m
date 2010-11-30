@@ -2,6 +2,7 @@
 #import "JSTListener.h"
 #import "JSTalk.h"
 
+BOOL JSCErrorHandlerExitOnError = YES;
 
 @interface JSCErrorHandler : NSObject {
     
@@ -10,16 +11,48 @@
 
 @implementation JSCErrorHandler
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
-    NSLog(@"Error line %d, %@", (int)lineNumber, error);
+    printf("Error line %d, %s\n", (int)lineNumber, [[error description] UTF8String]);
     
-    exit(1);
+    if (JSCErrorHandlerExitOnError) {
+        exit(1);
+    }
 }
 
 
 @end
 
+
+void runREPL(JSTalk *t) {
+    
+    // thanks http://tlrobinson.net/blog/2008/10/10/command-line-interpreter-and-repl-for-jscocoa/ !
+    
+    JSCErrorHandlerExitOnError = NO;
+    
+    while (1) {
+        char buffer[1024];
+        
+        printf("js> ");
+        
+        if (fgets(buffer, 1024, stdin) == NULL) {
+            exit(0);
+        }
+        
+        NSString *s = [[NSString alloc] initWithUTF8String:buffer];
+        
+        id o = [t executeString:s];
+        
+        if (o) {
+            printf("%s\n", [[o description] UTF8String]);
+        }
+        
+        [s release];
+    
+    }
+    
+    
+}
 
 
 int main(int argc, char *argv[]) {
@@ -30,10 +63,8 @@ int main(int argc, char *argv[]) {
     }
     
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-
-    NSString *s = [NSString stringWithContentsOfFile:[NSString stringWithUTF8String:argv[1]]
-                                            encoding:NSUTF8StringEncoding
-                                               error:nil];
+    
+    NSString *arg = [NSString stringWithUTF8String:argv[1]];
     
     JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
     
@@ -42,7 +73,15 @@ int main(int argc, char *argv[]) {
     JSCocoaController *jsController = [t jsController];
     jsController.delegate = eh;
     
-    [t.env setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
+    
+    if ([arg isEqualToString:@"-e"]) {
+        runREPL(t);
+        exit(0);
+    }
+    
+    NSString *s = [NSString stringWithContentsOfFile:arg encoding:NSUTF8StringEncoding error:nil];
+    
+    [t.env setObject:[NSURL fileURLWithPath:arg] forKey:@"scriptURL"];
     
     if ([s hasPrefix:@"#!"]) {
         
