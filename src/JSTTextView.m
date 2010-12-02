@@ -246,6 +246,77 @@
     }
 }
 
+
+- (BOOL)xrespondsToSelector:(SEL)aSelector {
+    
+    debug(@"%@: %@?", [self class], NSStringFromSelector(aSelector));
+    
+    return [super respondsToSelector:aSelector];
+    
+}
+
+- (void)changeSelectedNumberByDelta:(NSInteger)d {
+    NSRange r   = [self selectedRange];
+    NSRange wr  = [self selectionRangeForProposedRange:r granularity:NSSelectByWord];
+    NSString *s = [[[self textStorage] mutableString] substringWithRange:wr];
+    
+    NSInteger i = [s integerValue];
+    
+    if ([s isEqualToString:[NSString stringWithFormat:@"%ld", (long)i]]) {
+        
+        NSString *newString = [NSString stringWithFormat:@"%ld", (long)(i+d)];
+        
+        if ([self shouldChangeTextInRange:wr replacementString:newString]) { // auto undo.
+            [[self textStorage] replaceCharactersInRange:wr withString:newString];
+            [self didChangeText];
+            
+            r.length = 0;
+            [self setSelectedRange:r];    
+        }
+    }
+}
+
+
+- (void)moveForward:(id)sender {
+    #pragma message "this really really needs to be a pref"
+    // defaults write org.jstalk.JSTalkEditor optionNumberIncrement 1
+    if ([JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+        [self changeSelectedNumberByDelta:-1];
+    }
+    else {
+        [super moveForward:sender];
+    }
+}
+
+- (void)moveBackward:(id)sender {
+    if ([JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+        [self changeSelectedNumberByDelta:1];
+    }
+    else {
+        [super moveBackward:sender];
+    }
+}
+
+- (void)moveToEndOfParagraph:(id)sender {
+    if (![JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+        [super moveToEndOfParagraph:sender];
+    }
+}
+
+- (void)moveToBeginningOfParagraph:(id)sender {
+    if (![JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+        [super moveToBeginningOfParagraph:sender];
+    }
+}
+/*
+- (void)moveDown:(id)sender {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+}
+
+- (void)moveDownAndModifySelection:(id)sender {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+}
+*/
 // Mimic BBEdit's option-delete behavior, which is THE WAY IT SHOULD BE DONE
 
 - (void)deleteWordForward:(id)sender {
