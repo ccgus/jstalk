@@ -12,11 +12,14 @@
 
 @interface JSTTextView : NSTextView <NSTextStorageDelegate>{
     NoodleLineNumberView	*_lineNumberView;
-    NSDictionary *_keywords;
+    NSDictionary            *_keywords;
+    
+    NSString                *_lastAutoInsert;
 }
 
 
 @property (retain) NSDictionary *keywords;
+@property (retain) NSString *lastAutoInsert;
 
 - (void)parseCode:(id)sender;
 

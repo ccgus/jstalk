@@ -12,6 +12,8 @@
 #import "NoodleLineNumberView.h"
 #import "TETextUtils.h"
 
+static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
+
 @interface JSTTextView (Private)
 - (void)setupLineView;
 @end
@@ -20,6 +22,7 @@
 @implementation JSTTextView
 
 @synthesize keywords=_keywords;
+@synthesize lastAutoInsert=_lastAutoInsert;
 
 
 - (id)initWithFrame:(NSRect)frameRect textContainer:(NSTextContainer *)container {
@@ -50,6 +53,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [_lineNumberView release];
+    [_lastAutoInsert release];
     
     [super dealloc];
 }
@@ -98,10 +102,6 @@
 }
 
 
-
-
-
-
 - (void)parseCode:(id)sender {
     
     // we should really do substrings...
@@ -123,16 +123,16 @@
         
         NSColor *fontColor = [NSColor blackColor];
         
-        if (tok.quotedString) {
+        if ([tok isQuotedString]) {
             fontColor = [NSColor darkGrayColor];
         }
-        else if (tok.isNumber) {
+        else if ([tok isNumber]) {
             fontColor = [NSColor blueColor];
         }
-        else if (tok.isComment) {
+        else if ([tok isComment]) {
             fontColor = [NSColor redColor];
         }
-        else if (tok.isWord) {
+        else if ([tok isWord]) {
             NSColor *c = [_keywords objectForKey:[tok stringValue]];
             fontColor = c ? c : fontColor;
         }
@@ -143,12 +143,18 @@
             [[self textStorage] addAttribute:NSForegroundColorAttributeName value:fontColor range:NSMakeRange(sourceLoc, strLen)];
         }
         
+        if ([tok isQuotedString]) {
+            [[self textStorage] addAttribute:JSTQuotedStringAttributeName value:[NSNumber numberWithBool:YES] range:NSMakeRange(sourceLoc, strLen)];
+        }
+        else {
+            [[self textStorage] removeAttribute:JSTQuotedStringAttributeName range:NSMakeRange(sourceLoc, strLen)];
+        }
+        
         sourceLoc += strLen;
     }
     
     
     [[self textStorage] endEditing];
-    
 }
 
 
@@ -156,13 +162,6 @@
 - (void) textStorageDidProcessEditing:(NSNotification *)note {
     [self parseCode:nil];
 }
-
-
-
-
-
-
-
 
 - (NSArray *)writablePasteboardTypes {
     return [[super writablePasteboardTypes] arrayByAddingObject:NSRTFPboardType];
@@ -172,7 +171,46 @@
     [self insertText:@"    "];
 }
 
+- (void)autoInsertText:(NSString*)text {
+    
+    [super insertText:text];
+    [self setLastAutoInsert:text];
+    
+}
+
 - (void)insertText:(id)insertString {
+    
+    if (!([JSTPrefs boolForKey:@"codeCompletionEnabled"])) {
+        [super insertText:insertString];
+        return;
+    }
+    
+    // make sure we're not doing anything fance in a quoted string.
+    if ([[[self textStorage] attributesAtIndex:[self selectedRange].location effectiveRange:nil] objectForKey:JSTQuotedStringAttributeName]) {
+        [super insertText:insertString];
+        return;
+    }
+    
+    if ([@")" isEqualToString:insertString] && [_lastAutoInsert isEqualToString:@")"]) {
+        
+        NSRange nextRange   = [self selectedRange];
+        nextRange.length = 1;
+        
+        if (NSMaxRange(nextRange) <= [[self textStorage] length]) {
+            
+            NSString *next = [[[self textStorage] mutableString] substringWithRange:nextRange];
+            
+            if ([@")" isEqualToString:next]) {
+                // just move our selection over.
+                nextRange.length = 0;
+                nextRange.location++;
+                [self setSelectedRange:nextRange];
+                return;
+            }
+        }
+    }
+    
+    [self setLastAutoInsert:nil];
     
     [super insertText:insertString];
     
@@ -195,7 +233,7 @@
             j++;
         }
         
-        [super insertText:[NSString stringWithFormat:@"\n%@    \n%@}", indent, indent]];
+        [self autoInsertText:[NSString stringWithFormat:@"\n%@    \n%@}", indent, indent]];
         
         currentRange.location += [indent length] + 5;
         
@@ -203,20 +241,16 @@
     }
     else if (atEndOfLine && [@"(" isEqualToString:insertString]) {
         
-        [super insertText:@")"];
+        [self autoInsertText:@")"];
         [self setSelectedRange:currentRange];
         
     }
     else if (atEndOfLine && [@"[" isEqualToString:insertString]) {
-        [super insertText:@"]"];
+        [self autoInsertText:@"]"];
         [self setSelectedRange:currentRange];
     }
     else if ([@"\"" isEqualToString:insertString]) {
-        [super insertText:@"\""];
-        [self setSelectedRange:currentRange];
-    }
-    else if ([@"'" isEqualToString:insertString]) {
-        [super insertText:@"'"];
+        [self autoInsertText:@"\""];
         [self setSelectedRange:currentRange];
     }
 }
@@ -225,24 +259,27 @@
     
     [super insertNewline:sender];
     
-    NSRange r = [self selectedRange];
-    if (r.location > 0) {
-        r.location --;
-    }
-    
-    r = [self selectionRangeForProposedRange:r granularity:NSSelectByParagraph];
-    
-    NSString *previousLine = [[[self textStorage] mutableString] substringWithRange:r];
-    
-    int j = 0;
-    
-    while (j < [previousLine length] && ([previousLine characterAtIndex:j] == ' ' || [previousLine characterAtIndex:j] == '\t')) {
-        j++;
-    }
-    
-    if (j > 0) {
-        NSString *foo = [[[self textStorage] mutableString] substringWithRange:NSMakeRange(r.location, j)];
-        [self insertText:foo];
+    if ([JSTPrefs boolForKey:@"codeCompletionEnabled"]) {
+        
+        NSRange r = [self selectedRange];
+        if (r.location > 0) {
+            r.location --;
+        }
+        
+        r = [self selectionRangeForProposedRange:r granularity:NSSelectByParagraph];
+        
+        NSString *previousLine = [[[self textStorage] mutableString] substringWithRange:r];
+        
+        int j = 0;
+        
+        while (j < [previousLine length] && ([previousLine characterAtIndex:j] == ' ' || [previousLine characterAtIndex:j] == '\t')) {
+            j++;
+        }
+        
+        if (j > 0) {
+            NSString *foo = [[[self textStorage] mutableString] substringWithRange:NSMakeRange(r.location, j)];
+            [self insertText:foo];
+        }
     }
 }
 
@@ -276,8 +313,9 @@
     }
 }
 
-
+/*
 - (void)moveForward:(id)sender {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     #pragma message "this really really needs to be a pref"
     // defaults write org.jstalk.JSTalkEditor optionNumberIncrement 1
     if ([JSTPrefs boolForKey:@"optionNumberIncrement"]) {
@@ -297,17 +335,20 @@
     }
 }
 
+
 - (void)moveToEndOfParagraph:(id)sender {
-    if (![JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+    
+    if (![JSTPrefs boolForKey:@"optionNumberIncrement"] || (([NSEvent modifierFlags] & NSAlternateKeyMask) != 0)) {
         [super moveToEndOfParagraph:sender];
     }
 }
 
 - (void)moveToBeginningOfParagraph:(id)sender {
-    if (![JSTPrefs boolForKey:@"optionNumberIncrement"]) {
+    if (![JSTPrefs boolForKey:@"optionNumberIncrement"] || (([NSEvent modifierFlags] & NSAlternateKeyMask) != 0)) {
         [super moveToBeginningOfParagraph:sender];
     }
 }
+*/
 /*
 - (void)moveDown:(id)sender {
     debug(@"%s:%d", __FUNCTION__, __LINE__);

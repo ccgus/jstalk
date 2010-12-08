@@ -30,6 +30,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     
     [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"rememberWorkspace"];
     [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"clearConsoleOnRun"];
+    [defaultValues setObject:[NSNumber numberWithBool:YES] forKey:@"codeCompletionEnabled"];
     [defaultValues setObject:@"com.apple.xcode"            forKey:@"externalEditor"];
     
     [defaults registerDefaults: defaultValues];
