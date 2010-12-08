@@ -186,7 +186,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
     }
     
     // make sure we're not doing anything fance in a quoted string.
-    if ([[[self textStorage] attributesAtIndex:[self selectedRange].location effectiveRange:nil] objectForKey:JSTQuotedStringAttributeName]) {
+    if (NSMaxRange([self selectedRange]) < [[self textStorage] length] && [[[self textStorage] attributesAtIndex:[self selectedRange].location effectiveRange:nil] objectForKey:JSTQuotedStringAttributeName]) {
         [super insertText:insertString];
         return;
     }
