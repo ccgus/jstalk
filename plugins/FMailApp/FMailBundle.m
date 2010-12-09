@@ -30,7 +30,7 @@ void TSPrintMethodNamesFromClass(Class c) {
         
         //NSString *methodName = NSStringFromSelector(method_getName(method));
         
-        printf("%s: %s\n", [NSStringFromClass(c) UTF8String], method_getName(method));
+        printf("%s: %s\n", [NSStringFromClass(c) UTF8String], (char*)method_getName(method));
         
     }
     
@@ -221,16 +221,6 @@ NSDictionary*  FPropertiesFromScriptAtPath(NSString* path) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 @implementation FMailBundle
 
 + (void)load {
@@ -285,14 +275,16 @@ NSDictionary*  FPropertiesFromScriptAtPath(NSString* path) {
         [item setKeyEquivalentModifierMask:shortcutMask];
         [item setRepresentedObject:[scriptDir stringByAppendingPathComponent:path]];
     }
+    
+    [JSTalk listen];
 }
 
 @end
 
 @interface NSObject (MessageWebHTMLViewStuff)
 
-- (void) selectAll;
-- (void) insertText:(NSString*)shudup;
+- (void)selectAll;
+- (void)insertText:(NSString*)shudup;
 @end
 
 
@@ -312,7 +304,7 @@ NSDictionary*  FPropertiesFromScriptAtPath(NSString* path) {
 }
 */
 
-- (void) runJSTalkScriptFromSender:(id)sender {
+- (void)runJSTalkScriptFromSender:(id)sender {
     
     
     if (![sender respondsToSelector:@selector(representedObject)]) {
@@ -339,6 +331,50 @@ NSDictionary*  FPropertiesFromScriptAtPath(NSString* path) {
     if (result) {
         NSLog(@"%@", [result description]);
     }
+}
+
+- (void)dumpMethods {
+    TSPrintMethodNamesFromClass([self class]);
+}
+
+- (Class)jstClass {
+    return [self class];
+}
+
++ (Class)jstClass {
+    return [self class];
+}
+
+@end
+
+
+@implementation NSApplication (JSTalkAdditions)
+
+- (void)doJavaScript:(NSString*)script {
+    
+    JSTalk *jst = [[[JSTalk alloc] init] autorelease];
+    
+    NSString *junk;
+    if ([script hasPrefix:@"/"] && (junk = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:script] encoding:NSUTF8StringEncoding error:nil])) {
+        
+        NSURL *pathURL      = [NSURL fileURLWithPath:script];
+        NSURL *pathDirURL   = [NSURL fileURLWithPath:[script stringByDeletingLastPathComponent]];
+        
+        [[jst env] setObject:pathURL forKey:@"scriptURL"];
+        [[jst env] setObject:pathDirURL forKey:@"scriptDirectoryURL"];
+        
+        script = junk;
+    }
+    
+    [jst executeString:script];
+}
+
+- (void)doJavaScriptAsync:(NSString*)script {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self doJavaScript:script];
+        });
+    });
 }
 
 @end
