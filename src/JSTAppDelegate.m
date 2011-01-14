@@ -66,6 +66,12 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     [JSTalk listen];
     
     NSSetUncaughtExceptionHandler(JSTUncaughtExceptionHandler);
+    
+    // register this object to handle the services stuff.
+    [NSApp setServicesProvider:self];
+    
+    // have all the services menus get updated.
+    NSUpdateDynamicServices();
 }
 
 - (IBAction)showPrefs:(id)sender {
@@ -227,6 +233,58 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     }
     
     return defaultFont;
+}
+
+
+- (void)runAsJSTalkScript:(NSPasteboard *)pb userData:(NSDictionary *)userData error:(NSString **)error {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    // Test for strings on the pasteboard.
+    NSArray *classes = [NSArray arrayWithObject:[NSString class]];
+    NSDictionary *options = [NSDictionary dictionary];
+    if (![pb canReadObjectForClasses:classes options:options])  {
+        *error = NSLocalizedString(@"Error: couldn't read the text.", @"pboard couldn't give string.");
+        return;
+    }
+    
+    NSString *result = 0x00;
+    NSString *script = [pb stringForType:NSPasteboardTypeString];
+    
+    debug(@"script: '%@'", script);
+    
+    @try {
+        
+        JSTalk *jstalk = [[JSTalk alloc] init];
+        
+        [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
+        
+        result = [[jstalk executeString:script] description];
+        
+        //
+        result = @"This doesn't work in the jstalk branch currently!";
+        
+        
+        [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
+        
+        [jstalk release];
+        
+    }
+    @catch (NSException *e) {
+        
+        *error = [e reason];
+        return;
+    }
+    @finally {
+        // um.?
+    }
+    
+    // 4+4
+    
+    [pb clearContents];
+    
+    if (result) {
+        [pb writeObjects:[NSArray arrayWithObject:result]];
+    }
 }
 
 @end

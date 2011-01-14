@@ -236,7 +236,7 @@
             
             id foo = [[self parent] lastNonWhitespaceOrCommentSymbol];
             
-            if (!foo || [foo isKindOfClass:[TDToken class]] && [foo isSymbol]) {
+            if (!foo || ([foo isKindOfClass:[TDToken class]] && [foo isSymbol])) {
                 _msgSend = YES;
             }
         }
