@@ -72,26 +72,38 @@ int main(int argc, char *argv[]) {
     }
     
     
+    NSString *source = 0x00;
     NSString *arg = [NSString stringWithUTF8String:argv[1]];
-    NSString *s = [NSString stringWithContentsOfFile:arg encoding:NSUTF8StringEncoding error:nil];
     
-    if (!s) {
+    if ([arg isEqualToString:@"-e"] && argc == 3) {
+        source = [NSString stringWithUTF8String:argv[2]];
+    }
+    else {
+        source = [NSString stringWithContentsOfFile:arg encoding:NSUTF8StringEncoding error:nil];
+    }
+    
+    
+    if (!source) {
         printf("usage: %s <path to file>\n", argv[0]);
         exit(0);
     }
     
     [t.env setObject:[NSURL fileURLWithPath:arg] forKey:@"scriptURL"];
     
-    if ([s hasPrefix:@"#!"]) {
+    if ([source hasPrefix:@"#!"]) {
         
-        NSRange r = [s rangeOfString:@"\n"];
+        NSRange r = [source rangeOfString:@"\n"];
         
         if (r.location != NSNotFound) {
-            s = [s substringFromIndex:r.location];
+            source = [source substringFromIndex:r.location];
         }
     }
     
-    [t executeString:s];
+    id o = [t executeString:source];
+    
+    if (o) {
+        printf("%s\n", [[o description] UTF8String]);
+    }
     
     [pool release];
     
