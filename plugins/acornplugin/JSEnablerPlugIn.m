@@ -7,8 +7,13 @@
 #import "ACPlugin.h"
 #import "JSTalk.h"
 
+#define ACScriptMenuTitleKey @"ACScriptMenuTitle"
+#define ACScriptSuperMenuTitleKey @"ACScriptSuperMenuTitle"
+#define ACShortcutKeyKey @"ACShortcutKey"
+#define ACShortcutMaskKey @"ACShortcutMask"
+
 @interface JSEnablerPlugIn (SuperSecret)
-- (void) findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager;
+- (void)findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager;
 @end
 
 
@@ -38,6 +43,99 @@
     [self findJSCocoaScriptsForPluginManager:pluginManager];
 }
 
+
+
+
+- (NSDictionary*)propertiesFromScriptAtPath:(NSString*)path {
+    
+    NSError *err = 0x00;
+    NSMutableString *s = [NSMutableString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
+    if (!s) {
+        NSLog(@"Error reading %@: %@", path, err);
+        return nil;
+    }
+    
+    // clean up some line endings.
+    [s replaceOccurrencesOfString:@"\r\n" withString:@"\n" options:0 range:NSMakeRange(0, [s length])];
+    [s replaceOccurrencesOfString:@"\r" withString:@"\n" options:0 range:NSMakeRange(0, [s length])];
+    
+    NSMutableDictionary *d              = [NSMutableDictionary dictionary];
+    NSString *menuTitle                 = 0x00;
+    NSString *shortcutKey               = @"";
+    NSString *superMenuTitle            = nil;
+    int shortcutMask                    = 0x00;
+    NSEnumerator *enumerator            = [[s componentsSeparatedByString:@"\n"] objectEnumerator];
+    NSString *line;
+    
+    while ((line = [enumerator nextObject])) {
+    	
+        if ([line hasPrefix:@"VPEndConfig"]) {
+            break;
+        }
+        else if ([line hasPrefix:ACScriptMenuTitleKey]) {
+            int eqIdx = [line rangeOfString:@"="].location;
+            if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
+                menuTitle = [[line substringFromIndex:eqIdx+1]
+                             stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            }
+        }
+        else if ([line hasPrefix:ACScriptSuperMenuTitleKey]) {
+            int eqIdx = [line rangeOfString:@"="].location;
+            if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
+                superMenuTitle = [[line substringFromIndex:eqIdx+1]
+                                  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            }
+        }
+        else if ([line hasPrefix:ACShortcutKeyKey]) {
+            int eqIdx = [line rangeOfString:@"="].location;
+            if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
+                shortcutKey = [[line substringFromIndex:eqIdx+1]
+                               stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            }
+        }
+        else if ([line hasPrefix:ACShortcutMaskKey]) {
+            int eqIdx = [line rangeOfString:@"="].location;
+            if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
+                NSString *junk = [[line substringFromIndex:eqIdx+1]
+                                  stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                
+                junk = [junk lowercaseString];
+                
+                if ([junk rangeOfString:@"command"].location != NSNotFound) {
+                    shortcutMask = shortcutMask | NSCommandKeyMask;
+                }
+                if ([junk rangeOfString:@"option"].location != NSNotFound) {
+                    shortcutMask = shortcutMask | NSAlternateKeyMask;
+                }
+                if ([junk rangeOfString:@"shift"].location != NSNotFound) {
+                    shortcutMask = shortcutMask | NSShiftKeyMask;
+                }
+                if ([junk rangeOfString:@"control"].location != NSNotFound) {
+                    shortcutMask = shortcutMask | NSControlKeyMask;
+                }
+            }
+        }
+    }
+    
+    
+    if (menuTitle) {
+        [d setObject:menuTitle forKey:ACScriptMenuTitleKey];
+    }
+    
+    if (superMenuTitle) {
+        [d setObject:superMenuTitle forKey:ACScriptSuperMenuTitleKey];
+    }
+    
+    if (shortcutKey) {
+        [d setObject:shortcutKey forKey:ACShortcutKeyKey];
+    }
+    
+    [d setObject:[NSNumber numberWithInt:shortcutMask] forKey:ACShortcutMaskKey];
+    
+    return d;
+}
+
+
 - (void)findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager {
     
     NSString *pluginDir = [@"~/Library/Application Support/Acorn/Plug-Ins/" stringByExpandingTildeInPath];
@@ -54,12 +152,25 @@
             continue;
         }
         
-        [pluginManager addFilterMenuTitle:[fileName stringByDeletingPathExtension]
-                       withSuperMenuTitle:nil //@"JSTalk"
+        NSDictionary *scriptProperties      = [self propertiesFromScriptAtPath:[pluginDir stringByAppendingPathComponent:fileName]];
+        
+        
+        NSString *menuTitle                 = [scriptProperties objectForKey:ACScriptMenuTitleKey];
+        menuTitle                           = menuTitle ? menuTitle : [fileName stringByDeletingPathExtension];
+        
+        NSString *shortcutKey               = [scriptProperties objectForKey:ACShortcutKeyKey];
+        shortcutKey                         = shortcutKey ? shortcutKey : @"";
+        
+        NSString *superMenuTitle            = [scriptProperties objectForKey:ACScriptSuperMenuTitleKey];
+        NSUInteger shortcutMask             = [[scriptProperties objectForKey:ACShortcutMaskKey] unsignedIntegerValue];
+        
+        
+        [pluginManager addFilterMenuTitle:menuTitle
+                       withSuperMenuTitle:superMenuTitle
                                    target:self
                                    action:@selector(executeScriptForImage:scriptPath:)
-                            keyEquivalent:@""
-                keyEquivalentModifierMask:0
+                            keyEquivalent:shortcutKey
+                keyEquivalentModifierMask:shortcutMask
                                userObject:[pluginDir stringByAppendingPathComponent:fileName]];
     }
 }
@@ -83,13 +194,17 @@
     
     /*
     Our script should look, at least a little bit like this:
-    function main(image) {
+    function main(image, doc, layer) {
         // do fancy image stuff
         return image;
     }
     */
     
-    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, nil];
+    // um... sort of private, but hey it's not?  maybe?  holy crap I hate threadDictionary.  Don't tell Brent I'm using it.
+    id currentDocument = [[[NSThread currentThread] threadDictionary] objectForKey:@"com.flyingmeat.Acorn.currentDocument"];
+    id currentLayer    = [[[NSThread currentThread] threadDictionary] objectForKey:@"com.flyingmeat.Acorn.currentLayer"];
+    
+    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, currentDocument, currentLayer, nil];
     
     // Hurray?
     // The main() method should be returning a value at this point, so we're going to 
@@ -103,6 +218,10 @@
     
     // fin.
     return acornReturnValue;
+}
+
+- (NSNumber*)worksOnShapeLayers:(id)userObject {
+    return [NSNumber numberWithBool:YES];
 }
 
 @end
