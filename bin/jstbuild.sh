@@ -6,7 +6,7 @@ startDate=`/bin/date`
 revision=""
 upload=1
 ql=1
-appStoreFlags=""
+appStoreSettings=""
 archFlags=""
 appStore=0
 checkout=1
@@ -29,7 +29,9 @@ do
             s)
                 appStore=1
                 upload=0
-                appStoreFlags="-DMAC_APP_STORE"
+                appStoreSettings="-xcconfig AppStore.xcconfig"
+                #echo 'CODE_SIGN_IDENTITY=3rd Party Mac Developer Application: Flying Meat Inc.' > AppStore.xcconfig
+                echo "OTHER_CFLAGS=-DMAC_APP_STORE" > AppStore.xcconfig
                 ;;
             t)
                 echo "USING LOCAL TREE"
@@ -49,9 +51,11 @@ done
 if [ "$echoversion" != "" ]; then
     version=$echoversion
     
-    echo $version
+    # this is for gus to make distributions with.
     
-    # todo
+    echo "cd ~/jstalk/download/"
+    echo "cp JSTalkPreview.zip JSTalk-$version.zip"
+    echo "rm JSTalk.zip; ln -s JSTalk-$version.zip JSTalk.zip"
     
     exit
 fi
@@ -94,7 +98,7 @@ function buildTarget {
     
     echo Building "$1"
     
-    $xcodebuild -target "$1" -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="$appStoreFlags"
+    $xcodebuild -target "$1" -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build $appStoreSettings
     
     if [ $? != 0 ]; then
         echo "****** Bad build for $1 ********"
@@ -108,8 +112,6 @@ buildTarget "JSTalk Framework"
 buildTarget "jstalk command line"
 buildTarget "JSTalkRunner"
 buildTarget "JSTalk Editor"
-
-
 
 
 cd /tmp/jstalk/plugins/acornplugin
@@ -207,7 +209,8 @@ if [ $appStore = 1 ]; then
     
     cd ~/cvsbuilds/JSTalk
     
-    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." JSTalk Editor.app
+    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." JSTalk\ Editor.app
+    
     productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component JSTalk\ Editor.app /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
     
     open .
