@@ -50,7 +50,7 @@ if [ "$echoversion" != "" ]; then
 fi
 
 
-xcodebuild=/Developer/usr/bin/xcodebuild
+
 
 
 buildDate=`/bin/date +"%Y.%m.%d.%H"`
@@ -81,7 +81,7 @@ echo setting build id
 sed -e "s/BUILDID/$v/g"  res/Info.plist > res/Info.plist.tmp
 mv res/Info.plist.tmp res/Info.plist
 
-
+xcodebuild=/Developer/usr/bin/xcodebuild
 function buildTarget {
     
     echo Building "$1"
@@ -91,7 +91,7 @@ function buildTarget {
     if [ $? != 0 ]; then
         echo "****** Bad build for $1 ********"
         say "Bad build for $1"
-        exit
+        
     fi
 }
 
@@ -181,7 +181,7 @@ if [ $appStore = 1 ]; then
         
     cd JSTalk
     
-    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." "JSTalk Editor.app"
+    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." JSTalkEditor.app
     
     productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component "JSTalk Editor.app" /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
     

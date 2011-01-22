@@ -1214,12 +1214,10 @@
 					x86_64,
 					i386,
 				);
-				CODE_SIGN_IDENTITY = "3rd Party Mac Developer Application: Flying Meat Inc.";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = res/Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = "JSTalk Editor";
 			};
