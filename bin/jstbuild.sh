@@ -6,10 +6,19 @@ startDate=`/bin/date`
 revision=""
 upload=1
 ql=1
+appStoreFlags=""
+archFlags=""
+appStore=0
 
 while [ "$#" -gt 0 ]
 do
     case "$1" in
+        --store|-s)
+                appStore=1
+                upload=0
+                appStoreFlags="-DMAC_APP_STORE"
+                break
+                
         --revision|-r)
                 revision="-r $2"
                 upload=0
@@ -77,7 +86,7 @@ function buildTarget {
     
     echo Building "$1"
     
-    $xcodebuild -target "$1" -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+    $xcodebuild -target "$1" -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="$appStoreFlags"
     
     if [ $? != 0 ]; then
         echo "****** Bad build for $1 ********"
@@ -153,16 +162,40 @@ cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
 cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
 mkdir JSTalkFoo/plugins
+mkdir -p JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns
+
 cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
 cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
-cp -r FMDB.jstplugin        JSTalkFoo/plugins/.
-cp -r ImageTools.jstplugin  JSTalkFoo/plugins/.
+cp -r FMDB.jstplugin        JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
+cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
+
+
 
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
 cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
 
 mv JSTalkFoo JSTalk
+
+
+if [ $appStore = 1 ]; then
+        
+    productbuild --product /tmp/jstalk/resources/jstalk_product_definition.plist --component JSTalk.app /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalk.pkg
+    
+    cp JSTalk.pkg $v-JSTalk.pkg
+    
+    open .
+    
+    exit
+fi
+
+
+
+
+
+
+
+
 
 ditto -c -k --sequesterRsrc --keepParent JSTalk JSTalk.zip
 

@@ -1,11 +1,3 @@
-INSTALLING THE SQLITE / FMDB PLUGIN
-----------------------------------
-
-The FMDB.jstplugin needs to be installed in this folder:
-~/Library/Application Support/JSTalk/Plug-ins/
-
-
-
 INSTALLING THE ACORN PLUGIN
 --------------------------
 
