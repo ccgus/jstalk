@@ -183,7 +183,7 @@ if [ $appStore = 1 ]; then
     
     /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." "JSTalk Editor.app"
     
-    productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component "JSTalkEditor.app" /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
+    productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component "JSTalk Editor.app" /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
     
     open .
     
