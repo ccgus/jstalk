@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # there's a lot of gus specific stuff in here.
-
+SRC_DIR=`cd ${0%/*}/..; pwd`
 startDate=`/bin/date`
 revision=""
 upload=1
@@ -9,48 +9,52 @@ ql=1
 appStoreFlags=""
 archFlags=""
 appStore=0
+checkout=1
 
-while [ "$#" -gt 0 ]
+
+while getopts e:nr:st option
 do
-    case "$1" in
-        --store|-s)
+        case "${option}"
+        in      
+            e)
+                echoversion=${OPTARG}
+                ;;
+            n)
+                upload=0
+                    ;;
+            r)
+                revision="-r ${OPTARG}"
+                upload=0
+                ;;
+            s)
                 appStore=1
                 upload=0
-                appStoreFlags="-DMAC_APP_STORE -DCODE_SIGN_IDENTITY"
-                break
+                appStoreFlags="-DMAC_APP_STORE"
                 ;;
-        --revision|-r)
-                revision="-r $2"
-                upload=0
-                break
+            t)
+                echo "USING LOCAL TREE"
+                checkout=0
                 ;;
-        --noupload|-n)
-                upload=0
-                break
-                ;;
-        --echo|-e)
-                echoversion="$2"
-                break
-                ;;
-        *)
-                echo "$CMDNAME: invalid option: $1" 1>&2
+            
+            \?) usage
+                echo "invalid option: $1" 1>&2
                 exit 1
-                ;;
-    esac
-    shift
+            ;;
+        esac
 done
+
+
 
 
 if [ "$echoversion" != "" ]; then
     version=$echoversion
     
+    echo $version
+    
     # todo
     
     exit
 fi
-
-
-
 
 
 buildDate=`/bin/date +"%Y.%m.%d.%H"`
@@ -63,23 +67,27 @@ echo cleaning.
 rm -rf ~/cvsbuilds/JSTalk*
 rm -rf /tmp/jstalk
 
-cd /tmp
-
 source ~/.bash_profile
+v=`date "+%s"`
 
-echo "doing remote checkout ($revision) upload($upload)"
-git clone git://github.com/ccgus/jstalk.git
+if [ $checkout == 1 ]; then
+
+    cd /tmp
+    
+    echo "doing remote checkout ($revision) upload($upload)"
+    git clone git://github.com/ccgus/jstalk.git
+else
+    echo "Copying local tree"
+    cp -r $SRC_DIR /tmp/jstalk
+fi
 
 cd /tmp/jstalk
-
-#git clone http://github.com/parmanoir/jscocoa.git jscocoa
-#git submodule init && git submodule update
-
-v=`date "+%s"`
 
 echo setting build id
 sed -e "s/BUILDID/$v/g"  res/Info.plist > res/Info.plist.tmp
 mv res/Info.plist.tmp res/Info.plist
+
+
 
 xcodebuild=/Developer/usr/bin/xcodebuild
 function buildTarget {
@@ -141,6 +149,9 @@ if [ $? != 0 ]; then
     exit
 fi
 
+
+cd /tmp/jstalk/build/Release/
+
 mkdir -p /tmp/jstalk/build/Release/JSTalk\ Editor.app/Contents/Library/Automator
 mv /tmp/jstalk/build/Release/JSTalk.action /tmp/jstalk/build/Release/JSTalk\ Editor.app/Contents/Library/Automator/.
 
@@ -148,7 +159,6 @@ if [ ! -d  ~/cvsbuilds ]; then
     mkdir ~/cvsbuilds
 fi
 
-cd /tmp/jstalk/build/Release/
 
 mkdir JSTalkFoo
 
@@ -168,36 +178,48 @@ cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
 cp -r FMDB.jstplugin        JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 
-
-
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
 cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
 
 mv JSTalkFoo JSTalk
 
+mv JSTalk ~/cvsbuilds/.
+
 
 if [ $appStore = 1 ]; then
-        
-    cd JSTalk
     
-    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." JSTalkEditor.app
+    cd ~/cvsbuilds/JSTalk
     
-    productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component "JSTalk Editor.app" /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
+    cd JSTalk\ Editor.app/Contents/Resources/JSTalkRunner.app/Contents/Frameworks/JSTalk.framework/Versions/A/Resources/
+    
+    # app loader doesn't like multipe frameworks with the same id in it.
+    sed -e "s/org.jstalk.JSTalk/org.jstalk.JSTalkRunnerF/g"  Info.plist > Info.plist.tmp
+    mv Info.plist.tmp Info.plist
+    
+    
+    cd ~/cvsbuilds/JSTalk
+    cd JSTalk\ Editor.app/Contents/Frameworks/JSTalk.framework/Versions/A/Resources/
+    
+    # app loader doesn't like multipe frameworks with the same id in it.
+    sed -e "s/org.jstalk.JSTalk/org.jstalk.JSTalkEditor.JSTalkFramework/g"  Info.plist > Info.plist.tmp
+    mv Info.plist.tmp Info.plist
+    
+    cd ~/cvsbuilds/JSTalk
+    
+    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." JSTalk Editor.app
+    productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component JSTalk\ Editor.app /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
     
     open .
     
     exit
 fi
 
+cd ~/cvsbuilds
 
 ditto -c -k --sequesterRsrc --keepParent JSTalk JSTalk.zip
 
 rm -rf JSTalk
-
-mv JSTalk.zip ~/cvsbuilds/.
-
-cd ~/cvsbuilds/
 
 cp JSTalk.zip $v-JSTalk.zip
 
