@@ -16,9 +16,9 @@ do
         --store|-s)
                 appStore=1
                 upload=0
-                appStoreFlags="-DMAC_APP_STORE"
+                appStoreFlags="-DMAC_APP_STORE -DCODE_SIGN_IDENTITY"
                 break
-                
+                ;;
         --revision|-r)
                 revision="-r $2"
                 upload=0
@@ -157,7 +157,6 @@ mv "JSTalk Editor.app" JSTalkFoo/.
 
 # I do a cp here, since I rely on this framework being here for other builds...
 cp -R JSTalk.framework JSTalkFoo/.
-cp -R /tmp/jstalk/README.txt JSTalkFoo/.
 cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
 cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
@@ -180,21 +179,16 @@ mv JSTalkFoo JSTalk
 
 if [ $appStore = 1 ]; then
         
-    productbuild --product /tmp/jstalk/resources/jstalk_product_definition.plist --component JSTalk.app /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalk.pkg
+    cd JSTalk
     
-    cp JSTalk.pkg $v-JSTalk.pkg
+    /usr/bin/codesign -f -s "3rd Party Mac Developer Application: Flying Meat Inc." "JSTalk Editor.app"
+    
+    productbuild --product /tmp/jstalk/res/jstalk_product_definition.plist --component "JSTalkEditor.app" /Applications --sign '3rd Party Mac Developer Installer: Flying Meat Inc.' JSTalkEditor.pkg
     
     open .
     
     exit
 fi
-
-
-
-
-
-
-
 
 
 ditto -c -k --sequesterRsrc --keepParent JSTalk JSTalk.zip
