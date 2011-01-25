@@ -152,8 +152,15 @@ static NSMutableArray *JSTalkPluginList;
     NSString *sysPath    = [@"/" stringByAppendingPathComponent:appSupport];
     NSString *userPath   = [NSHomeDirectory() stringByAppendingPathComponent:appSupport];
     
+    
+    // only make the JSTalk dir if we're JSTalkEditor.
     if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:userPath withIntermediateDirectories:YES attributes:nil error:nil];
+        
+        NSString *mainBundleId = [[NSBundle mainBundle] bundleIdentifier];
+        
+        if ([@"org.jstalk.JSTalkEditor" isEqualToString:mainBundleId]) {
+            [[NSFileManager defaultManager] createDirectoryAtPath:userPath withIntermediateDirectories:YES attributes:nil error:nil];
+        }
     }
     
     for (NSString *folder in [NSArray arrayWithObjects:appPath, sysPath, userPath, nil]) {
