@@ -629,6 +629,54 @@ static void initBraces() {
     return [super selectionRangeForProposedRange:proposedSelRange granularity:granularity];
 }
 
+- (void)setInsertionPointFromDragOpertion:(id <NSDraggingInfo>)sender {
+    
+    NSLayoutManager *layoutManager = [self layoutManager];
+    NSTextContainer *textContainer = [self textContainer];
+    
+    NSUInteger glyphIndex, charIndex, length = [[self textStorage] length];
+    NSPoint point = [self convertPoint:[sender draggingLocation] fromView:nil];
+    
+    // Convert those coordinates to the nearest glyph index
+    glyphIndex = [layoutManager glyphIndexForPoint:point inTextContainer:textContainer];
+    
+    // Convert the glyph index to a character index
+    charIndex = [layoutManager characterIndexForGlyphAtIndex:glyphIndex];
+    
+    // put the selection where we have the mouse.
+    if (charIndex == (length - 1)) {
+        [self setSelectedRange:NSMakeRange(charIndex+1, 0)];
+        //[self setSelectedRange:NSMakeRange(charIndex, 0)];
+    }
+    else {
+        [self setSelectedRange:NSMakeRange(charIndex, 0)];
+    }
+    
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender {
+    
+    if (([NSEvent modifierFlags] & NSAlternateKeyMask) != 0) {
+        
+        [self setInsertionPointFromDragOpertion:sender];
+        
+        NSPasteboard *paste = [sender draggingPasteboard];
+        NSArray *fileArray = [paste propertyListForType:NSFilenamesPboardType];
+        
+        for (NSString *path in fileArray) {
+            
+            [self insertText:[NSString stringWithFormat:@"[NSURL fileURLWithPath:\"%@\"]", path]];
+            
+            if ([fileArray count] > 1) {
+                [self insertNewline:nil];
+            }
+        }
+        
+        return YES;
+    }
+    
+    return [super performDragOperation:sender];
+}
 
 
 @end
