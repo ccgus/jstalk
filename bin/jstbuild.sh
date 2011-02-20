@@ -144,6 +144,13 @@ if [ $? != 0 ]; then
     exit
 fi
 
+cd /tmp/jstalk/plugins/GTMScriptRunner-jstplugin
+$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
+if [ $? != 0 ]; then
+    echo "****** Bad build for GTMScriptRunner ********"
+    exit
+fi
+
 cd /tmp/jstalk/automator/
 $xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target JSTAutomator
 if [ $? != 0 ]; then
@@ -179,6 +186,7 @@ cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
 cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
 cp -r FMDB.jstplugin        JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
+cp -r GTMScriptRunner.jstplugin JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
 
