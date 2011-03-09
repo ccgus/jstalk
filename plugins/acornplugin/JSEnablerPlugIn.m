@@ -28,15 +28,6 @@
     
     // this guy openes up a Distributed Objects port to listen for outside JSTalk commands commands
     [JSTalk listen];
-    
-    
-    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
-    
-    [jstalk executeString:@"print('hai');"];
-    
-    
-    
-    
 }
 
 - (void)willRegister:(id<ACPluginManager>)pluginManager {
