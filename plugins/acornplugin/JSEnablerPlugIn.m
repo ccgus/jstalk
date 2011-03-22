@@ -34,9 +34,6 @@
     [self findJSCocoaScriptsForPluginManager:pluginManager];
 }
 
-
-
-
 - (NSDictionary*)propertiesFromScriptAtPath:(NSString*)path {
     
     NSError *err = 0x00;
@@ -168,7 +165,7 @@
 
 
 
-- (CIImage*)executeScriptForImage:(CIImage*)image scriptPath:(NSString*)scriptPath {
+- (CIImage*)executeScriptForImage:(id<ACLayer>)currentLayer scriptPath:(NSString*)scriptPath {
     
     NSError *err            = 0x00;
     NSString *theJavaScript = [NSString stringWithContentsOfFile:scriptPath encoding:NSUTF8StringEncoding error:&err];
@@ -178,6 +175,8 @@
         NSLog(@"%@", err);
         return nil;
     }
+    
+    CIImage *image = [currentLayer CIImage];
     
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
     
@@ -191,11 +190,9 @@
     }
     */
     
-    // um... sort of private, but hey it's not?  maybe?  holy crap I hate threadDictionary.  Don't tell Brent I'm using it.
-    id currentDocument = [[[NSThread currentThread] threadDictionary] objectForKey:@"com.flyingmeat.Acorn.currentDocument"];
-    id currentLayer    = [[[NSThread currentThread] threadDictionary] objectForKey:@"com.flyingmeat.Acorn.currentLayer"];
+    id document = [(id)currentLayer valueForKey:@"document"]; // shh!
     
-    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, currentDocument, currentLayer, nil];
+    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, document, currentLayer, nil];
     
     // Hurray?
     // The main() method should be returning a value at this point, so we're going to 
