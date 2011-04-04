@@ -16,6 +16,16 @@
 		CC34F6441209F5FB00DE493B /* OpenCL.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */; };
 		CCC9CAB91209F1C6007EED57 /* JSTQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */; };
 		CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */; };
+		CCCFCCAE13494A7400752BB0 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA513494A7400752BB0 /* ccgus.jpg */; };
+		CCCFCCAF13494A7400752BB0 /* clouds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA613494A7400752BB0 /* clouds.jpg */; };
+		CCCFCCB013494A7400752BB0 /* duck.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA713494A7400752BB0 /* duck.jpg */; };
+		CCCFCCB113494A7400752BB0 /* llama.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA813494A7400752BB0 /* llama.jpg */; };
+		CCCFCCB213494A7400752BB0 /* mask1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA913494A7400752BB0 /* mask1.jpg */; };
+		CCCFCCB313494A7400752BB0 /* mask2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAA13494A7400752BB0 /* mask2.jpg */; };
+		CCCFCCB413494A7400752BB0 /* mask3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAB13494A7400752BB0 /* mask3.jpg */; };
+		CCCFCCB513494A7400752BB0 /* mask4.png in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAC13494A7400752BB0 /* mask4.png */; };
+		CCCFCCB613494A7400752BB0 /* rail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAD13494A7400752BB0 /* rail.jpg */; };
+		CCCFCCBF13494AAA00752BB0 /* JSTCIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCFCCBE13494AAA00752BB0 /* JSTCIImageAdditions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +47,17 @@
 		CCC9CAB71209F1C6007EED57 /* JSTQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTQuickCIFilter.h; sourceTree = "<group>"; };
 		CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTQuickCIFilter.m; sourceTree = "<group>"; };
 		CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CCCFCCA513494A7400752BB0 /* ccgus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = ccgus.jpg; path = res/ccgus.jpg; sourceTree = "<group>"; };
+		CCCFCCA613494A7400752BB0 /* clouds.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = clouds.jpg; path = res/clouds.jpg; sourceTree = "<group>"; };
+		CCCFCCA713494A7400752BB0 /* duck.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = duck.jpg; path = res/duck.jpg; sourceTree = "<group>"; };
+		CCCFCCA813494A7400752BB0 /* llama.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = llama.jpg; path = res/llama.jpg; sourceTree = "<group>"; };
+		CCCFCCA913494A7400752BB0 /* mask1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = mask1.jpg; path = res/mask1.jpg; sourceTree = "<group>"; };
+		CCCFCCAA13494A7400752BB0 /* mask2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = mask2.jpg; path = res/mask2.jpg; sourceTree = "<group>"; };
+		CCCFCCAB13494A7400752BB0 /* mask3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = mask3.jpg; path = res/mask3.jpg; sourceTree = "<group>"; };
+		CCCFCCAC13494A7400752BB0 /* mask4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mask4.png; path = res/mask4.png; sourceTree = "<group>"; };
+		CCCFCCAD13494A7400752BB0 /* rail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = rail.jpg; path = res/rail.jpg; sourceTree = "<group>"; };
+		CCCFCCBD13494AAA00752BB0 /* JSTCIImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTCIImageAdditions.h; sourceTree = "<group>"; };
+		CCCFCCBE13494AAA00752BB0 /* JSTCIImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTCIImageAdditions.m; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -78,6 +99,15 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CCCFCCA513494A7400752BB0 /* ccgus.jpg */,
+				CCCFCCA613494A7400752BB0 /* clouds.jpg */,
+				CCCFCCA713494A7400752BB0 /* duck.jpg */,
+				CCCFCCA813494A7400752BB0 /* llama.jpg */,
+				CCCFCCA913494A7400752BB0 /* mask1.jpg */,
+				CCCFCCAA13494A7400752BB0 /* mask2.jpg */,
+				CCCFCCAB13494A7400752BB0 /* mask3.jpg */,
+				CCCFCCAC13494A7400752BB0 /* mask4.png */,
+				CCCFCCAD13494A7400752BB0 /* rail.jpg */,
 				CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
@@ -96,6 +126,8 @@
 				CC32EFD4120350040090827E /* JSTOpenCLProgram.m */,
 				CCC9CAB71209F1C6007EED57 /* JSTQuickCIFilter.h */,
 				CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */,
+				CCCFCCBD13494AAA00752BB0 /* JSTCIImageAdditions.h */,
+				CCCFCCBE13494AAA00752BB0 /* JSTCIImageAdditions.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -188,6 +220,15 @@
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 				CC34F6441209F5FB00DE493B /* OpenCL.bridgesupport in Resources */,
+				CCCFCCAE13494A7400752BB0 /* ccgus.jpg in Resources */,
+				CCCFCCAF13494A7400752BB0 /* clouds.jpg in Resources */,
+				CCCFCCB013494A7400752BB0 /* duck.jpg in Resources */,
+				CCCFCCB113494A7400752BB0 /* llama.jpg in Resources */,
+				CCCFCCB213494A7400752BB0 /* mask1.jpg in Resources */,
+				CCCFCCB313494A7400752BB0 /* mask2.jpg in Resources */,
+				CCCFCCB413494A7400752BB0 /* mask3.jpg in Resources */,
+				CCCFCCB513494A7400752BB0 /* mask4.png in Resources */,
+				CCCFCCB613494A7400752BB0 /* rail.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,6 +243,7 @@
 				CC32EFCF12034F170090827E /* JSTOpenCLContext.m in Sources */,
 				CC32EFD5120350040090827E /* JSTOpenCLProgram.m in Sources */,
 				CCC9CAB91209F1C6007EED57 /* JSTQuickCIFilter.m in Sources */,
+				CCCFCCBF13494AAA00752BB0 /* JSTCIImageAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
