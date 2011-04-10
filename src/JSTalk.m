@@ -154,6 +154,8 @@ static NSMutableArray *JSTalkPluginList;
     
     
     // only make the JSTalk dir if we're JSTalkEditor.
+    // or don't ever make it, since you'll get rejected from the App Store. *sigh*
+    /*
     if (![[NSFileManager defaultManager] fileExistsAtPath:userPath]) {
         
         NSString *mainBundleId = [[NSBundle mainBundle] bundleIdentifier];
@@ -162,6 +164,7 @@ static NSMutableArray *JSTalkPluginList;
             [[NSFileManager defaultManager] createDirectoryAtPath:userPath withIntermediateDirectories:YES attributes:nil error:nil];
         }
     }
+    */
     
     for (NSString *folder in [NSArray arrayWithObjects:appPath, sysPath, userPath, nil]) {
         
