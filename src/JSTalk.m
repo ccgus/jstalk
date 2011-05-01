@@ -177,6 +177,27 @@ static NSMutableArray *JSTalkPluginList;
             [self loadExtraAtPath:[folder stringByAppendingPathComponent:bundle]];
         }
     }
+    
+    if (![[[NSBundle mainBundle] bundleIdentifier] isEqualToString:@"org.jstalk.JSTalkEditor"]) {
+        
+        NSURL *jst = [[NSWorkspace sharedWorkspace] URLForApplicationWithBundleIdentifier:@"org.jstalk.JSTalkEditor"];
+        
+        if (jst) {
+            
+            NSURL *folder = [[jst URLByAppendingPathComponent:@"Contents"] URLByAppendingPathComponent:@"PlugIns"];
+            
+            for (NSString *bundle in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[folder path] error:nil]) {
+                
+                if (!([bundle hasSuffix:@".jstplugin"])) {
+                    continue;
+                }
+                
+                [self loadExtraAtPath:[[folder path] stringByAppendingPathComponent:bundle]];
+            }
+        }
+    }
+    
+    
 }
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
