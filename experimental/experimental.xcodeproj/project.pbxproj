@@ -1,0 +1,1095 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CC09CAC51242B98C00B41D15 /* JSTalk.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC09CAC41242B98C00B41D15 /* JSTalk.bridgesupport */; };
+		CC0EC32A0F226F550094F69D /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
+		CC1324300F2504F00032FEB8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
+		CC1C7D7E0F48BB2C007A2941 /* TDAlternation.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D210F48BB2C007A2941 /* TDAlternation.h */; };
+		CC1C7D7F0F48BB2C007A2941 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D220F48BB2C007A2941 /* TDAlternation.m */; };
+		CC1C7D800F48BB2C007A2941 /* TDAny.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D230F48BB2C007A2941 /* TDAny.h */; };
+		CC1C7D810F48BB2C007A2941 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D240F48BB2C007A2941 /* TDAny.m */; };
+		CC1C7D820F48BB2C007A2941 /* TDAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D250F48BB2C007A2941 /* TDAssembly.h */; };
+		CC1C7D830F48BB2C007A2941 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D260F48BB2C007A2941 /* TDAssembly.m */; };
+		CC1C7D840F48BB2C007A2941 /* TDCaseInsensitiveLiteral.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D270F48BB2C007A2941 /* TDCaseInsensitiveLiteral.h */; };
+		CC1C7D850F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */; };
+		CC1C7D860F48BB2C007A2941 /* TDChar.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D290F48BB2C007A2941 /* TDChar.h */; };
+		CC1C7D870F48BB2C007A2941 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2A0F48BB2C007A2941 /* TDChar.m */; };
+		CC1C7D880F48BB2C007A2941 /* TDCharacterAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D2B0F48BB2C007A2941 /* TDCharacterAssembly.h */; };
+		CC1C7D890F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */; };
+		CC1C7D8A0F48BB2C007A2941 /* TDCollectionParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D2D0F48BB2C007A2941 /* TDCollectionParser.h */; };
+		CC1C7D8B0F48BB2C007A2941 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */; };
+		CC1C7D8C0F48BB2C007A2941 /* TDComment.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D2F0F48BB2C007A2941 /* TDComment.h */; };
+		CC1C7D8D0F48BB2C007A2941 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D300F48BB2C007A2941 /* TDComment.m */; };
+		CC1C7D8E0F48BB2C007A2941 /* TDCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D310F48BB2C007A2941 /* TDCommentState.h */; };
+		CC1C7D8F0F48BB2C007A2941 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D320F48BB2C007A2941 /* TDCommentState.m */; };
+		CC1C7D900F48BB2C007A2941 /* TDDigit.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D330F48BB2C007A2941 /* TDDigit.h */; };
+		CC1C7D910F48BB2C007A2941 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D340F48BB2C007A2941 /* TDDigit.m */; };
+		CC1C7D920F48BB2C007A2941 /* TDEmpty.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D350F48BB2C007A2941 /* TDEmpty.h */; };
+		CC1C7D930F48BB2C007A2941 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D360F48BB2C007A2941 /* TDEmpty.m */; };
+		CC1C7D940F48BB2C007A2941 /* TDLetter.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D370F48BB2C007A2941 /* TDLetter.h */; };
+		CC1C7D950F48BB2C007A2941 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D380F48BB2C007A2941 /* TDLetter.m */; };
+		CC1C7D960F48BB2C007A2941 /* TDLiteral.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D390F48BB2C007A2941 /* TDLiteral.h */; };
+		CC1C7D970F48BB2C007A2941 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */; };
+		CC1C7D980F48BB2C007A2941 /* TDLowercaseWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D3B0F48BB2C007A2941 /* TDLowercaseWord.h */; };
+		CC1C7D990F48BB2C007A2941 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */; };
+		CC1C7D9A0F48BB2C007A2941 /* TDMultiLineCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D3D0F48BB2C007A2941 /* TDMultiLineCommentState.h */; };
+		CC1C7D9B0F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */; };
+		CC1C7D9C0F48BB2C007A2941 /* TDNonReservedWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D3F0F48BB2C007A2941 /* TDNonReservedWord.h */; };
+		CC1C7D9D0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */; };
+		CC1C7D9E0F48BB2C007A2941 /* TDNum.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D410F48BB2C007A2941 /* TDNum.h */; };
+		CC1C7D9F0F48BB2C007A2941 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D420F48BB2C007A2941 /* TDNum.m */; };
+		CC1C7DA00F48BB2C007A2941 /* TDNumberState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D430F48BB2C007A2941 /* TDNumberState.h */; };
+		CC1C7DA10F48BB2C007A2941 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D440F48BB2C007A2941 /* TDNumberState.m */; };
+		CC1C7DA20F48BB2C007A2941 /* TDParseKit.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D450F48BB2C007A2941 /* TDParseKit.h */; };
+		CC1C7DA30F48BB2C007A2941 /* TDParser.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D460F48BB2C007A2941 /* TDParser.h */; };
+		CC1C7DA40F48BB2C007A2941 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D470F48BB2C007A2941 /* TDParser.m */; };
+		CC1C7DA50F48BB2C007A2941 /* TDQuotedString.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D480F48BB2C007A2941 /* TDQuotedString.h */; };
+		CC1C7DA60F48BB2C007A2941 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */; };
+		CC1C7DA70F48BB2C007A2941 /* TDQuoteState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D4A0F48BB2C007A2941 /* TDQuoteState.h */; };
+		CC1C7DA80F48BB2C007A2941 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */; };
+		CC1C7DA90F48BB2C007A2941 /* TDReader.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D4C0F48BB2C007A2941 /* TDReader.h */; };
+		CC1C7DAA0F48BB2C007A2941 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4D0F48BB2C007A2941 /* TDReader.m */; };
+		CC1C7DAB0F48BB2C007A2941 /* TDRepetition.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D4E0F48BB2C007A2941 /* TDRepetition.h */; };
+		CC1C7DAC0F48BB2C007A2941 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */; };
+		CC1C7DAD0F48BB2C007A2941 /* TDReservedWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D500F48BB2C007A2941 /* TDReservedWord.h */; };
+		CC1C7DAE0F48BB2C007A2941 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */; };
+		CC1C7DAF0F48BB2C007A2941 /* TDScientificNumberState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D520F48BB2C007A2941 /* TDScientificNumberState.h */; };
+		CC1C7DB00F48BB2C007A2941 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */; };
+		CC1C7DB10F48BB2C007A2941 /* TDSequence.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D540F48BB2C007A2941 /* TDSequence.h */; };
+		CC1C7DB20F48BB2C007A2941 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D550F48BB2C007A2941 /* TDSequence.m */; };
+		CC1C7DB50F48BB2C007A2941 /* TDSingleLineCommentState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D580F48BB2C007A2941 /* TDSingleLineCommentState.h */; };
+		CC1C7DB60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */; };
+		CC1C7DB70F48BB2C007A2941 /* TDSpecificChar.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D5A0F48BB2C007A2941 /* TDSpecificChar.h */; };
+		CC1C7DB80F48BB2C007A2941 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */; };
+		CC1C7DB90F48BB2C007A2941 /* TDSymbol.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D5C0F48BB2C007A2941 /* TDSymbol.h */; };
+		CC1C7DBA0F48BB2C007A2941 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */; };
+		CC1C7DBB0F48BB2C007A2941 /* TDSymbolNode.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D5E0F48BB2C007A2941 /* TDSymbolNode.h */; };
+		CC1C7DBC0F48BB2C007A2941 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */; };
+		CC1C7DBD0F48BB2C007A2941 /* TDSymbolRootNode.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D600F48BB2C007A2941 /* TDSymbolRootNode.h */; };
+		CC1C7DBE0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */; };
+		CC1C7DBF0F48BB2C007A2941 /* TDSymbolState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D620F48BB2C007A2941 /* TDSymbolState.h */; };
+		CC1C7DC00F48BB2C007A2941 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */; };
+		CC1C7DC10F48BB2C007A2941 /* TDTerminal.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D640F48BB2C007A2941 /* TDTerminal.h */; };
+		CC1C7DC20F48BB2C007A2941 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D650F48BB2C007A2941 /* TDTerminal.m */; };
+		CC1C7DC30F48BB2C007A2941 /* TDToken.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D660F48BB2C007A2941 /* TDToken.h */; };
+		CC1C7DC40F48BB2C007A2941 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D670F48BB2C007A2941 /* TDToken.m */; };
+		CC1C7DC50F48BB2C007A2941 /* TDTokenArraySource.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D680F48BB2C007A2941 /* TDTokenArraySource.h */; };
+		CC1C7DC60F48BB2C007A2941 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */; };
+		CC1C7DC70F48BB2C007A2941 /* TDTokenAssembly.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D6A0F48BB2C007A2941 /* TDTokenAssembly.h */; };
+		CC1C7DC80F48BB2C007A2941 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */; };
+		CC1C7DC90F48BB2C007A2941 /* TDTokenizer.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D6C0F48BB2C007A2941 /* TDTokenizer.h */; };
+		CC1C7DCA0F48BB2C007A2941 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */; };
+		CC1C7DCB0F48BB2C007A2941 /* TDTokenizerState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D6E0F48BB2C007A2941 /* TDTokenizerState.h */; };
+		CC1C7DCC0F48BB2C007A2941 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */; };
+		CC1C7DCD0F48BB2C007A2941 /* TDTrack.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D700F48BB2C007A2941 /* TDTrack.h */; };
+		CC1C7DCE0F48BB2C007A2941 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D710F48BB2C007A2941 /* TDTrack.m */; };
+		CC1C7DCF0F48BB2C007A2941 /* TDTrackException.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D720F48BB2C007A2941 /* TDTrackException.h */; };
+		CC1C7DD00F48BB2C007A2941 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D730F48BB2C007A2941 /* TDTrackException.m */; };
+		CC1C7DD10F48BB2C007A2941 /* TDUppercaseWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D740F48BB2C007A2941 /* TDUppercaseWord.h */; };
+		CC1C7DD20F48BB2C007A2941 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */; };
+		CC1C7DD30F48BB2C007A2941 /* TDWhitespaceState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D760F48BB2C007A2941 /* TDWhitespaceState.h */; };
+		CC1C7DD40F48BB2C007A2941 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */; };
+		CC1C7DD50F48BB2C007A2941 /* TDWord.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D780F48BB2C007A2941 /* TDWord.h */; };
+		CC1C7DD60F48BB2C007A2941 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D790F48BB2C007A2941 /* TDWord.m */; };
+		CC1C7DD70F48BB2C007A2941 /* TDWordOrReservedState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D7A0F48BB2C007A2941 /* TDWordOrReservedState.h */; };
+		CC1C7DD80F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */; };
+		CC1C7DD90F48BB2C007A2941 /* TDWordState.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1C7D7C0F48BB2C007A2941 /* TDWordState.h */; };
+		CC1C7DDA0F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
+		CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D220F48BB2C007A2941 /* TDAlternation.m */; };
+		CC1C7DDC0F48BB2C007A2941 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D240F48BB2C007A2941 /* TDAny.m */; };
+		CC1C7DDD0F48BB2C007A2941 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D260F48BB2C007A2941 /* TDAssembly.m */; };
+		CC1C7DDE0F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */; };
+		CC1C7DDF0F48BB2C007A2941 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2A0F48BB2C007A2941 /* TDChar.m */; };
+		CC1C7DE00F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */; };
+		CC1C7DE10F48BB2C007A2941 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */; };
+		CC1C7DE20F48BB2C007A2941 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D300F48BB2C007A2941 /* TDComment.m */; };
+		CC1C7DE30F48BB2C007A2941 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D320F48BB2C007A2941 /* TDCommentState.m */; };
+		CC1C7DE40F48BB2C007A2941 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D340F48BB2C007A2941 /* TDDigit.m */; };
+		CC1C7DE50F48BB2C007A2941 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D360F48BB2C007A2941 /* TDEmpty.m */; };
+		CC1C7DE60F48BB2C007A2941 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D380F48BB2C007A2941 /* TDLetter.m */; };
+		CC1C7DE70F48BB2C007A2941 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */; };
+		CC1C7DE80F48BB2C007A2941 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */; };
+		CC1C7DE90F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */; };
+		CC1C7DEA0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */; };
+		CC1C7DEB0F48BB2C007A2941 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D420F48BB2C007A2941 /* TDNum.m */; };
+		CC1C7DEC0F48BB2C007A2941 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D440F48BB2C007A2941 /* TDNumberState.m */; };
+		CC1C7DED0F48BB2C007A2941 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D470F48BB2C007A2941 /* TDParser.m */; };
+		CC1C7DEE0F48BB2C007A2941 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */; };
+		CC1C7DEF0F48BB2C007A2941 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */; };
+		CC1C7DF00F48BB2C007A2941 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4D0F48BB2C007A2941 /* TDReader.m */; };
+		CC1C7DF10F48BB2C007A2941 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */; };
+		CC1C7DF20F48BB2C007A2941 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */; };
+		CC1C7DF30F48BB2C007A2941 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */; };
+		CC1C7DF40F48BB2C007A2941 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D550F48BB2C007A2941 /* TDSequence.m */; };
+		CC1C7DF60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */; };
+		CC1C7DF70F48BB2C007A2941 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */; };
+		CC1C7DF80F48BB2C007A2941 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */; };
+		CC1C7DF90F48BB2C007A2941 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */; };
+		CC1C7DFA0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */; };
+		CC1C7DFB0F48BB2C007A2941 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */; };
+		CC1C7DFC0F48BB2C007A2941 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D650F48BB2C007A2941 /* TDTerminal.m */; };
+		CC1C7DFD0F48BB2C007A2941 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D670F48BB2C007A2941 /* TDToken.m */; };
+		CC1C7DFE0F48BB2C007A2941 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */; };
+		CC1C7DFF0F48BB2C007A2941 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */; };
+		CC1C7E000F48BB2C007A2941 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */; };
+		CC1C7E010F48BB2C007A2941 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */; };
+		CC1C7E020F48BB2C007A2941 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D710F48BB2C007A2941 /* TDTrack.m */; };
+		CC1C7E030F48BB2C007A2941 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D730F48BB2C007A2941 /* TDTrackException.m */; };
+		CC1C7E040F48BB2C007A2941 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */; };
+		CC1C7E050F48BB2C007A2941 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */; };
+		CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D790F48BB2C007A2941 /* TDWord.m */; };
+		CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */; };
+		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
+		CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */; };
+		CC3937CD126E2F270029645D /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */; };
+		CC3937D9126E2F5C0029645D /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
+		CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = CC3CC7F1124C3406001A349E /* JSTBridge.h */; };
+		CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
+		CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = CC3CC7F2124C3406001A349E /* JSTBridge.m */; };
+		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
+		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
+		CC41433D0F25259500E46669 /* JSTListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B95A0F1EFCFE00126722 /* JSTListener.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CC41433E0F25259500E46669 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* JSTListener.m */; };
+		CC4143500F25261000E46669 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
+		CC4143510F25261100E46669 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
+		CC4143520F25261200E46669 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
+		CC4143530F25261300E46669 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
+		CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CC4143C10F2529F200E46669 /* JSTExtras.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC41845912447743004144B7 /* MARTNSObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845112447743004144B7 /* MARTNSObject.h */; };
+		CC41845A12447743004144B7 /* MARTNSObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845212447743004144B7 /* MARTNSObject.m */; };
+		CC41845B12447743004144B7 /* RTIvar.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845312447743004144B7 /* RTIvar.h */; };
+		CC41845C12447743004144B7 /* RTIvar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845412447743004144B7 /* RTIvar.m */; };
+		CC41845D12447743004144B7 /* RTMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845512447743004144B7 /* RTMethod.h */; };
+		CC41845E12447743004144B7 /* RTMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845612447743004144B7 /* RTMethod.m */; };
+		CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41845712447743004144B7 /* RTUnregisteredClass.h */; };
+		CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41845812447743004144B7 /* RTUnregisteredClass.m */; };
+		CC41857112448360004144B7 /* MABlockClosure.h in Headers */ = {isa = PBXBuildFile; fileRef = CC41856F12448360004144B7 /* MABlockClosure.h */; };
+		CC41857212448360004144B7 /* MABlockClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC41857012448360004144B7 /* MABlockClosure.m */; };
+		CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
+		CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* JSTListener.m */; };
+		CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */; };
+		CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
+		CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
+		CC69B5831245536600E735F6 /* JSTRuntimeInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */; };
+		CC7528F3124FE64D005546B0 /* JSTFunction.h in Headers */ = {isa = PBXBuildFile; fileRef = CC7528F1124FE64D005546B0 /* JSTFunction.h */; };
+		CC7528F4124FE64D005546B0 /* JSTFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7528F2124FE64D005546B0 /* JSTFunction.m */; };
+		CC75296E1250066F005546B0 /* JSTTests.h in Headers */ = {isa = PBXBuildFile; fileRef = CC75296C1250066F005546B0 /* JSTTests.h */; };
+		CC75296F1250066F005546B0 /* JSTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75296D1250066F005546B0 /* JSTTests.m */; };
+		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
+		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
+		CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
+		CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */; };
+		CCB5EB10124D922E0052BCD9 /* JSTUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */; };
+		CCB5EB11124D922E0052BCD9 /* JSTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */; };
+		CCBF477A1266A4AB0037A15A /* JSTStructure.h in Headers */ = {isa = PBXBuildFile; fileRef = CCBF47781266A4AB0037A15A /* JSTStructure.h */; };
+		CCBF477B1266A4AB0037A15A /* JSTStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = CCBF47791266A4AB0037A15A /* JSTStructure.m */; };
+		CCBF479D1266A5AF0037A15A /* JSTStructure.m in Sources */ = {isa = PBXBuildFile; fileRef = CCBF47791266A4AB0037A15A /* JSTStructure.m */; };
+		CCCA67A11250422700522EFA /* JSTFunction.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7528F2124FE64D005546B0 /* JSTFunction.m */; };
+		CCCA67A31250422900522EFA /* JSTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildRule section */
+		CC506E3C12415CA5005AD5E6 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.pbxcp;
+			filePatterns = "*.js";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			outputFiles = (
+			);
+		};
+/* End PBXBuildRule section */
+
+/* Begin PBXFileReference section */
+		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		CC09CAC41242B98C00B41D15 /* JSTalk.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = JSTalk.bridgesupport; path = res/JSTalk.bridgesupport; sourceTree = "<group>"; };
+		CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTRuntimeInfo.h; path = src/JSTRuntimeInfo.h; sourceTree = "<group>"; };
+		CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRuntimeInfo.m; path = src/JSTRuntimeInfo.m; sourceTree = "<group>"; };
+		CC0EC3280F226F550094F69D /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = /System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<absolute>"; };
+		CC1323840F24FF9D0032FEB8 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		CC1C7D210F48BB2C007A2941 /* TDAlternation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAlternation.h; sourceTree = "<group>"; };
+		CC1C7D220F48BB2C007A2941 /* TDAlternation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAlternation.m; sourceTree = "<group>"; };
+		CC1C7D230F48BB2C007A2941 /* TDAny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAny.h; sourceTree = "<group>"; };
+		CC1C7D240F48BB2C007A2941 /* TDAny.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAny.m; sourceTree = "<group>"; };
+		CC1C7D250F48BB2C007A2941 /* TDAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAssembly.h; sourceTree = "<group>"; };
+		CC1C7D260F48BB2C007A2941 /* TDAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAssembly.m; sourceTree = "<group>"; };
+		CC1C7D270F48BB2C007A2941 /* TDCaseInsensitiveLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCaseInsensitiveLiteral.h; sourceTree = "<group>"; };
+		CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCaseInsensitiveLiteral.m; sourceTree = "<group>"; };
+		CC1C7D290F48BB2C007A2941 /* TDChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDChar.h; sourceTree = "<group>"; };
+		CC1C7D2A0F48BB2C007A2941 /* TDChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDChar.m; sourceTree = "<group>"; };
+		CC1C7D2B0F48BB2C007A2941 /* TDCharacterAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCharacterAssembly.h; sourceTree = "<group>"; };
+		CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCharacterAssembly.m; sourceTree = "<group>"; };
+		CC1C7D2D0F48BB2C007A2941 /* TDCollectionParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCollectionParser.h; sourceTree = "<group>"; };
+		CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCollectionParser.m; sourceTree = "<group>"; };
+		CC1C7D2F0F48BB2C007A2941 /* TDComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDComment.h; sourceTree = "<group>"; };
+		CC1C7D300F48BB2C007A2941 /* TDComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDComment.m; sourceTree = "<group>"; };
+		CC1C7D310F48BB2C007A2941 /* TDCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDCommentState.h; sourceTree = "<group>"; };
+		CC1C7D320F48BB2C007A2941 /* TDCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDCommentState.m; sourceTree = "<group>"; };
+		CC1C7D330F48BB2C007A2941 /* TDDigit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDDigit.h; sourceTree = "<group>"; };
+		CC1C7D340F48BB2C007A2941 /* TDDigit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDDigit.m; sourceTree = "<group>"; };
+		CC1C7D350F48BB2C007A2941 /* TDEmpty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDEmpty.h; sourceTree = "<group>"; };
+		CC1C7D360F48BB2C007A2941 /* TDEmpty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDEmpty.m; sourceTree = "<group>"; };
+		CC1C7D370F48BB2C007A2941 /* TDLetter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLetter.h; sourceTree = "<group>"; };
+		CC1C7D380F48BB2C007A2941 /* TDLetter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLetter.m; sourceTree = "<group>"; };
+		CC1C7D390F48BB2C007A2941 /* TDLiteral.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLiteral.h; sourceTree = "<group>"; };
+		CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLiteral.m; sourceTree = "<group>"; };
+		CC1C7D3B0F48BB2C007A2941 /* TDLowercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDLowercaseWord.h; sourceTree = "<group>"; };
+		CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDLowercaseWord.m; sourceTree = "<group>"; };
+		CC1C7D3D0F48BB2C007A2941 /* TDMultiLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDMultiLineCommentState.h; sourceTree = "<group>"; };
+		CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDMultiLineCommentState.m; sourceTree = "<group>"; };
+		CC1C7D3F0F48BB2C007A2941 /* TDNonReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNonReservedWord.h; sourceTree = "<group>"; };
+		CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNonReservedWord.m; sourceTree = "<group>"; };
+		CC1C7D410F48BB2C007A2941 /* TDNum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNum.h; sourceTree = "<group>"; };
+		CC1C7D420F48BB2C007A2941 /* TDNum.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNum.m; sourceTree = "<group>"; };
+		CC1C7D430F48BB2C007A2941 /* TDNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDNumberState.h; sourceTree = "<group>"; };
+		CC1C7D440F48BB2C007A2941 /* TDNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDNumberState.m; sourceTree = "<group>"; };
+		CC1C7D450F48BB2C007A2941 /* TDParseKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParseKit.h; sourceTree = "<group>"; };
+		CC1C7D460F48BB2C007A2941 /* TDParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDParser.h; sourceTree = "<group>"; };
+		CC1C7D470F48BB2C007A2941 /* TDParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDParser.m; sourceTree = "<group>"; };
+		CC1C7D480F48BB2C007A2941 /* TDQuotedString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuotedString.h; sourceTree = "<group>"; };
+		CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuotedString.m; sourceTree = "<group>"; };
+		CC1C7D4A0F48BB2C007A2941 /* TDQuoteState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDQuoteState.h; sourceTree = "<group>"; };
+		CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDQuoteState.m; sourceTree = "<group>"; };
+		CC1C7D4C0F48BB2C007A2941 /* TDReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReader.h; sourceTree = "<group>"; };
+		CC1C7D4D0F48BB2C007A2941 /* TDReader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReader.m; sourceTree = "<group>"; };
+		CC1C7D4E0F48BB2C007A2941 /* TDRepetition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDRepetition.h; sourceTree = "<group>"; };
+		CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDRepetition.m; sourceTree = "<group>"; };
+		CC1C7D500F48BB2C007A2941 /* TDReservedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDReservedWord.h; sourceTree = "<group>"; };
+		CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDReservedWord.m; sourceTree = "<group>"; };
+		CC1C7D520F48BB2C007A2941 /* TDScientificNumberState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDScientificNumberState.h; sourceTree = "<group>"; };
+		CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDScientificNumberState.m; sourceTree = "<group>"; };
+		CC1C7D540F48BB2C007A2941 /* TDSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSequence.h; sourceTree = "<group>"; };
+		CC1C7D550F48BB2C007A2941 /* TDSequence.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSequence.m; sourceTree = "<group>"; };
+		CC1C7D580F48BB2C007A2941 /* TDSingleLineCommentState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSingleLineCommentState.h; sourceTree = "<group>"; };
+		CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSingleLineCommentState.m; sourceTree = "<group>"; };
+		CC1C7D5A0F48BB2C007A2941 /* TDSpecificChar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSpecificChar.h; sourceTree = "<group>"; };
+		CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSpecificChar.m; sourceTree = "<group>"; };
+		CC1C7D5C0F48BB2C007A2941 /* TDSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbol.h; sourceTree = "<group>"; };
+		CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbol.m; sourceTree = "<group>"; };
+		CC1C7D5E0F48BB2C007A2941 /* TDSymbolNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolNode.h; sourceTree = "<group>"; };
+		CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolNode.m; sourceTree = "<group>"; };
+		CC1C7D600F48BB2C007A2941 /* TDSymbolRootNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolRootNode.h; sourceTree = "<group>"; };
+		CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolRootNode.m; sourceTree = "<group>"; };
+		CC1C7D620F48BB2C007A2941 /* TDSymbolState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDSymbolState.h; sourceTree = "<group>"; };
+		CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDSymbolState.m; sourceTree = "<group>"; };
+		CC1C7D640F48BB2C007A2941 /* TDTerminal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTerminal.h; sourceTree = "<group>"; };
+		CC1C7D650F48BB2C007A2941 /* TDTerminal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTerminal.m; sourceTree = "<group>"; };
+		CC1C7D660F48BB2C007A2941 /* TDToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDToken.h; sourceTree = "<group>"; };
+		CC1C7D670F48BB2C007A2941 /* TDToken.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDToken.m; sourceTree = "<group>"; };
+		CC1C7D680F48BB2C007A2941 /* TDTokenArraySource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenArraySource.h; sourceTree = "<group>"; };
+		CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenArraySource.m; sourceTree = "<group>"; };
+		CC1C7D6A0F48BB2C007A2941 /* TDTokenAssembly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenAssembly.h; sourceTree = "<group>"; };
+		CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenAssembly.m; sourceTree = "<group>"; };
+		CC1C7D6C0F48BB2C007A2941 /* TDTokenizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizer.h; sourceTree = "<group>"; };
+		CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizer.m; sourceTree = "<group>"; };
+		CC1C7D6E0F48BB2C007A2941 /* TDTokenizerState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTokenizerState.h; sourceTree = "<group>"; };
+		CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTokenizerState.m; sourceTree = "<group>"; };
+		CC1C7D700F48BB2C007A2941 /* TDTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrack.h; sourceTree = "<group>"; };
+		CC1C7D710F48BB2C007A2941 /* TDTrack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrack.m; sourceTree = "<group>"; };
+		CC1C7D720F48BB2C007A2941 /* TDTrackException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDTrackException.h; sourceTree = "<group>"; };
+		CC1C7D730F48BB2C007A2941 /* TDTrackException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDTrackException.m; sourceTree = "<group>"; };
+		CC1C7D740F48BB2C007A2941 /* TDUppercaseWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDUppercaseWord.h; sourceTree = "<group>"; };
+		CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDUppercaseWord.m; sourceTree = "<group>"; };
+		CC1C7D760F48BB2C007A2941 /* TDWhitespaceState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWhitespaceState.h; sourceTree = "<group>"; };
+		CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWhitespaceState.m; sourceTree = "<group>"; };
+		CC1C7D780F48BB2C007A2941 /* TDWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWord.h; sourceTree = "<group>"; };
+		CC1C7D790F48BB2C007A2941 /* TDWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWord.m; sourceTree = "<group>"; };
+		CC1C7D7A0F48BB2C007A2941 /* TDWordOrReservedState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordOrReservedState.h; sourceTree = "<group>"; };
+		CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordOrReservedState.m; sourceTree = "<group>"; };
+		CC1C7D7C0F48BB2C007A2941 /* TDWordState.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDWordState.h; sourceTree = "<group>"; };
+		CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
+		CC3CC7F1124C3406001A349E /* JSTBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridge.h; path = src/JSTBridge.h; sourceTree = "<group>"; };
+		CC3CC7F2124C3406001A349E /* JSTBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridge.m; path = src/JSTBridge.m; sourceTree = "<group>"; };
+		CC41431A0F25254200E46669 /* JSTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC4143C00F2529F200E46669 /* JSTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTExtras.m; path = src/JSTExtras.m; sourceTree = "<group>"; };
+		CC4143C10F2529F200E46669 /* JSTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTExtras.h; path = src/JSTExtras.h; sourceTree = "<group>"; };
+		CC41845112447743004144B7 /* MARTNSObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MARTNSObject.h; path = src/MARTNSObject.h; sourceTree = "<group>"; };
+		CC41845212447743004144B7 /* MARTNSObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MARTNSObject.m; path = src/MARTNSObject.m; sourceTree = "<group>"; };
+		CC41845312447743004144B7 /* RTIvar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTIvar.h; path = src/RTIvar.h; sourceTree = "<group>"; };
+		CC41845412447743004144B7 /* RTIvar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTIvar.m; path = src/RTIvar.m; sourceTree = "<group>"; };
+		CC41845512447743004144B7 /* RTMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTMethod.h; path = src/RTMethod.h; sourceTree = "<group>"; };
+		CC41845612447743004144B7 /* RTMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTMethod.m; path = src/RTMethod.m; sourceTree = "<group>"; };
+		CC41845712447743004144B7 /* RTUnregisteredClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RTUnregisteredClass.h; path = src/RTUnregisteredClass.h; sourceTree = "<group>"; };
+		CC41845812447743004144B7 /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTUnregisteredClass.m; path = src/RTUnregisteredClass.m; sourceTree = "<group>"; };
+		CC41856F12448360004144B7 /* MABlockClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MABlockClosure.h; path = src/MABlockClosure.h; sourceTree = "<group>"; };
+		CC41857012448360004144B7 /* MABlockClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MABlockClosure.m; path = src/MABlockClosure.m; sourceTree = "<group>"; };
+		CC506DDB12415B28005AD5E6 /* class.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; name = class.js; path = src/class.js; sourceTree = "<group>"; };
+		CC506DDC12415B28005AD5E6 /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = src/JSCocoa.h; sourceTree = "<group>"; };
+		CC506DDD12415B28005AD5E6 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = src/JSCocoaController.h; sourceTree = "<group>"; };
+		CC506DDE12415B28005AD5E6 /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = src/JSCocoaController.m; sourceTree = "<group>"; };
+		CC506DDF12415B28005AD5E6 /* JSCocoaFFIArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIArgument.h; path = src/JSCocoaFFIArgument.h; sourceTree = "<group>"; };
+		CC506DE012415B28005AD5E6 /* JSCocoaFFIArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIArgument.m; path = src/JSCocoaFFIArgument.m; sourceTree = "<group>"; };
+		CC506DE112415B28005AD5E6 /* JSCocoaFFIClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIClosure.h; path = src/JSCocoaFFIClosure.h; sourceTree = "<group>"; };
+		CC506DE212415B28005AD5E6 /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = src/JSCocoaFFIClosure.m; sourceTree = "<group>"; };
+		CC506DE312415B28005AD5E6 /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = src/JSCocoaLib.h; sourceTree = "<group>"; };
+		CC506DE412415B28005AD5E6 /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = src/JSCocoaLib.m; sourceTree = "<group>"; };
+		CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jslint-jscocoa.js"; path = "src/jslint-jscocoa.js"; sourceTree = "<group>"; };
+		CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jstalk; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = jstalkmain.m; path = src/jstalkmain.m; sourceTree = "<group>"; };
+		CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk.h; path = src/JSTalk.h; sourceTree = "<group>"; };
+		CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTalk.m; path = src/JSTalk.m; sourceTree = "<group>"; };
+		CC7528F1124FE64D005546B0 /* JSTFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTFunction.h; path = src/JSTFunction.h; sourceTree = "<group>"; };
+		CC7528F2124FE64D005546B0 /* JSTFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTFunction.m; path = src/JSTFunction.m; sourceTree = "<group>"; };
+		CC75296C1250066F005546B0 /* JSTTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTTests.h; path = src/JSTTests.h; sourceTree = "<group>"; };
+		CC75296D1250066F005546B0 /* JSTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTTests.m; path = src/JSTTests.m; sourceTree = "<group>"; };
+		CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = src/JSTPreprocessor.h; sourceTree = "<group>"; };
+		CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = src/JSTPreprocessor.m; sourceTree = "<group>"; };
+		CCA9C1E01241D5A2003EB4C5 /* JSTBridgedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridgedObject.h; path = src/JSTBridgedObject.h; sourceTree = "<group>"; };
+		CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgedObject.m; path = src/JSTBridgedObject.m; sourceTree = "<group>"; };
+		CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTBridgeSupportLoader.h; path = src/JSTBridgeSupportLoader.h; sourceTree = "<group>"; };
+		CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTBridgeSupportLoader.m; path = src/JSTBridgeSupportLoader.m; sourceTree = "<group>"; };
+		CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTUtils.h; path = src/JSTUtils.h; sourceTree = "<group>"; };
+		CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTUtils.m; path = src/JSTUtils.m; sourceTree = "<group>"; };
+		CCBF47781266A4AB0037A15A /* JSTStructure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTStructure.h; path = src/JSTStructure.h; sourceTree = "<group>"; };
+		CCBF47791266A4AB0037A15A /* JSTStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTStructure.m; path = src/JSTStructure.m; sourceTree = "<group>"; };
+		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
+		CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk_Prefix.pch; path = src/JSTalk_Prefix.pch; sourceTree = "<group>"; };
+		CCC5B8CC0F1EFAAA00126722 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
+		CCC5B95A0F1EFCFE00126722 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = src/JSTListener.h; sourceTree = "<group>"; };
+		CCC5B95B0F1EFCFE00126722 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = src/JSTListener.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CC4143180F25254200E46669 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC4143500F25261000E46669 /* Carbon.framework in Frameworks */,
+				CC4143510F25261100E46669 /* ScriptingBridge.framework in Frameworks */,
+				CC4143520F25261200E46669 /* JavaScriptCore.framework in Frameworks */,
+				CC4143530F25261300E46669 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC5FB7C00F1FDCCC00F4ECC2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */,
+				CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */,
+				CC0EC32A0F226F550094F69D /* ScriptingBridge.framework in Frameworks */,
+				CC1324300F2504F00032FEB8 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A8FEA54F5311CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */,
+				13E42FBA07B3F13500E4EEF1 /* CoreData.framework */,
+				2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FB0FE9D524F11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */,
+				CC41431A0F25254200E46669 /* JSTalk.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2A37F4AAFDCFA73011CA2CEA /* JSTalk */ = {
+			isa = PBXGroup;
+			children = (
+				CC0EC3380F2274730094F69D /* Framework */,
+				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
+				2A37F4B8FDCFA73011CA2CEA /* Resources */,
+				2A37F4C3FDCFA73011CA2CEA /* Frameworks */,
+				19C28FB0FE9D524F11CA2CBB /* Products */,
+			);
+			name = JSTalk;
+			sourceTree = "<group>";
+		};
+		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */,
+				CCC5B8CC0F1EFAAA00126722 /* main.m */,
+				CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				CC09CAC41242B98C00B41D15 /* JSTalk.bridgesupport */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		2A37F4C3FDCFA73011CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CC1323840F24FF9D0032FEB8 /* Carbon.framework */,
+				CC0EC3280F226F550094F69D /* ScriptingBridge.framework */,
+				CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */,
+				1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */,
+				1058C7A8FEA54F5311CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CC0EC3380F2274730094F69D /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				CCC5B92C0F1EFB5900126722 /* JSCocoa */,
+				CC09CB511242C91F00B41D15 /* JSTRuntimeInfo.h */,
+				CC09CB521242C91F00B41D15 /* JSTRuntimeInfo.m */,
+				CCB444B412416E2D000EECB5 /* JSTBridgeSupportLoader.h */,
+				CCB444B512416E2D000EECB5 /* JSTBridgeSupportLoader.m */,
+				CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */,
+				CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */,
+				CC3CC7F1124C3406001A349E /* JSTBridge.h */,
+				CC3CC7F2124C3406001A349E /* JSTBridge.m */,
+				CC4143C10F2529F200E46669 /* JSTExtras.h */,
+				CC4143C00F2529F200E46669 /* JSTExtras.m */,
+				CC7528F1124FE64D005546B0 /* JSTFunction.h */,
+				CC7528F2124FE64D005546B0 /* JSTFunction.m */,
+				CCC5B95A0F1EFCFE00126722 /* JSTListener.h */,
+				CCC5B95B0F1EFCFE00126722 /* JSTListener.m */,
+				CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */,
+				CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */,
+				CCBF47781266A4AB0037A15A /* JSTStructure.h */,
+				CCBF47791266A4AB0037A15A /* JSTStructure.m */,
+				CC75296C1250066F005546B0 /* JSTTests.h */,
+				CC75296D1250066F005546B0 /* JSTTests.m */,
+				CCB5EB0E124D922E0052BCD9 /* JSTUtils.h */,
+				CCB5EB0F124D922E0052BCD9 /* JSTUtils.m */,
+				CC4184501244773A004144B7 /* MA */,
+				CC1C7D200F48BB2C007A2941 /* todparsekit */,
+			);
+			name = Framework;
+			sourceTree = "<group>";
+		};
+		CC1C7D200F48BB2C007A2941 /* todparsekit */ = {
+			isa = PBXGroup;
+			children = (
+				CC1C7D210F48BB2C007A2941 /* TDAlternation.h */,
+				CC1C7D220F48BB2C007A2941 /* TDAlternation.m */,
+				CC1C7D230F48BB2C007A2941 /* TDAny.h */,
+				CC1C7D240F48BB2C007A2941 /* TDAny.m */,
+				CC1C7D250F48BB2C007A2941 /* TDAssembly.h */,
+				CC1C7D260F48BB2C007A2941 /* TDAssembly.m */,
+				CC1C7D270F48BB2C007A2941 /* TDCaseInsensitiveLiteral.h */,
+				CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */,
+				CC1C7D290F48BB2C007A2941 /* TDChar.h */,
+				CC1C7D2A0F48BB2C007A2941 /* TDChar.m */,
+				CC1C7D2B0F48BB2C007A2941 /* TDCharacterAssembly.h */,
+				CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */,
+				CC1C7D2D0F48BB2C007A2941 /* TDCollectionParser.h */,
+				CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */,
+				CC1C7D2F0F48BB2C007A2941 /* TDComment.h */,
+				CC1C7D300F48BB2C007A2941 /* TDComment.m */,
+				CC1C7D310F48BB2C007A2941 /* TDCommentState.h */,
+				CC1C7D320F48BB2C007A2941 /* TDCommentState.m */,
+				CC1C7D330F48BB2C007A2941 /* TDDigit.h */,
+				CC1C7D340F48BB2C007A2941 /* TDDigit.m */,
+				CC1C7D350F48BB2C007A2941 /* TDEmpty.h */,
+				CC1C7D360F48BB2C007A2941 /* TDEmpty.m */,
+				CC1C7D370F48BB2C007A2941 /* TDLetter.h */,
+				CC1C7D380F48BB2C007A2941 /* TDLetter.m */,
+				CC1C7D390F48BB2C007A2941 /* TDLiteral.h */,
+				CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */,
+				CC1C7D3B0F48BB2C007A2941 /* TDLowercaseWord.h */,
+				CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */,
+				CC1C7D3D0F48BB2C007A2941 /* TDMultiLineCommentState.h */,
+				CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */,
+				CC1C7D3F0F48BB2C007A2941 /* TDNonReservedWord.h */,
+				CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */,
+				CC1C7D410F48BB2C007A2941 /* TDNum.h */,
+				CC1C7D420F48BB2C007A2941 /* TDNum.m */,
+				CC1C7D430F48BB2C007A2941 /* TDNumberState.h */,
+				CC1C7D440F48BB2C007A2941 /* TDNumberState.m */,
+				CC1C7D450F48BB2C007A2941 /* TDParseKit.h */,
+				CC1C7D460F48BB2C007A2941 /* TDParser.h */,
+				CC1C7D470F48BB2C007A2941 /* TDParser.m */,
+				CC1C7D480F48BB2C007A2941 /* TDQuotedString.h */,
+				CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */,
+				CC1C7D4A0F48BB2C007A2941 /* TDQuoteState.h */,
+				CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */,
+				CC1C7D4C0F48BB2C007A2941 /* TDReader.h */,
+				CC1C7D4D0F48BB2C007A2941 /* TDReader.m */,
+				CC1C7D4E0F48BB2C007A2941 /* TDRepetition.h */,
+				CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */,
+				CC1C7D500F48BB2C007A2941 /* TDReservedWord.h */,
+				CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */,
+				CC1C7D520F48BB2C007A2941 /* TDScientificNumberState.h */,
+				CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */,
+				CC1C7D540F48BB2C007A2941 /* TDSequence.h */,
+				CC1C7D550F48BB2C007A2941 /* TDSequence.m */,
+				CC1C7D580F48BB2C007A2941 /* TDSingleLineCommentState.h */,
+				CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */,
+				CC1C7D5A0F48BB2C007A2941 /* TDSpecificChar.h */,
+				CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */,
+				CC1C7D5C0F48BB2C007A2941 /* TDSymbol.h */,
+				CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */,
+				CC1C7D5E0F48BB2C007A2941 /* TDSymbolNode.h */,
+				CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */,
+				CC1C7D600F48BB2C007A2941 /* TDSymbolRootNode.h */,
+				CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */,
+				CC1C7D620F48BB2C007A2941 /* TDSymbolState.h */,
+				CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */,
+				CC1C7D640F48BB2C007A2941 /* TDTerminal.h */,
+				CC1C7D650F48BB2C007A2941 /* TDTerminal.m */,
+				CC1C7D660F48BB2C007A2941 /* TDToken.h */,
+				CC1C7D670F48BB2C007A2941 /* TDToken.m */,
+				CC1C7D680F48BB2C007A2941 /* TDTokenArraySource.h */,
+				CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */,
+				CC1C7D6A0F48BB2C007A2941 /* TDTokenAssembly.h */,
+				CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */,
+				CC1C7D6C0F48BB2C007A2941 /* TDTokenizer.h */,
+				CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */,
+				CC1C7D6E0F48BB2C007A2941 /* TDTokenizerState.h */,
+				CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */,
+				CC1C7D700F48BB2C007A2941 /* TDTrack.h */,
+				CC1C7D710F48BB2C007A2941 /* TDTrack.m */,
+				CC1C7D720F48BB2C007A2941 /* TDTrackException.h */,
+				CC1C7D730F48BB2C007A2941 /* TDTrackException.m */,
+				CC1C7D740F48BB2C007A2941 /* TDUppercaseWord.h */,
+				CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */,
+				CC1C7D760F48BB2C007A2941 /* TDWhitespaceState.h */,
+				CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */,
+				CC1C7D780F48BB2C007A2941 /* TDWord.h */,
+				CC1C7D790F48BB2C007A2941 /* TDWord.m */,
+				CC1C7D7A0F48BB2C007A2941 /* TDWordOrReservedState.h */,
+				CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */,
+				CC1C7D7C0F48BB2C007A2941 /* TDWordState.h */,
+				CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */,
+			);
+			name = todparsekit;
+			path = src/todparsekit;
+			sourceTree = "<group>";
+		};
+		CC4184501244773A004144B7 /* MA */ = {
+			isa = PBXGroup;
+			children = (
+				CC41856F12448360004144B7 /* MABlockClosure.h */,
+				CC41857012448360004144B7 /* MABlockClosure.m */,
+				CC41845112447743004144B7 /* MARTNSObject.h */,
+				CC41845212447743004144B7 /* MARTNSObject.m */,
+				CC41845312447743004144B7 /* RTIvar.h */,
+				CC41845412447743004144B7 /* RTIvar.m */,
+				CC41845512447743004144B7 /* RTMethod.h */,
+				CC41845612447743004144B7 /* RTMethod.m */,
+				CC41845712447743004144B7 /* RTUnregisteredClass.h */,
+				CC41845812447743004144B7 /* RTUnregisteredClass.m */,
+			);
+			name = MA;
+			sourceTree = "<group>";
+		};
+		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
+			isa = PBXGroup;
+			children = (
+				CC506DDB12415B28005AD5E6 /* class.js */,
+				CC506DDC12415B28005AD5E6 /* JSCocoa.h */,
+				CC506DDD12415B28005AD5E6 /* JSCocoaController.h */,
+				CC506DDE12415B28005AD5E6 /* JSCocoaController.m */,
+				CC506DDF12415B28005AD5E6 /* JSCocoaFFIArgument.h */,
+				CC506DE012415B28005AD5E6 /* JSCocoaFFIArgument.m */,
+				CC506DE112415B28005AD5E6 /* JSCocoaFFIClosure.h */,
+				CC506DE212415B28005AD5E6 /* JSCocoaFFIClosure.m */,
+				CC506DE312415B28005AD5E6 /* JSCocoaLib.h */,
+				CC506DE412415B28005AD5E6 /* JSCocoaLib.m */,
+				CCA9C1E01241D5A2003EB4C5 /* JSTBridgedObject.h */,
+				CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */,
+				CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */,
+			);
+			name = JSCocoa;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CC4143150F25254200E46669 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */,
+				CC41433B0F25259400E46669 /* JSTalk.h in Headers */,
+				CC41433D0F25259500E46669 /* JSTListener.h in Headers */,
+				CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */,
+				CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */,
+				CC1C7D7E0F48BB2C007A2941 /* TDAlternation.h in Headers */,
+				CC1C7D800F48BB2C007A2941 /* TDAny.h in Headers */,
+				CC1C7D820F48BB2C007A2941 /* TDAssembly.h in Headers */,
+				CC1C7D840F48BB2C007A2941 /* TDCaseInsensitiveLiteral.h in Headers */,
+				CC1C7D860F48BB2C007A2941 /* TDChar.h in Headers */,
+				CC1C7D880F48BB2C007A2941 /* TDCharacterAssembly.h in Headers */,
+				CC1C7D8A0F48BB2C007A2941 /* TDCollectionParser.h in Headers */,
+				CC1C7D8C0F48BB2C007A2941 /* TDComment.h in Headers */,
+				CC1C7D8E0F48BB2C007A2941 /* TDCommentState.h in Headers */,
+				CC1C7D900F48BB2C007A2941 /* TDDigit.h in Headers */,
+				CC1C7D920F48BB2C007A2941 /* TDEmpty.h in Headers */,
+				CC1C7D940F48BB2C007A2941 /* TDLetter.h in Headers */,
+				CC1C7D960F48BB2C007A2941 /* TDLiteral.h in Headers */,
+				CC1C7D980F48BB2C007A2941 /* TDLowercaseWord.h in Headers */,
+				CC1C7D9A0F48BB2C007A2941 /* TDMultiLineCommentState.h in Headers */,
+				CC1C7D9C0F48BB2C007A2941 /* TDNonReservedWord.h in Headers */,
+				CC1C7D9E0F48BB2C007A2941 /* TDNum.h in Headers */,
+				CC1C7DA00F48BB2C007A2941 /* TDNumberState.h in Headers */,
+				CC1C7DA20F48BB2C007A2941 /* TDParseKit.h in Headers */,
+				CC1C7DA30F48BB2C007A2941 /* TDParser.h in Headers */,
+				CC1C7DA50F48BB2C007A2941 /* TDQuotedString.h in Headers */,
+				CC1C7DA70F48BB2C007A2941 /* TDQuoteState.h in Headers */,
+				CC1C7DA90F48BB2C007A2941 /* TDReader.h in Headers */,
+				CC1C7DAB0F48BB2C007A2941 /* TDRepetition.h in Headers */,
+				CC1C7DAD0F48BB2C007A2941 /* TDReservedWord.h in Headers */,
+				CC1C7DAF0F48BB2C007A2941 /* TDScientificNumberState.h in Headers */,
+				CC1C7DB10F48BB2C007A2941 /* TDSequence.h in Headers */,
+				CC1C7DB50F48BB2C007A2941 /* TDSingleLineCommentState.h in Headers */,
+				CC1C7DB70F48BB2C007A2941 /* TDSpecificChar.h in Headers */,
+				CC1C7DB90F48BB2C007A2941 /* TDSymbol.h in Headers */,
+				CC1C7DBB0F48BB2C007A2941 /* TDSymbolNode.h in Headers */,
+				CC1C7DBD0F48BB2C007A2941 /* TDSymbolRootNode.h in Headers */,
+				CC1C7DBF0F48BB2C007A2941 /* TDSymbolState.h in Headers */,
+				CC1C7DC10F48BB2C007A2941 /* TDTerminal.h in Headers */,
+				CC1C7DC30F48BB2C007A2941 /* TDToken.h in Headers */,
+				CC1C7DC50F48BB2C007A2941 /* TDTokenArraySource.h in Headers */,
+				CC1C7DC70F48BB2C007A2941 /* TDTokenAssembly.h in Headers */,
+				CC1C7DC90F48BB2C007A2941 /* TDTokenizer.h in Headers */,
+				CC1C7DCB0F48BB2C007A2941 /* TDTokenizerState.h in Headers */,
+				CC1C7DCD0F48BB2C007A2941 /* TDTrack.h in Headers */,
+				CC1C7DCF0F48BB2C007A2941 /* TDTrackException.h in Headers */,
+				CC1C7DD10F48BB2C007A2941 /* TDUppercaseWord.h in Headers */,
+				CC1C7DD30F48BB2C007A2941 /* TDWhitespaceState.h in Headers */,
+				CC1C7DD50F48BB2C007A2941 /* TDWord.h in Headers */,
+				CC1C7DD70F48BB2C007A2941 /* TDWordOrReservedState.h in Headers */,
+				CC1C7DD90F48BB2C007A2941 /* TDWordState.h in Headers */,
+				CC41845912447743004144B7 /* MARTNSObject.h in Headers */,
+				CC41845B12447743004144B7 /* RTIvar.h in Headers */,
+				CC41845D12447743004144B7 /* RTMethod.h in Headers */,
+				CC41845F12447743004144B7 /* RTUnregisteredClass.h in Headers */,
+				CC41857112448360004144B7 /* MABlockClosure.h in Headers */,
+				CC3CC7F3124C3406001A349E /* JSTBridge.h in Headers */,
+				CCB5EB10124D922E0052BCD9 /* JSTUtils.h in Headers */,
+				CC7528F3124FE64D005546B0 /* JSTFunction.h in Headers */,
+				CC75296E1250066F005546B0 /* JSTTests.h in Headers */,
+				CCBF477A1266A4AB0037A15A /* JSTStructure.h in Headers */,
+				CC3937CC126E2F270029645D /* JSTBridgeSupportLoader.h in Headers */,
+				CC3937D8126E2F5B0029645D /* JSTRuntimeInfo.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		CC4143190F25254200E46669 /* JSTalk Framework */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "JSTalk Framework" */;
+			buildPhases = (
+				CC4143150F25254200E46669 /* Headers */,
+				CC4143160F25254200E46669 /* Resources */,
+				CC4143170F25254200E46669 /* Sources */,
+				CC4143180F25254200E46669 /* Frameworks */,
+			);
+			buildRules = (
+				CC506E3C12415CA5005AD5E6 /* PBXBuildRule */,
+			);
+			dependencies = (
+			);
+			name = "JSTalk Framework";
+			productName = JSTalk;
+			productReference = CC41431A0F25254200E46669 /* JSTalk.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "jstalk command line" */;
+			buildPhases = (
+				CC5FB7BF0F1FDCCC00F4ECC2 /* Sources */,
+				CC5FB7C00F1FDCCC00F4ECC2 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "jstalk command line";
+			productName = "jstalk command";
+			productReference = CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "experimental" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* JSTalk */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */,
+				CC4143190F25254200E46669 /* JSTalk Framework */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CC4143160F25254200E46669 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC09CAC51242B98C00B41D15 /* JSTalk.bridgesupport in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CC4143170F25254200E46669 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC41433C0F25259400E46669 /* JSTalk.m in Sources */,
+				CC41433E0F25259500E46669 /* JSTListener.m in Sources */,
+				CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */,
+				CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
+				CC1C7D7F0F48BB2C007A2941 /* TDAlternation.m in Sources */,
+				CC1C7D810F48BB2C007A2941 /* TDAny.m in Sources */,
+				CC1C7D830F48BB2C007A2941 /* TDAssembly.m in Sources */,
+				CC1C7D850F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */,
+				CC1C7D870F48BB2C007A2941 /* TDChar.m in Sources */,
+				CC1C7D890F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */,
+				CC1C7D8B0F48BB2C007A2941 /* TDCollectionParser.m in Sources */,
+				CC1C7D8D0F48BB2C007A2941 /* TDComment.m in Sources */,
+				CC1C7D8F0F48BB2C007A2941 /* TDCommentState.m in Sources */,
+				CC1C7D910F48BB2C007A2941 /* TDDigit.m in Sources */,
+				CC1C7D930F48BB2C007A2941 /* TDEmpty.m in Sources */,
+				CC1C7D950F48BB2C007A2941 /* TDLetter.m in Sources */,
+				CC1C7D970F48BB2C007A2941 /* TDLiteral.m in Sources */,
+				CC1C7D990F48BB2C007A2941 /* TDLowercaseWord.m in Sources */,
+				CC1C7D9B0F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */,
+				CC1C7D9D0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */,
+				CC1C7D9F0F48BB2C007A2941 /* TDNum.m in Sources */,
+				CC1C7DA10F48BB2C007A2941 /* TDNumberState.m in Sources */,
+				CC1C7DA40F48BB2C007A2941 /* TDParser.m in Sources */,
+				CC1C7DA60F48BB2C007A2941 /* TDQuotedString.m in Sources */,
+				CC1C7DA80F48BB2C007A2941 /* TDQuoteState.m in Sources */,
+				CC1C7DAA0F48BB2C007A2941 /* TDReader.m in Sources */,
+				CC1C7DAC0F48BB2C007A2941 /* TDRepetition.m in Sources */,
+				CC1C7DAE0F48BB2C007A2941 /* TDReservedWord.m in Sources */,
+				CC1C7DB00F48BB2C007A2941 /* TDScientificNumberState.m in Sources */,
+				CC1C7DB20F48BB2C007A2941 /* TDSequence.m in Sources */,
+				CC1C7DB60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */,
+				CC1C7DB80F48BB2C007A2941 /* TDSpecificChar.m in Sources */,
+				CC1C7DBA0F48BB2C007A2941 /* TDSymbol.m in Sources */,
+				CC1C7DBC0F48BB2C007A2941 /* TDSymbolNode.m in Sources */,
+				CC1C7DBE0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */,
+				CC1C7DC00F48BB2C007A2941 /* TDSymbolState.m in Sources */,
+				CC1C7DC20F48BB2C007A2941 /* TDTerminal.m in Sources */,
+				CC1C7DC40F48BB2C007A2941 /* TDToken.m in Sources */,
+				CC1C7DC60F48BB2C007A2941 /* TDTokenArraySource.m in Sources */,
+				CC1C7DC80F48BB2C007A2941 /* TDTokenAssembly.m in Sources */,
+				CC1C7DCA0F48BB2C007A2941 /* TDTokenizer.m in Sources */,
+				CC1C7DCC0F48BB2C007A2941 /* TDTokenizerState.m in Sources */,
+				CC1C7DCE0F48BB2C007A2941 /* TDTrack.m in Sources */,
+				CC1C7DD00F48BB2C007A2941 /* TDTrackException.m in Sources */,
+				CC1C7DD20F48BB2C007A2941 /* TDUppercaseWord.m in Sources */,
+				CC1C7DD40F48BB2C007A2941 /* TDWhitespaceState.m in Sources */,
+				CC1C7DD60F48BB2C007A2941 /* TDWord.m in Sources */,
+				CC1C7DD80F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
+				CC1C7DDA0F48BB2C007A2941 /* TDWordState.m in Sources */,
+				CC41845A12447743004144B7 /* MARTNSObject.m in Sources */,
+				CC41845C12447743004144B7 /* RTIvar.m in Sources */,
+				CC41845E12447743004144B7 /* RTMethod.m in Sources */,
+				CC41846012447743004144B7 /* RTUnregisteredClass.m in Sources */,
+				CC41857212448360004144B7 /* MABlockClosure.m in Sources */,
+				CC3CC7F4124C3406001A349E /* JSTBridge.m in Sources */,
+				CCB5EB11124D922E0052BCD9 /* JSTUtils.m in Sources */,
+				CC7528F4124FE64D005546B0 /* JSTFunction.m in Sources */,
+				CC75296F1250066F005546B0 /* JSTTests.m in Sources */,
+				CCBF477B1266A4AB0037A15A /* JSTStructure.m in Sources */,
+				CC3937CD126E2F270029645D /* JSTBridgeSupportLoader.m in Sources */,
+				CC3937D9126E2F5C0029645D /* JSTRuntimeInfo.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CC5FB7BF0F1FDCCC00F4ECC2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */,
+				CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */,
+				CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */,
+				CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */,
+				CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
+				CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */,
+				CC1C7DDC0F48BB2C007A2941 /* TDAny.m in Sources */,
+				CC1C7DDD0F48BB2C007A2941 /* TDAssembly.m in Sources */,
+				CC1C7DDE0F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */,
+				CC1C7DDF0F48BB2C007A2941 /* TDChar.m in Sources */,
+				CC1C7DE00F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */,
+				CC1C7DE10F48BB2C007A2941 /* TDCollectionParser.m in Sources */,
+				CC1C7DE20F48BB2C007A2941 /* TDComment.m in Sources */,
+				CC1C7DE30F48BB2C007A2941 /* TDCommentState.m in Sources */,
+				CC1C7DE40F48BB2C007A2941 /* TDDigit.m in Sources */,
+				CC1C7DE50F48BB2C007A2941 /* TDEmpty.m in Sources */,
+				CC1C7DE60F48BB2C007A2941 /* TDLetter.m in Sources */,
+				CC1C7DE70F48BB2C007A2941 /* TDLiteral.m in Sources */,
+				CC1C7DE80F48BB2C007A2941 /* TDLowercaseWord.m in Sources */,
+				CC1C7DE90F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */,
+				CC1C7DEA0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */,
+				CC1C7DEB0F48BB2C007A2941 /* TDNum.m in Sources */,
+				CC1C7DEC0F48BB2C007A2941 /* TDNumberState.m in Sources */,
+				CC1C7DED0F48BB2C007A2941 /* TDParser.m in Sources */,
+				CC1C7DEE0F48BB2C007A2941 /* TDQuotedString.m in Sources */,
+				CC1C7DEF0F48BB2C007A2941 /* TDQuoteState.m in Sources */,
+				CC1C7DF00F48BB2C007A2941 /* TDReader.m in Sources */,
+				CC1C7DF10F48BB2C007A2941 /* TDRepetition.m in Sources */,
+				CC1C7DF20F48BB2C007A2941 /* TDReservedWord.m in Sources */,
+				CC1C7DF30F48BB2C007A2941 /* TDScientificNumberState.m in Sources */,
+				CC1C7DF40F48BB2C007A2941 /* TDSequence.m in Sources */,
+				CC1C7DF60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */,
+				CC1C7DF70F48BB2C007A2941 /* TDSpecificChar.m in Sources */,
+				CC1C7DF80F48BB2C007A2941 /* TDSymbol.m in Sources */,
+				CC1C7DF90F48BB2C007A2941 /* TDSymbolNode.m in Sources */,
+				CC1C7DFA0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */,
+				CC1C7DFB0F48BB2C007A2941 /* TDSymbolState.m in Sources */,
+				CC1C7DFC0F48BB2C007A2941 /* TDTerminal.m in Sources */,
+				CC1C7DFD0F48BB2C007A2941 /* TDToken.m in Sources */,
+				CC1C7DFE0F48BB2C007A2941 /* TDTokenArraySource.m in Sources */,
+				CC1C7DFF0F48BB2C007A2941 /* TDTokenAssembly.m in Sources */,
+				CC1C7E000F48BB2C007A2941 /* TDTokenizer.m in Sources */,
+				CC1C7E010F48BB2C007A2941 /* TDTokenizerState.m in Sources */,
+				CC1C7E020F48BB2C007A2941 /* TDTrack.m in Sources */,
+				CC1C7E030F48BB2C007A2941 /* TDTrackException.m in Sources */,
+				CC1C7E040F48BB2C007A2941 /* TDUppercaseWord.m in Sources */,
+				CC1C7E050F48BB2C007A2941 /* TDWhitespaceState.m in Sources */,
+				CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */,
+				CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */,
+				CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */,
+				CCB444B812416E2D000EECB5 /* JSTBridgeSupportLoader.m in Sources */,
+				CC69B5831245536600E735F6 /* JSTRuntimeInfo.m in Sources */,
+				CC3CC7FB124C3416001A349E /* JSTBridge.m in Sources */,
+				CCCA67A11250422700522EFA /* JSTFunction.m in Sources */,
+				CCCA67A31250422900522EFA /* JSTUtils.m in Sources */,
+				CCBF479D1266A5AF0037A15A /* JSTStructure.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C05733CC08A9546B00998B17 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					x86_64,
+					i386,
+				);
+				CC = /opt/bin/clang;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		C05733CD08A9546B00998B17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					x86_64,
+					i386,
+				);
+				CC = /opt/bin/clang;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		CC41431C0F25254200E46669 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = YES;
+				INFOPLIST_FILE = "res/JSTalkFramework-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_LDFLAGS = (
+					"-lffi",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = JSTalk;
+			};
+			name = Debug;
+		};
+		CC41431D0F25254200E46669 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_VERSION = A;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_OBJC_GC = supported;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SHADOW = YES;
+				INFOPLIST_FILE = "res/JSTalkFramework-Info.plist";
+				INSTALL_PATH = "@loader_path/../Frameworks";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+					"-lexpat",
+					"-lffi",
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = JSTalk;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		CC5FB7C40F1FDCCC00F4ECC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_CFLAGS = "-DDEBUG";
+				OTHER_LDFLAGS = (
+					"-lexpat",
+					"-lffi",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = jstalk;
+			};
+			name = Debug;
+		};
+		CC5FB7C50F1FDCCC00F4ECC2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				INSTALL_PATH = /usr/local/bin;
+				OTHER_LDFLAGS = (
+					"-lexpat",
+					"-lffi",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = jstalk;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "experimental" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C05733CC08A9546B00998B17 /* Debug */,
+				C05733CD08A9546B00998B17 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "JSTalk Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC41431C0F25254200E46669 /* Debug */,
+				CC41431D0F25254200E46669 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "jstalk command line" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CC5FB7C40F1FDCCC00F4ECC2 /* Debug */,
+				CC5FB7C50F1FDCCC00F4ECC2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+}
