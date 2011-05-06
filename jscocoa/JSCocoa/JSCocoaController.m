@@ -925,7 +925,7 @@ static id JSCocoaSingleton = NULL;
 //
 - (BOOL)loadFrameworkWithName:(NSString*)name inPath:(NSString*)inPath
 {
-	id path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.bridgeSupport", inPath, name, name];
+	id path = [NSString stringWithFormat:@"%@/%@.framework/Resources/BridgeSupport/%@.bridgesupport", inPath, name, name];
 
 	// Return YES if already loaded
 	if ([[BridgeSupportController sharedController] isBridgeSupportLoaded:path])	return	YES;

@@ -55,20 +55,23 @@ static NSMutableArray *JSTalkPluginList;
         
         NSString *bridgeSupport = [[NSBundle bundleForClass:[self class]] pathForResource:@"JSTalk" ofType:@"bridgesupport"];
         
+        // FIXME: this is very dumb.  We need to make it so this isn't needed somehow.
+        NSString *homeBridgeSupport = [@"~/Library/Application Support/JSTalk/JSTalk.bridgesupport" stringByExpandingTildeInPath];
+        if (!bridgeSupport && [[NSFileManager defaultManager] fileExistsAtPath:homeBridgeSupport]) {
+            bridgeSupport = homeBridgeSupport;
+        }
+        
         if (bridgeSupport && ![[JSTBridgeSupportLoader sharedController] isBridgeSupportLoaded:bridgeSupport]) {
             if (![[JSTBridgeSupportLoader sharedController] loadBridgeSupportAtPath:bridgeSupport]) {
                 NSLog(@"Could not load JSTalk's bridge support file: %@", bridgeSupport);
             }
         }
         
-        
         [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/Foundation.framework"];
         [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/CoreFoundation.framework"];
         [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/AppKit.framework"];
         [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework"];
         [[JSTBridgeSupportLoader sharedController] loadFrameworkAtPath:@"/System/Library/Frameworks/ApplicationServices.framework/Versions/A/Frameworks/CoreGraphics.framework"];
-        
-        
 	}
     
 	return self;
@@ -133,7 +136,6 @@ static NSMutableArray *JSTalkPluginList;
             //debug(@"Could not load the principal class of %@", fullPath);
             //debug(@"infoDictionary: %@", [pluginBundle infoDictionary]);
         }
-        
     }
     @catch (NSException * e) {
         NSLog(@"EXCEPTION: %@: %@", [e name], e);
@@ -220,6 +222,7 @@ static NSMutableArray *JSTalkPluginList;
     
     if (_shouldPreprocess) {
         str = [JSTPreprocessor preprocessCode:str];
+        debug(@"str: '%@'", str);
     }
     
     [_bridge pushObject:self withName:@"jstalk"];
@@ -387,7 +390,6 @@ static NSMutableArray *JSTalkPluginList;
     
     return [self applicationOnPort:[NSString stringWithFormat:@"%@.JSTalk", bundleId]];
 }
-
 
 + (id)proxyForApp:(NSString*)app {
     return [self application:app];

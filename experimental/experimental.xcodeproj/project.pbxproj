@@ -326,7 +326,6 @@
 		CC41845812447743004144B7 /* RTUnregisteredClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RTUnregisteredClass.m; path = src/RTUnregisteredClass.m; sourceTree = "<group>"; };
 		CC41856F12448360004144B7 /* MABlockClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MABlockClosure.h; path = src/MABlockClosure.h; sourceTree = "<group>"; };
 		CC41857012448360004144B7 /* MABlockClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MABlockClosure.m; path = src/MABlockClosure.m; sourceTree = "<group>"; };
-		CC506DDB12415B28005AD5E6 /* class.js */ = {isa = PBXFileReference; explicitFileType = sourcecode.javascript; fileEncoding = 4; name = class.js; path = src/class.js; sourceTree = "<group>"; };
 		CC506DDC12415B28005AD5E6 /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = src/JSCocoa.h; sourceTree = "<group>"; };
 		CC506DDD12415B28005AD5E6 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = src/JSCocoaController.h; sourceTree = "<group>"; };
 		CC506DDE12415B28005AD5E6 /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = src/JSCocoaController.m; sourceTree = "<group>"; };
@@ -336,7 +335,6 @@
 		CC506DE212415B28005AD5E6 /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = src/JSCocoaFFIClosure.m; sourceTree = "<group>"; };
 		CC506DE312415B28005AD5E6 /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = src/JSCocoaLib.h; sourceTree = "<group>"; };
 		CC506DE412415B28005AD5E6 /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = src/JSCocoaLib.m; sourceTree = "<group>"; };
-		CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jslint-jscocoa.js"; path = "src/jslint-jscocoa.js"; sourceTree = "<group>"; };
 		CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jstalk; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = jstalkmain.m; path = src/jstalkmain.m; sourceTree = "<group>"; };
 		CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk.h; path = src/JSTalk.h; sourceTree = "<group>"; };
@@ -357,7 +355,6 @@
 		CCBF47791266A4AB0037A15A /* JSTStructure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTStructure.m; path = src/JSTStructure.m; sourceTree = "<group>"; };
 		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk_Prefix.pch; path = src/JSTalk_Prefix.pch; sourceTree = "<group>"; };
-		CCC5B8CC0F1EFAAA00126722 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		CCC5B95A0F1EFCFE00126722 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = src/JSTListener.h; sourceTree = "<group>"; };
 		CCC5B95B0F1EFCFE00126722 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = src/JSTListener.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -431,7 +428,6 @@
 			isa = PBXGroup;
 			children = (
 				CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */,
-				CCC5B8CC0F1EFAAA00126722 /* main.m */,
 				CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */,
 			);
 			name = "Other Sources";
@@ -608,7 +604,6 @@
 		CCC5B92C0F1EFB5900126722 /* JSCocoa */ = {
 			isa = PBXGroup;
 			children = (
-				CC506DDB12415B28005AD5E6 /* class.js */,
 				CC506DDC12415B28005AD5E6 /* JSCocoa.h */,
 				CC506DDD12415B28005AD5E6 /* JSCocoaController.h */,
 				CC506DDE12415B28005AD5E6 /* JSCocoaController.m */,
@@ -620,7 +615,6 @@
 				CC506DE412415B28005AD5E6 /* JSCocoaLib.m */,
 				CCA9C1E01241D5A2003EB4C5 /* JSTBridgedObject.h */,
 				CCA9C1E11241D5A2003EB4C5 /* JSTBridgedObject.m */,
-				CC506DE712415B28005AD5E6 /* jslint-jscocoa.js */,
 			);
 			name = JSCocoa;
 			sourceTree = "<group>";

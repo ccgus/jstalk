@@ -317,6 +317,8 @@ for (var key in d) {
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
+    debug(@"propertyName: '%@'", propertyName);
+    
     if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]) {
         return [self internalFunctionForJSObject:jsObject functionName:propertyName outException:exception];
     }
@@ -350,7 +352,6 @@ for (var key in d) {
         // looks like it's a foo.some_objc_method(call, wow, neat);
         return [self makeJSStyleBridgedFunction:propertyName onObject:caller];
     }
-    
     
     if (info) {
         if ([info jstType] == JSTTypeClass) {
@@ -386,6 +387,12 @@ for (var key in d) {
             if ([constInfo jstType] == JSTTypeClass) {
                 id obj = *(id*)symbol;
                 returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:constInfo];
+            }
+            else if ([constInfo jstType] == JSTTypeStruct) {
+                
+                
+                
+                debug(@"it's a structure.");
             }
             else if ([[constInfo typeEncoding] isEqualToString:@"B"]) {
                 returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
