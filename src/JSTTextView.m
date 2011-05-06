@@ -173,10 +173,13 @@
     [super insertText:insertString];
     
     NSRange currentRange = [self selectedRange];
+    NSRange r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
+    BOOL atEndOfLine = (NSMaxRange(r) - 1 == NSMaxRange(currentRange));
     
-    if ([@"{" isEqualToString:insertString]) {
+    
+    if (atEndOfLine && [@"{" isEqualToString:insertString]) {
         
-        NSRange r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
+        r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
         NSString *myLine = [[[self textStorage] mutableString] substringWithRange:r];
         
         NSMutableString *indent = [NSMutableString string];
@@ -194,18 +197,22 @@
         
         [self setSelectedRange:currentRange];
     }
-    else if ([@"(" isEqualToString:insertString]) {
+    else if (atEndOfLine && [@"(" isEqualToString:insertString]) {
         
-        // make sure to only do it on the end of the line.
-        NSRange r = [self selectionRangeForProposedRange:currentRange granularity:NSSelectByParagraph];
-        if (NSMaxRange(r) - 1 == NSMaxRange(currentRange)) {
-            [super insertText:@")"];
-            [self setSelectedRange:currentRange];
-        }
+        [super insertText:@")"];
+        [self setSelectedRange:currentRange];
         
     }
-    else if ([@"[" isEqualToString:insertString]) {
+    else if (atEndOfLine && [@"[" isEqualToString:insertString]) {
         [super insertText:@"]"];
+        [self setSelectedRange:currentRange];
+    }
+    else if ([@"\"" isEqualToString:insertString]) {
+        [super insertText:@"\""];
+        [self setSelectedRange:currentRange];
+    }
+    else if ([@"'" isEqualToString:insertString]) {
+        [super insertText:@"'"];
         [self setSelectedRange:currentRange];
     }
 }

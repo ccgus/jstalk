@@ -205,46 +205,16 @@ static int ArgCount(const char *str)
     return argTypes;
 }
 
-- (int)_prepCIF: (ffi_cif *)cif withEncodeString: (const char *)str skipArg: (BOOL)skip
-{
-    int argCount;
-    ffi_type **argTypes = [self _argsWithEncodeString: str getCount: &argCount];
-    
-    if(skip)
-    {
-        argTypes++;
-        argCount--;
-    }
-    
-    ffi_status status = ffi_prep_cif(cif, FFI_DEFAULT_ABI, argCount, [self _ffiArgForEncode: str], argTypes);
-    if(status != FFI_OK)
-    {
-        NSLog(@"Got result %ld from ffi_prep_cif", (long)status);
-        abort();
-    }
-    
-    return argCount;
-}
-
-
-- (void)_prepClosure {
-    ffi_status status = ffi_prep_closure(_closure, &_closureCIF, BlockClosure, self);
-    if(status != FFI_OK)
-    {
-        NSLog(@"ffi_prep_closure returned %d", (int)status);
-        abort();
-    }
-    
-    if(mprotect(_closure, sizeof(_closure), PROT_READ | PROT_EXEC) == -1)
-    {
-        perror("mprotect");
-        abort();
-    }
-}
-
 - (void)setArguments:(const JSValueRef *)args withCount:(size_t)count {
     _jsArguments = (JSValueRef *)args;
     _argumentCount = count;
+    
+    /*
+    for (int i = 0; i < count; i++) {
+        debug(@"in arg: '%@'", JSTNSObjectFromValue(_bridge, args[i]));
+    }
+    */
+    
     
     if (_forcedObjcTarget) {
         
@@ -315,7 +285,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         return _objcMethod;
     }
     
-    JSTAssert((_callAddress == &objc_msgSend));
+    //JSTAssert((_callAddress == &objc_msgSend));
     JSTAssert(_argumentCount > 1);
     
     id target = JSTNSObjectFromValue(_bridge, _jsArguments[0]);
@@ -371,6 +341,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             if (retType == &ffi_type_jst_structure) {
                 debug(@"we need to setup for a struct");
                 _callAddress = &objc_msgSend_stret;
+                _callingStret = YES;
                 return [self encodingsForStructure:[[_msgSendMethodRuntimeInfo returnValue] typeEncoding]];
             }
         }
@@ -404,7 +375,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
            return [self encodingsForStructure:[[info returnValue] typeEncoding]];
         }
         
-        
         return JSTFFITypeForTypeEncoding([[info returnValue] typeEncoding]);
     }
     
@@ -413,18 +383,18 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 
 -(ffi_type*)setValue:(void**)argVals atIndex:(int)idx {
     
-    JSValueRef argument = _jsArguments[idx];
+    JSValueRef argument = _jsArguments[_callingStret ? idx - 1 : idx];
     
-    if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend)) {
+    if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend) || _callingStret) {
         
         void **foo = [self _allocate:(sizeof(void*))];
         
-        if (idx == 0) { // this is the target
+        if (idx == 0 || (_callingStret && idx == 1)) { // this is the target
             *foo = JSTNSObjectFromValue(_bridge, argument);
             argVals[idx] = foo;   
             return &ffi_type_pointer;
         }
-        else if (idx == 1) { // arg 2 is always a selector
+        else if (idx == 1 || (_callingStret && idx == 2)) { // arg 2 is always a selector
             *foo = JSTSelectorFromValue(_bridge, argument);
             
             debug(@"selector: '%@'", NSStringFromSelector(*foo));
@@ -574,20 +544,35 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     [self checkForMsgSendMethodRuntimeInfo];
     
-    debug(@"Calling %@", _functionName);
+    ffi_type *returnFIIType = [self setupReturnType];
+    
+    // objc_msgSend_stret returns void, and the return value is allocated on the stack, and a pointer passed as the first argument to it.
+    // thus, we must perform some gymnastics got get it working right. 
+    size_t argumentCount = _callingStret ? _argumentCount + 1 : _argumentCount;
     
     BOOL success        = YES;
-    ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
-    void **argVals      = _argumentCount ? malloc(_argumentCount * sizeof(void*)) : 0x00;
+    ffi_type **argTypes = argumentCount ? malloc(argumentCount * sizeof(ffi_type*)) : 0x00;
+    void **argVals      = argumentCount ? malloc(argumentCount * sizeof(void*)) : 0x00;
+    int j = _callingStret ? 1 : 0;
     
-    for (int j = 0; j < _argumentCount; j++) {
+    for (; j < argumentCount; j++) {
         argTypes[j] = [self setValue:*(void**)&argVals atIndex:j];
     }
     
-    ffi_type *returnFIIType = [self setupReturnType];
+    NSRect stretwtf;
+    
+    if (_callingStret) {
+        void *f     = &stretwtf;
+        argVals[0]  = &f;
+        argTypes[0] = &ffi_type_pointer;
+        
+        //argTypes[0] = [self setValue:&f atIndex:0];
+        
+        returnFIIType = &ffi_type_void;
+    }
     
     ffi_cif cif;
-    ffi_status status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned)_argumentCount, returnFIIType, argTypes);
+    ffi_status status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned)argumentCount, returnFIIType, argTypes);
     if (status != FFI_OK) {
         if (status == FFI_BAD_TYPEDEF) {
             debug(@"FFI_BAD_TYPEDEF");
@@ -605,11 +590,17 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     void *returnValue;
     
     @try {
+        debug(@"%s:%d", __FUNCTION__, __LINE__);
         ffi_call(&cif, _callAddress, &returnValue, argVals);
+        debug(@"%s:%d", __FUNCTION__, __LINE__);
     }
     @catch (NSException * e) {
         success = NO;
         JSTAssignException(_bridge, exception, [e description]);
+    }
+    
+    if (_callingStret) {
+        debug(@"stretwtf: %@", NSStringFromRect(stretwtf));
     }
     
     if (argTypes) {

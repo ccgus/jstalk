@@ -27,6 +27,8 @@
     NSString            *_forcedObjcSelector;
     
     ffi_type            **_encodedArgsForUnbridgedMsgSend;
+    
+    BOOL                _callingStret;
 }
 
 - (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo;
