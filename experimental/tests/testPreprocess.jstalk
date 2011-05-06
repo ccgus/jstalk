@@ -1,0 +1,92 @@
+var count = 0;
+var tests = new Array();
+
+var process = function (a, b) {
+    
+    //print("running test " + count);
+    
+    a = [JSTPreprocessor preprocessCode:a];
+    
+    count++;
+    
+        
+    if (a != b) {
+        NSBeep();
+        print("Failure for test " + count);
+        print(a + "\nshould be equal to:\n" + b);
+        return false;
+    }
+    
+    //print("Success for test " + count);
+    
+    
+    
+    return true;
+}
+
+var addTest = function (a, b) {
+    tests.push(new Array(a, b));
+}
+
+print("Staring preprocessing tests.")
+
+addTest('print([4 - 5, b]);',
+        'print([4 - 5, b]);');
+
+addTest('print([a, b]);',
+        'print([a, b]);');
+        
+addTest('[db executeUpdate:"insert into foo values (?, ?, ?)",\n   1, // comment!\n   @"Hello",\n   [NSDate date]];',
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?, ?)",1,JSTNSString("Hello"),objc_msgSend(NSDate, "date"));');
+
+addTest('[db executeUpdate:"insert into foo values (?, ?)", 1, "Hello"];',
+        'objc_msgSend(db, "executeUpdate:", "insert into foo values (?, ?)",1,"Hello");');
+
+addTest('var acorn = [JSTalk application:"Acorn"];',
+        'var acorn = objc_msgSend(JSTalk, "application:", "Acorn");');
+
+addTest('print([]);',
+        'print([]);');
+
+addTest('[fo doSomething:" a " + [b fun] + " c " in:nil];',
+        'objc_msgSend(fo, "doSomething:in:", " a "+objc_msgSend(b, "fun")+" c ", null);');
+
+addTest('print([NSString stringWithString:@"a"+"b"])',
+        'print(objc_msgSend(NSString, "stringWithString:", JSTNSString("a")+"b"))');
+        
+addTest('[NSFullUserName() lowercaseString];',
+        'objc_msgSend(NSFullUserName(), "lowercaseString");');
+
+addTest('[NSApp a:1 fake:function() {\n\
+    [someClass runBlock:[NSApp blockForJSFunction:function(err) {\n\
+        var foo = Foo();\n\
+    }]];\n\
+}];', 'objc_msgSend(NSApp, "a:fake:", 1, function(){\n\
+    objc_msgSend(someClass, "runBlock:", objc_msgSend(NSApp, "blockForJSFunction:", function(err){\n\
+        var foo = Foo();\n\
+    }));\n\
+});');
+
+
+
+
+var stopOnFirstFail = false;
+var shouldContinue = true;
+var len = tests.length;
+var idx = 0;
+while (shouldContinue && idx < len) {
+    var a = tests[idx][0];
+    var b = tests[idx][1];
+    
+    shouldContinue = process(a, b);
+    
+    shouldContinue = stopOnFirstFail ? shouldContinue : true;
+    
+    idx++;
+}
+
+print("Done");
+
+// what about "foo ? bar : xyz" ?  Yea, gotta fix that.
+
+

@@ -1,0 +1,130 @@
+var s = [JSTTests classTestStruct];
+jsassert(s.b, "s.b is wrong");
+
+[jstalk include:"jstsetup.jstalk"];
+
+var r = [JSTTests classTestNSRect];
+jsassert(r.origin.x == 1, "r.origin.x");
+jsassert(r.origin.y == 2, "r.origin.y");
+jsassert(r.size.width == 3, "r.size.width");
+jsassert(r.size.height == 4, "r.size.height");
+
+NSLog("Woo!");
+
+var r = NSMakeRange(1, 1);
+r.location = 12;
+r.length   = 11;
+jsassert(r.location == 12, "r.location is wrong");
+jsassert(r.length == 11, "r.length is wrong");
+
+
+var r = NSMakeRect(1, 2, 3, 4);
+
+jsassert(r.origin.x == 1, "r.origin.x");
+jsassert(r.origin.y == 2, "r.origin.y");
+jsassert(r.size.width == 3, "r.size.width");
+jsassert(r.size.height == 4, "r.size.height");
+
+r.size.width = 10;
+r.size.height = 20;
+
+jsassert(r.size.width == 10, "r.size.width");
+jsassert(r.size.height == 20, "r.size.height");
+
+var s = NSMakeSize(1, 2);
+jsassert(s.width == 1, "s.width is wrong");
+jsassert(s.height == 2, "s.height is wrong");
+s.width = 3;
+s.height = 4;
+jsassert(s.width == 3, "s.width is wrong");
+jsassert(s.height == 4, "s.height is wrong");
+
+
+
+
+
+var r2 = NSMakeRect(5, 6, 7, 8);
+jsassert(r2.origin.x == 5, "r2.origin.x");
+jsassert(r2.origin.y == 6, "r2.origin.y");
+jsassert(r2.size.width == 7, "r2.size.width");
+jsassert(r2.size.height == 8, "r2.size.height");
+
+
+var ti = [[JSTTests alloc] init];
+
+//print("Trying the long double");
+//jsassert(55.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnLongDouble:50],
+//        "nonBridgedInstanceMethodReturnAddAndReturnLongDouble: failed");
+jsassert(34.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnDouble:20],
+        "nonBridgedInstanceMethodReturnAddAndReturnDouble: failed");
+jsassert(4.5 == [ti nonBridgedInstanceMethodReturnFloat], "nonBridgedInstanceMethodReturnFloat failed");
+jsassert(14.5 == [ti nonBridgedInstanceMethodReturnDouble], "nonBridgedInstanceMethodReturnDouble failed");
+jsassert(24.5 == [ti nonBridgedInstanceMethodReturnAddAndReturnFloat:20],
+        "nonBridgedInstanceMethodReturnAddAndReturnFloat: failed");
+
+
+jsassert([ti testBoolValue], "[ti testBoolValue] failed");
+jsassert([JSTTests testClassBoolValue], "[JSTTests testClassBoolValue] failed");
+
+jsassert([ti testStringValue] == "String from testStringValue", "[ti testStringValue] failed");
+
+jsassert([JSTTests nonBridgedClassMethodReturnString] == "String from nonBridgedClassMethodReturnString",
+         "[JSTTests nonBridgedClassMethodReturnString] failed");
+
+jsassert([ti nonBridgedInstanceMethodReturnString] == "String from nonBridgedInstanceMethodReturnString",
+         "[ti nonBridgedInstanceMethodReturnString] failed");
+
+
+var name = NSFullUserName();
+jsassert(name, "NSFullUserName failed");
+jsassert((name + "").toLowerCase() == [name lowercaseString], "Lowercase stuff failed");
+
+
+
+jsassert(([JSTTests nonBridgedClassMethodReturnInt] == 34), "nonBridgedClassMethodReturnInt failed");
+jsassert(([ti nonBridgedInstanceMethodReturnInt] == 36), "nonBridgedInstanceMethodReturnInt failed");
+jsassert(([JSTTests nonBridgedClassMethodAddIntTo34:2] == 36), "nonBridgedClassMethodAddIntTo34 failed");
+jsassert(([ti nonBridgedInstanceMethodAddIntTo34:4] == 38), "nonBridgedInstanceMethodAddIntTo34 failed");
+
+
+var nilValue = nil;
+jsassert(!nilValue, "nilValue is not nil");
+
+var randomConst = NSBundleDidLoadNotification;
+jsassert(randomConst == "NSBundleDidLoadNotification", "Can't find the NSBundleDidLoadNotification const");
+
+var boolVal = NSZombieEnabled;
+jsassert(!boolVal, "Why would NSZombieEnabled be enabled?");
+
+jsassert(NSMinYEdge == 1, "Can't find NSMinYEdge");
+jsassert(CGRectMinYEdge == 1, "Can't find CGRectMinYEdge");
+
+
+var twelve = [NSNumber numberWithInt:12];
+var fifteen = twelve + 3;
+jsassert(fifteen == 15, "Can't add NSNumbers to js number!");
+
+var scriptURL = [[jstalk env] objectForKey:"scriptURL"];
+scriptURL = [scriptURL lastPathComponent];
+jsassert(scriptURL == "B.jstalk", "lastPathComponent failed");
+
+var a = [[jstalk env] objectForKey:"scriptURL"] + ""
+var b = [[jstalk env] objectForKey:"scriptURL"];
+
+jsassert(a == b, "scriptURL conversions failed");
+
+a = [ti testStringValue] + ""
+b = ti.testStringValue() + "";
+
+jsassert(a == b, "JS style method A call failed");
+
+var twelve = NSNumber.numberWithInt(12);
+var fifteen = twelve + 3;
+jsassert(fifteen == 15, "JS style method B call failed!");
+
+var twelve = NSNumber.numberWithInt_(12);
+var fifteen = twelve + 3;
+//jsassert(fifteen == 15, "JS style method C call failed!");
+
+NSLog("Hey! %@ %p", "What's shaking?", ti);
+
