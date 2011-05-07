@@ -1,5 +1,6 @@
 [jstalk include:"jstsetup.jstalk"];
 
+NSMakeRect(1, 2, 3, 4);
 
 var zp = NSZeroPoint;
 jsassert(zp, "Can't make a zero point");

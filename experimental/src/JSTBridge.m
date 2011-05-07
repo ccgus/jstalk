@@ -390,7 +390,11 @@ for (var key in d) {
             }
             else if ([constInfo jstType] == JSTTypeStruct) {
                 
+                // need to make a JSTStructure, and then return that guy or something.
+                JSTStructure *structure = [JSTStructure structureWithConstantSymbolAddress:&symbol bridge:self];
+                [structure setRuntimeInfo:constInfo];
                 
+                // ok, now what?
                 
                 debug(@"it's a structure.");
             }

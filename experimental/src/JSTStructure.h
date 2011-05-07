@@ -14,12 +14,14 @@
     NSMutableData *_bytes;
     JSTRuntimeInfo *_runtimeInfo;
     JSTBridge *_bridge;
+    void *_constSymbolAddress;
 }
 
 @property (retain) NSMutableData *bytes;
 @property (assign) JSTRuntimeInfo *runtimeInfo;
 @property (assign) JSTBridge *bridge;
 
++ (id)structureWithConstantSymbolAddress:(void *)sa bridge:(JSTBridge*)bridge;
 + (id)structureWithData:(NSMutableData*)data bridge:(JSTBridge*)bridge;
 - (JSValueRef)cantThinkOfAGoodNameForThisYet:(NSString*)prop outException:(JSValueRef*)exception;
 

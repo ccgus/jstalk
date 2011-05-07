@@ -13,10 +13,24 @@
 #import "TDCommentState.h"
 #import "JSTUtils.h"
 
+@interface JSTStructure ()
+- (id)initWithData:(NSMutableData*)data bridge:(JSTBridge*)bridge;
+- (id)initeWithConstantSymbolAddress:(void *)sa bridge:(JSTBridge*)bridge;
+@end
+
 @implementation JSTStructure
 @synthesize bytes=_bytes;
 @synthesize runtimeInfo=_runtimeInfo;
 @synthesize bridge=_bridge;
+
++ (id)structureWithData:(NSMutableData*)data bridge:(JSTBridge*)bridge {
+    return [[[self alloc] initWithData:data bridge:bridge] autorelease];
+}
+
++ (id)structureWithConstantSymbolAddress:(void *)sa bridge:(JSTBridge*)bridge {
+    return [[[self alloc] initeWithConstantSymbolAddress:sa bridge:bridge] autorelease];
+}
+
 
 - (id)initWithData:(NSMutableData*)data bridge:(JSTBridge*)bridge {
 	self = [super init];
@@ -27,8 +41,14 @@
 	return self;
 }
 
-+ (id)structureWithData:(NSMutableData*)data bridge:(JSTBridge*)bridge {
-    return [[[self alloc] initWithData:data bridge:bridge] autorelease];
+
+- (id)initeWithConstantSymbolAddress:(void *)sa bridge:(JSTBridge*)bridge {
+	self = [super init];
+	if (self != nil) {
+        _constSymbolAddress = sa;
+        _bridge = bridge;
+	}
+	return self;
 }
 
 - (void)dealloc {
