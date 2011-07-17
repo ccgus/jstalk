@@ -264,8 +264,8 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	if (!_ctx)
 	{
 		useJSLint		= NO;
-		id lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
-		if ([[NSFileManager defaultManager] fileExistsAtPath:lintPath])	[self evalJSFile:lintPath];
+		//id lintPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"jslint-jscocoa" ofType:@"js"];
+		//if ([[NSFileManager defaultManager] fileExistsAtPath:lintPath])	[self evalJSFile:lintPath];
 		id classKitPath = [[NSBundle bundleForClass:[self class]] pathForResource:@"class" ofType:@"js"];
 		if ([[NSFileManager defaultManager] fileExistsAtPath:classKitPath])	[self evalJSFile:classKitPath];
 	}

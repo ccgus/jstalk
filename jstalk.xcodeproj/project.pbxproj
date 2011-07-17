@@ -854,8 +854,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				CC5064E60F4A164D00F4A952 /* PBXTargetDependency */,
 				CC43C12A0F4BBE750044BA41 /* PBXTargetDependency */,
+				CC5064E60F4A164D00F4A952 /* PBXTargetDependency */,
 				CC77FDCF10879C8D00323EE7 /* PBXTargetDependency */,
 			);
 			name = "JSTalk Editor";

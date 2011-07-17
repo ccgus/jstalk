@@ -1,6 +1,6 @@
 #import "JSTRuntimeCrap.h"
 #import <JSTalk/JSTalk.h>
-
+#import <Carbon/Carbon.h>
 @implementation JSTRuntimeCrap
 
 @end
@@ -112,6 +112,41 @@ id jsobjc_msgSend8(id self, SEL op, id arg1, id arg2, id arg3, id arg4, id arg5,
 }
 
 @end
+
+
+
+
+//static OSStatus JSTEHandleAppFrontSwitched(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData);
+
+EventHandlerRef JSTCSkankyGlobalFrontAppSwitchedHandlerRef;
+
+static OSStatus JSTCHandleAppFrontSwitched(EventHandlerCallRef inHandlerCallRef, EventRef inEvent, void *inUserData) {
+    
+    NSDictionary *activeAppDict = [[NSWorkspace sharedWorkspace] activeApplication];
+    ProcessSerialNumber psn;
+    
+    psn.highLongOfPSN = [[activeAppDict objectForKey:@"NSApplicationProcessSerialNumberHigh"] intValue];
+    psn.lowLongOfPSN  = [[activeAppDict objectForKey:@"NSApplicationProcessSerialNumberLow"] intValue];
+    
+    SetFrontProcess(&psn);
+    
+    return 0;
+}
+
+void JSTCBringAllWindowsToFrontWhenSwitchingApplications() {
+    // OK, so what is this all about?  Gus wants this.  He's old school.  He just can't get over not having this built into the system, and since he's always running JSTalk, hey- let's do it here.
+    
+    EventTypeSpec spec = { kEventClassApplication, kEventAppFrontSwitched };
+    
+    OSStatus err = InstallApplicationEventHandler(NewEventHandlerUPP(JSTCHandleAppFrontSwitched), 1, &spec, nil, &JSTCSkankyGlobalFrontAppSwitchedHandlerRef);
+    
+    if (err) {
+        NSLog(@"Error looking for front app.");
+    }
+}
+
+
+
 
 
 

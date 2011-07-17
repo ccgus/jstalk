@@ -9,9 +9,10 @@
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
+		CC4AF0DF13B69514000D29AA /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4AF0DE13B69514000D29AA /* JSTalk.framework */; };
 		CC4C9F72124083FF00B05E95 /* JSTRuntimeCrap.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4C9F71124083FF00B05E95 /* JSTRuntimeCrap.m */; };
-		CC4C9F7F1240852F00B05E95 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC4C9F7E1240852F00B05E95 /* JSTalk.framework */; };
 		CC4C9FB6124085F400B05E95 /* JSTRuntimeExtras.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC4C9FB5124085F400B05E95 /* JSTRuntimeExtras.bridgesupport */; };
+		CCE2C7BC13B6924E00D3A456 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCE2C7BB13B6924E00D3A456 /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,11 +22,13 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8D5B49B6048680CD000E48DA /* RuntimeExtras.jstplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RuntimeExtras.jstplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CC4AF0DE13B69514000D29AA /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /builds/Debug/JSTalk.framework; sourceTree = "<absolute>"; };
 		CC4C9F70124083FF00B05E95 /* JSTRuntimeCrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTRuntimeCrap.h; sourceTree = "<group>"; };
 		CC4C9F71124083FF00B05E95 /* JSTRuntimeCrap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTRuntimeCrap.m; sourceTree = "<group>"; };
 		CC4C9F731240841100B05E95 /* runtimecrap_prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = runtimecrap_prefix.pch; sourceTree = "<group>"; };
 		CC4C9F7E1240852F00B05E95 /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = /tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<absolute>"; };
 		CC4C9FB5124085F400B05E95 /* JSTRuntimeExtras.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = JSTRuntimeExtras.bridgesupport; sourceTree = "<group>"; };
+		CCE2C7BB13B6924E00D3A456 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = ../../../../../../../../System/Library/Frameworks/Carbon.framework; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -35,7 +38,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
-				CC4C9F7F1240852F00B05E95 /* JSTalk.framework in Frameworks */,
+				CCE2C7BC13B6924E00D3A456 /* Carbon.framework in Frameworks */,
+				CC4AF0DF13B69514000D29AA /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +61,7 @@
 		089C1671FE841209C02AAC07 /* Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				CC4AF0DE13B69514000D29AA /* JSTalk.framework */,
 				1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */,
 				1058C7AEFEA557BF11CA2CBB /* Other Frameworks */,
 			);
@@ -85,6 +90,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCE2C7BB13B6924E00D3A456 /* Carbon.framework */,
 				CC4C9F7E1240852F00B05E95 /* JSTalk.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 			);
@@ -145,7 +151,11 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB913E08733D840010E9CD /* Build configuration list for PBXProject "runtimecrap" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				en,
+			);
 			mainGroup = 089C166AFE841209C02AAC07 /* samplejstalkextra */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -200,6 +210,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/tmp/jstalk/build/Release,
+					/builds/Debug,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -224,6 +235,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/tmp/jstalk/build/Release,
+					/builds/Debug,
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
