@@ -91,6 +91,14 @@
 {
 	object = o;
 	if (object && [object retainCount] == -1)	return;
+    
+    // you can't retain this guy.
+    #pragma message "FIXME: What about if the script calls release on this object?"
+    if ([object isKindOfClass:[NSAutoreleasePool class]]) {
+        NSLog(@"Warning: we're probably going to crash pretty soon, for setting up an autorelease pool on the JS side.");
+        return;
+    }
+    
 	[object retain];
 }
 
