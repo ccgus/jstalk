@@ -14,7 +14,7 @@
 #import "JSTPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
-- (void) updateFont:(id)sender;
+- (void)updateFont:(id)sender;
 @end
 
 
@@ -49,7 +49,7 @@
     return @"JSTDocument";
 }
 
-- (void) readFromFile:(NSURL*)fileURL {
+- (void)readFromFile:(NSURL*)fileURL {
     
     NSError *err = 0x00;
     NSString *src = [NSString stringWithContentsOfURL:[self fileURL] encoding:NSUTF8StringEncoding error:&err];
@@ -211,11 +211,11 @@
         
 }
 
-- (void) executeScript:(id)sender { 
+- (void)executeScript:(id)sender { 
     [self runScript:[[jsTextView textStorage] string]];
 }
 
-- (void) clearConsole:(id)sender {
+- (void)clearConsole:(id)sender {
     
     // NSTextView hates it when there is no string to store attributes on, and -[outputTextView typingAttributes] doesn't always work.
     if ([[outputTextView textStorage] length]) {
@@ -225,7 +225,7 @@
     [[[outputTextView textStorage] mutableString] setString:@""];
 }
 
-- (void) executeSelectedScript:(id)sender {
+- (void)executeSelectedScript:(id)sender {
     
     NSRange r = [jsTextView selectedRange];
     
@@ -239,7 +239,7 @@
     
 }
 
-- (void) preprocessCodeAction:(id)sender {
+- (void)preprocessCodeAction:(id)sender {
     
     NSString *code = [JSTPreprocessor preprocessCode:[[jsTextView textStorage] string]];
     
@@ -286,7 +286,7 @@
     }
 }
 
-- (void) saveAsApplication:(id)sender {
+- (void)saveAsApplication:(id)sender {
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
     
@@ -302,7 +302,7 @@
     
 }
 
-- (void) updateFont:(id)sender {
+- (void)updateFont:(id)sender {
     
     [[jsTextView textStorage] addAttribute:NSFontAttributeName value:[[NSApp delegate] defaultEditorFont] range:NSMakeRange(0, [[jsTextView textStorage] length])];
     [[outputTextView textStorage] addAttribute:NSFontAttributeName value:[[NSApp delegate] defaultEditorFont] range:NSMakeRange(0, [[outputTextView textStorage] length])];
@@ -310,7 +310,7 @@
     
 }
 
-- (void) externalEditorAction:(id)sender {
+- (void)externalEditorAction:(id)sender {
     
     if (_externalEditorFileWatcher) {
         /// wait, what?  Should we care?
@@ -358,7 +358,7 @@
     [[NSWorkspace sharedWorkspace] openFile:[[self fileURL] path] withApplication:appPath];
 }
 
-- (void) fileWatcherDidRecieveFSEvent:(JSTFileWatcher*)fw {
+- (void)fileWatcherDidRecieveFSEvent:(JSTFileWatcher*)fw {
     
     NSString *path = [fw path];
     
@@ -419,7 +419,7 @@
 }
 
 
-- (void) copyBookmarkletToPasteboard:(id)sender {
+- (void)copyBookmarkletToPasteboard:(id)sender {
     
     NSRange r = [jsTextView selectedRange];
     

@@ -11,7 +11,7 @@
 
 @implementation JSTPluginMover
 
-- (void) makeWindowControllers { }
+- (void)makeWindowControllers { }
 
 - (NSData *)dataRepresentationOfType:(NSString *)type {
     return nil;
