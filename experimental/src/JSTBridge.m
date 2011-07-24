@@ -306,9 +306,7 @@ for (var key in d) {
             JSPropertyNameAccumulatorAddName(propertyNames, jsString);
             JSStringRelease(jsString);  
         }
-        
     }
-    
 }
 
 - (JSValueRef)propertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
@@ -317,7 +315,13 @@ for (var key in d) {
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
-    debug(@"propertyName: '%@'", propertyName);
+    if ([propertyName isEqual:@"print"]) {
+        return JSObjectMake(_jsContext, _bridgedFunctionClass,  @selector(callPrintFWithArguments:argCount:));
+    }
+    
+    if ([propertyName isEqual:@"jstassert"]) {
+        return JSObjectMake(_jsContext, _bridgedFunctionClass,  @selector(callJSTAssertWithArguments:argCount:));
+    }
     
     if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"]) {
         return [self internalFunctionForJSObject:jsObject functionName:propertyName outException:exception];
@@ -342,11 +346,9 @@ for (var key in d) {
             return nil;
         }
         
-        id value        = [caller objectAtIndex:idx];
+        id value = [caller objectAtIndex:idx];
         return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
     }
-    
-    
     
     if (caller != self) {
         // looks like it's a foo.some_objc_method(call, wow, neat);
@@ -371,11 +373,17 @@ for (var key in d) {
                 fixedDeclaredType = [fixedDeclaredType substringToIndex:[fixedDeclaredType length] - 1];
             }
             
+            debug(@"Got a constant: '%@'", [info symbolName]);
+            debug(@"propertyName: '%@'", propertyName);
+            debug(@"fixedDeclaredType: '%@'", fixedDeclaredType);
+            debug(@"[info jstType]: %d", [info jstType]);
+            
+            /*
             JSTRuntimeInfo *constInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:fixedDeclaredType];
             if (!constInfo) {
                 constInfo = info;
             }
-            
+            */
             
             void *symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
             if (!symbol) {
@@ -384,23 +392,62 @@ for (var key in d) {
                 return nil;
             }
             
-            if ([constInfo jstType] == JSTTypeClass) {
+            debug(@"@encode(double): %s", @encode(double));
+            
+            if ([[info typeEncoding] isEqualTo:@"@"]) {
                 id obj = *(id*)symbol;
-                returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:constInfo];
+                returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:info];
             }
-            else if ([constInfo jstType] == JSTTypeStruct) {
+            else if ([[info typeEncoding] isEqualTo:@"B"]) {
+                returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
+            }
+            else if ([[info typeEncoding] isEqualTo:@"d"]) {
+                returnJSObject = JSValueMakeNumber(_jsContext, *(double*)symbol);
+            }
+            else if ([[info typeEncoding] isEqualTo:@"f"]) {
+                returnJSObject = JSValueMakeNumber(_jsContext, *(float*)symbol);
+            }
+            else if ([[info typeEncoding] isEqualTo:@"Q"]) {
+                returnJSObject = JSValueMakeNumber(_jsContext, *(unsigned long*)symbol);
+            }
+            else if ([[info typeEncoding] isEqualTo:@"I"]) {
+                returnJSObject = JSValueMakeNumber(_jsContext, *(unsigned int*)symbol);
+            }
+            else if ([[info typeEncoding] hasPrefix:@"{"]) {
+                debug(@"uh, a structupre!");
+                //returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
+            }
+            else {
+                debug(@"Can't find type: %@", [info typeEncoding]);
+            }
+            
+            /*
+            
+            if ([info jstType] == JSTTypeClass) {
+                id obj = *(id*)symbol;
+                returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:info];
+            }
+            else if ([info jstType] == JSTTypeStruct) {
                 
                 // need to make a JSTStructure, and then return that guy or something.
                 JSTStructure *structure = [JSTStructure structureWithConstantSymbolAddress:&symbol bridge:self];
-                [structure setRuntimeInfo:constInfo];
+                [structure setRuntimeInfo:info];
                 
                 // ok, now what?
                 
                 debug(@"it's a structure.");
             }
-            else if ([[constInfo typeEncoding] isEqualToString:@"B"]) {
+            else if ([info jstType] == JSTTypeConstant) {
+                // something like NSZeroPoint, NSZeroRect, NSThreadWillExitNotification
+                
+                debug(@"[constInfo typeEncoding]: '%@'", [info typeEncoding]);
+                
+                
+            }
+            else if ([[info typeEncoding] isEqualToString:@"B"]) {
                 returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
             }
+            */
         }
         else if ([info jstType] == JSTTypeEnum) {
             returnJSObject = JSValueMakeNumber(_jsContext, [info enumValue]);
@@ -424,7 +471,6 @@ for (var key in d) {
             }
         }
     }
-    
     
     return returnJSObject;
 }
@@ -454,8 +500,51 @@ for (var key in d) {
     return NO;
 }
 
+- (void)callPrintFWithArguments:(const JSValueRef*)arguments argCount:(size_t)argumentCount {
+    
+    if (argumentCount < 1) {
+        return;
+    }
+    
+    NSString *s = JSTNSObjectFromValue(self, arguments[0]);
+    
+    
+    if (![s isKindOfClass:[NSString class]]) {
+        s = [s description];
+    }
+    
+    printf("%s\n", [[s description] UTF8String]);
+}
+
+- (void)callJSTAssertWithArguments:(const JSValueRef*)arguments argCount:(size_t)argumentCount {
+    
+    if (argumentCount < 2) {
+        return;
+    }
+    
+    if (!JSValueToBoolean(_jsContext, arguments[0])) {
+        
+        
+        NSString *s = JSTNSObjectFromValue(self, arguments[1]);
+        
+        if (![s isKindOfClass:[NSString class]]) {
+            s = [s description];
+        }
+        
+        printf("*** Assertion Failure! %s\n", [[s description] UTF8String]);
+    }
+}
 
 - (JSValueRef)callFunction:(JSObjectRef)jsFunction onObject:(JSObjectRef)thisObject argCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
+    
+    if (JSObjectGetPrivate(jsFunction) == @selector(callPrintFWithArguments:argCount:)) {
+        [self callPrintFWithArguments:arguments argCount:argumentCount];
+        return 0x00;
+    }
+    else if (JSObjectGetPrivate(jsFunction) == @selector(callJSTAssertWithArguments:argCount:)) {
+        [self callJSTAssertWithArguments:arguments argCount:argumentCount];
+        return 0x00;
+    }
     
     JSTFunction *function       = [self functionForJSFunction:jsFunction];
     JSTRuntimeInfo *runtimeInfo = [self runtimeInfoForObject:function];

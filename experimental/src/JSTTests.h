@@ -18,6 +18,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+APPKIT_EXTERN const CGFloat JSTConstCGFloat;
+APPKIT_EXTERN const float   JSTConstFloat;
+APPKIT_EXTERN const double  JSTConstDouble;
+
 struct JSTTestStruct {
     BOOL        b;
     /*
@@ -55,3 +59,8 @@ typedef struct JSTTestStruct JSTTestStruct;
 */
 
 @end
+
+
+
+
+

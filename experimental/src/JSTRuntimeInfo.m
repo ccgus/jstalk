@@ -237,6 +237,9 @@
     else if (_jstType == JSTTypeStruct) {
         return [NSString stringWithFormat:@"%@ struct '%@'", prefix, _symbolName];
     }
+    else if (_jstType == JSTTypeConstant) {
+        return [NSString stringWithFormat:@"%@ const '%@'", prefix, _symbolName];
+    }
     
     
     return prefix;

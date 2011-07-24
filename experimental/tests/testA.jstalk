@@ -1,6 +1,20 @@
-[jstalk include:"jstsetup.jstalk"];
+print("starting");
 
 NSMakeRect(1, 2, 3, 4);
+
+jstassert([NSThreadWillExitNotification isEqualToString:"NSThreadWillExitNotification"], "Can't find NSThreadWillExitNotification")
+jstassert(NSASCIIStringEncoding == 1, "Can't find NSASCIIStringEncoding")
+jstassert(!NSDeallocateZombies, "Can't find NSDeallocateZombies");
+jstassert(NSFoundationVersionNumber, "Can't find NSFoundationVersionNumber.")
+jstassert(NSUnderlineByWordMask, "Can't find NSUnderlineByWordMask.")
+jstassert(NSBlack, "Can't find NSBlack.")
+
+
+
+//kCFBooleanFalse - ^{__CFBoolean=}
+//kCFBundleDevelopmentRegionKey - ^{__CFString=}
+//kCFCoreFoundationVersionNumber
+//kCFNull - ^{__CFNull=}
 
 var zp = NSZeroPoint;
 jsassert(zp, "Can't make a zero point");

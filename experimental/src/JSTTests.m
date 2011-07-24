@@ -9,9 +9,11 @@
 #import "JSTTests.h"
 
 
+const CGFloat JSTConstCGFloat = 123.456;
+const CGFloat JSTConstFloat   = 123.456;
+const CGFloat JSTConstDouble  = 123.456;
 
 @implementation JSTTests
-
 
 - (BOOL)testBoolValue {
     return YES;

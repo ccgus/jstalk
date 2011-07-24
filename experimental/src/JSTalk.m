@@ -236,7 +236,7 @@ static NSMutableArray *JSTalkPluginList;
         //resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
         
         // quick helper function.
-        [_bridge evalJSString:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); }" withPath:nil];
+        //[_bridge evalJSString:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); }" withPath:nil];
         
         resultRef = [_bridge evalJSString:str withPath:nil];
         

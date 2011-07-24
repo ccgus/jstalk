@@ -1,4 +1,4 @@
-function jsassert(val, msg) {
+function jasssert(val, msg) {
     if (!val) {
         print("Assertion failure!");
         print(msg);

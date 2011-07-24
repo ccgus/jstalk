@@ -1026,6 +1026,7 @@
 				);
 				PREBINDING = NO;
 				PRODUCT_NAME = jstalk;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};

@@ -158,7 +158,11 @@
             [nextObject jstType] == JSTTypeEnum   || [nextObject jstType] == JSTTypeFunction ||
             [nextObject jstType] == JSTTypeClass) {
             
-            //debug(@"Adding: %@ - %@", [nextObject name], [nextObject type]);
+            /*
+            if ([nextObject jstType] == JSTTypeConstant && !([[nextObject typeEncoding] isEqual:@"@"])) {
+                debug(@"Adding: %@ - %@", [nextObject symbolName], [nextObject typeEncoding]);
+            }
+            */
             
             JSTAssert([nextObject symbolName]);
             [_symbolLookup setObject:nextObject forKey:[nextObject symbolName]];
@@ -207,6 +211,8 @@
 }
 
 - (BOOL)loadBridgeSupportAtPath:(NSString*)path {
+    
+    debug(@"path: '%@'", path);
     
     NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]] autorelease];
     

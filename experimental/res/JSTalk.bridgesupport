@@ -2,6 +2,10 @@
 <!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
 <signatures version='0.9'>
 
+<constant name='JSTCGConstCGFloat' type64='d' type='f'/>
+<constant name='JSTCGConstFloat'   type='f'/>
+<constant name='JSTCGConstDouble'  type='d'/>
+
 <!--
 <struct name='JSTTestStruct' type='{JSTTestStruct=&quot;b&quot;c&quot;f&quot;f&quot;d&quot;d&quot;i8&quot;c&quot;ui8&quot;C&quot;i16&quot;s&quot;ui16&quot;S&quot;i32&quot;i&quot;ui32&quot;I&quot;i64&quot;q&quot;ui64&quot;Q&quot;next&quot;^{JSTTestStruct}}'/>
 -->
