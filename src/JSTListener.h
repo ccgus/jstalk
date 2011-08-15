@@ -21,6 +21,8 @@
 
 @property (assign) id rootObject;
 
++ (JSTListener*)sharedListener;
+
 + (void)listen;
 + (void)listenWithRootObject:(id)rootObject;
 
