@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "JSTListener.h"
 #import "JSTalk.h"
-
+#import "JSTPreprocessor.h"
 
 @interface JSCErrorHandler : NSObject {
     
@@ -86,6 +86,84 @@ void runREPL(void) {
     
 }
 
+void testPreprocess(NSString *shouldLookLike, NSString *processMe) {
+    
+}
+
+void testScriptAtPath(NSString *pathToScript) {
+    
+    
+    NSString *s = [NSString stringWithContentsOfFile:pathToScript encoding:NSUTF8StringEncoding error:nil];
+    
+    JSTalk *t = [[[JSTalk alloc] init] autorelease];
+    
+    [[t env] setObject:[NSURL fileURLWithPath:pathToScript] forKey:@"scriptURL"];
+    [[t env] setObject:[[NSURL fileURLWithPath:pathToScript] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];
+    
+    [t executeString:s];
+    
+    exit(0);
+}
+
+void testPreprocessAtPath(NSString *pathToScript) {
+    NSLog(@"Testing %@", pathToScript);
+    
+    NSString *bp = [[pathToScript stringByDeletingPathExtension] stringByAppendingPathExtension:@"jstpc"];
+    NSString *a = [NSString stringWithContentsOfFile:pathToScript encoding:NSUTF8StringEncoding error:nil];
+    NSString *b = [NSString stringWithContentsOfFile:bp encoding:NSUTF8StringEncoding error:nil];
+    
+    NSString *r = [JSTPreprocessor preprocessCode:a];
+    
+    b = [b stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    r = [r stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if (![b isEqualToString:r]) {
+        NSLog(@"Bad preprocess for %@", pathToScript);
+        [[r dataUsingEncoding:NSUTF8StringEncoding] writeToFile:@"/private/tmp/jstb.jstalk" atomically:YES];
+        NSString *cmd = [NSString stringWithFormat:@"/usr/bin/diff %@ /private/tmp/jstb.jstalk", bp];
+        NSLog(@"%@", cmd);
+        system([cmd UTF8String]);
+    }
+}
+
+int testFolder(NSString *folder) {
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    BOOL isDir;
+    if (!([fm fileExistsAtPath:folder isDirectory:&isDir] && isDir)) {
+        printf("The test path given does not exist or is not a folder\n");
+        return 1;
+    }
+    
+    NSError *err = 0x00;
+    NSArray *ar = [fm subpathsOfDirectoryAtPath:folder error:&err];
+    if (!ar) {
+        NSLog(@"Error loading %@: %@", folder, err);
+        return 1;
+    }
+    
+    
+    for (NSString *sd in ar) {
+        
+        if (![[sd pathExtension] isEqualToString:@"jstalk"]) {
+            continue;
+        }
+        
+        else if ([sd hasPrefix:@"testPreprocess"]) {
+            NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+            testPreprocessAtPath([folder stringByAppendingPathComponent:sd]);
+            [pool release];
+        }
+        else if ([sd hasPrefix:@"test"]) {
+            NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+            testScriptAtPath([folder stringByAppendingPathComponent:sd]);
+            [pool release];
+        }
+    }
+    
+    return 0;
+}
 
 int main(int argc, char *argv[]) {
     
@@ -94,17 +172,25 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     
     NSString *arg = [NSString stringWithUTF8String:argv[1]];
     
     if ([arg isEqualToString:@"-e"]) {
-        
         runREPL();
-        
         exit(0);
     }
     
+    if ([arg isEqualToString:@"-t"]) {
+        if (argc < 3) {
+            printf("-t requires a path to a test folder\n");
+            return 1;
+        }
+        
+        NSString *arg2 = [NSString stringWithUTF8String:argv[2]];
+        
+        exit(testFolder(arg2));
+    }
     
     NSString *s = [NSString stringWithContentsOfFile:arg encoding:NSUTF8StringEncoding error:nil];
     
@@ -117,8 +203,8 @@ int main(int argc, char *argv[]) {
     //JSCocoaController *jsController = [t jsController];
     //jsController.delegate = eh;
     
-    [t.env setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
-    [t.env setObject:[[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];
+    [[t env] setObject:[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] forKey:@"scriptURL"];
+    [[t env] setObject:[[NSURL fileURLWithPath:[NSString stringWithUTF8String:argv[1]]] URLByDeletingLastPathComponent] forKey:@"scriptDirectoryURL"];
     
     if ([s hasPrefix:@"#!"]) {
         

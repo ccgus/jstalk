@@ -212,8 +212,6 @@
 
 - (BOOL)loadBridgeSupportAtPath:(NSString*)path {
     
-    debug(@"path: '%@'", path);
-    
     NSXMLParser *parser = [[[NSXMLParser alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]] autorelease];
     
     if (!parser) {

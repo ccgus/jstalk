@@ -337,7 +337,7 @@
         [msgSendArgs removeAllObjects];
     }
     
-    NSMutableString *buf = [NSMutableString stringWithString:@"objc_msgSend("];
+    NSMutableString *buf = [NSMutableString stringWithString:@"jst_msgSend("];
     
     [buf appendFormat:@"%@, \"%@\"", target, selector];
     

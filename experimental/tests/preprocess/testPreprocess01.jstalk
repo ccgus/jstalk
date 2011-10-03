@@ -1,0 +1,9 @@
+print([4 - 5, b]);
+print([a, b]);
+[NSString string];
+
+[NSFullUserName() lowercaseString];
+
+print([NSString stringWithString:@"a"+"b"])
+
+[fo doSomething:" a " + [b fun] + " c " in:nil];

@@ -1,0 +1,9 @@
+print([4 - 5, b]);
+print([a, b]);
+jst_msgSend(NSString, "string");
+
+jst_msgSend(NSFullUserName(), "lowercaseString");
+
+print(jst_msgSend(NSString, "stringWithString:", JSTNSString("a")+"b"))
+
+jst_msgSend(fo, "doSomething:in:", " a "+jst_msgSend(b, "fun")+" c ", null);
