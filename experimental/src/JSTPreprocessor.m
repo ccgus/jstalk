@@ -120,7 +120,6 @@
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
-        
         if ([tok isSymbol] && [self isOpenGroupSymbol:[tok stringValue]]) {
             
             JSTPSymbolGroup *nextGroup  = [[[JSTPSymbolGroup alloc] init] autorelease];
@@ -149,6 +148,9 @@
         }
     }
     
+    //debug(@"printing tree");
+    //[baseGroup printTree:0];
+    
     return [baseGroup description];
 }
 
@@ -169,6 +171,7 @@
 @synthesize args=_args;
 @synthesize parent=_parent;
 @synthesize isBaseGroup=_isBaseGroup;
+@synthesize functionHead=_functionHead;
 
 - (id)init {
 	self = [super init];
@@ -183,6 +186,7 @@
 - (void)dealloc {
     [_args release];
     [_parent release];
+    [_functionHead release];
 
     [super dealloc];
 }
@@ -233,12 +237,16 @@
         }
         else if (_openSymbol == '[') {
             // whoa- are we array access, or something else?
-            
+            /*
             id foo = [[self parent] lastNonWhitespaceOrCommentSymbol];
+            
+            debug(@"foo: %@", foo);
+            debug(@"[foo isKindOfClass:[TDToken class]]: %d", [foo isKindOfClass:[TDToken class]]);
             
             if (!foo || ([foo isKindOfClass:[TDToken class]] && [foo isSymbol])) {
                 _msgSend = YES;
             }
+            */
         }
         else if (_openSymbol == '{') {
             
@@ -289,21 +297,33 @@
     
 }
 
+- (void)printDept:(int)depth {
+    for (int i = 0; i < depth; i++) {
+        printf("--");
+    }
+}
+
+- (void)printTree:(int)depth {
+    
+    for (id arg in _args) {
+        
+        if ([arg isKindOfClass:[JSTPSymbolGroup class]]) {
+            [arg printTree:depth+1];
+        }
+        else {
+            [self printDept:depth];
+            printf("%s\n", [[arg description] UTF8String]);
+        }
+    }
+}
+
 - (NSString*)description {
     
     if (_openSymbol != '[') {
-        
-        NSMutableString *ret = [NSMutableString string];
-        
-        for (id arg in _args) {
-            [ret appendString:[arg description]];
-        }
-        
-        return ret;
-        
+        return [_args componentsJoinedByString:@""];
     }
     
-    if (!_msgSend || ![[[_args lastObject] description] isEqualToString:@"]"] || ([_args count] < 4)) {
+    if (![[[_args lastObject] description] isEqualToString:@"]"] || ([_args count] < 4)) {
         return [_args componentsJoinedByString:@""];
     }
     

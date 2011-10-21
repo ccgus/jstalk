@@ -123,6 +123,7 @@ void testPreprocessAtPath(NSString *pathToScript) {
         NSString *cmd = [NSString stringWithFormat:@"/usr/bin/diff %@ /private/tmp/jstb.jstalk", bp];
         NSLog(@"%@", cmd);
         system([cmd UTF8String]);
+        exit(123);
     }
 }
 

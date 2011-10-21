@@ -25,7 +25,6 @@
     NSMutableArray *_args;
     JSTPSymbolGroup *_parent;
     BOOL _isBaseGroup;
-    BOOL _msgSend;
 }
 
 @property (retain) NSMutableArray *args;
@@ -35,6 +34,7 @@
 
 - (void)addSymbol:(id)aSymbol;
 
+- (void)printTree:(int)depth;
 @end
 
 
