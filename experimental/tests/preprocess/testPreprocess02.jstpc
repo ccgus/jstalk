@@ -1,3 +1,15 @@
 print([4 - 5, b]);
 print([a, b]);
 jst_msgSend(NSString, "string");
+
+{
+    var s = JSTNSString("Hello");
+    
+    var f = someFunction(jst_msgSend(s, "lowerCaseString"), JSTNSString("Hi"));
+}
+
+var s = jst_msgSend(NSString, "stringWithFormat:", "%@, %@, %@"
+        newlineVar, /*inline comment*/, fakeVar
+        "test another newline"
+        );
+        

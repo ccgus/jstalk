@@ -357,6 +357,8 @@
         [msgSendArgs removeAllObjects];
     }
     
+    BOOL pastSelector = NO;
+    
     NSMutableString *buf = [NSMutableString stringWithString:@"jst_msgSend("];
     
     [buf appendFormat:@"%@, \"%@\"", target, selector];
@@ -365,28 +367,19 @@
         
         id arg = [msgSendArgs objectAtIndex:i];
         
-        if ([arg isKindOfClass:[TDToken class]] && ([arg isComment] || [arg isWhitespace])) {
-            /*
-            if ([arg isComment]) {
-                [buf appendString:[arg stringValue]];
+        if ([arg isKindOfClass:[TDToken class]] && [[arg stringValue] isEqualToString:@","]) {
+            
+            if (![selector length]) { // looks like it's an array: print([3+4, 5]);
+                return [NSString stringWithFormat:@"[%@]", [argsCopy componentsJoinedByString:@""]];
             }
-            */
         }
-        else {
-            
-            if ([arg isKindOfClass:[TDToken class]] && [[arg stringValue] isEqualToString:@","]) {
-                
-                if (![selector length]) { // looks like it's an array: print([3+4, 5]);
-                    return [NSString stringWithFormat:@"[%@]", [argsCopy componentsJoinedByString:@""]];
-                }
-            }
-            
-            if (arg == selectorWasHere) {
-                [buf appendString:@", "];
-            }
-            else {
-                [buf appendString:[arg description]];
-            }
+        
+        if (arg == selectorWasHere) {
+            [buf appendString:@", "];
+            pastSelector = YES;
+        }
+        else if (pastSelector) {
+            [buf appendString:[arg description]];
         }
     }
     

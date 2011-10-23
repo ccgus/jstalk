@@ -1,3 +1,14 @@
 print([4 - 5, b]);
 print([a, b]);
 [NSString string];
+
+{
+    var s = @"Hello";
+    
+    var f = someFunction([s lowerCaseString], @"Hi");
+}
+
+var s = [NSString stringWithFormat:"%@, %@, %@"
+        newlineVar, /*inline comment*/, fakeVar
+        "test another newline"
+        ];

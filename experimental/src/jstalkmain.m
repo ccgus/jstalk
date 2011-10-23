@@ -114,8 +114,8 @@ void testPreprocessAtPath(NSString *pathToScript) {
     
     NSString *r = [JSTPreprocessor preprocessCode:a];
     
-    b = [b stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    r = [r stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    b = [[b stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByAppendingString:@"\n"];
+    r = [[r stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] stringByAppendingString:@"\n"];
     
     if (![b isEqualToString:r]) {
         NSLog(@"Bad preprocess for %@", pathToScript);
