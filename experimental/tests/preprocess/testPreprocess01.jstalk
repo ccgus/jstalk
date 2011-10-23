@@ -7,3 +7,5 @@ print([a, b]);
 print([NSString stringWithString:@"a"+"b"])
 
 [fo doSomething:" a " + [b fun] + " c " in:nil];
+
+[varName messageSel:foo[12 + [arg getNumb:12]]];
