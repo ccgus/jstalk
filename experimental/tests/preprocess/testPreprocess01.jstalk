@@ -9,3 +9,9 @@ print([NSString stringWithString:@"a"+"b"])
 [fo doSomething:" a " + [b fun] + " c " in:nil];
 
 [varName messageSel:foo[12 + [arg getNumb:12]]];
+
+[varName messageSel:foo[1 + 2]];
+
+foo[a + 2];
+
+foo[[arg getNumb:1] + 2];

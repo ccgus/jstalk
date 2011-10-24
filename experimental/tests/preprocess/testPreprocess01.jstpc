@@ -9,3 +9,9 @@ print(jst_msgSend(NSString, "stringWithString:", JSTNSString("a")+"b"))
 jst_msgSend(fo, "doSomething:in:", " a " + jst_msgSend(b, "fun") + " c " , null);
 
 jst_msgSend(varName, "messageSel:", foo[12 + jst_msgSend(arg, "getNumb:", 12)]);
+
+jst_msgSend(varName, "messageSel:", foo[1 + 2]);
+
+foo[a + 2];
+
+foo[jst_msgSend(arg, "getNumb:", 1) + 2];

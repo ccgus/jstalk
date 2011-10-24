@@ -5,9 +5,9 @@ This is not being done on a branch because Gus started doing that and kept on sc
 
 Notes from Gus, for Gus:
 
-Oct 2, 2011:
-The current plan for the new parser is to preprocess jstalk/objc messages into jstobjc_msgSend, since that's reasonably unique and we can special case things in there for calls that return floats or structs or whatever.  So '[NSString string]' would become 'jstobjc_msgSend(NSString, "string")', '[Foo isEqualTo:"foo"]' objc_msgSend(Foo, "isEqualToString:", "foo")
-
-What's the best way to setup tests for this though?  I want them written in JSTalk itself, but that gets a bit tricky.  So currently that's what I'm working on exploring.
-
+Oct 24, 2011:
 There's a ton of unfinished code laying around, and since I tend to be scatterbrained it should probably be ignored.  It'll be rewritten, as this is currently a playground for my ideas.
+
+## Random Things for Gus to Fix:
+Oct 23, 2011:
+Hey, mixing TDTokens and JSTPSymbolGroup(s) together in JSTPSymbolGroup's _args array is a really bad idea.  What you need to do is make a common subclass for those two, so you don't have to keep on checking if you're working with a TDToken first in description.

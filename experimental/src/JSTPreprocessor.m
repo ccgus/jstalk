@@ -149,7 +149,7 @@
     }
     
     //debug(@"printing tree");
-    //[baseGroup printTree:0];
+    [baseGroup printTree:0];
     
     return [baseGroup description];
 }
@@ -303,6 +303,38 @@
     }
 }
 
+- (NSString*)typeOfToken:(TDToken*)tok {
+    if (![tok isKindOfClass:[TDToken class]]) {
+        return @"not a token";
+    }
+    
+    if ([tok isNumber]) {
+        return @"number";
+    }
+    
+    if ([tok isQuotedString]) {
+        return @"quoted string";
+    }
+    
+    if ([tok isSymbol]) {
+        return @"symbol";
+    }
+    
+    if ([tok isWord]) {
+        return @"word";
+    }
+    
+    if ([tok isWhitespace]) {
+        return @"whitespace";
+    }
+    
+    if ([tok isComment]) {
+        return @"comment";
+    }
+    
+    return [NSString stringWithFormat:@"unknown token type (%d)", [tok tokenType]];
+}
+
 - (void)printTree:(int)depth {
     
     for (id arg in _args) {
@@ -312,7 +344,7 @@
         }
         else {
             [self printDept:depth];
-            printf("%s\n", [[arg description] UTF8String]);
+            printf("%s (%s)\n", [[arg description] UTF8String], [[self typeOfToken:arg] UTF8String]);
         }
     }
 }
@@ -324,6 +356,34 @@
     }
     
     if (![[[_args lastObject] description] isEqualToString:@"]"] || ([_args count] < 4)) {
+        return [_args componentsJoinedByString:@""];
+    }
+    
+    TDToken *secondArg = [_args objectAtIndex:1];
+    if ([secondArg isKindOfClass:[TDToken class]] && ![secondArg isWord]) {
+        return [_args componentsJoinedByString:@""];
+    }
+    
+    TDToken *thirdArgSkippingWhitespace = 0x00;
+    int idx = 2;
+    while (idx < [_args count]) {
+        TDToken *foundTok = [_args objectAtIndex:idx];
+        idx++;
+        
+        if (![foundTok isKindOfClass:[TDToken class]]) {
+            continue;
+        }
+        
+        if ([foundTok isComment] || [foundTok isWhitespace]) {
+            continue;
+        }
+        
+        thirdArgSkippingWhitespace = foundTok;
+        break;
+        
+    }
+    
+    if (![thirdArgSkippingWhitespace isWord]) {
         return [_args componentsJoinedByString:@""];
     }
     
