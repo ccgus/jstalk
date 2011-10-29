@@ -149,7 +149,7 @@
     }
     
     //debug(@"printing tree");
-    [baseGroup printTree:0];
+    //[baseGroup printTree:0];
     
     return [baseGroup description];
 }

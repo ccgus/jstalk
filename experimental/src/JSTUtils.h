@@ -26,4 +26,5 @@ long JSTLongFromValue(JSTBridge *bridge, JSValueRef value);
 long double JSTDoubleFromValue(JSTBridge *bridge, JSValueRef value);
 NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncoding);
 BOOL JSTSetJSValueToPointerForType(JSValueRef jsValue, void *pointer, NSString *typeInfo, JSTBridge *bridge);
+NSString *NSStringFromJSTType(int type);
 

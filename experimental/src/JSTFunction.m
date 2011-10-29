@@ -1,28 +1,19 @@
 #import "JSTFunction.h"
 #import "JSTStructure.h"
 
-@interface JSTFunction ()
-- (Method)objcMethod;
-@end
-
-@implementation JSTFunction
-@synthesize functionName=_functionName;
-@synthesize forcedObjcTarget=_forcedObjcTarget;
-@synthesize forcedObjcSelector=_forcedObjcSelector;
-
 static void BlockClosure(ffi_cif *cif, void *ret, void **args, void *userdata)
 {
     JSTFunction *self = userdata;
     
     debug(@"self: '%@'", self);
     /*
-    int count = self->_closureArgCount;
-    void **innerArgs = malloc((count + 1) * sizeof(*innerArgs));
-    innerArgs[0] = &self->_block;
-    memcpy(innerArgs + 1, args, count * sizeof(*args));
-    ffi_call(&self->_innerCIF, BlockImpl(self->_block), ret, innerArgs);
-    free(innerArgs);
-    */
+     int count = self->_closureArgCount;
+     void **innerArgs = malloc((count + 1) * sizeof(*innerArgs));
+     innerArgs[0] = &self->_block;
+     memcpy(innerArgs + 1, args, count * sizeof(*args));
+     ffi_call(&self->_innerCIF, BlockImpl(self->_block), ret, innerArgs);
+     free(innerArgs);
+     */
 }
 
 static void *AllocateClosure(void) {
@@ -38,6 +29,72 @@ static void *AllocateClosure(void) {
 static void DeallocateClosure(void *closure) {
     munmap(closure, sizeof(ffi_closure));
 }
+
+@interface JSTFunction ()
+- (Method)objcMethod;
+@end
+
+@implementation JSTFunction
+@synthesize functionName=_functionName;
+@synthesize forcedObjcTarget=_forcedObjcTarget;
+@synthesize forcedObjcSelector=_forcedObjcSelector;
+@synthesize isJSTMsgSend=_isJSTMsgSend;
+
+
+- (id)initForJSTMsgSendWithBridge:(JSTBridge*)bridge {
+    if ((self = [self init])) {
+        _bridge = [bridge retain];
+        _isJSTMsgSend = YES;
+    }
+    
+    return self;
+}
+
+- (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo {
+    
+    if ((self = [self init])) {
+        _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
+        
+        if (!_callAddress) {
+            debug(@"Can't find the function named '%@', returning nil", name);
+            [self release];
+            return nil;
+        }
+        
+        _functionName = [name retain];
+        _runtimeInfo  = [runtimeInfo retain];
+        _bridge       = [bridge retain];
+        
+        _closure = AllocateClosure();
+    }
+    
+    return self;
+}
+
+
+- (void)dealloc {
+    
+    if (_closure) {
+        DeallocateClosure(_closure);
+    }
+    
+    [_allocations release];
+    [_functionName release];
+    [_runtimeInfo release];
+    [_bridge release];
+    
+    if (_forcedObjcTarget) {
+        free(_jsArguments);
+    }
+    
+    [_forcedObjcTarget release];
+    [_forcedObjcSelector release];
+    
+    [super dealloc];
+}
+
+
+
 
 
 - (NSMutableData *)_allocateData:(size_t)howmuch {
@@ -271,8 +328,8 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 
 - (void)checkForMsgSendMethodRuntimeInfo {
     
-    if ((_callAddress != &objc_msgSend) || (_argumentCount < 2)) {
-        //debug(@"%@ Can't possibly be objc_msgSend", _functionName);
+    if (_argumentCount < 2) {
+        JSTAssert(NO);
         return;
     }
     
@@ -280,13 +337,16 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     NSString *sel       = JSTNSObjectFromValue(_bridge, _jsArguments[1]);
     BOOL isClassMethod  = class_isMetaClass(object_getClass(target));
     
+    debug(@"target: %@", target);
+    debug(@"sel: %@", sel);
+    
     JSTRuntimeInfo *instanceInfo = [_bridge runtimeInfoForObject:target];
     if (!instanceInfo) {
         NSString *classString = NSStringFromClass(isClassMethod ? target :[target class]);
         instanceInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:classString];
     }
     
-    //debug(@"instanceInfo: '%@'", instanceInfo);
+    debug(@"instanceInfo: '%@'", instanceInfo);
     
     if (isClassMethod) { // are we dealing with an Class method?
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForClassMethodName:sel];
@@ -295,7 +355,12 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForInstanceMethodName:sel];
     }
     
+    debug(@"_msgSendMethodRuntimeInfo: %@", _msgSendMethodRuntimeInfo);
     
+    // we should check for the return type and stuff.  For now, we're just dealing with simple return values.
+    _callAddress = &objc_msgSend;
+    
+    /*
     if (!_msgSendMethodRuntimeInfo) {
         [self objcMethod]; // go ahead and cache that guy.
         
@@ -306,6 +371,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     else {
         //debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
     }
+    */
 }
 
 
@@ -438,7 +504,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             
             // FIXME: this is lame.
             // FIXME: Why shouldn't we just fall back on the _objcMethod stuff?
-            [self objcMethod];
+            //[self objcMethod];
         }
         
         if (!_encodedArgsForUnbridgedMsgSend) {
@@ -447,13 +513,17 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             const char *c = method_getTypeEncoding(_objcMethod);
             JSTAssert(c);
             
+            debug(@"c: %s", c);
+            
             int argCount;
             _encodedArgsForUnbridgedMsgSend = [self _argsWithEncodeString:c getCount:&argCount];
             
+            /*
             if (argCount != _argumentCount) {
-                NSLog(@"WHOA WHOA WHOA THE ARGUMENT COUNT IS OFF!");
+                NSLog(@"WHOA WHOA WHOA THE ARGUMENT COUNT IS OFF! encoding says %d but we were passed %d.  Runtime says it should be %d", (int)argCount, (int)_argumentCount, method_getNumberOfArguments(_objcMethod));
                 JSTAssert(false);
             }
+             */
         }
         
         assert(_encodedArgsForUnbridgedMsgSend);
@@ -572,7 +642,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 
 - (JSValueRef)call:(JSValueRef*)exception {
     
-    [self checkForMsgSendMethodRuntimeInfo];
+    if (_isJSTMsgSend) {
+        [self checkForMsgSendMethodRuntimeInfo];
+    }
     
     debug(@"Calling %@", _functionName);
     
@@ -666,51 +738,9 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     }
     
     [_allocations release];
+    _allocations = 0x00;
     
     return retJS;
-}
-
-- (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo {
-    
-    if ((self = [self init])) {
-        _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
-        
-        if (!_callAddress) {
-            debug(@"Can't find the function named '%@', returning nil", name);
-            [self release];
-            return nil;
-        }
-        
-        _functionName = [name retain];
-        _runtimeInfo  = [runtimeInfo retain];
-        _bridge       = [bridge retain];
-        
-        _closure = AllocateClosure();
-    }
-    
-    return self;
-}
-
-
-- (void)dealloc {
-    
-    if (_closure) {
-        DeallocateClosure(_closure);
-    }
-        
-    [_allocations release];
-    [_functionName release];
-    [_runtimeInfo release];
-    [_bridge release];
-    
-    if (_forcedObjcTarget) {
-        free(_jsArguments);
-    }
-    
-    [_forcedObjcTarget release];
-    [_forcedObjcSelector release];
-    
-    [super dealloc];
 }
 
 - (void *)fptr {

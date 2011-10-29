@@ -92,6 +92,7 @@ void testPreprocess(NSString *shouldLookLike, NSString *processMe) {
 
 void testScriptAtPath(NSString *pathToScript) {
     
+    NSLog(@"Testing script %@", pathToScript);
     
     NSString *s = [NSString stringWithContentsOfFile:pathToScript encoding:NSUTF8StringEncoding error:nil];
     
@@ -106,7 +107,7 @@ void testScriptAtPath(NSString *pathToScript) {
 }
 
 void testPreprocessAtPath(NSString *pathToScript) {
-    NSLog(@"Testing %@", pathToScript);
+    NSLog(@"Testing preprocess %@", pathToScript);
     
     NSString *bp = [[pathToScript stringByDeletingPathExtension] stringByAppendingPathExtension:@"jstpc"];
     NSString *a = [NSString stringWithContentsOfFile:pathToScript encoding:NSUTF8StringEncoding error:nil];
@@ -162,6 +163,8 @@ int testFolder(NSString *folder) {
             [pool release];
         }
     }
+    
+    NSLog(@"Done testing folder %@", folder);
     
     return 0;
 }

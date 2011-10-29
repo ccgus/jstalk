@@ -15,11 +15,16 @@
 #import <assert.h>
 #import <dlfcn.h>
 
+@class JSTFunction;
+
 @interface JSTBridge : NSObject {
     JSGlobalContextRef  _jsContext;
     JSClassRef _globalObjectClass;
     JSClassRef _bridgedObjectClass;
     JSClassRef _bridgedFunctionClass;
+    
+    JSTFunction *_jstMsgSendFunction;
+    JSObjectRef _jstMsgSendJSFunctionRef;
     
     id _delegate;
 }

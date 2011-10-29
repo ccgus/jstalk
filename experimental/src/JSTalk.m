@@ -222,7 +222,6 @@ static NSMutableArray *JSTalkPluginList;
     
     if (_shouldPreprocess) {
         str = [JSTPreprocessor preprocessCode:str];
-        debug(@"str: '%@'", str);
     }
     
     [_bridge pushObject:self withName:@"jstalk"];

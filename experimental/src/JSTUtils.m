@@ -503,3 +503,30 @@ NSArray *JSTTypeEncodingsFromStructureTypeEncoding(NSString *structureTypeEncodi
 }
 
 
+NSString *NSStringFromJSTType(int type) {
+    
+    if (type == JSTTypeUnknown) {
+        return @"unknown";
+    }
+    else if (type == JSTTypeStruct) {
+        return @"struct";
+    }
+    else if (type == JSTTypeConstant) {
+        return @"constant";
+    }
+    else if (type == JSTTypeEnum) {
+        return @"enum";
+    }
+    else if (type == JSTTypeFunction) {
+        return @"function";
+    }
+    else if (type == JSTTypeMethod) {
+        return @"method";
+    }
+    else if (type == JSTTypeClass) {
+        return @"class";
+    }
+    
+    return @"unknown type given";
+}
+

@@ -187,8 +187,6 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     objc_setAssociatedObject(function, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
     return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
 }
-
-
 - (JSObjectRef)makeJSStyleBridgedFunction:(NSString*)functionName onObject:(id)target {
     
     // Change the _'s into :'s, and verify that the object responds to it.
@@ -311,15 +309,30 @@ for (var key in d) {
 
 - (JSValueRef)propertyForObject:(JSObjectRef)jsObject named:(JSStringRef)jsPropertyName outException:(JSValueRef*)exception {
     
-    NSString *propertyName      = (NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName);
+    NSString *propertyName      = [(NSString*)JSStringCopyCFString(kCFAllocatorDefault, jsPropertyName) autorelease];
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
-    if ([propertyName isEqual:@"print"]) {
+    debug(@"propertyName: %@", propertyName);
+    
+    if ([propertyName isEqualToString:@"jst_msgSend"]) {
+        
+        if (!_jstMsgSendFunction) {
+            _jstMsgSendFunction = [[JSTFunction alloc] initForJSTMsgSendWithBridge:self];
+            _jstMsgSendJSFunctionRef = JSObjectMake(_jsContext, _bridgedFunctionClass, _jstMsgSendFunction);
+        }
+        
+        JSTAssert(_jstMsgSendJSFunctionRef);
+        JSTAssert(_jstMsgSendFunction);
+        
+        return _jstMsgSendJSFunctionRef;
+    }
+    
+    if ([propertyName isEqualToString:@"print"]) {
         return JSObjectMake(_jsContext, _bridgedFunctionClass,  @selector(callPrintFWithArguments:argCount:));
     }
     
-    if ([propertyName isEqual:@"jstassert"]) {
+    if ([propertyName isEqualToString:@"jstassert"]) {
         return JSObjectMake(_jsContext, _bridgedFunctionClass,  @selector(callJSTAssertWithArguments:argCount:));
     }
     
@@ -329,33 +342,14 @@ for (var key in d) {
     
     id caller = [self NSObjectForJSObject:jsObject];
     
-    if ([caller isKindOfClass:[JSTStructure class]]) {
-        return [(JSTStructure*)caller cantThinkOfAGoodNameForThisYet:propertyName outException:exception];
-    }
+    // if caller is self, then it's most likely a global var that we're dealing with.
     
-    if ([caller isKindOfClass:[NSDictionary class]]) {
-        id value = [caller objectForKey:propertyName];
-        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
-    }
-    
-    if ([caller isKindOfClass:[NSArray class]]) {
-        NSInteger idx  = [propertyName integerValue];
+    if (caller == self && info) {
+        // it's some sort of bridged stuff we've got runtime info for.
         
-        if (idx < 0 || idx > [caller count] - 1) {
-            JSTAssignException(self, exception, [NSString stringWithFormat:@"index (%d) out of range for array %@", idx, caller]);
-            return nil;
-        }
         
-        id value = [caller objectAtIndex:idx];
-        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
-    }
-    
-    if (caller != self) {
-        // looks like it's a foo.some_objc_method(call, wow, neat);
-        return [self makeJSStyleBridgedFunction:propertyName onObject:caller];
-    }
-    
-    if (info) {
+        debug(@"type: %@", NSStringFromJSTType([info jstType]));
+        
         if ([info jstType] == JSTTypeClass) {
             returnJSObject = [self makeJSObjectWithNSObject:NSClassFromString(propertyName) runtimeInfo:info];
         }
@@ -379,11 +373,11 @@ for (var key in d) {
             debug(@"[info jstType]: %d", [info jstType]);
             
             /*
-            JSTRuntimeInfo *constInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:fixedDeclaredType];
-            if (!constInfo) {
-                constInfo = info;
-            }
-            */
+             JSTRuntimeInfo *constInfo = [[JSTBridgeSupportLoader sharedController] runtimeInfoForSymbol:fixedDeclaredType];
+             if (!constInfo) {
+             constInfo = info;
+             }
+             */
             
             void *symbol = dlsym(RTLD_DEFAULT, [propertyName UTF8String]);
             if (!symbol) {
@@ -422,38 +416,73 @@ for (var key in d) {
             }
             
             /*
-            
-            if ([info jstType] == JSTTypeClass) {
-                id obj = *(id*)symbol;
-                returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:info];
-            }
-            else if ([info jstType] == JSTTypeStruct) {
-                
-                // need to make a JSTStructure, and then return that guy or something.
-                JSTStructure *structure = [JSTStructure structureWithConstantSymbolAddress:&symbol bridge:self];
-                [structure setRuntimeInfo:info];
-                
-                // ok, now what?
-                
-                debug(@"it's a structure.");
-            }
-            else if ([info jstType] == JSTTypeConstant) {
-                // something like NSZeroPoint, NSZeroRect, NSThreadWillExitNotification
-                
-                debug(@"[constInfo typeEncoding]: '%@'", [info typeEncoding]);
-                
-                
-            }
-            else if ([[info typeEncoding] isEqualToString:@"B"]) {
-                returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
-            }
-            */
+             
+             if ([info jstType] == JSTTypeClass) {
+             id obj = *(id*)symbol;
+             returnJSObject = [self makeJSObjectWithNSObject:obj runtimeInfo:info];
+             }
+             else if ([info jstType] == JSTTypeStruct) {
+             
+             // need to make a JSTStructure, and then return that guy or something.
+             JSTStructure *structure = [JSTStructure structureWithConstantSymbolAddress:&symbol bridge:self];
+             [structure setRuntimeInfo:info];
+             
+             // ok, now what?
+             
+             debug(@"it's a structure.");
+             }
+             else if ([info jstType] == JSTTypeConstant) {
+             // something like NSZeroPoint, NSZeroRect, NSThreadWillExitNotification
+             
+             debug(@"[constInfo typeEncoding]: '%@'", [info typeEncoding]);
+             
+             
+             }
+             else if ([[info typeEncoding] isEqualToString:@"B"]) {
+             returnJSObject = JSValueMakeBoolean(_jsContext, *(bool*)symbol);
+             }
+             */
         }
         else if ([info jstType] == JSTTypeEnum) {
             returnJSObject = JSValueMakeNumber(_jsContext, [info enumValue]);
         }
+        
+        
+        
     }
-    else { // info is nil.
+    
+    if (YES) {
+        return returnJSObject;
+    }
+    
+    if ([caller isKindOfClass:[JSTStructure class]]) {
+        return [(JSTStructure*)caller cantThinkOfAGoodNameForThisYet:propertyName outException:exception];
+    }
+    
+    if ([caller isKindOfClass:[NSDictionary class]]) {
+        id value = [caller objectForKey:propertyName];
+        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
+    }
+    
+    if ([caller isKindOfClass:[NSArray class]]) {
+        NSInteger idx  = [propertyName integerValue];
+        
+        if (idx < 0 || idx > [caller count] - 1) {
+            JSTAssignException(self, exception, [NSString stringWithFormat:@"index (%d) out of range for array %@", idx, caller]);
+            return nil;
+        }
+        
+        id value = [caller objectAtIndex:idx];
+        return [self makeJSObjectWithNSObject:value runtimeInfo:[self runtimeInfoForObject:value]];
+    }
+    
+    if (caller != self) {
+        // looks like it's a foo.some_objc_method(call, wow, neat);
+        return [self makeJSStyleBridgedFunction:propertyName onObject:caller];
+    }
+    
+    
+    if (!info) {
         
         
         // well, we can always fall back on NSClassFromString.
@@ -536,6 +565,11 @@ for (var key in d) {
 }
 
 - (JSValueRef)callFunction:(JSObjectRef)jsFunction onObject:(JSObjectRef)thisObject argCount:(size_t)argumentCount arguments:(const JSValueRef*)arguments outException:(JSValueRef*)exception {
+    
+    if (jsFunction == _jstMsgSendJSFunctionRef) {
+        [_jstMsgSendFunction setArguments:arguments withCount:argumentCount];
+        return [_jstMsgSendFunction call:exception];
+    }
     
     if (JSObjectGetPrivate(jsFunction) == @selector(callPrintFWithArguments:argCount:)) {
         [self callPrintFWithArguments:arguments argCount:argumentCount];
