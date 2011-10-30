@@ -25,8 +25,6 @@
     JSTBridge       *_bridge;
     Method          _objcMethod;
     BOOL            _askedForFFIArgsForEncoding;
-    //id                  _forcedObjcTarget;
-    //NSString            *_forcedObjcSelector;
     
     ffi_type        **_encodedArgsForUnbridgedMsgSend;
 }

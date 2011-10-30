@@ -313,8 +313,6 @@ for (var key in d) {
     JSValueRef returnJSObject   = 0x00;
     JSTRuntimeInfo *info        = [JSTBridgeSupportLoader runtimeInfoForSymbol:propertyName];
     
-    debug(@"propertyName: %@", propertyName);
-    
     if ([propertyName isEqualToString:@"jst_msgSend"]) {
         
         if (!_jstMsgSendFunction) {

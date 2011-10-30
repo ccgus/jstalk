@@ -237,6 +237,8 @@ static NSMutableArray *JSTalkPluginList;
         // quick helper function.
         //[_bridge evalJSString:@"function print(s) { objc_msgSend(jstalk, \"print:\", s); }" withPath:nil];
         
+        debug(@"str: %@", str);
+        
         resultRef = [_bridge evalJSString:str withPath:nil];
         
     }

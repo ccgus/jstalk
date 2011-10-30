@@ -31,7 +31,7 @@ static void DeallocateClosure(void *closure) {
 }
 
 @interface JSTFunction ()
-- (Method)objcMethod;
+- (void)lookupObjcMethod;
 @end
 
 @implementation JSTFunction
@@ -346,8 +346,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         instanceInfo = [JSTBridgeSupportLoader runtimeInfoForSymbol:classString];
     }
     
-    debug(@"instanceInfo: '%@'", instanceInfo);
-    
     if (isClassMethod) { // are we dealing with an Class method?
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForClassMethodName:sel];
     }
@@ -357,8 +355,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     debug(@"_msgSendMethodRuntimeInfo: %@", _msgSendMethodRuntimeInfo);
     
-    // we should check for the return type and stuff.  For now, we're just dealing with simple return values.
-    _callAddress = &objc_msgSend;
     
     /*
     if (!_msgSendMethodRuntimeInfo) {
@@ -375,11 +371,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 }
 
 
-- (Method)objcMethod {
-    
-    if (_objcMethod) {
-        return _objcMethod;
-    }
+- (void)lookupObjcMethod {
     
     JSTAssert((_callAddress == &objc_msgSend));
     JSTAssert(_argumentCount > 1);
@@ -393,8 +385,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     else {
         _objcMethod = class_getInstanceMethod(object_getClass(target), sel);
     }
-    
-    return _objcMethod;
 }
 
 -(ffi_type*)encodingsForStructure:(NSString*)typeEncoding {
@@ -441,7 +431,8 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
             }
         }
         else {
-            const char *c = method_getTypeEncoding([self objcMethod]);
+            JSTAssert(_objcMethod);
+            const char *c = method_getTypeEncoding(_objcMethod);
             if (c) {
                 retType = [self _ffiArgForEncode:c];
             }
@@ -485,93 +476,87 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         
         void **foo = [self _allocate:(sizeof(void*))];
         
-        if (idx == 0) { // this is the target
+        ffi_type *retType = 0x00;
+        
+        char *argType = method_copyArgumentType(_objcMethod, idx);
+        
+        JSTAssert(argType);
+        
+        debug(@"argType: %s at index %d", argType, idx);
+        
+        if (strcmp(argType, @encode(id)) == 0) {
             *foo = JSTNSObjectFromValue(_bridge, argument);
-            argVals[idx] = foo;   
-            return &ffi_type_pointer;
+            argVals[idx] = foo;
+            retType = &ffi_type_pointer;
+            //debug(@"object at index %d: %@", idx, *foo);
         }
-        else if (idx == 1) { // arg 2 is always a selector
+        else if (strcmp(argType, @encode(SEL)) == 0) {
+            
+            //debug(@"sel at index %d: %@", idx, NSStringFromSelector(JSTSelectorFromValue(_bridge, argument)));
+            
             *foo = JSTSelectorFromValue(_bridge, argument);
             
-            debug(@"selector: '%@'", NSStringFromSelector(*foo));
-            
             argVals[idx] = foo;
-            return &ffi_type_pointer;
-        }
-        
-        
-        if (_msgSendMethodRuntimeInfo) {
+            retType = &ffi_type_pointer;
             
-            // FIXME: this is lame.
-            // FIXME: Why shouldn't we just fall back on the _objcMethod stuff?
-            //[self objcMethod];
         }
-        
-        if (!_encodedArgsForUnbridgedMsgSend) {
-            
-            JSTAssert(_objcMethod);
-            const char *c = method_getTypeEncoding(_objcMethod);
-            JSTAssert(c);
-            
-            debug(@"c: %s", c);
-            
-            int argCount;
-            _encodedArgsForUnbridgedMsgSend = [self _argsWithEncodeString:c getCount:&argCount];
-            
-            /*
-            if (argCount != _argumentCount) {
-                NSLog(@"WHOA WHOA WHOA THE ARGUMENT COUNT IS OFF! encoding says %d but we were passed %d.  Runtime says it should be %d", (int)argCount, (int)_argumentCount, method_getNumberOfArguments(_objcMethod));
-                JSTAssert(false);
-            }
-             */
-        }
-        
-        assert(_encodedArgsForUnbridgedMsgSend);
-        
-        ffi_type *retType = _encodedArgsForUnbridgedMsgSend[idx];
-        
-        if (retType == &ffi_type_pointer) {
-            *foo = JSTNSObjectFromValue(_bridge, argument);
-            argVals[idx] = foo;
-        }
-        else if (retType == &ffi_type_sint32) {
-            *foo = (void*)((int32_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = foo;
-        }
-        else if (retType == &ffi_type_uint32) {
+        else if (strcmp(argType, @encode(BOOL)) == 0) {
             void **storage = [self _allocate:(sizeof(void*))];
             *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
             argVals[idx] = storage;
+            retType = &ffi_type_sint8; // is this right?
         }
-        else if (retType == &ffi_type_uint64) {
+        else if (strcmp(argType, @encode(int32_t)) == 0) {
+            *foo = (void*)((int32_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = foo;
+            retType = &ffi_type_sint32;
+        }
+        else if (strcmp(argType, @encode(uint32_t)) == 0) {
+            void **storage = [self _allocate:(sizeof(void*))];
+            *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = storage;
+            retType = &ffi_type_uint32;
+        }
+        else if (strcmp(argType, @encode(int64_t)) == 0) {
+            void **storage = [self _allocate:(sizeof(void*))];
+            *storage = (void*)((int64_t)JSTLongFromValue(_bridge, argument));
+            argVals[idx] = storage;
+            retType = &ffi_type_sint64;
+        }
+        else if (strcmp(argType, @encode(uint64_t)) == 0) {
             void **storage = [self _allocate:(sizeof(void*))];
             *storage = (void*)((uint64_t)JSTLongFromValue(_bridge, argument));
             argVals[idx] = storage;
+            retType = &ffi_type_uint64;
         }
-        else if (retType == &ffi_type_float) {
+        else if (strcmp(argType, @encode(float)) == 0) {
             float **floatStorage = [self _allocate:(sizeof(float*))];
             *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
             argVals[idx] = floatStorage;
+            retType = &ffi_type_float;
         }
-        else if (retType == &ffi_type_double) {
+        else if (strcmp(argType, @encode(double)) == 0) {
             double **floatStorage = [self _allocate:(sizeof(double*))];
             *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
             argVals[idx] = floatStorage;
+            retType = &ffi_type_double;
         }
-        else if (retType == &ffi_type_longdouble) {
+        else if (strcmp(argType, @encode(long double)) == 0) {
             long double **floatStorage = [self _allocate:(sizeof(long double*))];
             *(long double*)floatStorage = JSTDoubleFromValue(_bridge, argument);
-            debug(@"*(long double*)floatStorage: %Lf", *(long double*)floatStorage);
+            //debug(@"*(long double*)floatStorage: %Lf", *(long double*)floatStorage);
             argVals[idx] = floatStorage;
+            retType = &ffi_type_longdouble;
         }
         else {
-            debug(@"retType: '%@'", JSTStringForFFIType(retType));
-            debug(@"not sure what to do with this guy!");
-            assert(false);
+            NSLog(@"Unknown argument type at index %d: '%s'", (idx - 2), argType);
         }
+        
+        free(argType);
         
         return retType;
     }
+    /*
     else {
         
         if (_runtimeInfo) {
@@ -634,7 +619,8 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         else {
             JSTAssert(false);
         }
-    }
+     }
+     */
     
     return 0x00;
 }
@@ -643,10 +629,16 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 - (JSValueRef)call:(JSValueRef*)exception {
     
     if (_isJSTMsgSend) {
+        
+        // we should check for the return type and stuff.  For now, we're just dealing with simple return values.
+        _callAddress = &objc_msgSend;
+        
+        [self lookupObjcMethod];
         [self checkForMsgSendMethodRuntimeInfo];
+        
+        JSTAssert(method_getNumberOfArguments(_objcMethod) == _argumentCount);
+        
     }
-    
-    debug(@"Calling %@", _functionName);
     
     BOOL success        = YES;
     ffi_type **argTypes = _argumentCount ? malloc(_argumentCount * sizeof(ffi_type*)) : 0x00;
@@ -677,6 +669,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     void *returnValue;
     
     @try {
+        debug(@"calling");
         ffi_call(&cif, _callAddress, &returnValue, argVals);
     }
     @catch (NSException * e) {
@@ -737,8 +730,21 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         JSTAssert(retJS);
     }
     
-    [_allocations release];
-    _allocations = 0x00;
+    if (_isJSTMsgSend) {
+        // this class is reusable.
+        [_allocations release];
+        _allocations = 0x00;
+        
+        [_runtimeInfo release];
+        _runtimeInfo = 0x00;
+    
+        [_msgSendMethodRuntimeInfo release];
+        _msgSendMethodRuntimeInfo = 0x00;
+        
+        _objcMethod = 0x00;
+    }
+    
+    
     
     return retJS;
 }
