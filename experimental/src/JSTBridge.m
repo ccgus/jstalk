@@ -184,6 +184,7 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
 
 - (JSObjectRef)makeBridgedFunctionWithRuntimeInfo:(JSTRuntimeInfo*)info name:(NSString*)functionName {
     JSTFunction *function = [[JSTFunction alloc] initWithFunctionName:functionName bridge:self runtimeInfo:info];
+    JSTAssert(function);
     objc_setAssociatedObject(function, &JSTRuntimeAssociatedInfoKey, info, OBJC_ASSOCIATION_ASSIGN);
     return JSObjectMake(_jsContext, _bridgedFunctionClass, function);
 }
@@ -267,17 +268,9 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     id object = [self NSObjectForJSObject:jsObject];
     
     if ([object isKindOfClass:[NSArray class]]) {
-#warning add this to the tests:
-        /*
-         for (idx in args) {
-         print("argument " + [args objectAtIndex:idx]);
-         }
-         
-         */
+        
         NSArray *ar = (id)object;
         for (int i = 0; i < [ar count]; i++) {
-            
-            
             JSStringRef jsString = JSStringCreateWithUTF8CString([[NSString stringWithFormat:@"%d", i] UTF8String]);
             JSPropertyNameAccumulatorAddName(propertyNames, jsString);
             JSStringRelease(jsString);  
@@ -285,19 +278,6 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     }
     
     if ([object isKindOfClass:[NSDictionary class]]) {
-
-#warning add a test for this:
-/*
-var d = [NSMutableDictionary dictionary];
-
-d['a'] = 'eh';
-d['b'] = 'beee';
-
-for (var key in d) {
-    print(key + ": " + [d valueForKey:key]);
-}
-*/
-
         NSDictionary *d = (id)object;
         for (id key in [d allKeys]) {
             JSStringRef jsString = JSStringCreateWithUTF8CString([[key description] UTF8String]);

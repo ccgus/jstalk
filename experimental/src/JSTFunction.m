@@ -53,11 +53,13 @@ static void DeallocateClosure(void *closure) {
 - (id)initWithFunctionName:(NSString*)name bridge:(JSTBridge*)bridge runtimeInfo:(JSTRuntimeInfo*)runtimeInfo {
     
     if ((self = [self init])) {
+        
         _callAddress = dlsym(RTLD_DEFAULT, [name UTF8String]);
         
         if (!_callAddress) {
-            debug(@"Can't find the function named '%@', returning nil", name);
+            debug(@"Can't find the function named '%@', returning nil.  Is 'Symbols Hidden by Default' set to YES for the compile options?", name);
             [self release];
+            JSTAssert(NO);
             return nil;
         }
         
@@ -471,158 +473,109 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
 -(ffi_type*)setValue:(void**)argVals atIndex:(int)idx {
     
     JSValueRef argument = _jsArguments[idx];
+    ffi_type *retType   = 0x00;
+    const char *argType = 0x00;
+    BOOL freeArgType = NO;
     
     if (_msgSendMethodRuntimeInfo || (_callAddress == &objc_msgSend)) {
-        
-        void **foo = [self _allocate:(sizeof(void*))];
-        
-        ffi_type *retType = 0x00;
-        
-        char *argType = method_copyArgumentType(_objcMethod, idx);
-        
-        JSTAssert(argType);
-        
-        debug(@"argType: %s at index %d", argType, idx);
-        
-        if (strcmp(argType, @encode(id)) == 0) {
-            *foo = JSTNSObjectFromValue(_bridge, argument);
-            argVals[idx] = foo;
-            retType = &ffi_type_pointer;
-            //debug(@"object at index %d: %@", idx, *foo);
-        }
-        else if (strcmp(argType, @encode(SEL)) == 0) {
-            
-            //debug(@"sel at index %d: %@", idx, NSStringFromSelector(JSTSelectorFromValue(_bridge, argument)));
-            
-            *foo = JSTSelectorFromValue(_bridge, argument);
-            
-            argVals[idx] = foo;
-            retType = &ffi_type_pointer;
-            
-        }
-        else if (strcmp(argType, @encode(BOOL)) == 0) {
-            void **storage = [self _allocate:(sizeof(void*))];
-            *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = storage;
-            retType = &ffi_type_sint8; // is this right?
-        }
-        else if (strcmp(argType, @encode(int32_t)) == 0) {
-            *foo = (void*)((int32_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = foo;
-            retType = &ffi_type_sint32;
-        }
-        else if (strcmp(argType, @encode(uint32_t)) == 0) {
-            void **storage = [self _allocate:(sizeof(void*))];
-            *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = storage;
-            retType = &ffi_type_uint32;
-        }
-        else if (strcmp(argType, @encode(int64_t)) == 0) {
-            void **storage = [self _allocate:(sizeof(void*))];
-            *storage = (void*)((int64_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = storage;
-            retType = &ffi_type_sint64;
-        }
-        else if (strcmp(argType, @encode(uint64_t)) == 0) {
-            void **storage = [self _allocate:(sizeof(void*))];
-            *storage = (void*)((uint64_t)JSTLongFromValue(_bridge, argument));
-            argVals[idx] = storage;
-            retType = &ffi_type_uint64;
-        }
-        else if (strcmp(argType, @encode(float)) == 0) {
-            float **floatStorage = [self _allocate:(sizeof(float*))];
-            *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
-            argVals[idx] = floatStorage;
-            retType = &ffi_type_float;
-        }
-        else if (strcmp(argType, @encode(double)) == 0) {
-            double **floatStorage = [self _allocate:(sizeof(double*))];
-            *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
-            argVals[idx] = floatStorage;
-            retType = &ffi_type_double;
-        }
-        else if (strcmp(argType, @encode(long double)) == 0) {
-            long double **floatStorage = [self _allocate:(sizeof(long double*))];
-            *(long double*)floatStorage = JSTDoubleFromValue(_bridge, argument);
-            //debug(@"*(long double*)floatStorage: %Lf", *(long double*)floatStorage);
-            argVals[idx] = floatStorage;
-            retType = &ffi_type_longdouble;
-        }
-        else {
-            NSLog(@"Unknown argument type at index %d: '%s'", (idx - 2), argType);
-        }
-        
-        free(argType);
-        
-        return retType;
+        argType = method_copyArgumentType(_objcMethod, idx);
+        freeArgType = YES;
     }
-    /*
-    else {
-        
-        if (_runtimeInfo) {
-            if ([_runtimeInfo isVariadic]) {
-                // everything is pointers here...
-                void **foo = [self _allocate:(sizeof(void*))];
-                
-                *foo = JSTNSObjectFromValue(_bridge, argument);
-                argVals[idx] = foo;   
-                return &ffi_type_pointer;
-            }
-            else {
-                
-                #warning refactor this with the crap above.
-                
-                JSTRuntimeInfo *ri = [[_runtimeInfo arguments] objectAtIndex:idx];
-                
-                ffi_type *retType = JSTFFITypeForTypeEncoding([ri typeEncoding]);
-                
-                if (retType == &ffi_type_float) {
-                    float **floatStorage = [self _allocate:(sizeof(float*))];
-                    *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
-                    argVals[idx] = floatStorage;
-                    return retType;
-                }
-                else if (retType == &ffi_type_double) {
-                    double **floatStorage = [self _allocate:(sizeof(double*))];
-                    *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
-                    argVals[idx] = floatStorage;
-                    return retType;
-                }
-                else if (retType == &ffi_type_uint64) {
-                    
-                    uint32_t **storage = [self _allocate:(sizeof(uint32_t*))]; 
-                    
-                    *(uint32_t*)storage = (uint32_t)JSTDoubleFromValue(_bridge, argument);
-                    argVals[idx] = storage;
-                    return retType;
-                }
-                if (retType == &ffi_type_pointer) {
-                    void **foo = [self _allocate:(sizeof(void*))];
-                    
-                    *foo = JSTNSObjectFromValue(_bridge, argument);
-                    argVals[idx] = foo;   
-                    return retType;
-                }
-                else {
-                    
-                    assert(false);
-                }
-                
-                
-                debug(@"typeEncoding: '%@'", [ri typeEncoding]);
-                
-                
-                //*foo = [_bridge NSObjectForJSObject:(JSObjectRef)argument];
-                //return ;
-            }
+    else if (_runtimeInfo) {
+        if ([_runtimeInfo isVariadic]) {
+            // everything is pointers here...
+            argType = @encode(id);
         }
         else {
-            JSTAssert(false);
+            JSTRuntimeInfo *ri = [[_runtimeInfo arguments] objectAtIndex:idx];
+            NSString *encoding = [ri typeEncoding];
+            argType = [encoding UTF8String];
         }
-     }
-     */
+    }
+    else {
+        // what, no type for the arg?  
+        JSTAssert(NO);
+    }
     
-    return 0x00;
+    JSTAssert(argType);
+    
+    debug(@"argType: %s at index %d", argType, idx);
+    
+    if (strcmp(argType, @encode(id)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = JSTNSObjectFromValue(_bridge, argument);
+        argVals[idx] = storage;
+        retType = &ffi_type_pointer;
+        //debug(@"object at index %d: %@", idx, *foo);
+    }
+    else if (strcmp(argType, @encode(SEL)) == 0) {
+        
+        //debug(@"sel at index %d: %@", idx, NSStringFromSelector(JSTSelectorFromValue(_bridge, argument)));
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = JSTSelectorFromValue(_bridge, argument);
+        
+        argVals[idx] = storage;
+        retType = &ffi_type_pointer;
+        
+    }
+    else if (strcmp(argType, @encode(BOOL)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
+        argVals[idx] = storage;
+        retType = &ffi_type_sint8; // is this right?
+    }
+    else if (strcmp(argType, @encode(int32_t)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = (void*)((int32_t)JSTLongFromValue(_bridge, argument));
+        argVals[idx] = storage;
+        retType = &ffi_type_sint32;
+    }
+    else if (strcmp(argType, @encode(uint32_t)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = (void*)((uint32_t)JSTLongFromValue(_bridge, argument));
+        argVals[idx] = storage;
+        retType = &ffi_type_uint32;
+    }
+    else if (strcmp(argType, @encode(int64_t)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = (void*)((int64_t)JSTLongFromValue(_bridge, argument));
+        argVals[idx] = storage;
+        retType = &ffi_type_sint64;
+    }
+    else if (strcmp(argType, @encode(uint64_t)) == 0) {
+        void **storage = [self _allocate:(sizeof(void*))];
+        *storage = (void*)((uint64_t)JSTLongFromValue(_bridge, argument));
+        argVals[idx] = storage;
+        retType = &ffi_type_uint64;
+    }
+    else if (strcmp(argType, @encode(float)) == 0) {
+        float **floatStorage = [self _allocate:(sizeof(float*))];
+        *(float*)floatStorage = (float)JSTDoubleFromValue(_bridge, argument);
+        argVals[idx] = floatStorage;
+        retType = &ffi_type_float;
+    }
+    else if (strcmp(argType, @encode(double)) == 0) {
+        double **floatStorage = [self _allocate:(sizeof(double*))];
+        *(double*)floatStorage = (double)JSTDoubleFromValue(_bridge, argument);
+        argVals[idx] = floatStorage;
+        retType = &ffi_type_double;
+    }
+    else if (strcmp(argType, @encode(long double)) == 0) {
+        long double **floatStorage = [self _allocate:(sizeof(long double*))];
+        *(long double*)floatStorage = JSTDoubleFromValue(_bridge, argument);
+        //debug(@"*(long double*)floatStorage: %Lf", *(long double*)floatStorage);
+        argVals[idx] = floatStorage;
+        retType = &ffi_type_longdouble;
+    }
+    else {
+        NSLog(@"Unknown argument type at index %d: '%s'", (idx - 2), argType);
+    }
+    
+    if (freeArgType) {
+        free((void*)argType);
+    }
+    
+    return retType;
 }
 
 

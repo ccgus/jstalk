@@ -20,3 +20,22 @@ There's a ton of unfinished code laying around, and since I tend to be scatterbr
 ## Random Things for Gus to Fix:
 Oct 23, 2011:
 Hey, mixing TDTokens and JSTPSymbolGroup(s) together in JSTPSymbolGroup's _args array is a really bad idea.  What you need to do is make a common subclass for those two, so you don't have to keep on checking if you're working with a TDToken first in description.
+
+
+
+## Random Test thigns:
+
+Make sure something like this is possible:
+
+for (idx in args) {
+    print("argument " + [args objectAtIndex:idx]);
+}
+
+var d = [NSMutableDictionary dictionary];
+
+d['a'] = 'eh';
+d['b'] = 'beee';
+
+for (var key in d) {
+    print(key + ": " + [d valueForKey:key]);
+}
