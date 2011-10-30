@@ -8,6 +8,10 @@ Notes from Gus, for Gus:
 Oct 29, 2011:
 Hey Gus- you've got the bit where jst_msgSend creates a reusable JSTFuction, and right now you are working on calling plain-jane objc messages.  Since you are caching that JSTFuction, you've got to remember to clear it out after you are done with it.
 
+Ok, that mostly works now, woo!
+
+Currently, you're ignoring the bridge stuff, as it's a bit neutered on 10.7.  Lame!  But, maybe just going with all the runtime stuff is the best way to do things.
+
 Maybe you should cache all calls into objc?
 
 Oct 24, 2011:
