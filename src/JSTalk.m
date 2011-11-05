@@ -75,7 +75,7 @@ static NSMutableArray *JSTalkPluginList;
     [super dealloc];
 }
 
-- (void)loadExtraAtPath:(NSString*)fullPath {
++ (void)loadExtraAtPath:(NSString*)fullPath {
     
     Class pluginClass;
     
@@ -92,6 +92,8 @@ static NSMutableArray *JSTalkPluginList;
             NSLog(@"The class %@ is already loaded, skipping the load of %@", principalClassName, fullPath);
             return;
         }
+        
+        [principalClassName class]; // force loading of it.
         
         NSError *err = 0x00;
         [pluginBundle loadAndReturnError:&err];
@@ -129,7 +131,7 @@ static NSMutableArray *JSTalkPluginList;
     JSTalkPluginList = 0x00;
 }
 
-- (void)loadPlugins {
++ (void)loadPlugins {
     
     // install plugins that were passed via the command line
     int i = 0;
@@ -227,7 +229,7 @@ static NSMutableArray *JSTalkPluginList;
 - (id)executeString:(NSString*)str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
-        [self loadPlugins];
+        [JSTalk loadPlugins];
     }
     
     if (_shouldPreprocess) {

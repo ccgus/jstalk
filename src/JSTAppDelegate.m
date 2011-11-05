@@ -24,7 +24,6 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 
 + (void)initialize {
     
-    
 	NSMutableDictionary *defaultValues 	= [NSMutableDictionary dictionary];
     NSUserDefaults      *defaults 	 	= [NSUserDefaults standardUserDefaults];
     
@@ -55,6 +54,8 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     
     // have all the services menus get updated.
     //NSUpdateDynamicServices();
+    
+    [JSTalk loadPlugins]; // some guys will setup custom UI in the app.
 }
 
 - (IBAction)showPrefs:(id)sender {

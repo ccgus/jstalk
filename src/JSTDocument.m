@@ -44,6 +44,10 @@
     [super dealloc];
 }
 
++ (BOOL)autosavesInPlace {
+    // defaults write org.jstalk.JSTalkEditor autosavesInPlace 1
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"autosavesInPlace"];
+}
 
 - (NSString *)windowNibName {
     return @"JSTDocument";

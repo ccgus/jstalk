@@ -32,6 +32,7 @@
 
 + (void)listen;
 + (void)resetPlugins;
++ (void)loadPlugins;
 + (void)setShouldLoadJSTPlugins:(BOOL)b;
 + (id)application:(NSString*)app;
 + (id)app:(NSString*)app;
