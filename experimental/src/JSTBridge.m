@@ -325,9 +325,6 @@ static const char * JSTRuntimeAssociatedInfoKey = "jstri";
     if (caller == self && info) {
         // it's some sort of bridged stuff we've got runtime info for.
         
-        
-        debug(@"type: %@", NSStringFromJSTType([info jstType]));
-        
         if ([info jstType] == JSTTypeClass) {
             returnJSObject = [self makeJSObjectWithNSObject:NSClassFromString(propertyName) runtimeInfo:info];
         }

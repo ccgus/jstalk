@@ -339,9 +339,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     NSString *sel       = JSTNSObjectFromValue(_bridge, _jsArguments[1]);
     BOOL isClassMethod  = class_isMetaClass(object_getClass(target));
     
-    debug(@"target: %@", target);
-    debug(@"sel: %@", sel);
-    
     JSTRuntimeInfo *instanceInfo = [_bridge runtimeInfoForObject:target];
     if (!instanceInfo) {
         NSString *classString = NSStringFromClass(isClassMethod ? target :[target class]);
@@ -354,22 +351,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     else {
         _msgSendMethodRuntimeInfo = [instanceInfo runtimeInfoForInstanceMethodName:sel];
     }
-    
-    debug(@"_msgSendMethodRuntimeInfo: %@", _msgSendMethodRuntimeInfo);
-    
-    
-    /*
-    if (!_msgSendMethodRuntimeInfo) {
-        [self objcMethod]; // go ahead and cache that guy.
-        
-        if (!_objcMethod) {
-            debug(@"Can't find runtime info for: %c[%@ %@]", isClassMethod ? '+' : '-', target, sel);
-        }
-    }
-    else {
-        //debug(@"Setup to call: %c[%@ %@]", isClassMethod ? '+' : '-', NSStringFromClass(isClassMethod ? target : [target class]), sel);
-    }
-    */
 }
 
 
@@ -499,7 +480,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     
     JSTAssert(argType);
     
-    debug(@"argType: %s at index %d", argType, idx);
+    //debug(@"argType: %s at index %d", argType, idx);
     
     if (strcmp(argType, @encode(id)) == 0) {
         void **storage = [self _allocate:(sizeof(void*))];
@@ -509,14 +490,11 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         //debug(@"object at index %d: %@", idx, *foo);
     }
     else if (strcmp(argType, @encode(SEL)) == 0) {
-        
         //debug(@"sel at index %d: %@", idx, NSStringFromSelector(JSTSelectorFromValue(_bridge, argument)));
         void **storage = [self _allocate:(sizeof(void*))];
         *storage = JSTSelectorFromValue(_bridge, argument);
-        
         argVals[idx] = storage;
         retType = &ffi_type_pointer;
-        
     }
     else if (strcmp(argType, @encode(BOOL)) == 0) {
         void **storage = [self _allocate:(sizeof(void*))];
@@ -568,7 +546,7 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
         retType = &ffi_type_longdouble;
     }
     else {
-        NSLog(@"Unknown argument type at index %d: '%s'", (idx - 2), argType);
+        NSLog(@"Unknown argument type at index %d: '%s'", idx, argType);
     }
     
     if (freeArgType) {
@@ -622,7 +600,6 @@ void JSTFunctionFunction(ffi_cif* cif, void* resp, void** args, void* userdata) 
     void *returnValue;
     
     @try {
-        debug(@"calling");
         ffi_call(&cif, _callAddress, &returnValue, argVals);
     }
     @catch (NSException * e) {
