@@ -10,6 +10,7 @@
 			<key>CFBundleTypeExtensions</key>
 			<array>
 				<string>jstalk</string>
+				<string>js</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>JSTalkDocument.icns</string>
@@ -59,14 +60,14 @@
 	<string>JSTalk Editor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.1</string>
+	<string>1.0.2</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
-	<key>CFBundleShortVersionString</key>
-	<string>1.0.1</string>
 	<key>LSMinimumSystemVersion</key>
 	<string>10.6</string>
 	<key>NSMainNibFile</key>
