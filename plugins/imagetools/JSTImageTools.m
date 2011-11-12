@@ -8,6 +8,7 @@
 
 #import "JSTImageTools.h"
 #import "JSTOpenCLProgram.h"
+#import "JSTCodeSketcher.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation NSImage (JSTExtras)
@@ -226,6 +227,7 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
     [imageView setNeedsDisplay:YES];
     
 }
+
 
 static BOOL JSTImageToolsCISWRender = NO;
 + (void)setShouldUseCISofwareRenderer:(BOOL)b {
