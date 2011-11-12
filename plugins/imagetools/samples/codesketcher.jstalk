@@ -1,0 +1,16 @@
+var sketcher = [JSTCodeSketcher codeSketcherWithName:"Test!"];
+
+sketcher.draw = function() {
+    
+    [[NSColor redColor] set];
+    [NSBezierPath fillRect:NSMakeRect(0, 0, 150, 100)];
+    
+    
+    [[NSColor blueColor] set];
+    
+    [NSBezierPath strokeRect:NSMakeRect([sketcher mouseX] - 10.5,
+                                        [sketcher mouseY] - 10.5, 20, 20)];
+    
+};
+
+sketcher.framesPerSecond = 30;
