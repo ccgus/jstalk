@@ -16,7 +16,7 @@
 		CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC32EFD112034FDF0090827E /* OpenCL.framework */; };
 		CC32EFD5120350040090827E /* JSTOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC32EFD4120350040090827E /* JSTOpenCLProgram.m */; };
 		CC34F6441209F5FB00DE493B /* OpenCL.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */; };
-		CCC6E7D0146FA9C1008E4DED /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */; };
+		CCC6E7D5146FAA7A008E4DED /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */; };
 		CCC9CAB91209F1C6007EED57 /* JSTQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */; };
 		CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */; };
 		CCCFCCAE13494A7400752BB0 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA513494A7400752BB0 /* ccgus.jpg */; };
@@ -50,7 +50,7 @@
 		CC32EFD3120350040090827E /* JSTOpenCLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCLProgram.h; sourceTree = "<group>"; };
 		CC32EFD4120350040090827E /* JSTOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTOpenCLProgram.m; sourceTree = "<group>"; };
 		CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OpenCL.bridgesupport; sourceTree = "<group>"; };
-		CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = "../../../../../../../../builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks/JSTalk.framework"; sourceTree = "<group>"; };
+		CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = ../../../../../../../../private/tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<group>"; };
 		CCC9CAB71209F1C6007EED57 /* JSTQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTQuickCIFilter.h; sourceTree = "<group>"; };
 		CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTQuickCIFilter.m; sourceTree = "<group>"; };
 		CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -77,7 +77,7 @@
 				CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */,
 				CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */,
 				CC03335E146DF17600CDE6FD /* JavaScriptCore.framework in Frameworks */,
-				CCC6E7D0146FA9C1008E4DED /* JSTalk.framework in Frameworks */,
+				CCC6E7D5146FAA7A008E4DED /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +146,7 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */,
+				CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */,
 				CC03335D146DF17600CDE6FD /* JavaScriptCore.framework */,
 				CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
@@ -289,6 +289,7 @@
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -318,6 +319,7 @@
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks\"",
+					/tmp/jstalk/build/Release,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = JSTOpenCL_Prefix.pch;
