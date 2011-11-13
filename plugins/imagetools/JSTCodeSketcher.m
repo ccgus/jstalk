@@ -89,7 +89,8 @@
     }
     
     CGColorSpaceRef cs = [[[NSScreen mainScreen] colorSpace] CGColorSpace];
-    _context = CGBitmapContextCreate(0x00, mySize.width, mySize.height, 8, 0, cs, kCGImageAlphaPremultipliedLast);
+    // using float components because it helps with premultiplication.
+    _context = CGBitmapContextCreate(0x00, mySize.width, mySize.height, 32, 0, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast);
     
     [self setNsContext:[NSGraphicsContext graphicsContextWithGraphicsPort:_context flipped:_flipped]];
     
@@ -368,6 +369,9 @@
 }
 
 - (void)fillWithColor:(NSColor*)color {
+    
+    [color set];
+    NSRectFillUsingOperation([self bounds], NSCompositeSourceOver);
     
     /*
     CGContextSaveGState([self context]);
