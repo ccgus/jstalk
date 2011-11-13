@@ -60,6 +60,8 @@ static NSMutableArray *JSTalkPluginList;
 
 - (void)dealloc {
     
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if ([_jsController ctx]) {
@@ -198,8 +200,20 @@ static NSMutableArray *JSTalkPluginList;
             }
         }
     }
-    
-    
+}
+
+NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
+
++ (JSTalk*)currentJSTalk {
+    return [[[NSThread currentThread] threadDictionary] objectForKey:currentJSTalkThreadIdentifier];
+}
+
+- (void)pushAsCurrentJSTalk {
+    [[[NSThread currentThread] threadDictionary] setObject:self forKey:currentJSTalkThreadIdentifier];
+}
+
+- (void)popAsCurrentJSTalk {
+    [[[NSThread currentThread] threadDictionary] removeObjectForKey:currentJSTalkThreadIdentifier];
 }
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
@@ -237,6 +251,7 @@ static NSMutableArray *JSTalkPluginList;
     }
     
     [self pushObject:self withName:@"jstalk"];
+    [self pushAsCurrentJSTalk];
     
     JSValueRef resultRef = 0x00;
     id resultObj = 0x00;
@@ -257,6 +272,8 @@ static NSMutableArray *JSTalkPluginList;
     if (resultRef) {
         [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
+    
+    [self popAsCurrentJSTalk];
     
     //[self deleteObjectWithName:@"jstalk"];
     

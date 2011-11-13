@@ -10,16 +10,24 @@
 
 @interface JSTCodeSketcher()
 - (void)setupWindow;
+- (void)resizeContext;
 @end
 
 @implementation JSTCodeSketcher
 
 @synthesize jstalk = _jstalk;
-@synthesize flipped = _flipped;
-
-static NSMutableDictionary *JSTSketchers = 0x00;
+@synthesize mouseLocation = _mouseLocation;
+@synthesize pmouseLocation = _pmouseLocation;
+@synthesize mousePressed = _mousePressed;
+@synthesize lookupName = _lookupName;
+@synthesize frameRate = _frameRate;
+@synthesize nsContext = _nsContext;
+@synthesize size = _size;
 
 + (id)codeSketcherWithName:(NSString*)name {
+    
+    static NSMutableDictionary *JSTSketchers = 0x00;
+    
     if (!JSTSketchers) {
         JSTSketchers = [[NSMutableDictionary dictionary] retain];
     }
@@ -27,7 +35,8 @@ static NSMutableDictionary *JSTSketchers = 0x00;
     JSTCodeSketcher *cs = [JSTSketchers objectForKey:name];
     
     if (!cs) {
-        cs = [[JSTCodeSketcher new] autorelease];
+        cs = [[[JSTCodeSketcher alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)] autorelease];
+        [cs setLookupName:name];
         [JSTSketchers setObject:cs forKey:name];
     }
     
@@ -43,19 +52,47 @@ static NSMutableDictionary *JSTSketchers = 0x00;
 }
 
 
-- (id)init {
-    self = [super init];
+- (id)initWithFrame:(NSRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         _flipped = YES;
+        _size = NSMakeSize(400, 800);
     }
     return self;
 }
 
+
 - (void)dealloc {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     
-    _unretainedSketcherView = 0x00;
+    [_lookupName release];
+    
+    if (_context) {
+        CGContextRelease(_context);
+    }
+    [_nsContext release];
     
     [super dealloc];
+}
+
+- (void)resizeContext {
+    
+    NSSize mySize = [self bounds].size;
+    
+    if (_context) {
+        
+        if (CGBitmapContextGetWidth(_context) == mySize.width && CGBitmapContextGetHeight(_context) == mySize.height) {
+            return;
+        }
+        
+        CGContextRelease(_context);
+    }
+    
+    CGColorSpaceRef cs = [[[NSScreen mainScreen] colorSpace] CGColorSpace];
+    _context = CGBitmapContextCreate(0x00, mySize.width, mySize.height, 8, 0, cs, kCGImageAlphaPremultipliedLast);
+    
+    [self setNsContext:[NSGraphicsContext graphicsContextWithGraphicsPort:_context flipped:_flipped]];
+    
 }
 
 - (void)stop {
@@ -64,175 +101,300 @@ static NSMutableDictionary *JSTSketchers = 0x00;
     [_redrawTimer release];
     _redrawTimer = 0x00;
     
+    if (_setupFunction) {
+        JSValueUnprotect([[_jstalk jsController] ctx], _drawFunction);
+    }
+    
     if (_drawFunction) {
         JSValueUnprotect([[_jstalk jsController] ctx], _drawFunction);
+    }
+    
+    if (_mouseUpFunction) {
+        JSValueUnprotect([[_jstalk jsController] ctx], _mouseUpFunction);
+    }
+    
+    if (_mouseDownFunction) {
+        JSValueUnprotect([[_jstalk jsController] ctx], _mouseDownFunction);
+    }
+    
+    if (_mouseMoveFunction) {
+        JSValueUnprotect([[_jstalk jsController] ctx], _mouseMoveFunction);
+    }
+    
+    if (_mouseDragFunction) {
+        JSValueUnprotect([[_jstalk jsController] ctx], _mouseDragFunction);
     }
 }
 
 - (void)start {
     
+    if (_setupFunction) {
+        [[_jstalk jsController] callJSFunction:_setupFunction withArguments:0x00];
+    }
+    
     [self setupWindow];
     
-    [_unretainedSketcherView setNeedsDisplay:YES];
+    NSSize newSize = [_mwindow frameRectForContentRect:NSMakeRect(0, 0, _size.width, _size.height)].size;
     
-    if (_fps > 0) {
-        _redrawTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0 / _fps) target:self selector:@selector(fpsTimerHit:) userInfo:0x00 repeats:YES] retain];
+    NSRect newFrame = [_mwindow frame];
+    newFrame.size = newSize;
+    
+    [_mwindow setFrame:newFrame display:YES];
+    
+    [self resizeContext];
+    
+    [self setNeedsDisplay:YES];
+    
+    if (_frameRate > 60) {
+        _frameRate = 60;
+        NSLog(@"FPS set too high, limiting to 60");
+    }
+    
+    if (_frameRate > 0) {
+        _redrawTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0 / _frameRate) target:self selector:@selector(fpsTimerHit:) userInfo:0x00 repeats:YES] retain];
     }
 }
 
 - (void)fpsTimerHit:(NSTimer*)timer {
-    [_unretainedSketcherView setNeedsDisplay:YES];
-}
-
-- (void)setFramesPerSecond:(CGFloat)f {
-    
-    if (_fps > 60) {
-        _fps = 60;
-        NSLog(@"FPS set too high, limiting to 60");
-    }
-    
-    _fps = f;
-}
-
-- (void)setDraw:(JSValueRefAndContextRef)ref {
-    
-    _drawFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _drawFunction);
-}
-
-- (void)setMouseMove:(JSValueRefAndContextRef)ref {
-    _mouseMovedFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _mouseMovedFunction);
-}
-
-- (NSRect)viewBounds {
-    return [_unretainedSketcherView bounds];
-}
-
-- (void)callMouseMovedWithEvent:(NSEvent*)event {
-    if (_mouseMovedFunction) {
-        [[_jstalk jsController] callJSFunction:_mouseMovedFunction withArguments:[NSArray arrayWithObject:event]];
-    }
-}
-
-- (void)callDrawWithRect:(NSRect)r {
-    if (_drawFunction) {
-        
-        [[NSGraphicsContext currentContext] saveGraphicsState];
-        
-        [[_jstalk jsController] callJSFunction:_drawFunction withArguments:[NSArray arrayWithObject:[JSTFakeRect rectWithRect:r]]];
-        
-        [[NSGraphicsContext currentContext] restoreGraphicsState];
-    }
+    [self setNeedsDisplay:YES];
 }
 
 - (void)setupWindow {
-    if (!_window) {
+    if (!_mwindow) {
         
         CGFloat bottomBorderHeight = 20;
         
-        NSRect winRect = NSMakeRect(0, 0, 800, 400);
+        NSRect winRect = NSMakeRect(0, 0, _size.width, _size.height);
         NSRect extent = winRect;
         
         winRect.size.height += bottomBorderHeight;
         
         
-        _window = [[NSWindow alloc] initWithContentRect:winRect
+        _mwindow = [[NSWindow alloc] initWithContentRect:winRect
                                          styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
                                            backing:NSBackingStoreBuffered
                                              defer:NO];
         
-        [_window center];
-        [_window setShowsResizeIndicator:YES];
-        [_window makeKeyAndOrderFront:self];
-        [_window setReleasedWhenClosed:YES]; // we retain it in the dictionary.
-        [_window setContentBorderThickness:bottomBorderHeight forEdge:NSMinYEdge];
-        [_window setPreferredBackingLocation:NSWindowBackingLocationMainMemory];
+        [_mwindow center];
+        [_mwindow setShowsResizeIndicator:YES];
+        [_mwindow makeKeyAndOrderFront:self];
+        [_mwindow setReleasedWhenClosed:YES]; // we retain it in the dictionary.
+        [_mwindow setContentBorderThickness:bottomBorderHeight forEdge:NSMinYEdge];
+        [_mwindow setPreferredBackingLocation:NSWindowBackingLocationMainMemory];
         
         
-        [_window setAcceptsMouseMovedEvents:YES];
+        [_mwindow setAcceptsMouseMovedEvents:YES];
         
         extent.origin.y += bottomBorderHeight;
+        [self setFrame:extent];
         
-        JSTCodeSketcherView *iv = [[[JSTCodeSketcherView alloc] initWithFrame:extent] autorelease];
-        [iv setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
-        [[_window contentView] addSubview:iv];
-        [_window setTitle:@"Code Sketcher!"];
+        [self setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
+        [[_mwindow contentView] addSubview:self];
+        [_mwindow setTitle:_lookupName];
         
-        [_window makeFirstResponder:iv];
+        [_mwindow makeFirstResponder:self];
         
-        [iv setSketcher:self];
-        
-        _unretainedSketcherView = iv;
-        
-        [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:_window queue:nil usingBlock:^(NSNotification *arg1) {
+        [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:_mwindow queue:nil usingBlock:^(NSNotification *arg1) {
             
             dispatch_async(dispatch_get_main_queue(),^ {
-                
-                [_unretainedSketcherView setSketcher:0x00];
-                
-                _unretainedSketcherView = 0x00;
                 
                 debug(@"Wow, we're just leaking here.");
             });
         }];
+        
+        NSPoint p = [NSEvent mouseLocation];
+        
+        p = [_mwindow convertScreenToBase:p];
+        _mouseLocation = [self convertPoint:p fromView:nil];
     }
 }
 
-- (CGFloat)mouseX {
-    
-    NSPoint p = [NSEvent mouseLocation];
-    
-    p = [_window convertScreenToBase:p];
-    p = [_unretainedSketcherView convertPoint:p fromView:nil];
-    
-    return p.x;
+
+- (void)pushContext {
+    [NSGraphicsContext saveGraphicsState];
+    [NSGraphicsContext setCurrentContext:_nsContext];
+    CGContextSaveGState(_context);
 }
 
-- (CGFloat)mouseY {
-    NSPoint p = [NSEvent mouseLocation];
-    
-    p = [_window convertScreenToBase:p];
-    p = [_unretainedSketcherView convertPoint:p fromView:nil];
-    
-    return p.y;
-}
-
-@end
-
-
-@implementation JSTCodeSketcherView
-@synthesize sketcher = _sketcher;
-
-- (void)dealloc {
-    [_sketcher release];
-    [super dealloc];
-}
-
-- (id)initWithFrame:(NSRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        
-        
-    }
-    return self;
+- (void)popContext {
+    CGContextRestoreGState(_context);
+    [NSGraphicsContext restoreGraphicsState];
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
     
-    [[NSColor whiteColor] set];
-    NSRectFill(dirtyRect);
+    if (!_context) {
+        [self resizeContext];
+    }
     
-    [_sketcher callDrawWithRect:dirtyRect];
+    if (_drawFunction) {
+        [self pushContext];
+        [[_jstalk jsController] callJSFunction:_drawFunction withArguments:0x00];
+        [self popContext];
+    }
+    
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
+    CGContextRef screenContext = [[NSGraphicsContext currentContext] graphicsPort];
+    
+    CGImageRef img = CGBitmapContextCreateImage(_context);
+    CGContextDrawImage(screenContext, [self bounds], img);
+    CGImageRelease(img);
+}
+
+- (void)viewDidEndLiveResize {
+    [self resizeContext];
+}
+
+- (void)setSetup:(JSValueRefAndContextRef)ref {
+    _setupFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _setupFunction);
+}
+
+- (void)setDraw:(JSValueRefAndContextRef)ref {
+    _drawFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _drawFunction);
+}
+
+- (void)setMouseMove:(JSValueRefAndContextRef)ref {
+    _mouseMoveFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _mouseMoveFunction);
+}
+
+- (void)setMouseUp:(JSValueRefAndContextRef)ref {
+    _mouseUpFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _mouseUpFunction);
+}
+
+- (void)setMouseDown:(JSValueRefAndContextRef)ref {
+    _mouseDownFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _mouseDownFunction);
+}
+
+- (void)setMouseDrag:(JSValueRefAndContextRef)ref {
+    _mouseDragFunction = ref.value;
+    JSValueProtect([[_jstalk jsController] ctx], _mouseDragFunction);
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    _mousePressed = YES;
+    
+    _pmouseLocation = _mouseLocation;
+    _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];;
+    
+    if (_mouseDownFunction) {
+        [self pushContext];
+        [[_jstalk jsController] callJSFunction:_mouseDownFunction withArguments:[NSArray arrayWithObject:event]];
+        [self popContext];
+        [self setNeedsDisplay:YES];
+    }
+}
+
+- (void)mouseUp:(NSEvent *)event {
+    _mousePressed = NO;
+    _pmouseLocation = _mouseLocation;
+    _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
+    
+    if (_mouseUpFunction) {
+        [self pushContext];
+        [[_jstalk jsController] callJSFunction:_mouseUpFunction withArguments:[NSArray arrayWithObject:event]];
+        [self popContext];
+        [self setNeedsDisplay:YES];
+    }
+}
+
+- (void)mouseDragged:(NSEvent *)event {
+    
+    _pmouseLocation = _mouseLocation;
+    _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
+    
+    if (_mouseDragFunction) {
+        [self pushContext];
+        [[_jstalk jsController] callJSFunction:_mouseDragFunction withArguments:[NSArray arrayWithObject:event]];
+        [self popContext];
+        [self setNeedsDisplay:YES];
+    }
 }
 
 - (void)mouseMoved:(NSEvent *)event {
-    [_sketcher callMouseMovedWithEvent:event];
+    
+    _pmouseLocation = _mouseLocation;
+    _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
+    
+    if (_mouseMoveFunction) {
+        [self pushContext];
+        [[_jstalk jsController] callJSFunction:_mouseMoveFunction withArguments:[NSArray arrayWithObject:event]];
+        [self popContext];
+        [self setNeedsDisplay:YES];
+    }
+    
 }
 
 - (BOOL)isFlipped {
-    return [_sketcher isFlipped];
+    return _flipped;
 }
+
+- (void)setFlipped:(BOOL)flag {
+    _flipped = flag;
+}
+
+- (void)translateX:(CGFloat)x Y:(CGFloat)y {
+    
+    CGContextRef ctx = [[NSGraphicsContext currentContext] graphicsPort];
+    
+    CGContextTranslateCTM(ctx, x, y);
+}
+
+
+- (void)copy:(id)sender {
+    
+    NSImage *img = [[NSImage alloc] initWithSize:[self bounds].size];
+    [img lockFocus];
+    
+    [self drawRect:[self bounds]];
+    
+    [img unlockFocus];
+    
+    NSPasteboard *pboard = [NSPasteboard generalPasteboard];
+    [pboard declareTypes:[NSArray arrayWithObjects:(id)kUTTypeTIFF, nil] owner:nil];
+    
+    [pboard setData:[img TIFFRepresentation] forType:(id)kUTTypeTIFF];
+}
+
+- (CGContextRef)context {
+    if (!_context) {
+        [self resizeContext];
+    }
+    
+    return _context;
+}
+
+- (void)fillWithColor:(NSColor*)color {
+    
+    /*
+    CGContextSaveGState([self context]);
+    
+    CGColorRef c = JSTCGColorCreateFromNSColor(color);
+    
+    CGContextSetFillColorWithColor([self context], c);
+    
+    CGColorRelease(c);
+    
+    CGContextFillRect([self context], [self bounds]);
+    
+    CGContextRestoreGState([self context]);
+    */
+}
+
+- (void)clear {
+    CGContextClearRect([self context], [self bounds]);
+}
+
+- (void)update {
+    [self setNeedsDisplay:YES];
+}
+
+
 
 @end
 
@@ -273,3 +435,14 @@ static NSMutableDictionary *JSTSketchers = 0x00;
 
 @end
 
+
+
+CGColorRef JSTCGColorCreateFromNSColor(NSColor *c) {
+    CGColorSpaceRef colorSpace = [[c colorSpace] CGColorSpace];
+    NSInteger componentCount = [c numberOfComponents];
+    CGFloat *components = (CGFloat *)calloc(componentCount, sizeof(CGFloat));
+    [c getComponents:components];
+    CGColorRef color = CGColorCreate(colorSpace, components);
+    free((void*)components);
+    return color;
+}

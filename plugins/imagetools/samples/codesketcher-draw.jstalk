@@ -1,0 +1,31 @@
+var sketcher = [JSTCodeSketcher codeSketcherWithName:"Draw"];
+
+sketcher.setup = function() {
+    [sketcher setSize:NSMakeSize(600, 300)];
+    [sketcher clear];
+};
+
+sketcher.mouseDown = function() {
+    // reset our points
+    m1 = m2 = m3 = m4 = null;
+};
+
+sketcher.mouseDrag = function() {
+    
+    var m0 = [sketcher mouseLocation];
+    
+    if (m4) {
+        [[NSColor colorWithCalibratedWhite:0 alpha:.1] set];
+        
+        [NSBezierPath strokeLineFromPoint:m0 toPoint:m4]
+        [NSBezierPath strokeLineFromPoint:m1 toPoint:m4]
+        [NSBezierPath strokeLineFromPoint:m2 toPoint:m4]
+        [NSBezierPath strokeLineFromPoint:m3 toPoint:m4]
+    }
+    
+    m4 = m3;
+    m3 = m2;
+    m2 = m1;
+    m1 = m0;
+};
+

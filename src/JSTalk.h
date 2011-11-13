@@ -36,5 +36,6 @@
 + (void)setShouldLoadJSTPlugins:(BOOL)b;
 + (id)application:(NSString*)app;
 + (id)app:(NSString*)app;
++ (JSTalk*)currentJSTalk;
 
 @end

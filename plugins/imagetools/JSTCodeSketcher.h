@@ -9,55 +9,58 @@
 #import <Foundation/Foundation.h>
 #import <JSTalk/JSTalk.h>
 
-@class JSTCodeSketcherView;
-
-@interface JSTCodeSketcher : NSObject {
+@interface JSTCodeSketcher : NSView {
     
     JSTalk *_jstalk;
     
     JSValueRef _drawFunction;
     JSValueRef _setupFunction;
-    JSValueRef _mouseMovedFunction;
+    JSValueRef _mouseMoveFunction;
+    JSValueRef _mouseUpFunction;
+    JSValueRef _mouseDownFunction;
+    JSValueRef _mouseDragFunction;
     
-    CGFloat _fps;
+    CGFloat _frameRate;
     
-    NSWindow *_window;
-    
-    
-    JSTCodeSketcherView *_unretainedSketcherView;
+    NSWindow *_mwindow;
     
     BOOL _flipped;
+    
+    NSString *_lookupName;
     
     NSTimer *_redrawTimer;
     
     CGContextRef _context;
+    NSGraphicsContext *_nsContext;
+    
+    // Processing type stuff.
+    NSPoint _mouseLocation;
+    NSPoint _pmouseLocation;
+    BOOL _mousePressed;
+    NSSize _size;
+    
+    
 }
 
+@property (assign) CGFloat frameRate;
 @property (retain) JSTalk *jstalk;
-@property (assign, getter=isFlipped) BOOL flipped;
-
+@property (assign) NSPoint mouseLocation;
+@property (assign) NSPoint pmouseLocation;
+@property (assign, getter=isMousePressed) BOOL mousePressed;
+@property (retain) NSString *lookupName;
+@property (retain) NSGraphicsContext *nsContext;
+@property (assign) NSSize size;
 - (void)stop;
 - (void)start;
 
-- (void)setFramesPerSecond:(CGFloat)f;
-
 - (void)setDraw:(JSValueRefAndContextRef)ref;
 - (void)setMouseMove:(JSValueRefAndContextRef)ref;
-- (void)callDrawWithRect:(NSRect)r;
+- (void)setMouseUp:(JSValueRefAndContextRef)ref;
+- (void)setMouseDown:(JSValueRefAndContextRef)ref;
+- (void)mouseDrag:(JSValueRefAndContextRef)ref;
+
 
 @end
-
-
-
-@interface JSTCodeSketcherView : NSView {
-    JSTCodeSketcher *_sketcher;
-}
-
-@property (retain) JSTCodeSketcher *sketcher;
-
-@end
-
-
 
 
 @interface JSTFakePoint : NSObject {
@@ -85,3 +88,5 @@
 @property (retain) JSTFakeSize *size;
 + (id)rectWithRect:(NSRect)rect;
 @end
+
+CGColorRef JSTCGColorCreateFromNSColor(NSColor *c);
