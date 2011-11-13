@@ -60,8 +60,6 @@ static NSMutableArray *JSTalkPluginList;
 
 - (void)dealloc {
     
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     if ([_jsController ctx]) {

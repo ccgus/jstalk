@@ -57,7 +57,7 @@
 - (void)setMouseMove:(JSValueRefAndContextRef)ref;
 - (void)setMouseUp:(JSValueRefAndContextRef)ref;
 - (void)setMouseDown:(JSValueRefAndContextRef)ref;
-- (void)mouseDrag:(JSValueRefAndContextRef)ref;
+- (void)setMouseDrag:(JSValueRefAndContextRef)ref;
 
 
 @end

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C167DFE841241C02AAC07 /* InfoPlist.strings */; };
 		8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */; };
-		CC03335C146DF15C00CDE6FD /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC03335B146DF15C00CDE6FD /* JSTalk.framework */; };
 		CC03335E146DF17600CDE6FD /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC03335D146DF17600CDE6FD /* JavaScriptCore.framework */; };
 		CC033365146DF31800CDE6FD /* JSTCodeSketcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC033364146DF31800CDE6FD /* JSTCodeSketcher.m */; };
 		CC32EF6412034B230090827E /* JSTImageTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CC32EF6312034B230090827E /* JSTImageTools.m */; };
@@ -17,6 +16,7 @@
 		CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC32EFD112034FDF0090827E /* OpenCL.framework */; };
 		CC32EFD5120350040090827E /* JSTOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC32EFD4120350040090827E /* JSTOpenCLProgram.m */; };
 		CC34F6441209F5FB00DE493B /* OpenCL.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */; };
+		CCC6E7D0146FA9C1008E4DED /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */; };
 		CCC9CAB91209F1C6007EED57 /* JSTQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */; };
 		CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */; };
 		CCCFCCAE13494A7400752BB0 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA513494A7400752BB0 /* ccgus.jpg */; };
@@ -38,7 +38,6 @@
 		1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		8D5B49B6048680CD000E48DA /* ImageTools.jstplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageTools.jstplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC03335B146DF15C00CDE6FD /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSTalk.framework; sourceTree = "<group>"; };
 		CC03335D146DF17600CDE6FD /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		CC033363146DF31800CDE6FD /* JSTCodeSketcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTCodeSketcher.h; sourceTree = "<group>"; };
 		CC033364146DF31800CDE6FD /* JSTCodeSketcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTCodeSketcher.m; sourceTree = "<group>"; };
@@ -51,6 +50,7 @@
 		CC32EFD3120350040090827E /* JSTOpenCLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCLProgram.h; sourceTree = "<group>"; };
 		CC32EFD4120350040090827E /* JSTOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTOpenCLProgram.m; sourceTree = "<group>"; };
 		CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OpenCL.bridgesupport; sourceTree = "<group>"; };
+		CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = "../../../../../../../../builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks/JSTalk.framework"; sourceTree = "<group>"; };
 		CCC9CAB71209F1C6007EED57 /* JSTQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTQuickCIFilter.h; sourceTree = "<group>"; };
 		CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTQuickCIFilter.m; sourceTree = "<group>"; };
 		CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -76,8 +76,8 @@
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */,
 				CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */,
-				CC03335C146DF15C00CDE6FD /* JSTalk.framework in Frameworks */,
 				CC03335E146DF17600CDE6FD /* JavaScriptCore.framework in Frameworks */,
+				CCC6E7D0146FA9C1008E4DED /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,8 +146,8 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CCC6E7CF146FA9C1008E4DED /* JSTalk.framework */,
 				CC03335D146DF17600CDE6FD /* JavaScriptCore.framework */,
-				CC03335B146DF15C00CDE6FD /* JSTalk.framework */,
 				CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
 				CC32EFD112034FDF0090827E /* OpenCL.framework */,
@@ -288,6 +288,7 @@
 					"$(inherited)",
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
+					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -295,6 +296,7 @@
 				GCC_PREFIX_HEADER = JSTOpenCL_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
 				SDKROOT = macosx;
@@ -315,11 +317,13 @@
 					"$(inherited)",
 					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug\"",
 					"\"$(SRCROOT)\"",
+					"\"/builds/jstalk-dphbftdevinaiygrzonxxbjasmzc/Build/Products/Debug/JSTalk Editor.app/Contents/Frameworks\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = JSTOpenCL_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
 				SDKROOT = macosx;

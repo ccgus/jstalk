@@ -233,8 +233,6 @@
         [self popContext];
     }
     
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
     CGContextRef screenContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     CGImageRef img = CGBitmapContextCreateImage(_context);

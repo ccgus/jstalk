@@ -1200,6 +1200,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = res/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = "JSTalk Editor";
@@ -1217,6 +1218,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
 				INFOPLIST_FILE = res/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_LDFLAGS = "-lffi";
 				PRODUCT_NAME = "JSTalk Editor";
 			};
@@ -1277,7 +1279,7 @@
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_SHADOW = YES;
 				INFOPLIST_FILE = "res/JSTalkFramework-Info.plist";
-				INSTALL_PATH = "@loader_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
 					"-lffi",
@@ -1309,7 +1311,7 @@
 				GCC_WARN_MISSING_PARENTHESES = YES;
 				GCC_WARN_SHADOW = YES;
 				INFOPLIST_FILE = "res/JSTalkFramework-Info.plist";
-				INSTALL_PATH = "@loader_path/../Frameworks";
+				INSTALL_PATH = "@rpath";
 				OTHER_LDFLAGS = (
 					"-framework",
 					Foundation,
