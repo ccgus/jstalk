@@ -977,7 +977,12 @@ static NSMutableDictionary* typeEncodings = nil;
 #else
 	id type = [[rootElement attributeForName:@"type"] stringValue];
 #endif
-	[xmlDocument release];
+	
+    // releasing xmlDocument seems to mess things up with this guy later on (thank you zombies)
+    [[type retain] autorelease];
+    
+    [xmlDocument release];
+    
 	return	type;
 }
 
