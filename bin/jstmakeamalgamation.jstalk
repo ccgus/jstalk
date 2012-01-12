@@ -1,0 +1,260 @@
+#!/usr/bin/env jstalk
+
+var fm = [NSFileManager defaultManager];
+var baseDir = [[[NSProcessInfo processInfo] environment] objectForKey:"PWD"];
+srcDir = baseDir + "/src/";
+
+function getFile(path) {
+    
+    var s = [NSString stringWithContentsOfFile:(srcDir + path) encoding:NSUTF8StringEncoding error:null]
+    
+    
+    if (!s) {
+        s = [NSString stringWithContentsOfFile:(baseDir + "/jscocoa/JSCocoa/" + path) encoding:NSUTF8StringEncoding error:null]
+    }
+    
+    if (!s) {
+        print("WHOA WHOA WHOA COULDN'T FIND " + path)
+    }
+    
+    return s;
+}
+
+function remove(s, r) {
+    [s replaceOccurrencesOfString:r withString:'' options:0 range:NSMakeRange(0, [s length])]
+}
+
+function replace(s, a, b) {
+    [s replaceOccurrencesOfString:a withString:b options:0 range:NSMakeRange(0, [s length])]
+}
+
+function removeSecondOccur(s, r) {
+
+    var firstRange = [s rangeOfString:r];
+    
+    var newRange = firstRange;
+    newRange.location += [r length];
+    newRange.length = [s length] - newRange.location;
+    
+    
+    [s replaceOccurrencesOfString:r withString:'' options:0 range:newRange]
+}
+
+
+
+function makeParseKit() {
+    
+    var headers = [NSMutableString string];
+    var implementations = [NSMutableString string];
+    
+    var files = ['TDTokenizer', 'TDReader', 'TDTokenizerState', 'TDQuoteState', 'TDMultiLineCommentState', 'TDCommentState', 'TDSymbolState', 'TDNumberState', 'TDWhitespaceState', 'TDWordState',
+                 'TDSingleLineCommentState', 'TDToken', 'TDSymbolNode', 'TDSymbolRootNode']
+    
+    for (fileIdx in files) {
+        file = files[fileIdx];
+        
+        var hFile = file + ".h"
+        var mFile = file + ".m"
+        
+        var hcontents = [NSMutableString stringWithContentsOfFile:(baseDir + "/src/todparsekit/" + hFile) encoding:NSUTF8StringEncoding error:null]
+        var mcontents = [NSMutableString stringWithContentsOfFile:(baseDir + "/src/todparsekit/" + mFile) encoding:NSUTF8StringEncoding error:null]
+        
+        
+        if (file === 'TDCommentState') {
+            replace(hcontents, "@end", "@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@property (nonatomic, retain) TDSingleLineCommentState *singleLineState;\n@property (nonatomic, retain) TDMultiLineCommentState *multiLineState;\n@end");
+        }
+        
+        if (file === 'TDMultiLineCommentState') {
+            
+            replace(hcontents, "@end", """- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@property (nonatomic, retain) NSMutableArray *startSymbols;
+@property (nonatomic, retain) NSMutableArray *endSymbols;
+@property (nonatomic, copy) NSString *currentStartSymbol;
+@end""");
+
+        }
+        
+        
+        [headers appendString:hcontents];
+        [headers appendString:"\n"];
+        
+        [implementations appendString:mcontents];
+        [implementations appendString:"\n"];
+        
+    }
+    
+    // special cases.
+    remove(implementations, '@interface TDTokenizerState ()\n- (void)reset;\n- (void)append:(NSInteger)c;\n- (NSString *)bufferedString;\n@end');
+    remove(implementations, '@interface TDTokenizerState ()\n- (void)reset;\n- (void)append:(NSInteger)c;\n- (void)appendString:(NSString *)s;\n- (NSString *)bufferedString;\n@end');
+    
+    remove(implementations, '@interface TDCommentState ()\n@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@end');
+    remove(implementations, '@interface TDCommentState ()\n@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@property (nonatomic, retain) TDSingleLineCommentState *singleLineState;\n@property (nonatomic, retain) TDMultiLineCommentState *multiLineState;\n@end')
+    
+    remove(implementations, """@interface TDMultiLineCommentState ()
+- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@property (nonatomic, retain) NSMutableArray *startSymbols;
+@property (nonatomic, retain) NSMutableArray *endSymbols;
+@property (nonatomic, copy) NSString *currentStartSymbol;
+@end""")
+    
+    remove(implementations, "@interface TDSymbolNode ()\n@property (nonatomic, retain) NSMutableDictionary *children;\n@end");
+    
+    
+    
+    /*
+    replace(implementations, """@interface TDMultiLineCommentState ()
+- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@property (nonatomic, retain) NSMutableArray *startSymbols;
+@property (nonatomic, retain) NSMutableArray *endSymbols;
+@property (nonatomic, copy) NSString *currentStartSymbol;
+@end""",
+"""@interface TDMultiLineCommentState ()
+- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@end""");
+    */
+    
+    removeSecondOccur(implementations, @'@interface TDSingleLineCommentState ()\n- (void)addStartSymbol:(NSString *)start;\n- (void)removeStartSymbol:(NSString *)start;\n@property (nonatomic, retain) NSMutableArray *startSymbols;\n@property (nonatomic, retain) NSString *currentStartSymbol;\n@end\n');
+    
+    
+    [headers appendString:implementations];
+    
+    var strippedOutIncludes = [NSMutableString string];
+    
+    var allTogetherNow = headers;
+    
+    var lines = [headers componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    
+    for (i = 0; i < [lines length]; i++) {
+        
+        var line = lines[i];
+        
+        if ([line hasPrefix:'#import "TD']) {
+            continue;
+        }
+        
+        [strippedOutIncludes appendString:line];
+        [strippedOutIncludes appendString:@"\n"];
+    }
+    
+    return strippedOutIncludes;
+    
+}
+
+
+
+
+
+
+var jsth         = getFile("JSTalk.h")
+var JSTalkm      = getFile("JSTalk.m")
+var JSTExtrasm   = getFile("JSTExtras.m")
+var JSTListenerm = getFile("JSTListener.m")
+var JSTListenerh = getFile("JSTListener.h")
+var JSTTextVievm = getFile("JSTTextView.m")
+var JSTTextVievh = getFile("JSTTextView.h")
+var TETextUtilsm = getFile("TETextUtils.m")
+var TETextUtilsh = getFile("TETextUtils.h")
+var MarkerLineNumberViewm = getFile("MarkerLineNumberView.m")
+var MarkerLineNumberViewh = getFile("MarkerLineNumberView.h")
+var NoodleLineNumberViewm = getFile("NoodleLineNumberView.m")
+var NoodleLineNumberViewh = getFile("NoodleLineNumberView.h")
+var NoodleLineNumberMarkerm = getFile("NoodleLineNumberMarker.m")
+var NoodleLineNumberMarkerh = getFile("NoodleLineNumberMarker.h")
+var JSTPreprocessorm = getFile("JSTPreprocessor.m")
+var JSTPreprocessorh = getFile("JSTPreprocessor.h")
+var JSCocoaControllerm = getFile("JSCocoaController.m")
+var JSCocoaControllerh = getFile("JSCocoaController.h")
+var BridgeSupportControllerm = getFile("BridgeSupportController.m")
+var BridgeSupportControllerh = getFile("BridgeSupportController.h")
+var JSCocoaPrivateObjectm = getFile("JSCocoaPrivateObject.m")
+var JSCocoaPrivateObjecth = getFile("JSCocoaPrivateObject.h")
+var JSCocoaFFIArgumentm = getFile("JSCocoaFFIArgument.m")
+var JSCocoaFFIArgumenth = getFile("JSCocoaFFIArgument.h")
+var JSCocoaFFIClosurem = getFile("JSCocoaFFIClosure.m")
+var JSCocoaFFIClosureh = getFile("JSCocoaFFIClosure.h")
+var JSCocoaLibm = getFile("JSCocoaLib.m")
+var JSCocoaLibh = getFile("JSCocoaLib.h")
+
+var TDParseKit = makeParseKit();
+
+
+var a = "#ifndef debug\n#define debug(...)\n#endif\n#define JSTPrefs [NSUserDefaults standardUserDefaults]\n" +
+'#pragma clang diagnostic push\n' + 
+'#pragma clang diagnostic ignored "-Wunused-variable"\n' + 
+'#pragma clang diagnostic ignored "-Werror"\n' + 
+'#pragma clang diagnostic ignored "-Wmissing-prototypes"\n' + 
+'#pragma clang diagnostic ignored "-Wdeprecated-declarations"\n' + 
+'#pragma clang diagnostic ignored "-Wunused-function"\n' + 
+'#ifndef __clang_analyzer__\n' + 
+
+        // start with the headers.
+        JSTListenerh + 
+        JSTPreprocessorh +
+        JSTTextVievh + 
+        NoodleLineNumberViewh + 
+        MarkerLineNumberViewh +
+        NoodleLineNumberMarkerh + 
+        TETextUtilsh + 
+        BridgeSupportControllerh + 
+        JSCocoaPrivateObjecth + 
+        JSCocoaControllerh + 
+        JSCocoaFFIArgumenth + 
+        JSCocoaFFIClosureh +
+        JSCocoaLibh +
+        TDParseKit + 
+        
+        // then the implementations
+        BridgeSupportControllerm + 
+        JSCocoaPrivateObjectm + 
+        JSCocoaControllerm + 
+        JSCocoaFFIArgumentm + 
+        JSCocoaFFIClosurem +
+        JSCocoaLibm +
+        JSTExtrasm + 
+        JSTListenerm + 
+        JSTPreprocessorm +
+        JSTTextVievm + 
+        MarkerLineNumberViewm + 
+        NoodleLineNumberViewm + 
+        NoodleLineNumberMarkerm + 
+        TETextUtilsm + 
+        JSTalkm + 
+        '#endif\n' + // telling clang-sa to ignore everything
+        '#pragma clang diagnostic pop\n'
+
+var alg = [NSMutableString stringWithString:a];
+
+remove(alg, '#import "JSTListener.h"');
+remove(alg, '#import "JSTExtras.h"');
+remove(alg, '#import "JSTTextView.h"');
+remove(alg, '#import "JSTPreprocessor.h"');
+remove(alg, '#import "TETextUtils.h"');
+remove(alg, '#import "MarkerLineNumberView.h"');
+remove(alg, '#import "NoodleLineNumberMarker.h"');
+remove(alg, '#import "NoodleLineNumberView.h"');
+remove(alg, '#import "JSCocoaController.h"');
+remove(alg, '#import\t"JSCocoaController.h"');
+remove(alg, '#import "BridgeSupportController.h"');
+remove(alg, '#import "JSCocoaPrivateObject.h"');
+remove(alg, '#import "JSCocoaFFIArgument.h"');
+remove(alg, '#import "JSCocoaFFIClosure.h"');
+remove(alg, '#import "JSCocoaLib.h"');
+remove(alg, '#import "JSCocoa.h"');
+remove(alg, '#import "TDTokenizer.h"')
+remove(alg, '#import "TDToken.h"')
+remove(alg, '#import "TDWhitespaceState.h"')
+remove(alg, '#import "TDCommentState.h"')
+remove(alg, '#import "TDParseKit.h"')
+
+replace(alg, 'float f = [arg floatValue];', 'float f = [(NSNumber*)arg floatValue];')
+
+var algPath = srcDir + "JSTalkAmalgamation.m"
+
+[alg writeToFile:algPath atomically:true encoding:NSUTF8StringEncoding error:null]
+
+print("-framework AppKit -framework JavaScriptCore src/JSTalkAmalgamation.m");
+

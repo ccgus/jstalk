@@ -501,57 +501,6 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
     [self TE_doUserIndentByNumberOfLevels:1];
 }
 
-enum {
-    OpeningLatinQuoteCharacter = 0x00AB,
-    ClosingLatinQuoteCharacter = 0x00BB,
-};
-
-static NSString *defaultOpeningBraces = @"{[(";
-static NSString *defaultClosingBraces = @"}])";
-
-static NSString *openingBraces = nil;
-static NSString *closingBraces = nil;
-
-#define NUM_BRACE_PAIRS ([openingBraces length])
-
-static void initBraces() {
-    if (!openingBraces) {
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        NSString *defStr;
-        
-        defStr = [defaults objectForKey:@"TEOpeningBracesCharacters"];
-        if (defStr) {
-            openingBraces = [defStr retain];
-            defStr = [defaults objectForKey:@"TEClosingBracesCharacters"];
-            closingBraces = [defStr retain];
-            if (!closingBraces || ([openingBraces length] != [closingBraces length])) {
-                NSLog(@"TextExtras: Values for user defaults keys TEOpeningBracesCharacters and TEClosingBracesCharacters must both be present and the same length if either one is set.");
-                [openingBraces release];
-                openingBraces = nil;
-                [closingBraces release];
-                closingBraces = nil;
-            }
-        }
-        
-        if (!openingBraces) {
-            unichar charBuf[100];
-            NSUInteger defLen;
-            
-            defLen = [defaultOpeningBraces length];
-            [defaultOpeningBraces getCharacters:charBuf];
-            charBuf[defLen++] = OpeningLatinQuoteCharacter;
-            openingBraces = [[NSMutableString allocWithZone:NULL] initWithCharacters:charBuf length:defLen];
-            
-            defLen = [defaultClosingBraces length];
-            [defaultClosingBraces getCharacters:charBuf];
-            charBuf[defLen++] = ClosingLatinQuoteCharacter;
-            closingBraces = [[NSMutableString allocWithZone:NULL] initWithCharacters:charBuf length:defLen];
-        }
-    }
-}
-
-
-
 - (void)textViewDidChangeSelection:(NSNotification *)notification {
     NSTextView *textView = [notification object];
     NSRange selRange = [textView selectedRange];

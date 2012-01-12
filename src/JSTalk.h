@@ -7,7 +7,8 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "JSCocoaController.h"
+
+@class JSCocoaController;
 
 @interface JSTalk : NSObject {
     id _printController;

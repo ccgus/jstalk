@@ -9,6 +9,7 @@
 #import "JSTalk.h"
 #import "JSTListener.h"
 #import "JSTPreprocessor.h"
+#import "JSCocoaController.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
 
