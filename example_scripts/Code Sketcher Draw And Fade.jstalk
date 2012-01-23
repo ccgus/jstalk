@@ -10,7 +10,7 @@ sketcher.setup = function() {
 };
 
 sketcher.draw = function() {
-    [sketcher fillWithColor:[NSColor colorWithCalibratedWhite:1 alpha:.05]];
+    [sketcher fillWithColor:[NSColor colorWithCalibratedWhite:1 alpha:.01]];
 }
 
 sketcher.mouseDown = function() {

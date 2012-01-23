@@ -8,6 +8,7 @@
 
 #import "JSTAppDelegate.h"
 #import "JSTalk.h"
+#import "JSCocoaController.h"
 
 @interface JSTAppDelegate (PrivateStuff)
 - (void)restoreWorkspace;

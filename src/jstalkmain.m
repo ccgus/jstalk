@@ -1,6 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "JSTListener.h"
 #import "JSTalk.h"
+#import "JSCocoaController.h"
 
 BOOL JSCErrorHandlerExitOnError = YES;
 

@@ -61,7 +61,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 
 - (void)setupLineViewAndStuff {
     
-    _lineNumberView = [[MarkerLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
+    _lineNumberView = [[NoodleLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
     [[self enclosingScrollView] setVerticalRulerView:_lineNumberView];
     [[self enclosingScrollView] setHasHorizontalRuler:NO];
     [[self enclosingScrollView] setHasVerticalRuler:YES];
