@@ -13,6 +13,11 @@ There's a ton of unfinished code laying around, and since I tend to be scatterbr
 
 ## Random Things for Gus to Fix:
 
+Jan 30, 2012:
+Hey- regular expressions screw up the preprocessor and the syntax coloring:
+title = "foo'"
+title.replace(/['"]/g, ' ');
+
 Oct 30, 2011:
 Maybe you should cache all JSTFunction calls, so you don't have to lookup stuff a second time?
 
