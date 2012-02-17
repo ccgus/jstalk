@@ -6,6 +6,8 @@
 #import "JSEnablerPlugIn.h"
 #import "ACPlugin.h"
 #import "JSTalk.h"
+#import "JSCocoa.h"
+#import <JavaScriptCore/JavaScriptCore.h>
 
 #define ACScriptMenuTitleKey @"ACScriptMenuTitle"
 #define ACScriptSuperMenuTitleKey @"ACScriptSuperMenuTitle"
