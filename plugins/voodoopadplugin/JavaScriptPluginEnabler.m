@@ -5,6 +5,8 @@ Not only does this plugin load up the JSTalk Listener, so we can talk to VoodooP
 #import "JavaScriptPluginEnabler.h"
 
 #import <JSTalk/JSTalk.h>
+#import <JSTalk/JSCocoa.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
 #define VPLanguageKey @"VPLanguage"
 #define VPScriptMenuTitleKey @"VPScriptMenuTitle"
