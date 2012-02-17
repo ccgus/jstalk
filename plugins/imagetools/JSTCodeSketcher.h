@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <JSTalk/JSTalk.h>
+#import <JSTalk/JSCocoa.h>
 
 @interface JSTCodeSketcher : NSView {
     

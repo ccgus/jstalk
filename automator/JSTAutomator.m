@@ -8,7 +8,7 @@
 
 #import "JSTAutomator.h"
 #import <JSTalk/JSTalk.h>
-
+#import <JSTalk/JSCocoa.h>
 
 @implementation JSTAutomator
 
@@ -52,7 +52,7 @@
     
     lineNumber -= 1;
     
-    NSLog(@"Error on line %d, %@", lineNumber, error);
+    NSLog(@"Error on line %ld, %@", lineNumber, error);
     
 }
 
