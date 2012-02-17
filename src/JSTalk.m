@@ -372,21 +372,25 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     
     if (!appPath) {
         NSLog(@"Could not find application '%@'", app);
+        // fixme: why are we returning a bool?
         return [NSNumber numberWithBool:NO];
     }
     
     NSBundle *appBundle = [NSBundle bundleWithPath:appPath];
     NSString *bundleId  = [appBundle bundleIdentifier];
     
-    
     // make sure it's running
 	NSArray *runningApps = [[[NSWorkspace sharedWorkspace] launchedApplications] valueForKey:@"NSApplicationBundleIdentifier"];
     
 	if (![runningApps containsObject:bundleId]) {
-        [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId
-                                                             options:NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync
-                                      additionalEventParamDescriptor:nil
-                                                    launchIdentifier:nil];
+        BOOL launched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId
+                                                                             options:NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync
+                                                      additionalEventParamDescriptor:nil
+                                                                    launchIdentifier:nil];
+        if (!launched) {
+            NSLog(@"Could not open up %@", appPath);
+            return 0x00;
+        }
     }
     
     
