@@ -251,7 +251,7 @@ const JSClassDefinition kJSClassDefinitionEmpty = { 0, 0,
 	[self loadFrameworkWithName:@"Foundation"];
     
     // CoreGraphics.framework moved in 10.8
-    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/Library/Frameworks/CoreGraphics.framework"]) {
+    if ([[NSFileManager defaultManager] fileExistsAtPath:@"/System/Library/Frameworks/CoreGraphics.framework"]) {
         [self loadFrameworkWithName:@"CoreGraphics"];
     }
     else {
