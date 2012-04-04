@@ -67,6 +67,7 @@ static NSMutableArray *JSTalkPluginList;
         JSGarbageCollect([_jsController ctx]);
     }
     
+    [_jsController setDelegate:0x00];
     [_jsController release];
     _jsController = 0x00;
     
