@@ -93,7 +93,7 @@ mv res/Info.plist.tmp res/Info.plist
 
 
 
-xcodebuild=/Developer/usr/bin/xcodebuild
+xcodebuild=/usr/bin/xcodebuild
 function buildTarget {
     
     echo Building "$1"
