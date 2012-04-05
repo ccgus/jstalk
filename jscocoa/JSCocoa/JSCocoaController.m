@@ -3812,7 +3812,10 @@ static bool jsCocoaObject_setProperty(JSContextRef ctx, JSObjectRef object, JSSt
 			id property = NULL;
 			if ([JSCocoaFFIArgument unboxJSValueRef:jsValue toObject:&property inContext:ctx])
 			{
-				[dictionary setObject:property forKey:propertyName];
+                if (property) { // false values will unbox to nil sometime.  Ie, dict['whatever'] = false;
+                    [dictionary setObject:property forKey:propertyName];
+                }
+				
 				return	true;
 			}
 			else	return false;
