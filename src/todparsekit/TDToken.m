@@ -202,7 +202,7 @@ static TDTokenEOF *EOFToken = nil;
     } else if (self.isComment) {
         typeString = @"Comment";
     }
-    return [NSString stringWithFormat:@"<%@ %C%@%C>", typeString, 0x00AB, self.value, 0x00BB];
+    return [NSString stringWithFormat:@"<%@ %C%@%C>", typeString, (unsigned short)0x00AB, self.value, (unsigned short)0x00BB];
 }
 
 

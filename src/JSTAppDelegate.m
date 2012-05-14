@@ -135,7 +135,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 - (void)openPanelDidEndForExternalEditor:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     if (returnCode) {
         
-        NSString *path = [sheet filename];
+        NSString *path = [[sheet URL] path];
         
         NSBundle *appBundle = [NSBundle bundleWithPath:path];
         NSString *bundleId  = [appBundle bundleIdentifier];

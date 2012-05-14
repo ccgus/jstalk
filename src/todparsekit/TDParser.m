@@ -44,7 +44,7 @@
 
 
 - (NSSet *)allMatchesFor:(NSSet *)inAssemblies {
-    NSAssert1(0, @"-[TDParser %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDParser %@] must be overriden", NSStringFromSelector(_cmd));
     return nil;
 }
 
@@ -71,7 +71,7 @@
     NSParameterAssert(inAssemblies);
     NSSet *outAssemblies = [self allMatchesFor:inAssemblies];
     if (assembler) {
-        NSAssert2([assembler respondsToSelector:selector], @"provided assembler %@ should respond to %s", assembler, selector);
+        NSAssert2([assembler respondsToSelector:selector], @"provided assembler %@ should respond to %@", assembler, NSStringFromSelector(selector));
         for (TDAssembly *a in outAssemblies) {
             [assembler performSelector:selector withObject:a];
         }

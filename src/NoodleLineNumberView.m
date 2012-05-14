@@ -451,7 +451,7 @@
 					}
                     
                     // Line numbers are internally stored starting at 0
-                    labelText = [NSString stringWithFormat:@"%d", line + 1];
+                    labelText = [NSString stringWithFormat:@"%ld", (long)(line + 1)];
                     
                     stringSize = [labelText sizeWithAttributes:textAttributes];
 

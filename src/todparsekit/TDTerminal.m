@@ -75,7 +75,7 @@
 
 
 - (BOOL)qualifies:(id)obj {
-    NSAssert1(0, @"-[TDTerminal %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDTerminal %@] must be overriden", NSStringFromSelector(_cmd));
     return NO;
 }
 

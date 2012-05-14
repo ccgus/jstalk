@@ -102,7 +102,7 @@
         for ( ; i < symbol.length - 1; i++) {
             [r unread];
         }
-        return [TDToken tokenWithTokenType:TDTokenTypeSymbol stringValue:[NSString stringWithFormat:@"%C", cin] floatValue:0.0];
+        return [TDToken tokenWithTokenType:TDTokenTypeSymbol stringValue:[NSString stringWithFormat:@"%C", (unsigned short)cin] floatValue:0.0];
     }
 }
 

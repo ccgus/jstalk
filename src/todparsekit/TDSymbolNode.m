@@ -30,7 +30,7 @@
 
         // this private property is an optimization. 
         // cache the NSString for the char to prevent it being constantly recreated in -determinAncestry
-        self.string = [NSString stringWithFormat:@"%C", character];
+        self.string = [NSString stringWithFormat:@"%C", (unsigned short)character];
 
         [self determineAncestry];
     }

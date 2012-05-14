@@ -64,10 +64,10 @@
 
 - (NSString*)description
 {
-	return	[NSString stringWithFormat:@"JSCocoaFFIArgument %x typeEncoding=%c %@ isReturnValue=%d storage=%x", self, 
+	return	[NSString stringWithFormat:@"JSCocoaFFIArgument %x typeEncoding=%c %@ isReturnValue=%d storage=%x", (unsigned int)self, 
 			typeEncoding, 
 			(structureTypeEncoding ? structureTypeEncoding : @""),
-			isReturnValue, ptr];
+			isReturnValue, (unsigned int)ptr];
 }
 
 + (NSString*)typeDescriptionForTypeEncoding:(char)typeEncoding fullTypeEncoding:(NSString*)fullTypeEncoding 

@@ -204,10 +204,10 @@
 - (id)description
 {
 	id extra = @"";
-	if ([type isEqualToString:@"rawPointer"]) extra = [NSString stringWithFormat:@" (%x) %@", rawPointer, declaredType];
+	if ([type isEqualToString:@"rawPointer"]) extra = [NSString stringWithFormat:@" (%x) %@", (unsigned int)rawPointer, declaredType];
 	return	[NSString stringWithFormat:@"<%@: %x holding %@%@>",
 				[self class], 
-				self, 
+				(unsigned int)self, 
 				type,
 				extra
 				];

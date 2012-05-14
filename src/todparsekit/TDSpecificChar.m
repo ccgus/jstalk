@@ -16,7 +16,7 @@
 
 
 - (id)initWithSpecificChar:(NSInteger)c {
-    self = [super initWithString:[NSString stringWithFormat:@"%C", c]];
+    self = [super initWithString:[NSString stringWithFormat:@"%C", (unsigned short)c]];
     if (self) {
     }
     return self;

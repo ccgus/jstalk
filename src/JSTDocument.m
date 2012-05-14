@@ -257,7 +257,7 @@
 
 - (void)savePanelDidEndForApplicationSave:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     
-    NSString *fileName = [sheet filename];
+    NSString *fileName = [[sheet URL] path];
     if (!fileName) {
         return;
     }

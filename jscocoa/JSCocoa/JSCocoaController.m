@@ -1411,7 +1411,7 @@ static id JSCocoaSingleton = NULL;
 	SEL selector = NSSelectorFromString(methodName);
 
 	id keyForClassAndMethod	= [NSString stringWithFormat:@"%@ %@", class, methodName];
-	id keyForFunction		= [NSString stringWithFormat:@"%x", valueAndContext.value];
+	id keyForFunction		= [NSString stringWithFormat:@"%x", (unsigned int)valueAndContext.value];
 
 	id existingMethodForJSFunction = [closureHash valueForKey:keyForFunction];
 	if (existingMethodForJSFunction)
@@ -1433,7 +1433,7 @@ static id JSCocoaSingleton = NULL;
 	// Closure cleanup - dangerous as instances might still be around AND IF dealloc/release is overloaded
 	if (existingPrivateObject)
 	{
-		id keyForExistingFunction = [NSString stringWithFormat:@"%x", [existingPrivateObject jsValueRef]];
+		id keyForExistingFunction = [NSString stringWithFormat:@"%x", (unsigned int)[existingPrivateObject jsValueRef]];
 
 		[closureHash			removeObjectForKey:keyForExistingFunction];
 		[jsFunctionSelectors	removeObjectForKey:keyForExistingFunction];
@@ -1754,7 +1754,7 @@ static id JSCocoaSingleton = NULL;
 
 + (JSObjectRef)boxedJSObject:(id)o inContext:(JSContextRef)ctx
 {
-	id key = [NSString stringWithFormat:@"%x", o];
+	id key = [NSString stringWithFormat:@"%x", (unsigned int)o];
 	id value = [boxedObjects valueForKey:key];
 	// If object is boxed, up its usage count and return it
 	if (value)
@@ -1796,7 +1796,7 @@ static id JSCocoaSingleton = NULL;
 
 + (void)downBoxedJSObjectCount:(id)o
 {
-	id key = [NSString stringWithFormat:@"%x", o];
+	id key = [NSString stringWithFormat:@"%x", (unsigned int)o];
 	id value = [boxedObjects valueForKey:key];
 	if (!value)
 		return;
@@ -1812,12 +1812,12 @@ static id JSCocoaSingleton = NULL;
 #pragma mark Helpers
 - (id)selectorForJSFunction:(JSObjectRef)function
 {
-	return [jsFunctionSelectors valueForKey:[NSString stringWithFormat:@"%x", function]];
+	return [jsFunctionSelectors valueForKey:[NSString stringWithFormat:@"%x", (unsigned int)function]];
 }
 
 - (id)classForJSFunction:(JSObjectRef)function
 {
-	return [jsFunctionClasses valueForKey:[NSString stringWithFormat:@"%x", function]];
+	return [jsFunctionClasses valueForKey:[NSString stringWithFormat:@"%x", (unsigned int)function]];
 }
 
 //
@@ -1949,7 +1949,7 @@ static id JSCocoaSingleton = NULL;
 		}
 		if (!evaled)	
 		{
-			id error = [NSString stringWithFormat:@"test %@ failed (Ran %d out of %d tests)", file, count+1, [files count]];
+			id error = [NSString stringWithFormat:@"test %@ failed (Ran %d out of %ld tests)", file, count+1, (long)[files count]];
 			[JSCocoaController logAndSay:error];
 			return NO;
 		}
@@ -2003,7 +2003,7 @@ static id autoreleasePool;
 	// This code might re-box the instance ...
 	[sender safeDealloc];
 	// So, clean it up
-	[boxedObjects removeObjectForKey:[NSString stringWithFormat:@"%x", sender]];
+	[boxedObjects removeObjectForKey:[NSString stringWithFormat:@"%x", (unsigned int)sender]];
 	// sender is retained by performSelector, object will be destroyed upon function exit
 }
 
@@ -3167,7 +3167,7 @@ static void jsCocoaObject_finalize(JSObjectRef object)
 	id boxedObject = [private object]; 
 	if (boxedObject)
 	{
-		id key = [NSString stringWithFormat:@"%x", boxedObject];
+		id key = [NSString stringWithFormat:@"%x", (unsigned int)boxedObject];
 		// Object may have been already deallocated
 		id existingBoxedObject = [boxedObjects objectForKey:key];
 		if (existingBoxedObject)
@@ -3370,7 +3370,7 @@ call:
 				// Make sure to not return hash value if it's native code (valueOf, toString)
 				if ([propertyName isEqualToString:@"valueOf"] || [propertyName isEqualToString:@"toString"])
 				{
-					id script = [NSString stringWithFormat:@"return arguments[0].toString().indexOf('[native code]') != -1", propertyName];
+					id script = [NSString stringWithFormat:@"return arguments[0].toString().indexOf('[native code]') != -1"/*, propertyName*/];
 					JSStringRef scriptJS = JSStringCreateWithUTF8CString([script UTF8String]);
 					JSObjectRef fn = JSObjectMakeFunction(ctx, NULL, 0, NULL, scriptJS, NULL, 1, NULL);
 					JSValueRef result = JSObjectCallAsFunction(ctx, fn, NULL, 1, (JSValueRef*)&hashProperty, NULL);
@@ -4300,7 +4300,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 		// Bail if not variadic
 		if (!isVariadic)
 		{
-			return	throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,	callAddressArgumentCount, argumentCount]), NULL;
+			return	throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %ld, got %ld", functionName ? functionName : methodName,	(long)callAddressArgumentCount, (long)argumentCount]), NULL;
 		}
 		// Sugar check : if last object is not NULL, account for it
 		if (isVariadic && callingObjC && argumentCount && !JSValueIsNull(ctx, arguments[argumentCount-1]))
@@ -4314,7 +4314,7 @@ static JSValueRef jsCocoaObject_callAsFunction_ffi(JSContextRef ctx, JSObjectRef
 	{
 		if (callAddressArgumentCount != argumentCount)
 		{
-			return	throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %d, got %d", functionName ? functionName : methodName,	callAddressArgumentCount, argumentCount]), NULL;
+			return	throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count in %@ : expected %ld, got %zd", functionName ? functionName : methodName,	callAddressArgumentCount, argumentCount]), NULL;
 		}
 	}
 
@@ -4722,7 +4722,7 @@ static JSObjectRef jsCocoaObject_callAsConstructor(JSContextRef ctx, JSObjectRef
 	{
 		if (convertedValueCount != argumentCount)
 		{
-			return throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count when calling constructor on a struct : expected %d, got %d", convertedValueCount, argumentCount]), NULL;
+			return throwException(ctx, exception, [NSString stringWithFormat:@"Bad argument count when calling constructor on a struct : expected %ld, got %zd", convertedValueCount, argumentCount]), NULL;
 		}
 	}
 	
@@ -4940,16 +4940,16 @@ void* malloc_autorelease(size_t size)
 - (id)description
 {
 	id boxedObject = [(JSCocoaPrivateObject*)JSObjectGetPrivate(jsObject) object];
-	id retainCount = [NSString stringWithFormat:@"%d", [boxedObject retainCount]];
+	id retainCount = [NSString stringWithFormat:@"%ld", [boxedObject retainCount]];
 #if !TARGET_OS_IPHONE
-	retainCount = [NSGarbageCollector defaultCollector] ? @"Running GC" : [NSString stringWithFormat:@"%d", [boxedObject retainCount]];
+	retainCount = [NSGarbageCollector defaultCollector] ? @"Running GC" : [NSString stringWithFormat:@"%ld", [boxedObject retainCount]];
 #endif
 	return [NSString stringWithFormat:@"<%@: %x holding %@ %@: %x (retainCount=%@)>",
 				[self class], 
-				self, 
+				(unsigned int)self, 
 				((id)self == (id)[self class]) ? @"Class" : @"",
 				[boxedObject class],
-				boxedObject,
+				(unsigned int)boxedObject,
 				retainCount];
 }
 

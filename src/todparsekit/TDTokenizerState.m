@@ -60,7 +60,7 @@
 
 - (void)append:(NSInteger)c {
 #if TD_USE_MUTABLE_STRING_BUF
-    [stringbuf appendFormat:@"%C", c];
+    [stringbuf appendFormat:@"%C", (unsigned short)c];
 #else 
     [self checkBufLength];
     charbuf[index++] = c;

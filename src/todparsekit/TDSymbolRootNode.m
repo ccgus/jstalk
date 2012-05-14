@@ -95,7 +95,7 @@
 
 - (NSString *)nextWithFirst:(NSInteger)c rest:(TDReader *)r parent:(TDSymbolNode *)p {
     NSParameterAssert(p);
-    NSString *result = [NSString stringWithFormat:@"%C", c];
+    NSString *result = [NSString stringWithFormat:@"%C", (unsigned short)c];
 
     // this also works.
 //    NSString *result = [[[NSString alloc] initWithCharacters:(const unichar *)&c length:1] autorelease];

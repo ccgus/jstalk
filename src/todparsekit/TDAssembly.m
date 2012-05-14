@@ -70,49 +70,49 @@ static NSString * const TDAssemblyDefaultDelimiter = @"/";
 
 
 - (id)next {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return nil;
 }
 
 
 - (BOOL)hasMore {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return NO;
 }
 
 
 - (NSString *)consumedObjectsJoinedByString:(NSString *)delimiter {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return nil;
 }
 
 
 - (NSString *)remainingObjectsJoinedByString:(NSString *)delimiter {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return nil;
 }
 
 
 - (NSUInteger)length {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return 0;
 }
 
 
 - (NSUInteger)objectsConsumed {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return 0;
 }
 
 
 - (NSUInteger)objectsRemaining {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return 0;
 }
 
 
 - (id)peek {
-    NSAssert1(0, @"-[TDAssembly %s] must be overriden", _cmd);
+    NSAssert1(0, @"-[TDAssembly %@] must be overriden", NSStringFromSelector(_cmd));
     return nil;
 }
 
