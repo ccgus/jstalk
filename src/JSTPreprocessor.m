@@ -19,6 +19,10 @@
     NSString *tok = @"\"\"\"";
     
     NSScanner *scanner = [NSScanner scannerWithString:sourceString];
+    
+    // we don't want to skip any whitespace at the front, so we give it an empty character set.
+    [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
+    
     NSMutableString *ret = [NSMutableString string];
     
     while (![scanner isAtEnd]) {
@@ -29,7 +33,6 @@
         if ([scanner scanUpToString:tok intoString:&into]) {
             [ret appendString:into];
         }
-        
         
         if ([scanner scanString:tok intoString:nil]) {
             if ([scanner scanString:tok intoString: nil]) {

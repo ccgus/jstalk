@@ -268,8 +268,16 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
             resultObj = nil;
         }
     }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+    @catch (NSException *e) {
+        
+        NSDictionary *d = [e userInfo];
+        if ([d objectForKey:@"line"]) {
+            if ([_errorController respondsToSelector:@selector(JSTalk:hadError:onLineNumber:atSourceURL:)]) {
+                [_errorController JSTalk:self hadError:[e reason] onLineNumber:[[d objectForKey:@"line"] integerValue] atSourceURL:nil];
+            }
+        }
+        
+        NSLog(@"Exception: %@", [e userInfo]);
         [self print:[e description]];
     }
     @finally {

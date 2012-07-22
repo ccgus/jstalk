@@ -39,3 +39,7 @@
 + (JSTalk*)currentJSTalk;
 
 @end
+
+@interface NSObject (JSTalkErrorControllerMethods)
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+@end

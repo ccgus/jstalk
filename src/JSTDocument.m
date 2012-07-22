@@ -141,10 +141,7 @@
     
 }
 
-/*
-- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
-    
-    lineNumber -= 1;
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     if (!error) {
         return;
@@ -170,53 +167,42 @@
         }
     }
 }
- */
-
 
 - (void)runScript:(NSString*)s {
     
-    @try {
-        
-        JSTalk *jstalk = [[JSTalk alloc] init];
-        
-        [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
-        
-        #pragma message "FIXME: the error delegate stuff needs to be added back in"
-        //jsController.delegate = self;
-        
-        jstalk.printController = self;
-        
-        [errorLabel setStringValue:@""];
-        
-        if ([self fileURL]) {
-            [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
-        }
-        
-        if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
-            [self clearConsole:nil];
-        }
-        
-        id result = [jstalk executeString:s];
-        
-        if (result) {
-            [self print:[result description]];
-        }
-        
-        [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
-        
-        [jstalk release];
-        
+    JSTalk *jstalk = [[JSTalk alloc] init];
+    
+    [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
+    
+#pragma message "FIXME: the error delegate stuff needs to be added back in"
+    //jsController.delegate = self;
+    
+    [jstalk setPrintController:self];
+    [jstalk setErrorController:self];
+    
+    [errorLabel setStringValue:@""];
+    
+    if ([self fileURL]) {
+        [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
     }
-    @catch (NSException * e) {
-        [self print:[e reason]];
+    
+    if ([JSTPrefs boolForKey:@"clearConsoleOnRun"]) {
+        [self clearConsole:nil];
     }
-    @finally {
-        // um.?
+    
+    id result = [jstalk executeString:s];
+    
+    if (result) {
+        [self print:[result description]];
     }
-        
+    
+    [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
+    
+    [jstalk release];
+    
 }
 
-- (void)executeScript:(id)sender { 
+- (void)executeScript:(id)sender {
     [self runScript:[[jsTextView textStorage] string]];
 }
 
