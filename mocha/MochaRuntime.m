@@ -22,8 +22,6 @@
 #import "MOBridgeSupportController.h"
 #import "MOBridgeSupportSymbol.h"
 
-#import "MOPreprocessor.h"
-
 #import "NSObject+MochaAdditions.h"
 #import "NSArray+MochaAdditions.h"
 #import "NSDictionary+MochaAdditions.h"
@@ -534,12 +532,6 @@ static NSString * const MOMochaRuntimeObjectBoxKey = @"MOMochaRuntimeObjectBoxKe
 
 #pragma mark -
 #pragma mark Evaluation
-
-- (id)evalObjJSString:(NSString*)string {
-    #pragma message "FIXME: Gus take this out- it's already in JSTalk."
-    string = [MOPreprocessor preprocessCode:string];
-    return [self evalString:string];
-}
 
 - (id)evalString:(NSString *)string {
     JSValueRef jsValue = [self evalJSString:string];
