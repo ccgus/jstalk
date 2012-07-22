@@ -71,8 +71,6 @@
  */
 - (id)evalString:(NSString *)string;
 
-- (id)evalObjJSString:(NSString*)string;
-
 /*!
  * @method callFunctionWithName:
  * @abstract Calls a JavaScript function in the global context

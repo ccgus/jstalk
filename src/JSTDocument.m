@@ -188,8 +188,6 @@
         
         [errorLabel setStringValue:@""];
         
-        [jstalk pushObject:self withName:@"__jstdocument"];
-        
         if ([self fileURL]) {
             [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
         }
@@ -203,7 +201,6 @@
         if (result) {
             [self print:[result description]];
         }
-        
         
         [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
         

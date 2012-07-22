@@ -12,6 +12,7 @@
 #import <ScriptingBridge/ScriptingBridge.h>
 #import "MochaRuntime.h"
 #import "MOMethod.h"
+#import "MOUndefined.h"
 #import "MOBridgeSupportController.h"
 
 extern int *_NSGetArgc(void);
@@ -19,6 +20,12 @@ extern char ***_NSGetArgv(void);
 
 static BOOL JSTalkShouldLoadJSTPlugins = YES;
 static NSMutableArray *JSTalkPluginList;
+
+@interface Mocha (Private)
+- (JSValueRef)setObject:(id)object withName:(NSString *)name;
+- (BOOL)removeObjectWithName:(NSString *)name;
+
+@end
 
 @interface JSTalk (Private)
 - (void) print:(NSString*)s;
@@ -51,8 +58,7 @@ static NSMutableArray *JSTalkPluginList;
         self.env = [NSMutableDictionary dictionary];
         _shouldPreprocess = YES;
         
-        
-        [_mochaRuntime setValue:[MOMethod methodWithTarget:self selector:@selector(print:)] forKey:@"print"];
+        [self addExtrasToRuntime];
 	}
     
 	return self;
@@ -81,6 +87,12 @@ static NSMutableArray *JSTalkPluginList;
 
 - (Mocha*)mochaRuntime {
     return _mochaRuntime;
+}
+
+- (void)addExtrasToRuntime {
+    [self pushObject:self withName:@"jstalk"];
+    [_mochaRuntime evalString:@"var nil=null;\n"];
+    [_mochaRuntime setValue:[MOMethod methodWithTarget:self selector:@selector(print:)] forKey:@"print"];
 }
 
 + (void)loadExtraAtPath:(NSString*)fullPath {
@@ -226,19 +238,11 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 }
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
-    [_mochaRuntime setValue:obj forKey:name];
+    [_mochaRuntime setObject:obj withName:name];
 }
 
 - (void)deleteObjectWithName:(NSString*)name {
-    
-    /*
-    JSContextRef ctx                = [_jsController ctx];
-    JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
-
-    JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, NULL);
-    
-    JSStringRelease(jsName);  
-     */
+    [_mochaRuntime removeObjectWithName:name];
 }
 
 
@@ -252,27 +256,17 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         str = [JSTPreprocessor preprocessCode:str];
     }
     
-    [self pushObject:self withName:@"jstalk"];
     [self pushAsCurrentJSTalk];
     
-    JSValueRef resultRef = nil;
     id resultObj = nil;
     
     @try {
         
-        id result = [_mochaRuntime evalObjJSString:str];
+        resultObj = [_mochaRuntime evalString:str];
         
-        if (result) {
-            [self print:[result description]];
+        if (resultObj == [MOUndefined undefined]) {
+            resultObj = nil;
         }
-        
-        
-        
-        /*
-        [_jsController setUseAutoCall:NO];
-        [_jsController setUseJSLint:NO];
-        resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
-         */
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -282,42 +276,19 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         //
     }
     
-    if (resultRef) {
-        //[JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
-    }
-    
     [self popAsCurrentJSTalk];
-    
-    //[self deleteObjectWithName:@"jstalk"];
-    
-    // this will free up the reference to ourself
-    //if ([_jsController ctx]) {
-    //    JSGarbageCollect([_jsController ctx]);
-    //}
     
     return resultObj;
 }
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
-    /*
-    JSCocoaController *jsController = [self jsController];
-    JSContextRef ctx                = [jsController ctx];
     
-    JSValueRef exception            = nil;
-    JSStringRef functionName        = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSValueRef functionValue        = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), functionName, &exception);
-    
-    JSStringRelease(functionName);  
-    
-    JSValueRef returnValue = [jsController callJSFunction:functionValue withArguments:args];
-    
-    id returnObject;
-    [JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&returnObject inContext:ctx];
-    
-    return returnObject;
-     */
-    return nil;
+    return [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
 }
+
+// JavaScriptCore isn't safe for recursion.  So calling this function from
+// within a script is a really bad idea.  Of couse, that's what it was written
+// for, so it really needs to be taken out.
 
 - (void)include:(NSString*)fileName {
     
@@ -339,11 +310,8 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     if (_shouldPreprocess) {
         str = [JSTPreprocessor preprocessCode:str];
     }
-      /*
-    if (![[self jsController] evalJSString:str withScriptPath:[scriptURL path]]) {
-        NSLog(@"Could not include '%@'", fileName);
-    }
-       */
+    
+    [_mochaRuntime evalString:str];
 }
 
 - (void)print:(NSString*)s {

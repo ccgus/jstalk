@@ -536,6 +536,7 @@ static NSString * const MOMochaRuntimeObjectBoxKey = @"MOMochaRuntimeObjectBoxKe
 #pragma mark Evaluation
 
 - (id)evalObjJSString:(NSString*)string {
+    #pragma message "FIXME: Gus take this out- it's already in JSTalk."
     string = [MOPreprocessor preprocessCode:string];
     return [self evalString:string];
 }
