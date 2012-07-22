@@ -1,12 +1,15 @@
 // make sure FMDB.jstalkextra is installed in your ~/Library/Application Support/JSTalk/Plug-ins/ folder first.
 // otherwise, this script isn't going to work so well.
 
+
+
 var dbPath = "/tmp/jstalk.sqlite";
 
 var db = [JSTDatabase databaseWithPath:dbPath];
 if (![db open]) {
     print("Could not open database");
 }
+
 
 [db executeUpdate:"create table test (a text, b text, c integer, d double, e double)"];
 

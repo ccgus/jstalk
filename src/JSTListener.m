@@ -18,7 +18,7 @@
 @synthesize rootObject=_rootObject;
 
 + (id)sharedListener {
-    static JSTListener *me = 0x00;
+    static JSTListener *me = nil;
     if (!me) {
         me = [[JSTListener alloc] init];
     }
@@ -56,7 +56,7 @@
     else {
         NSLog(@"JSTalk could not listen on port %@", port);
         [_conn release];
-        _conn = 0x00;
+        _conn = nil;
     }
 }
 

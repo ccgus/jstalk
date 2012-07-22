@@ -8,7 +8,7 @@
 
 #import "JSTAppDelegate.h"
 #import "JSTalk.h"
-#import "JSCocoaController.h"
+//#import "JSCocoaController.h"
 
 @interface JSTAppDelegate (PrivateStuff)
 - (void)restoreWorkspace;
@@ -202,7 +202,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 
 - (NSFont*)defaultEditorFont {
     
-    NSFont *defaultFont = 0x00;
+    NSFont *defaultFont = nil;
     
     NSData *d = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultFont"];
     if (d) {
@@ -220,14 +220,16 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     return defaultFont;
 }
 
+/*
 - (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     _serviceError = [error retain];
 }
+*/
 
 
 - (void)runAsJSTalkScript:(NSPasteboard *)pb userData:(NSDictionary *)userData error:(NSString **)error {
     
-    _serviceError = 0x00;
+    _serviceError = nil;
     
     // Test for strings on the pasteboard.
     NSArray *classes = [NSArray arrayWithObject:[NSString class]];
@@ -237,15 +239,15 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
         return;
     }
     
-    NSString *result = 0x00;
+    NSString *result = nil;
     NSString *script = [pb stringForType:NSPasteboardTypeString];
     
     @try {
         
         JSTalk *jstalk = [[JSTalk alloc] init];
         
-        JSCocoaController *jsController = [jstalk jsController];
-        jsController.delegate = self;
+        //JSCocoaController *jsController = [jstalk jsController];
+        //jsController.delegate = self;
         
         [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         

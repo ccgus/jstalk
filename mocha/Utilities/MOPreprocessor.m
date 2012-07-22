@@ -1,18 +1,15 @@
 //
-//  JSTPreprocessor.m
+//  MOPreprocessor.m
 //  jstalk
 //
 //  Created by August Mueller on 2/14/09.
 //  Copyright 2009 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTPreprocessor.h"
-#import "TDTokenizer.h"
-#import "TDToken.h"
-#import "TDWhitespaceState.h"
-#import "TDCommentState.h"
+#import "MOPreprocessor.h"
+#import "TDTokenizerAmalgamation.m"
 
-@implementation JSTPreprocessor
+@implementation MOPreprocessor
 
 + (NSString*)processMultilineStrings:(NSString*)sourceString {
     
@@ -115,7 +112,7 @@
     TDToken *eof                    = [TDToken EOFToken];
     TDToken *tok                    = nil;
     
-    JSTPSymbolGroup *currentGroup   = nil;
+    MOPSymbolGroup *currentGroup   = nil;
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
@@ -123,7 +120,7 @@
         
         if ([tok isSymbol] && [self isOpenSymbol:[tok stringValue]]) {
             
-            JSTPSymbolGroup *nextGroup  = [[[JSTPSymbolGroup alloc] init] autorelease];
+            MOPSymbolGroup *nextGroup  = [[[MOPSymbolGroup alloc] init] autorelease];
             
             nextGroup.parent            = currentGroup;
             currentGroup                = nextGroup;
@@ -167,7 +164,7 @@
 
 
 
-@implementation JSTPSymbolGroup
+@implementation MOPSymbolGroup
 @synthesize args=_args;
 @synthesize parent=_parent;
 
@@ -223,11 +220,11 @@
     }
     
     if (_openSymbol != '[') {
-        return [NSString stringWithFormat:@"Bad JSTPSymbolGroup! %@", _args];
+        return [NSString stringWithFormat:@"Bad MOPSymbolGroup! %@", _args];
     }
     
     BOOL firstArgIsWord         = [_args count] && ([[_args objectAtIndex:0] isKindOfClass:[TDToken class]] && [[_args objectAtIndex:0] isWord]);
-    BOOL firstArgIsSymbolGroup  = [_args count] && [[_args objectAtIndex:0] isKindOfClass:[JSTPSymbolGroup class]];
+    BOOL firstArgIsSymbolGroup  = [_args count] && [[_args objectAtIndex:0] isKindOfClass:[MOPSymbolGroup class]];
     
     // objc messages start with a word.  So, if it isn't- then let's just fling things back the way they were.
     if (!firstArgIsWord && !firstArgIsSymbolGroup) {

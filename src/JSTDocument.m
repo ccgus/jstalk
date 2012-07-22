@@ -10,7 +10,7 @@
 #import "JSTAppDelegate.h"
 #import "JSTListener.h"
 #import "JSTalk.h"
-#import "JSCocoaController.h"
+//#import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
@@ -36,10 +36,10 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
     [_externalEditorFileWatcher release];
-    _externalEditorFileWatcher = 0x00;
+    _externalEditorFileWatcher = nil;
     
     [_previousOutputTypingAttributes release];
-    _previousOutputTypingAttributes = 0x00;
+    _previousOutputTypingAttributes = nil;
     
     [super dealloc];
 }
@@ -55,7 +55,7 @@
 
 - (void)readFromFile:(NSURL*)fileURL {
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     NSString *src = [NSString stringWithContentsOfURL:[self fileURL] encoding:NSUTF8StringEncoding error:&err];
     
     if (err) {
@@ -141,6 +141,7 @@
     
 }
 
+/*
 - (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     lineNumber -= 1;
@@ -169,6 +170,7 @@
         }
     }
 }
+ */
 
 
 - (void)runScript:(NSString*)s {
@@ -179,12 +181,14 @@
         
         [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         
-        JSCocoaController *jsController = [jstalk jsController];
-        jsController.delegate = self;
+        #pragma message "FIXME: the error delegate stuff needs to be added back in"
+        //jsController.delegate = self;
         
         jstalk.printController = self;
         
         [errorLabel setStringValue:@""];
+        
+        [jstalk pushObject:self withName:@"__jstdocument"];
         
         if ([self fileURL]) {
             [jstalk.env setObject:[self fileURL] forKey:@"scriptURL"];
@@ -282,7 +286,7 @@
                                       stringByAppendingPathComponent:@"main.jstalk"];
     
     NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-    NSError *err = 0x00;
+    NSError *err = nil;
     [[[jsTextView textStorage] string] writeToURL:sourceURL atomically:NO encoding:NSUTF8StringEncoding error:&err];
     
     if (err) {
@@ -319,7 +323,7 @@
     if (_externalEditorFileWatcher) {
         /// wait, what?  Should we care?
         [_externalEditorFileWatcher release];
-        _externalEditorFileWatcher = 0x00;
+        _externalEditorFileWatcher = nil;
     }
     
     if (![self fileURL]) {
@@ -340,7 +344,7 @@
     NSString *fileName      = [NSString stringWithFormat:@"%@.jstalk", [uuidString lowercaseString]];
     NSString *fileLocation  = [NSTemporaryDirectory() stringByAppendingPathComponent:fileName];
     NSURL *fileURL          = [NSURL fileURLWithPath:fileLocation];
-    NSError *err            = 0x00;
+    NSError *err            = nil;
     
     [[[jsTextView textStorage] string] writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:&err];
     */
@@ -366,7 +370,7 @@
     
     NSString *path = [fw path];
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     NSString *src = [NSString stringWithContentsOfURL:[NSURL fileURLWithPath:path] encoding:NSUTF8StringEncoding error:&err];
     
     if (err) {
@@ -427,7 +431,7 @@
     
     NSRange r = [jsTextView selectedRange];
     
-    NSString *selectedText = 0x00;
+    NSString *selectedText = nil;
         
     if (r.length == 0) {
         selectedText = [[jsTextView textStorage] string];

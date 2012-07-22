@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 #import "JSTListener.h"
 #import "JSTalk.h"
-#import "JSCocoaController.h"
+//#import "JSCocoaController.h"
 
 BOOL JSCErrorHandlerExitOnError = YES;
 
@@ -12,6 +12,7 @@ BOOL JSCErrorHandlerExitOnError = YES;
 
 @implementation JSCErrorHandler
 
+/*
 - (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     printf("Error line %d, %s\n", (int)lineNumber, [[error description] UTF8String]);
@@ -20,6 +21,7 @@ BOOL JSCErrorHandlerExitOnError = YES;
         exit(1);
     }
 }
+ */
 
 
 @end
@@ -64,8 +66,8 @@ int main(int argc, char *argv[]) {
     
     JSTalk *t = [[[JSTalk alloc] init] autorelease];
     
-    JSCocoaController *jsController = [t jsController];
-    jsController.delegate = eh;
+    //JSCocoaController *jsController = [t jsController];
+    //jsController.delegate = eh;
     
     if (argc < 2) {
         runREPL(t);
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
     }
     
     
-    NSString *source = 0x00;
+    NSString *source = nil;
     NSString *arg = [NSString stringWithUTF8String:argv[1]];
     
     if ([arg isEqualToString:@"-e"] && argc == 3) {

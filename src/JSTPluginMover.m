@@ -40,7 +40,7 @@
     if (decision == NSOKButton) {
         NSFileManager *fileManager = [NSFileManager defaultManager];
         
-        NSError *err = 0x00; // yes, I know the cocoa conventions on this.  I'm going to nil it out anyway.
+        NSError *err = nil; // yes, I know the cocoa conventions on this.  I'm going to nil it out anyway.
         if (![fileManager createDirectoryAtPath:pluginsFolder withIntermediateDirectories:YES attributes:nil error:&err]) {
             NSLog(@"Error making the plug-in directory: %@", err);
             NSBeep();

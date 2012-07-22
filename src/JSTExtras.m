@@ -107,7 +107,7 @@
 
 - (id)open:(NSString*)pathToFile {
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     
     NSURL *url = [NSURL fileURLWithPath:pathToFile];
     
@@ -163,7 +163,7 @@
 
 - (id)dataOfType:(NSString*)type {
     
-    NSError *err = 0x00;
+    NSError *err = nil;
     
     NSData *data = [self dataOfType:type error:&err];
     
@@ -233,7 +233,7 @@
     
     AXUIElementRef uiElement = AXUIElementCreateSystemWide();
     
-    CFTypeRef focusedUIElement = 0x00;
+    CFTypeRef focusedUIElement = nil;
 	
 	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
     
@@ -298,7 +298,7 @@
 + (void)JSTAXSetSelectedTextAttributeOnFocusedElement:(NSString*)s {
     AXUIElementRef uiElement = AXUIElementCreateSystemWide();
     
-    CFTypeRef focusedUIElement = 0x00;
+    CFTypeRef focusedUIElement = nil;
 	
 	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
     
@@ -318,7 +318,7 @@
 + (void)JSTAXSetSelectedTextRangeAttributeOnFocusedElement:(NSRange)range {
     AXUIElementRef uiElement = AXUIElementCreateSystemWide();
     
-    CFTypeRef focusedUIElement = 0x00;
+    CFTypeRef focusedUIElement = nil;
 	
 	AXError error = AXUIElementCopyAttributeValue(uiElement, kAXFocusedUIElementAttribute, &focusedUIElement);
     

@@ -9,9 +9,10 @@
 #import "JSTalk.h"
 #import "JSTListener.h"
 #import "JSTPreprocessor.h"
-#import "JSCocoaController.h"
 #import <ScriptingBridge/ScriptingBridge.h>
-
+#import "MochaRuntime.h"
+#import "MOMethod.h"
+#import "MOBridgeSupportController.h"
 
 extern int *_NSGetArgc(void);
 extern char ***_NSGetArgv(void);
@@ -27,13 +28,8 @@ static NSMutableArray *JSTalkPluginList;
 @implementation JSTalk
 @synthesize printController=_printController;
 @synthesize errorController=_errorController;
-@synthesize jsController=_jsController;
 @synthesize env=_env;
 @synthesize shouldPreprocess=_shouldPreprocess;
-
-+ (void)load {
-    //debug(@"%s:%d", __FUNCTION__, __LINE__);
-}
 
 + (void)listen {
     [JSTListener listen];
@@ -50,9 +46,13 @@ static NSMutableArray *JSTalkPluginList;
 - (id)init {
 	self = [super init];
 	if ((self != nil)) {
-        self.jsController = [[[JSCocoaController alloc] init] autorelease];
+        _mochaRuntime = [[Mocha alloc] init];
+        
         self.env = [NSMutableDictionary dictionary];
         _shouldPreprocess = YES;
+        
+        
+        [_mochaRuntime setValue:[MOMethod methodWithTarget:self selector:@selector(print:)] forKey:@"print"];
 	}
     
 	return self;
@@ -63,18 +63,24 @@ static NSMutableArray *JSTalkPluginList;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if ([_jsController ctx]) {
-        JSGarbageCollect([_jsController ctx]);
+    
+    if ([_mochaRuntime context]) {
+        JSGarbageCollect([_mochaRuntime context]);
     }
     
-    [_jsController setDelegate:0x00];
-    [_jsController release];
-    _jsController = 0x00;
+    
+    [_mochaRuntime release];
+    _mochaRuntime = nil;
     
     [_env release];
-    _env = 0x00;
+    _env = nil;
     
     [super dealloc];
+}
+
+
+- (Mocha*)mochaRuntime {
+    return _mochaRuntime;
 }
 
 + (void)loadExtraAtPath:(NSString*)fullPath {
@@ -97,7 +103,7 @@ static NSMutableArray *JSTalkPluginList;
         
         [principalClassName class]; // force loading of it.
         
-        NSError *err = 0x00;
+        NSError *err = nil;
         [pluginBundle loadAndReturnError:&err];
         
         if (err) {
@@ -113,7 +119,10 @@ static NSMutableArray *JSTalkPluginList;
             if (bridgeSupportName) {
                 NSString *bridgeSupportPath = [pluginBundle pathForResource:bridgeSupportName ofType:nil];
                 
-                [[BridgeSupportController sharedController] loadBridgeSupport:bridgeSupportPath];
+                NSError *outErr = nil;
+                if (![[MOBridgeSupportController sharedController] loadBridgeSupportAtURL:[NSURL fileURLWithPath:bridgeSupportPath] error:&outErr]) {
+                    NSLog(@"Could not load bridge support file at %@", bridgeSupportPath);
+                }
             }
         }
         else {
@@ -130,7 +139,7 @@ static NSMutableArray *JSTalkPluginList;
 
 + (void)resetPlugins {
     [JSTalkPluginList release];
-    JSTalkPluginList = 0x00;
+    JSTalkPluginList = nil;
 }
 
 + (void)loadPlugins {
@@ -217,26 +226,19 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 }
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
-    
-    JSContextRef ctx                = [_jsController ctx];
-    JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSObjectRef jsObject            = [JSCocoaController jsCocoaPrivateObjectInContext:ctx];
-    JSCocoaPrivateObject *private   = JSObjectGetPrivate(jsObject);
-    private.type = @"@";
-    [private setObject:obj];
-    
-    JSObjectSetProperty(ctx, JSContextGetGlobalObject(ctx), jsName, jsObject, 0, NULL);
-    JSStringRelease(jsName);  
+    [_mochaRuntime setValue:obj forKey:name];
 }
 
 - (void)deleteObjectWithName:(NSString*)name {
     
+    /*
     JSContextRef ctx                = [_jsController ctx];
     JSStringRef jsName              = JSStringCreateWithUTF8CString([name UTF8String]);
 
     JSObjectDeleteProperty(ctx, JSContextGetGlobalObject(ctx), jsName, NULL);
     
     JSStringRelease(jsName);  
+     */
 }
 
 
@@ -253,13 +255,24 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     [self pushObject:self withName:@"jstalk"];
     [self pushAsCurrentJSTalk];
     
-    JSValueRef resultRef = 0x00;
-    id resultObj = 0x00;
+    JSValueRef resultRef = nil;
+    id resultObj = nil;
     
     @try {
+        
+        id result = [_mochaRuntime evalObjJSString:str];
+        
+        if (result) {
+            [self print:[result description]];
+        }
+        
+        
+        
+        /*
         [_jsController setUseAutoCall:NO];
         [_jsController setUseJSLint:NO];
         resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];
+         */
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -270,7 +283,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     
     if (resultRef) {
-        [JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
+        //[JSCocoaFFIArgument unboxJSValueRef:resultRef toObject:&resultObj inContext:[[self jsController] ctx]];
     }
     
     [self popAsCurrentJSTalk];
@@ -286,11 +299,11 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 }
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
-    
+    /*
     JSCocoaController *jsController = [self jsController];
     JSContextRef ctx                = [jsController ctx];
     
-    JSValueRef exception            = 0x00;   
+    JSValueRef exception            = nil;
     JSStringRef functionName        = JSStringCreateWithUTF8CString([name UTF8String]);
     JSValueRef functionValue        = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), functionName, &exception);
     
@@ -302,6 +315,8 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     [JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&returnObject inContext:ctx];
     
     return returnObject;
+     */
+    return nil;
 }
 
 - (void)include:(NSString*)fileName {
@@ -312,7 +327,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     
     NSURL *scriptURL = [NSURL fileURLWithPath:fileName];
-    NSError *err = 0x00;
+    NSError *err = nil;
     NSString *str = [NSString stringWithContentsOfURL:scriptURL encoding:NSUTF8StringEncoding error:&err];
     
     if (!str) {
@@ -324,10 +339,11 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     if (_shouldPreprocess) {
         str = [JSTPreprocessor preprocessCode:str];
     }
-                   
+      /*
     if (![[self jsController] evalJSString:str withScriptPath:[scriptURL path]]) {
         NSLog(@"Could not include '%@'", fileName);
     }
+       */
 }
 
 - (void)print:(NSString*)s {
@@ -344,9 +360,10 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
 }
 
+
 + (id)applicationOnPort:(NSString*)port {
     
-    NSConnection *conn  = 0x00;
+    NSConnection *conn  = nil;
     NSUInteger tries    = 0;
     
     while (!conn && tries < 10) {
@@ -390,7 +407,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
                                                                     launchIdentifier:nil];
         if (!launched) {
             NSLog(@"Could not open up %@", appPath);
-            return 0x00;
+            return nil;
         }
     }
     

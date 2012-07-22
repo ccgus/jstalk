@@ -7,20 +7,19 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import <JavaScriptCore/JavaScriptCore.h>
 
-@class JSCocoaController;
-
+@class Mocha;
 @interface JSTalk : NSObject {
     id _printController;
     id _errorController;
-    JSCocoaController *_jsController;
     NSMutableDictionary *_env;
     BOOL _shouldPreprocess;
+    Mocha *_mochaRuntime;
 }
 
 @property (assign) id printController;
 @property (assign) id errorController;
-@property (retain) JSCocoaController *jsController;
 @property (retain) NSMutableDictionary *env;
 @property (assign) BOOL shouldPreprocess;
 
@@ -28,7 +27,7 @@
 - (void)pushObject:(id)obj withName:(NSString*)name;
 - (void)deleteObjectWithName:(NSString*)name;
 
-- (JSCocoaController*)jsController;
+- (Mocha*)mochaRuntime;
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
 + (void)listen;
