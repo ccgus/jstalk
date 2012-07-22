@@ -10,7 +10,6 @@
 #import "JSTAppDelegate.h"
 #import "JSTListener.h"
 #import "JSTalk.h"
-//#import "JSCocoaController.h"
 #import "JSTPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
@@ -151,7 +150,7 @@
         [errorLabel setStringValue:error];
     }
     else {
-        [errorLabel setStringValue:[NSString stringWithFormat:@"Line %d, %@", lineNumber, error]];
+        [errorLabel setStringValue:[NSString stringWithFormat:@"Line %ld, %@", lineNumber, error]];
         
         NSUInteger lineIdx = 0;
         NSRange lineRange  = NSMakeRange(0, 0);
@@ -173,9 +172,6 @@
     JSTalk *jstalk = [[JSTalk alloc] init];
     
     [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
-    
-#pragma message "FIXME: the error delegate stuff needs to be added back in"
-    //jsController.delegate = self;
     
     [jstalk setPrintController:self];
     [jstalk setErrorController:self];

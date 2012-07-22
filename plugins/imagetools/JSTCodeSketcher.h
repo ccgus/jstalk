@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <JSTalk/JSTalk.h>
-#import <JSTalk/JSCocoa.h>
 
 @interface JSTCodeSketcher : NSView {
     
@@ -54,12 +53,13 @@
 - (void)stop;
 - (void)start;
 
+/*
 - (void)setDraw:(JSValueRefAndContextRef)ref;
 - (void)setMouseMove:(JSValueRefAndContextRef)ref;
 - (void)setMouseUp:(JSValueRefAndContextRef)ref;
 - (void)setMouseDown:(JSValueRefAndContextRef)ref;
 - (void)setMouseDrag:(JSValueRefAndContextRef)ref;
-
+*/
 
 @end
 

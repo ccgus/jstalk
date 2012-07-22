@@ -1,7 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import "JSTListener.h"
 #import "JSTalk.h"
-//#import "JSCocoaController.h"
 
 BOOL JSCErrorHandlerExitOnError = YES;
 
@@ -12,8 +11,7 @@ BOOL JSCErrorHandlerExitOnError = YES;
 
 @implementation JSCErrorHandler
 
-/*
-- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     printf("Error line %d, %s\n", (int)lineNumber, [[error description] UTF8String]);
     
@@ -21,7 +19,6 @@ BOOL JSCErrorHandlerExitOnError = YES;
         exit(1);
     }
 }
- */
 
 
 @end
@@ -62,12 +59,9 @@ int main(int argc, char *argv[]) {
     
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     
-    JSCErrorHandler *eh = [[[JSCErrorHandler alloc] init] autorelease];
-    
     JSTalk *t = [[[JSTalk alloc] init] autorelease];
     
-    //JSCocoaController *jsController = [t jsController];
-    //jsController.delegate = eh;
+    [t setErrorController:[[[JSCErrorHandler alloc] init] autorelease]];
     
     if (argc < 2) {
         runREPL(t);

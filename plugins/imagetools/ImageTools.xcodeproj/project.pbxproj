@@ -300,7 +300,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Debug;
@@ -328,7 +328,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.7;
 				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Release;

@@ -103,34 +103,35 @@
     _redrawTimer = 0x00;
     
     if (_setupFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _drawFunction);
+        JSValueUnprotect([_jstalk context], _drawFunction);
     }
     
     if (_drawFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _drawFunction);
+        JSValueUnprotect([_jstalk context], _drawFunction);
     }
     
     if (_mouseUpFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _mouseUpFunction);
+        JSValueUnprotect([_jstalk context], _mouseUpFunction);
     }
     
     if (_mouseDownFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _mouseDownFunction);
+        JSValueUnprotect([_jstalk context], _mouseDownFunction);
     }
     
     if (_mouseMoveFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _mouseMoveFunction);
+        JSValueUnprotect([_jstalk context], _mouseMoveFunction);
     }
     
     if (_mouseDragFunction) {
-        JSValueUnprotect([[_jstalk jsController] ctx], _mouseDragFunction);
+        JSValueUnprotect([_jstalk context], _mouseDragFunction);
     }
 }
 
 - (void)start {
     
     if (_setupFunction) {
-        [[_jstalk jsController] callJSFunction:_setupFunction withArguments:0x00];
+        #pragma message "FIXME: add this back in with the Mocha transition"
+        //[[_jstalk jsController] callJSFunction:_setupFunction withArguments:0x00];
     }
     
     [self setupWindow];
@@ -230,7 +231,9 @@
     
     if (_drawFunction) {
         [self pushContext];
-        [[_jstalk jsController] callJSFunction:_drawFunction withArguments:0x00];
+        
+        #pragma message "FIXME: add back in w/ Mocha transition"
+        //[[_jstalk jsController] callJSFunction:_drawFunction withArguments:0x00];
         [self popContext];
     }
     
@@ -244,7 +247,7 @@
 - (void)viewDidEndLiveResize {
     [self resizeContext];
 }
-
+/*
 - (void)setSetup:(JSValueRefAndContextRef)ref {
     _setupFunction = ref.value;
     JSValueProtect([[_jstalk jsController] ctx], _setupFunction);
@@ -328,6 +331,7 @@
     }
     
 }
+*/
 
 - (BOOL)isFlipped {
     return _flipped;

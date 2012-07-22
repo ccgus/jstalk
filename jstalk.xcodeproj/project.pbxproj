@@ -134,6 +134,8 @@
 		CC3A9B5D15BCB2E00075F377 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D790F48BB2C007A2941 /* TDWord.m */; };
 		CC3A9B5E15BCB2E00075F377 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */; };
 		CC3A9B5F15BCB2E00075F377 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
+		CC3A9B6315BCB82C0075F377 /* MochaRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36AF15BA5E44008D8460 /* MochaRuntime.m */; };
+		CC3A9B6415BCB82E0075F377 /* Mocha.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36AC15BA5E44008D8460 /* Mocha.m */; };
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC41433B0F25259400E46669 /* JSTalk.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* JSTalk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* JSTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* JSTalk.m */; };
@@ -1191,6 +1193,7 @@
 				CC1C7DDF0F48BB2C007A2941 /* TDChar.m in Sources */,
 				CC1C7DE00F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */,
 				CC3A9B2315BC8F390075F377 /* MOBridgeSupportController.m in Sources */,
+				CC3A9B6315BCB82C0075F377 /* MochaRuntime.m in Sources */,
 				CC3A9B2415BC8F390075F377 /* MOBridgeSupportLibrary.m in Sources */,
 				CC3A9B2515BC8F390075F377 /* MOBridgeSupportParser.m in Sources */,
 				CC3A9B2615BC8F390075F377 /* MOBridgeSupportSymbol.m in Sources */,
@@ -1234,6 +1237,7 @@
 				CC1C7DF40F48BB2C007A2941 /* TDSequence.m in Sources */,
 				CC1C7DF60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */,
 				CC1C7DF70F48BB2C007A2941 /* TDSpecificChar.m in Sources */,
+				CC3A9B6415BCB82E0075F377 /* Mocha.m in Sources */,
 				CC1C7DF80F48BB2C007A2941 /* TDSymbol.m in Sources */,
 				CC1C7DF90F48BB2C007A2941 /* TDSymbolNode.m in Sources */,
 				CC1C7DFA0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */,
@@ -1302,10 +1306,6 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/lib\"",
-				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1327,10 +1327,6 @@
 				ARCHS = (
 					x86_64,
 					i386,
-				);
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/lib\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;

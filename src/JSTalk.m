@@ -85,8 +85,8 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 
-- (Mocha*)mochaRuntime {
-    return _mochaRuntime;
+- (JSGlobalContextRef)context {
+    return [_mochaRuntime context];
 }
 
 - (void)addExtrasToRuntime {

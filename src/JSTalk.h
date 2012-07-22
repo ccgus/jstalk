@@ -27,7 +27,7 @@
 - (void)pushObject:(id)obj withName:(NSString*)name;
 - (void)deleteObjectWithName:(NSString*)name;
 
-- (Mocha*)mochaRuntime;
+- (JSGlobalContextRef)context;
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
 + (void)listen;

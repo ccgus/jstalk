@@ -16,7 +16,7 @@ static int FloorPow2(int n);
 
 @interface JSTOpenCLKernel ()
 @property (readwrite) cl_kernel computeKernel;
-@property (readwrite) int workGroupSize;
+@property (readwrite) size_t workGroupSize;
 @end
 
 @implementation JSTOpenCLProgram

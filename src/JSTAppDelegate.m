@@ -8,7 +8,6 @@
 
 #import "JSTAppDelegate.h"
 #import "JSTalk.h"
-//#import "JSCocoaController.h"
 
 @interface JSTAppDelegate (PrivateStuff)
 - (void)restoreWorkspace;
@@ -220,11 +219,9 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     return defaultFont;
 }
 
-/*
-- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     _serviceError = [error retain];
 }
-*/
 
 
 - (void)runAsJSTalkScript:(NSPasteboard *)pb userData:(NSDictionary *)userData error:(NSString **)error {
@@ -246,8 +243,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
         
         JSTalk *jstalk = [[JSTalk alloc] init];
         
-        //JSCocoaController *jsController = [jstalk jsController];
-        //jsController.delegate = self;
+        [jstalk setErrorController:self];
         
         [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
         

@@ -169,7 +169,13 @@ As said earlier, JSTalk is a blend of existing technologies, and has very little
 
 - JSTalk Icon, from Brad Ellis.
 - JavaScriptCore, from Apple and the WebKit team.
-- [JSCocoa](http://inexdo.com/JSCocoa), from Patrick Geiller.
+- [Mocha](https://github.com/logancollins/Mocha), from Logan Collins.
 - [TDParseKit](http://ditchnet.org/tdparsekit/), from Todd Ditchendorf.
 - [NoodleLineNumberView](http://www.noodlesoft.com/blog/2008/10/05/displaying-line-numbers-with-nstextview/), from Paul Kim / Noodlesoft.
 - [TextExtras](http://www.lorax.com/FreeStuff/TextExtras.html), from Mike Ferris.
+
+
+### Mocha Transition Notes for Gus:
+
+Hey, JSTCodeSketcher has a lot of commented out code that you'll need to figure out still
+
