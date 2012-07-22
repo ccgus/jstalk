@@ -90,9 +90,13 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 - (void)addExtrasToRuntime {
+    
     [self pushObject:self withName:@"jstalk"];
     [_mochaRuntime evalString:@"var nil=null;\n"];
     [_mochaRuntime setValue:[MOMethod methodWithTarget:self selector:@selector(print:)] forKey:@"print"];
+    
+    [_mochaRuntime loadFrameworkWithName:@"AppKit"];
+    [_mochaRuntime loadFrameworkWithName:@"Foundation"];
 }
 
 + (void)loadExtraAtPath:(NSString*)fullPath {
@@ -291,7 +295,13 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
-    return [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
+    id foo = [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
+    
+    if (foo == [MOUndefined undefined]) {
+        return nil;
+    }
+    
+    return foo;
 }
 
 // JavaScriptCore isn't safe for recursion.  So calling this function from

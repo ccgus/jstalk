@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'mail' target in the 'mail' project.
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

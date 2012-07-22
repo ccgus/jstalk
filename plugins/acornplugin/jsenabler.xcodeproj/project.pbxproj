@@ -14,12 +14,6 @@
 		CC168BBA1253B0780072FE99 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB51253B0780072FE99 /* JSTExtras.m */; };
 		CC168BBB1253B0780072FE99 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB71253B0780072FE99 /* JSTListener.m */; };
 		CC168BBC1253B0780072FE99 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BB91253B0780072FE99 /* JSTPreprocessor.m */; };
-		CC168BCD1253B07F0072FE99 /* BridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */; };
-		CC168BD01253B07F0072FE99 /* JSCocoaController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC41253B07F0072FE99 /* JSCocoaController.m */; };
-		CC168BD11253B07F0072FE99 /* JSCocoaFFIArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */; };
-		CC168BD21253B07F0072FE99 /* JSCocoaFFIClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */; };
-		CC168BD31253B07F0072FE99 /* JSCocoaLib.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */; };
-		CC168BD41253B07F0072FE99 /* JSCocoaPrivateObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */; };
 		CC168C331253B0920072FE99 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BD91253B0920072FE99 /* TDAlternation.m */; };
 		CC168C341253B0920072FE99 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BDB1253B0920072FE99 /* TDAny.m */; };
 		CC168C351253B0920072FE99 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168BDD1253B0920072FE99 /* TDAssembly.m */; };
@@ -65,11 +59,33 @@
 		CC168C5D1253B0920072FE99 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C2E1253B0920072FE99 /* TDWord.m */; };
 		CC168C5E1253B0920072FE99 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C301253B0920072FE99 /* TDWordOrReservedState.m */; };
 		CC168C5F1253B0920072FE99 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C321253B0920072FE99 /* TDWordState.m */; };
-		CC168C681253B0D20072FE99 /* jslint-jscocoa.js in Resources */ = {isa = PBXBuildFile; fileRef = CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */; };
-		CC168C691253B0D20072FE99 /* class.js in Resources */ = {isa = PBXBuildFile; fileRef = CC168BC11253B07F0072FE99 /* class.js */; };
 		CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */; };
 		CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */; };
 		CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */ = {isa = PBXBuildFile; fileRef = CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */; };
+		CC75A83815BCBB3400A3864C /* MOBridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80215BCBB3400A3864C /* MOBridgeSupportController.m */; };
+		CC75A83915BCBB3400A3864C /* MOBridgeSupportLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80415BCBB3400A3864C /* MOBridgeSupportLibrary.m */; };
+		CC75A83A15BCBB3400A3864C /* MOBridgeSupportParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80615BCBB3400A3864C /* MOBridgeSupportParser.m */; };
+		CC75A83B15BCBB3400A3864C /* MOBridgeSupportSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80815BCBB3400A3864C /* MOBridgeSupportSymbol.m */; };
+		CC75A83C15BCBB3400A3864C /* NSArray+MochaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80A15BCBB3400A3864C /* NSArray+MochaAdditions.m */; };
+		CC75A83D15BCBB3400A3864C /* NSDictionary+MochaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80C15BCBB3400A3864C /* NSDictionary+MochaAdditions.m */; };
+		CC75A83E15BCBB3400A3864C /* NSObject+MochaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80E15BCBB3400A3864C /* NSObject+MochaAdditions.m */; };
+		CC75A83F15BCBB3400A3864C /* NSOrderedSet+MochaAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81015BCBB3400A3864C /* NSOrderedSet+MochaAdditions.m */; };
+		CC75A84015BCBB3400A3864C /* Mocha.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81215BCBB3400A3864C /* Mocha.m */; };
+		CC75A84115BCBB3400A3864C /* MochaRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81515BCBB3400A3864C /* MochaRuntime.m */; };
+		CC75A84215BCBB3400A3864C /* MOBox.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81815BCBB3400A3864C /* MOBox.m */; };
+		CC75A84315BCBB3400A3864C /* MOClassDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81A15BCBB3400A3864C /* MOClassDescription.m */; };
+		CC75A84415BCBB3400A3864C /* MOClosure.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81C15BCBB3400A3864C /* MOClosure.m */; };
+		CC75A84515BCBB3400A3864C /* MOInstanceVariableDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A81F15BCBB3400A3864C /* MOInstanceVariableDescription.m */; };
+		CC75A84615BCBB3400A3864C /* MOJavaScriptObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82215BCBB3400A3864C /* MOJavaScriptObject.m */; };
+		CC75A84715BCBB3400A3864C /* MOMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82415BCBB3400A3864C /* MOMethod.m */; };
+		CC75A84815BCBB3400A3864C /* MOMethodDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82715BCBB3400A3864C /* MOMethodDescription.m */; };
+		CC75A84915BCBB3400A3864C /* MOObjCRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82A15BCBB3400A3864C /* MOObjCRuntime.m */; };
+		CC75A84A15BCBB3400A3864C /* MOPropertyDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82C15BCBB3400A3864C /* MOPropertyDescription.m */; };
+		CC75A84B15BCBB3400A3864C /* MOProtocolDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A82E15BCBB3400A3864C /* MOProtocolDescription.m */; };
+		CC75A84C15BCBB3400A3864C /* MOStruct.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A83115BCBB3400A3864C /* MOStruct.m */; };
+		CC75A84D15BCBB3400A3864C /* MOUndefined.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A83315BCBB3400A3864C /* MOUndefined.m */; };
+		CC75A84E15BCBB3400A3864C /* MOFunctionArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A83515BCBB3400A3864C /* MOFunctionArgument.m */; };
+		CC75A84F15BCBB3400A3864C /* MOUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A83715BCBB3400A3864C /* MOUtilities.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -101,21 +117,6 @@
 		CC168BB71253B0780072FE99 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = ../../src/JSTListener.m; sourceTree = SOURCE_ROOT; };
 		CC168BB81253B0780072FE99 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = ../../src/JSTPreprocessor.h; sourceTree = SOURCE_ROOT; };
 		CC168BB91253B0780072FE99 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = ../../src/JSTPreprocessor.m; sourceTree = SOURCE_ROOT; };
-		CC168BBE1253B07F0072FE99 /* BridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BridgeSupportController.h; path = ../../jscocoa/JSCocoa/BridgeSupportController.h; sourceTree = SOURCE_ROOT; };
-		CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BridgeSupportController.m; path = ../../jscocoa/JSCocoa/BridgeSupportController.m; sourceTree = SOURCE_ROOT; };
-		CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = "jslint-jscocoa.js"; path = "../../jscocoa/JSCocoa/jslint-jscocoa.js"; sourceTree = SOURCE_ROOT; };
-		CC168BC11253B07F0072FE99 /* class.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = class.js; path = ../../jscocoa/JSCocoa/class.js; sourceTree = SOURCE_ROOT; };
-		CC168BC21253B07F0072FE99 /* JSCocoa.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoa.h; path = ../../jscocoa/JSCocoa/JSCocoa.h; sourceTree = SOURCE_ROOT; };
-		CC168BC31253B07F0072FE99 /* JSCocoaController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaController.h; path = ../../jscocoa/JSCocoa/JSCocoaController.h; sourceTree = SOURCE_ROOT; };
-		CC168BC41253B07F0072FE99 /* JSCocoaController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaController.m; path = ../../jscocoa/JSCocoa/JSCocoaController.m; sourceTree = SOURCE_ROOT; };
-		CC168BC51253B07F0072FE99 /* JSCocoaFFIArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIArgument.h; path = ../../jscocoa/JSCocoa/JSCocoaFFIArgument.h; sourceTree = SOURCE_ROOT; };
-		CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIArgument.m; path = ../../jscocoa/JSCocoa/JSCocoaFFIArgument.m; sourceTree = SOURCE_ROOT; };
-		CC168BC71253B07F0072FE99 /* JSCocoaFFIClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaFFIClosure.h; path = ../../jscocoa/JSCocoa/JSCocoaFFIClosure.h; sourceTree = SOURCE_ROOT; };
-		CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaFFIClosure.m; path = ../../jscocoa/JSCocoa/JSCocoaFFIClosure.m; sourceTree = SOURCE_ROOT; };
-		CC168BC91253B07F0072FE99 /* JSCocoaLib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaLib.h; path = ../../jscocoa/JSCocoa/JSCocoaLib.h; sourceTree = SOURCE_ROOT; };
-		CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaLib.m; path = ../../jscocoa/JSCocoa/JSCocoaLib.m; sourceTree = SOURCE_ROOT; };
-		CC168BCB1253B07F0072FE99 /* JSCocoaPrivateObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSCocoaPrivateObject.h; path = ../../jscocoa/JSCocoa/JSCocoaPrivateObject.h; sourceTree = SOURCE_ROOT; };
-		CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSCocoaPrivateObject.m; path = ../../jscocoa/JSCocoa/JSCocoaPrivateObject.m; sourceTree = SOURCE_ROOT; };
 		CC168BD81253B0920072FE99 /* TDAlternation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAlternation.h; sourceTree = "<group>"; };
 		CC168BD91253B0920072FE99 /* TDAlternation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDAlternation.m; sourceTree = "<group>"; };
 		CC168BDA1253B0920072FE99 /* TDAny.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAny.h; sourceTree = "<group>"; };
@@ -213,6 +214,61 @@
 		CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEnablerPlugIn.m; sourceTree = "<group>"; };
 		CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsenabler_Prefix.pch; sourceTree = "<group>"; };
 		CC726DF80F156BE500EB02AF /* ACPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPlugin.h; sourceTree = "<group>"; };
+		CC75A80115BCBB3400A3864C /* MOBridgeSupportController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOBridgeSupportController.h; path = ../../mocha/BridgeSupport/MOBridgeSupportController.h; sourceTree = "<group>"; };
+		CC75A80215BCBB3400A3864C /* MOBridgeSupportController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOBridgeSupportController.m; path = ../../mocha/BridgeSupport/MOBridgeSupportController.m; sourceTree = "<group>"; };
+		CC75A80315BCBB3400A3864C /* MOBridgeSupportLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOBridgeSupportLibrary.h; path = ../../mocha/BridgeSupport/MOBridgeSupportLibrary.h; sourceTree = "<group>"; };
+		CC75A80415BCBB3400A3864C /* MOBridgeSupportLibrary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOBridgeSupportLibrary.m; path = ../../mocha/BridgeSupport/MOBridgeSupportLibrary.m; sourceTree = "<group>"; };
+		CC75A80515BCBB3400A3864C /* MOBridgeSupportParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOBridgeSupportParser.h; path = ../../mocha/BridgeSupport/MOBridgeSupportParser.h; sourceTree = "<group>"; };
+		CC75A80615BCBB3400A3864C /* MOBridgeSupportParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOBridgeSupportParser.m; path = ../../mocha/BridgeSupport/MOBridgeSupportParser.m; sourceTree = "<group>"; };
+		CC75A80715BCBB3400A3864C /* MOBridgeSupportSymbol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOBridgeSupportSymbol.h; path = ../../mocha/BridgeSupport/MOBridgeSupportSymbol.h; sourceTree = "<group>"; };
+		CC75A80815BCBB3400A3864C /* MOBridgeSupportSymbol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOBridgeSupportSymbol.m; path = ../../mocha/BridgeSupport/MOBridgeSupportSymbol.m; sourceTree = "<group>"; };
+		CC75A80915BCBB3400A3864C /* NSArray+MochaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MochaAdditions.h"; path = "../../mocha/Categories/NSArray+MochaAdditions.h"; sourceTree = "<group>"; };
+		CC75A80A15BCBB3400A3864C /* NSArray+MochaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MochaAdditions.m"; path = "../../mocha/Categories/NSArray+MochaAdditions.m"; sourceTree = "<group>"; };
+		CC75A80B15BCBB3400A3864C /* NSDictionary+MochaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MochaAdditions.h"; path = "../../mocha/Categories/NSDictionary+MochaAdditions.h"; sourceTree = "<group>"; };
+		CC75A80C15BCBB3400A3864C /* NSDictionary+MochaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MochaAdditions.m"; path = "../../mocha/Categories/NSDictionary+MochaAdditions.m"; sourceTree = "<group>"; };
+		CC75A80D15BCBB3400A3864C /* NSObject+MochaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+MochaAdditions.h"; path = "../../mocha/Categories/NSObject+MochaAdditions.h"; sourceTree = "<group>"; };
+		CC75A80E15BCBB3400A3864C /* NSObject+MochaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+MochaAdditions.m"; path = "../../mocha/Categories/NSObject+MochaAdditions.m"; sourceTree = "<group>"; };
+		CC75A80F15BCBB3400A3864C /* NSOrderedSet+MochaAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSOrderedSet+MochaAdditions.h"; path = "../../mocha/Categories/NSOrderedSet+MochaAdditions.h"; sourceTree = "<group>"; };
+		CC75A81015BCBB3400A3864C /* NSOrderedSet+MochaAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSOrderedSet+MochaAdditions.m"; path = "../../mocha/Categories/NSOrderedSet+MochaAdditions.m"; sourceTree = "<group>"; };
+		CC75A81115BCBB3400A3864C /* Mocha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mocha.h; path = ../../mocha/Mocha.h; sourceTree = "<group>"; };
+		CC75A81215BCBB3400A3864C /* Mocha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mocha.m; path = ../../mocha/Mocha.m; sourceTree = "<group>"; };
+		CC75A81315BCBB3400A3864C /* MochaDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MochaDefines.h; path = ../../mocha/MochaDefines.h; sourceTree = "<group>"; };
+		CC75A81415BCBB3400A3864C /* MochaRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MochaRuntime.h; path = ../../mocha/MochaRuntime.h; sourceTree = "<group>"; };
+		CC75A81515BCBB3400A3864C /* MochaRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MochaRuntime.m; path = ../../mocha/MochaRuntime.m; sourceTree = "<group>"; };
+		CC75A81615BCBB3400A3864C /* MochaRuntime_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MochaRuntime_Private.h; path = ../../mocha/MochaRuntime_Private.h; sourceTree = "<group>"; };
+		CC75A81715BCBB3400A3864C /* MOBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOBox.h; path = ../../mocha/Objects/MOBox.h; sourceTree = "<group>"; };
+		CC75A81815BCBB3400A3864C /* MOBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOBox.m; path = ../../mocha/Objects/MOBox.m; sourceTree = "<group>"; };
+		CC75A81915BCBB3400A3864C /* MOClassDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOClassDescription.h; path = ../../mocha/Objects/MOClassDescription.h; sourceTree = "<group>"; };
+		CC75A81A15BCBB3400A3864C /* MOClassDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOClassDescription.m; path = ../../mocha/Objects/MOClassDescription.m; sourceTree = "<group>"; };
+		CC75A81B15BCBB3400A3864C /* MOClosure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOClosure.h; path = ../../mocha/Objects/MOClosure.h; sourceTree = "<group>"; };
+		CC75A81C15BCBB3400A3864C /* MOClosure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOClosure.m; path = ../../mocha/Objects/MOClosure.m; sourceTree = "<group>"; };
+		CC75A81D15BCBB3400A3864C /* MOClosure_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOClosure_Private.h; path = ../../mocha/Objects/MOClosure_Private.h; sourceTree = "<group>"; };
+		CC75A81E15BCBB3400A3864C /* MOInstanceVariableDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOInstanceVariableDescription.h; path = ../../mocha/Objects/MOInstanceVariableDescription.h; sourceTree = "<group>"; };
+		CC75A81F15BCBB3400A3864C /* MOInstanceVariableDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOInstanceVariableDescription.m; path = ../../mocha/Objects/MOInstanceVariableDescription.m; sourceTree = "<group>"; };
+		CC75A82015BCBB3400A3864C /* MOInstanceVariableDescription_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOInstanceVariableDescription_Private.h; path = ../../mocha/Objects/MOInstanceVariableDescription_Private.h; sourceTree = "<group>"; };
+		CC75A82115BCBB3400A3864C /* MOJavaScriptObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOJavaScriptObject.h; path = ../../mocha/Objects/MOJavaScriptObject.h; sourceTree = "<group>"; };
+		CC75A82215BCBB3400A3864C /* MOJavaScriptObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOJavaScriptObject.m; path = ../../mocha/Objects/MOJavaScriptObject.m; sourceTree = "<group>"; };
+		CC75A82315BCBB3400A3864C /* MOMethod.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOMethod.h; path = ../../mocha/Objects/MOMethod.h; sourceTree = "<group>"; };
+		CC75A82415BCBB3400A3864C /* MOMethod.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOMethod.m; path = ../../mocha/Objects/MOMethod.m; sourceTree = "<group>"; };
+		CC75A82515BCBB3400A3864C /* MOMethod_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOMethod_Private.h; path = ../../mocha/Objects/MOMethod_Private.h; sourceTree = "<group>"; };
+		CC75A82615BCBB3400A3864C /* MOMethodDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOMethodDescription.h; path = ../../mocha/Objects/MOMethodDescription.h; sourceTree = "<group>"; };
+		CC75A82715BCBB3400A3864C /* MOMethodDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOMethodDescription.m; path = ../../mocha/Objects/MOMethodDescription.m; sourceTree = "<group>"; };
+		CC75A82815BCBB3400A3864C /* MOMethodDescription_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOMethodDescription_Private.h; path = ../../mocha/Objects/MOMethodDescription_Private.h; sourceTree = "<group>"; };
+		CC75A82915BCBB3400A3864C /* MOObjCRuntime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOObjCRuntime.h; path = ../../mocha/Objects/MOObjCRuntime.h; sourceTree = "<group>"; };
+		CC75A82A15BCBB3400A3864C /* MOObjCRuntime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOObjCRuntime.m; path = ../../mocha/Objects/MOObjCRuntime.m; sourceTree = "<group>"; };
+		CC75A82B15BCBB3400A3864C /* MOPropertyDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOPropertyDescription.h; path = ../../mocha/Objects/MOPropertyDescription.h; sourceTree = "<group>"; };
+		CC75A82C15BCBB3400A3864C /* MOPropertyDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOPropertyDescription.m; path = ../../mocha/Objects/MOPropertyDescription.m; sourceTree = "<group>"; };
+		CC75A82D15BCBB3400A3864C /* MOProtocolDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOProtocolDescription.h; path = ../../mocha/Objects/MOProtocolDescription.h; sourceTree = "<group>"; };
+		CC75A82E15BCBB3400A3864C /* MOProtocolDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOProtocolDescription.m; path = ../../mocha/Objects/MOProtocolDescription.m; sourceTree = "<group>"; };
+		CC75A82F15BCBB3400A3864C /* MOProtocolDescription_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOProtocolDescription_Private.h; path = ../../mocha/Objects/MOProtocolDescription_Private.h; sourceTree = "<group>"; };
+		CC75A83015BCBB3400A3864C /* MOStruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOStruct.h; path = ../../mocha/Objects/MOStruct.h; sourceTree = "<group>"; };
+		CC75A83115BCBB3400A3864C /* MOStruct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOStruct.m; path = ../../mocha/Objects/MOStruct.m; sourceTree = "<group>"; };
+		CC75A83215BCBB3400A3864C /* MOUndefined.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOUndefined.h; path = ../../mocha/Objects/MOUndefined.h; sourceTree = "<group>"; };
+		CC75A83315BCBB3400A3864C /* MOUndefined.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOUndefined.m; path = ../../mocha/Objects/MOUndefined.m; sourceTree = "<group>"; };
+		CC75A83415BCBB3400A3864C /* MOFunctionArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOFunctionArgument.h; path = ../../mocha/Utilities/MOFunctionArgument.h; sourceTree = "<group>"; };
+		CC75A83515BCBB3400A3864C /* MOFunctionArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOFunctionArgument.m; path = ../../mocha/Utilities/MOFunctionArgument.m; sourceTree = "<group>"; };
+		CC75A83615BCBB3400A3864C /* MOUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MOUtilities.h; path = ../../mocha/Utilities/MOUtilities.h; sourceTree = "<group>"; };
+		CC75A83715BCBB3400A3864C /* MOUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MOUtilities.m; path = ../../mocha/Utilities/MOUtilities.m; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -264,8 +320,8 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CC3A9B6B15BCBAD60075F377 /* mocha */,
 				CC168BD71253B0920072FE99 /* todparsekit */,
-				CC168BBD1253B07F0072FE99 /* JSCocoa */,
 				CC168BAF1253B05A0072FE99 /* JSTalk.h */,
 				CC168BB01253B05A0072FE99 /* JSTalk.m */,
 				CC168BB41253B0780072FE99 /* JSTExtras.h */,
@@ -316,28 +372,6 @@
 				CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */,
 			);
 			name = "Other Sources";
-			sourceTree = "<group>";
-		};
-		CC168BBD1253B07F0072FE99 /* JSCocoa */ = {
-			isa = PBXGroup;
-			children = (
-				CC168BBE1253B07F0072FE99 /* BridgeSupportController.h */,
-				CC168BBF1253B07F0072FE99 /* BridgeSupportController.m */,
-				CC168BC01253B07F0072FE99 /* jslint-jscocoa.js */,
-				CC168BC11253B07F0072FE99 /* class.js */,
-				CC168BC21253B07F0072FE99 /* JSCocoa.h */,
-				CC168BC31253B07F0072FE99 /* JSCocoaController.h */,
-				CC168BC41253B07F0072FE99 /* JSCocoaController.m */,
-				CC168BC51253B07F0072FE99 /* JSCocoaFFIArgument.h */,
-				CC168BC61253B07F0072FE99 /* JSCocoaFFIArgument.m */,
-				CC168BC71253B07F0072FE99 /* JSCocoaFFIClosure.h */,
-				CC168BC81253B07F0072FE99 /* JSCocoaFFIClosure.m */,
-				CC168BC91253B07F0072FE99 /* JSCocoaLib.h */,
-				CC168BCA1253B07F0072FE99 /* JSCocoaLib.m */,
-				CC168BCB1253B07F0072FE99 /* JSCocoaPrivateObject.h */,
-				CC168BCC1253B07F0072FE99 /* JSCocoaPrivateObject.m */,
-			);
-			name = JSCocoa;
 			sourceTree = "<group>";
 		};
 		CC168BD71253B0920072FE99 /* todparsekit */ = {
@@ -439,6 +473,68 @@
 			path = ../../src/todparsekit;
 			sourceTree = SOURCE_ROOT;
 		};
+		CC3A9B6B15BCBAD60075F377 /* mocha */ = {
+			isa = PBXGroup;
+			children = (
+				CC75A80115BCBB3400A3864C /* MOBridgeSupportController.h */,
+				CC75A80215BCBB3400A3864C /* MOBridgeSupportController.m */,
+				CC75A80315BCBB3400A3864C /* MOBridgeSupportLibrary.h */,
+				CC75A80415BCBB3400A3864C /* MOBridgeSupportLibrary.m */,
+				CC75A80515BCBB3400A3864C /* MOBridgeSupportParser.h */,
+				CC75A80615BCBB3400A3864C /* MOBridgeSupportParser.m */,
+				CC75A80715BCBB3400A3864C /* MOBridgeSupportSymbol.h */,
+				CC75A80815BCBB3400A3864C /* MOBridgeSupportSymbol.m */,
+				CC75A80915BCBB3400A3864C /* NSArray+MochaAdditions.h */,
+				CC75A80A15BCBB3400A3864C /* NSArray+MochaAdditions.m */,
+				CC75A80B15BCBB3400A3864C /* NSDictionary+MochaAdditions.h */,
+				CC75A80C15BCBB3400A3864C /* NSDictionary+MochaAdditions.m */,
+				CC75A80D15BCBB3400A3864C /* NSObject+MochaAdditions.h */,
+				CC75A80E15BCBB3400A3864C /* NSObject+MochaAdditions.m */,
+				CC75A80F15BCBB3400A3864C /* NSOrderedSet+MochaAdditions.h */,
+				CC75A81015BCBB3400A3864C /* NSOrderedSet+MochaAdditions.m */,
+				CC75A81115BCBB3400A3864C /* Mocha.h */,
+				CC75A81215BCBB3400A3864C /* Mocha.m */,
+				CC75A81315BCBB3400A3864C /* MochaDefines.h */,
+				CC75A81415BCBB3400A3864C /* MochaRuntime.h */,
+				CC75A81515BCBB3400A3864C /* MochaRuntime.m */,
+				CC75A81615BCBB3400A3864C /* MochaRuntime_Private.h */,
+				CC75A81715BCBB3400A3864C /* MOBox.h */,
+				CC75A81815BCBB3400A3864C /* MOBox.m */,
+				CC75A81915BCBB3400A3864C /* MOClassDescription.h */,
+				CC75A81A15BCBB3400A3864C /* MOClassDescription.m */,
+				CC75A81B15BCBB3400A3864C /* MOClosure.h */,
+				CC75A81C15BCBB3400A3864C /* MOClosure.m */,
+				CC75A81D15BCBB3400A3864C /* MOClosure_Private.h */,
+				CC75A81E15BCBB3400A3864C /* MOInstanceVariableDescription.h */,
+				CC75A81F15BCBB3400A3864C /* MOInstanceVariableDescription.m */,
+				CC75A82015BCBB3400A3864C /* MOInstanceVariableDescription_Private.h */,
+				CC75A82115BCBB3400A3864C /* MOJavaScriptObject.h */,
+				CC75A82215BCBB3400A3864C /* MOJavaScriptObject.m */,
+				CC75A82315BCBB3400A3864C /* MOMethod.h */,
+				CC75A82415BCBB3400A3864C /* MOMethod.m */,
+				CC75A82515BCBB3400A3864C /* MOMethod_Private.h */,
+				CC75A82615BCBB3400A3864C /* MOMethodDescription.h */,
+				CC75A82715BCBB3400A3864C /* MOMethodDescription.m */,
+				CC75A82815BCBB3400A3864C /* MOMethodDescription_Private.h */,
+				CC75A82915BCBB3400A3864C /* MOObjCRuntime.h */,
+				CC75A82A15BCBB3400A3864C /* MOObjCRuntime.m */,
+				CC75A82B15BCBB3400A3864C /* MOPropertyDescription.h */,
+				CC75A82C15BCBB3400A3864C /* MOPropertyDescription.m */,
+				CC75A82D15BCBB3400A3864C /* MOProtocolDescription.h */,
+				CC75A82E15BCBB3400A3864C /* MOProtocolDescription.m */,
+				CC75A82F15BCBB3400A3864C /* MOProtocolDescription_Private.h */,
+				CC75A83015BCBB3400A3864C /* MOStruct.h */,
+				CC75A83115BCBB3400A3864C /* MOStruct.m */,
+				CC75A83215BCBB3400A3864C /* MOUndefined.h */,
+				CC75A83315BCBB3400A3864C /* MOUndefined.m */,
+				CC75A83415BCBB3400A3864C /* MOFunctionArgument.h */,
+				CC75A83515BCBB3400A3864C /* MOFunctionArgument.m */,
+				CC75A83615BCBB3400A3864C /* MOUtilities.h */,
+				CC75A83715BCBB3400A3864C /* MOUtilities.m */,
+			);
+			name = mocha;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -490,8 +586,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC168C681253B0D20072FE99 /* jslint-jscocoa.js in Resources */,
-				CC168C691253B0D20072FE99 /* class.js in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -508,12 +602,6 @@
 				CC168BBA1253B0780072FE99 /* JSTExtras.m in Sources */,
 				CC168BBB1253B0780072FE99 /* JSTListener.m in Sources */,
 				CC168BBC1253B0780072FE99 /* JSTPreprocessor.m in Sources */,
-				CC168BCD1253B07F0072FE99 /* BridgeSupportController.m in Sources */,
-				CC168BD01253B07F0072FE99 /* JSCocoaController.m in Sources */,
-				CC168BD11253B07F0072FE99 /* JSCocoaFFIArgument.m in Sources */,
-				CC168BD21253B07F0072FE99 /* JSCocoaFFIClosure.m in Sources */,
-				CC168BD31253B07F0072FE99 /* JSCocoaLib.m in Sources */,
-				CC168BD41253B07F0072FE99 /* JSCocoaPrivateObject.m in Sources */,
 				CC168C331253B0920072FE99 /* TDAlternation.m in Sources */,
 				CC168C341253B0920072FE99 /* TDAny.m in Sources */,
 				CC168C351253B0920072FE99 /* TDAssembly.m in Sources */,
@@ -559,6 +647,30 @@
 				CC168C5D1253B0920072FE99 /* TDWord.m in Sources */,
 				CC168C5E1253B0920072FE99 /* TDWordOrReservedState.m in Sources */,
 				CC168C5F1253B0920072FE99 /* TDWordState.m in Sources */,
+				CC75A83815BCBB3400A3864C /* MOBridgeSupportController.m in Sources */,
+				CC75A83915BCBB3400A3864C /* MOBridgeSupportLibrary.m in Sources */,
+				CC75A83A15BCBB3400A3864C /* MOBridgeSupportParser.m in Sources */,
+				CC75A83B15BCBB3400A3864C /* MOBridgeSupportSymbol.m in Sources */,
+				CC75A83C15BCBB3400A3864C /* NSArray+MochaAdditions.m in Sources */,
+				CC75A83D15BCBB3400A3864C /* NSDictionary+MochaAdditions.m in Sources */,
+				CC75A83E15BCBB3400A3864C /* NSObject+MochaAdditions.m in Sources */,
+				CC75A83F15BCBB3400A3864C /* NSOrderedSet+MochaAdditions.m in Sources */,
+				CC75A84015BCBB3400A3864C /* Mocha.m in Sources */,
+				CC75A84115BCBB3400A3864C /* MochaRuntime.m in Sources */,
+				CC75A84215BCBB3400A3864C /* MOBox.m in Sources */,
+				CC75A84315BCBB3400A3864C /* MOClassDescription.m in Sources */,
+				CC75A84415BCBB3400A3864C /* MOClosure.m in Sources */,
+				CC75A84515BCBB3400A3864C /* MOInstanceVariableDescription.m in Sources */,
+				CC75A84615BCBB3400A3864C /* MOJavaScriptObject.m in Sources */,
+				CC75A84715BCBB3400A3864C /* MOMethod.m in Sources */,
+				CC75A84815BCBB3400A3864C /* MOMethodDescription.m in Sources */,
+				CC75A84915BCBB3400A3864C /* MOObjCRuntime.m in Sources */,
+				CC75A84A15BCBB3400A3864C /* MOPropertyDescription.m in Sources */,
+				CC75A84B15BCBB3400A3864C /* MOProtocolDescription.m in Sources */,
+				CC75A84C15BCBB3400A3864C /* MOStruct.m in Sources */,
+				CC75A84D15BCBB3400A3864C /* MOUndefined.m in Sources */,
+				CC75A84E15BCBB3400A3864C /* MOFunctionArgument.m in Sources */,
+				CC75A84F15BCBB3400A3864C /* MOUtilities.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,7 +744,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Debug;
 		};
@@ -647,7 +759,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx10.7;
 			};
 			name = Release;
 		};

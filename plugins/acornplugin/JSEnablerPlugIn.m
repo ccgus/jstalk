@@ -6,8 +6,6 @@
 #import "JSEnablerPlugIn.h"
 #import "ACPlugin.h"
 #import "JSTalk.h"
-#import "JSCocoa.h"
-#import <JavaScriptCore/JavaScriptCore.h>
 
 #define ACScriptMenuTitleKey @"ACScriptMenuTitle"
 #define ACScriptSuperMenuTitleKey @"ACScriptSuperMenuTitle"
@@ -194,20 +192,7 @@
     
     id document = [(id)currentLayer valueForKey:@"document"]; // shh!
     
-    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, document, currentLayer, nil];
-    
-    // Hurray?
-    // The main() method should be returning a value at this point, so we're going to 
-    // put it back into a cocoa object.  If it's not there, then it'll be nil and that's 
-    // ok for our purposes.
-    CIImage *acornReturnValue = 0x00;
-    
-    if (![JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&acornReturnValue inContext:[[jstalk jsController] ctx]]) {
-        return nil;
-    }
-    
-    // fin.
-    return acornReturnValue;
+    return [jstalk callFunctionNamed:@"main" withArguments:[NSArray arrayWithObjects:image, document, currentLayer, nil]];
 }
 
 - (NSNumber*)worksOnShapeLayers:(id)userObject {
