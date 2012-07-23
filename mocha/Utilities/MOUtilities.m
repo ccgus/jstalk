@@ -48,31 +48,20 @@ JSValueRef MOJSValueToType(JSContextRef ctx, JSObjectRef objectJS, JSType type, 
             JSStringRelease(string);
             return value;
         }
-        else if ([object isKindOfClass:[NSNumber class]] && type == kJSTypeBoolean) {
-            BOOL boolValue = [object boolValue];
-            return JSValueMakeBoolean(ctx, boolValue);
-        }
         else if ([object isKindOfClass:[NSNumber class]]) {
             double doubleValue = [object doubleValue];
             return JSValueMakeNumber(ctx, doubleValue);
         }
-        else if ([object isKindOfClass:[NSNull class]] && type == kJSTypeNull) {
-            return JSValueMakeNull(ctx);
-        }
-        else if ([object isKindOfClass:[MOUndefined class]] && type == kJSTypeNull) {
-            return JSValueMakeUndefined(ctx);
-        }
-        else if (type == kJSTypeString) {
-            // Convert the object's description to a string
-            NSString *description = [object description];
-            JSStringRef string = JSStringCreateWithCFString((CFStringRef)description);
-            JSValueRef value = JSValueMakeString(ctx, string);
-            JSStringRelease(string);
-            return value;
-        }
+        
+        // Convert the object's description to a string as a last ditch effort
+        NSString *description = [object description];
+        JSStringRef string = JSStringCreateWithCFString((CFStringRef)description);
+        JSValueRef value = JSValueMakeString(ctx, string);
+        JSStringRelease(string);
+        return value;
     }
     
-    return NULL;
+    return JSValueMakeNull(ctx);
 }
 
 NSString * MOJSValueToString(JSContextRef ctx, JSValueRef value, JSValueRef *exception) {
