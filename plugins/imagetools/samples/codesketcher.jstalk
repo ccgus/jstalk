@@ -1,7 +1,9 @@
 var sketcher = [JSTCodeSketcher codeSketcherWithName:"Code Sketcher - New Time"];
-[sketcher setFrameRate:30];
+[sketcher setFrameRate:60];
 
-sketcher.draw = function() {
+var drawFunction = function() {
+    
+    
     
     var date = [NSDate date]
     var c = [[NSCalendar currentCalendar] components:(NSDayCalendarUnit | NSWeekOfYearCalendarUnit | NSMonthCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekdayCalendarUnit) fromDate:date];
@@ -55,8 +57,13 @@ sketcher.draw = function() {
     */
     
     // hour
+    
     var context = [sketcher context];
+    
     CGContextSetLineWidth(context, 2.0);
+    
+    
+    
     CGContextSetRGBStrokeColor(context, 1.0, 1.0, 1.0, 0.5);
     var offset = (h_width*tm_hour) + (tm_min * (h_width/60));
     
@@ -127,6 +134,10 @@ sketcher.draw = function() {
     CGContextAddArc(context, offset ,base-12, 5, 0, 2*Math.PI, 0);
     CGContextClosePath(context);
     CGContextStrokePath(context);
-    
 };
+
+
+[sketcher setDrawRect:drawFunction];
+
+
 

@@ -30,6 +30,8 @@
 - (JSGlobalContextRef)context;
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 
+- (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments;
+
 + (void)listen;
 + (void)resetPlugins;
 + (void)loadPlugins;

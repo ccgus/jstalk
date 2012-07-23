@@ -449,7 +449,6 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
 #else
             typeEncoding = [argument type];
 #endif
-            
             MOFunctionArgument *arg = MOFunctionArgumentForTypeEncoding(typeEncoding);
             [args addObject:arg];
         }

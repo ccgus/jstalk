@@ -1,17 +1,19 @@
 var sketcher = [JSTCodeSketcher codeSketcherWithName:"Draw"];
 
-sketcher.setup = function() {
+var setup = function() {
+    print("setup!")
     [sketcher setSize:NSMakeSize(600, 300)];
     [sketcher clear];
 };
 
-sketcher.mouseDown = function() {
+var mouseDown = function() {
     // reset our points
     m1 = m2 = m3 = m4 = null;
+    print("mouseDown!")
 };
 
-sketcher.mouseDrag = function() {
-    
+var mouseDragged = function() {
+    print("mouseDragged!")
     var m0 = [sketcher mouseLocation];
     
     if (m4) {
@@ -29,3 +31,17 @@ sketcher.mouseDrag = function() {
     m1 = m0;
 };
 
+var mouseMoved = function() {
+    var p = [sketcher mouseLocation];
+    
+    [[[NSColor redColor] colorWithAlphaComponent:.2] set];
+    
+    var path = [NSBezierPath bezierPathWithOvalInRect:NSMakeRect(p.x-5, p.y-5, 10, 10)];
+    [path stroke];
+};
+
+
+[sketcher setSetup:setup];
+[sketcher setMouseDown:mouseDown];
+[sketcher setMouseDragged:mouseDragged];
+//[sketcher setMouseMoved:mouseMoved];

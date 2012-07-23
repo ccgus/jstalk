@@ -8,17 +8,18 @@
 
 #import <Foundation/Foundation.h>
 #import <JSTalk/JSTalk.h>
+#import <JSTalk/MOJavaScriptObject.h>
 
 @interface JSTCodeSketcher : NSView {
     
     JSTalk *_jstalk;
     
-    JSValueRef _drawFunction;
-    JSValueRef _setupFunction;
-    JSValueRef _mouseMoveFunction;
-    JSValueRef _mouseUpFunction;
-    JSValueRef _mouseDownFunction;
-    JSValueRef _mouseDragFunction;
+    MOJavaScriptObject *_drawRect;
+    MOJavaScriptObject *_setup;
+    MOJavaScriptObject *_mouseMoved;
+    MOJavaScriptObject *_mouseUp;
+    MOJavaScriptObject *_mouseDown;
+    MOJavaScriptObject *_mouseDragged;
     
     CGFloat _frameRate;
     
@@ -50,16 +51,16 @@
 @property (retain) NSString *lookupName;
 @property (retain) NSGraphicsContext *nsContext;
 @property (assign) NSSize size;
+
+@property (strong) MOJavaScriptObject *drawRect;
+@property (strong) MOJavaScriptObject *setup;
+@property (strong) MOJavaScriptObject *mouseMoved;
+@property (strong) MOJavaScriptObject *mouseUp;
+@property (strong) MOJavaScriptObject *mouseDown;
+@property (strong) MOJavaScriptObject *mouseDragged;
+
 - (void)stop;
 - (void)start;
-
-/*
-- (void)setDraw:(JSValueRefAndContextRef)ref;
-- (void)setMouseMove:(JSValueRefAndContextRef)ref;
-- (void)setMouseUp:(JSValueRefAndContextRef)ref;
-- (void)setMouseDown:(JSValueRefAndContextRef)ref;
-- (void)setMouseDrag:(JSValueRefAndContextRef)ref;
-*/
 
 @end
 

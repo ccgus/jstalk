@@ -210,7 +210,7 @@
 		CCEC36F515BA5E44008D8460 /* MOInstanceVariableDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEC36B915BA5E44008D8460 /* MOInstanceVariableDescription.h */; };
 		CCEC36F615BA5E44008D8460 /* MOInstanceVariableDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36BA15BA5E44008D8460 /* MOInstanceVariableDescription.m */; };
 		CCEC36F715BA5E44008D8460 /* MOInstanceVariableDescription_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEC36BB15BA5E44008D8460 /* MOInstanceVariableDescription_Private.h */; };
-		CCEC36F815BA5E44008D8460 /* MOJavaScriptObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEC36BC15BA5E44008D8460 /* MOJavaScriptObject.h */; };
+		CCEC36F815BA5E44008D8460 /* MOJavaScriptObject.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEC36BC15BA5E44008D8460 /* MOJavaScriptObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CCEC36F915BA5E44008D8460 /* MOJavaScriptObject.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36BD15BA5E44008D8460 /* MOJavaScriptObject.m */; };
 		CCEC36FA15BA5E44008D8460 /* MOMethod.h in Headers */ = {isa = PBXBuildFile; fileRef = CCEC36BE15BA5E44008D8460 /* MOMethod.h */; };
 		CCEC36FB15BA5E44008D8460 /* MOMethod.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36BF15BA5E44008D8460 /* MOMethod.m */; };
@@ -887,6 +887,7 @@
 				CC41433B0F25259400E46669 /* JSTalk.h in Headers */,
 				CC41433D0F25259500E46669 /* JSTListener.h in Headers */,
 				CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */,
+				CCEC36F815BA5E44008D8460 /* MOJavaScriptObject.h in Headers */,
 				CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */,
 				CC0FEEE21086740F008FF7DD /* JSTTextView.h in Headers */,
 				CC0FEEE410867410008FF7DD /* MarkerLineNumberView.h in Headers */,
@@ -911,7 +912,6 @@
 				CCEC36F415BA5E44008D8460 /* MOClosure_Private.h in Headers */,
 				CCEC36F515BA5E44008D8460 /* MOInstanceVariableDescription.h in Headers */,
 				CCEC36F715BA5E44008D8460 /* MOInstanceVariableDescription_Private.h in Headers */,
-				CCEC36F815BA5E44008D8460 /* MOJavaScriptObject.h in Headers */,
 				CCEC36FA15BA5E44008D8460 /* MOMethod.h in Headers */,
 				CCEC36FC15BA5E44008D8460 /* MOMethod_Private.h in Headers */,
 				CCEC36FD15BA5E44008D8460 /* MOMethodDescription.h in Headers */,

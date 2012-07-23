@@ -8,6 +8,10 @@
 
 #import "JSTCodeSketcher.h"
 
+@interface JSTalk (Private)
+
+@end
+
 @interface JSTCodeSketcher()
 - (void)setupWindow;
 - (void)resizeContext;
@@ -24,9 +28,18 @@
 @synthesize nsContext = _nsContext;
 @synthesize size = _size;
 
+@synthesize drawRect = _drawRect;
+@synthesize setup = _setup;
+@synthesize mouseMoved = _mouseMoved;
+@synthesize mouseUp = _mouseUp;
+@synthesize mouseDown = _mouseDown;
+@synthesize mouseDragged = _mouseDragged;
+
+
+
 + (id)codeSketcherWithName:(NSString*)name {
     
-    static NSMutableDictionary *JSTSketchers = 0x00;
+    static NSMutableDictionary *JSTSketchers = nil;
     
     if (!JSTSketchers) {
         JSTSketchers = [[NSMutableDictionary dictionary] retain];
@@ -90,7 +103,9 @@
     
     CGColorSpaceRef cs = [[[NSScreen mainScreen] colorSpace] CGColorSpace];
     // using float components because it helps with premultiplication.
-    _context = CGBitmapContextCreate(0x00, mySize.width, mySize.height, 32, 0, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast);
+    _context = CGBitmapContextCreate(nil, mySize.width, mySize.height, 32, 0, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast);
+    
+    debug(@"made new context: %p / %@", _context, _context);
     
     [self setNsContext:[NSGraphicsContext graphicsContextWithGraphicsPort:_context flipped:_flipped]];
     
@@ -100,38 +115,34 @@
     
     [_redrawTimer invalidate];
     [_redrawTimer release];
-    _redrawTimer = 0x00;
+    _redrawTimer = nil;
     
-    if (_setupFunction) {
-        JSValueUnprotect([_jstalk context], _drawFunction);
-    }
+    [_drawRect release];
+    _drawRect = nil;
     
-    if (_drawFunction) {
-        JSValueUnprotect([_jstalk context], _drawFunction);
-    }
+    [_setup release];
+    _setup = nil;
     
-    if (_mouseUpFunction) {
-        JSValueUnprotect([_jstalk context], _mouseUpFunction);
-    }
+    [_mouseMoved release];
+    _mouseMoved = nil;
     
-    if (_mouseDownFunction) {
-        JSValueUnprotect([_jstalk context], _mouseDownFunction);
-    }
+    [_mouseUp release];
+    _mouseUp = nil;
     
-    if (_mouseMoveFunction) {
-        JSValueUnprotect([_jstalk context], _mouseMoveFunction);
-    }
+    [_mouseDown release];
+    _mouseDown = nil;
     
-    if (_mouseDragFunction) {
-        JSValueUnprotect([_jstalk context], _mouseDragFunction);
-    }
+    [_mouseDragged release];
+    _mouseDragged = nil;
+    
+    
+    
 }
 
 - (void)start {
     
-    if (_setupFunction) {
-        #pragma message "FIXME: add this back in with the Mocha transition"
-        //[[_jstalk jsController] callJSFunction:_setupFunction withArguments:0x00];
+    if (_setup) {
+        [_jstalk callJSFunction:[_setup JSObject] withArgumentsInArray:nil];
     }
     
     [self setupWindow];
@@ -153,7 +164,7 @@
     }
     
     if (_frameRate > 0) {
-        _redrawTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0 / _frameRate) target:self selector:@selector(fpsTimerHit:) userInfo:0x00 repeats:YES] retain];
+        _redrawTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0 / _frameRate) target:self selector:@selector(fpsTimerHit:) userInfo:nil repeats:YES] retain];
     }
 }
 
@@ -229,11 +240,10 @@
         [self resizeContext];
     }
     
-    if (_drawFunction) {
+    if (_drawRect) {
         [self pushContext];
         
-        #pragma message "FIXME: add back in w/ Mocha transition"
-        //[[_jstalk jsController] callJSFunction:_drawFunction withArguments:0x00];
+        [_jstalk callJSFunction:[_drawRect JSObject] withArgumentsInArray:nil];
         [self popContext];
     }
     
@@ -247,46 +257,20 @@
 - (void)viewDidEndLiveResize {
     [self resizeContext];
 }
-/*
-- (void)setSetup:(JSValueRefAndContextRef)ref {
-    _setupFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _setupFunction);
-}
 
-- (void)setDraw:(JSValueRefAndContextRef)ref {
-    _drawFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _drawFunction);
-}
 
-- (void)setMouseMove:(JSValueRefAndContextRef)ref {
-    _mouseMoveFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _mouseMoveFunction);
-}
-
-- (void)setMouseUp:(JSValueRefAndContextRef)ref {
-    _mouseUpFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _mouseUpFunction);
-}
-
-- (void)setMouseDown:(JSValueRefAndContextRef)ref {
-    _mouseDownFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _mouseDownFunction);
-}
-
-- (void)setMouseDrag:(JSValueRefAndContextRef)ref {
-    _mouseDragFunction = ref.value;
-    JSValueProtect([[_jstalk jsController] ctx], _mouseDragFunction);
-}
 
 - (void)mouseDown:(NSEvent *)event {
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     _mousePressed = YES;
     
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];;
     
-    if (_mouseDownFunction) {
+    debug(@"_mouseDown:%@", _mouseDown);
+    if (_mouseDown) {
         [self pushContext];
-        [[_jstalk jsController] callJSFunction:_mouseDownFunction withArguments:[NSArray arrayWithObject:event]];
+        [_jstalk callJSFunction:[_mouseDown JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];
         [self popContext];
         [self setNeedsDisplay:YES];
     }
@@ -297,9 +281,9 @@
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
     
-    if (_mouseUpFunction) {
+    if (_mouseUp) {
         [self pushContext];
-        [[_jstalk jsController] callJSFunction:_mouseUpFunction withArguments:[NSArray arrayWithObject:event]];
+        [_jstalk callJSFunction:[_mouseUp JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];
         [self popContext];
         [self setNeedsDisplay:YES];
     }
@@ -310,9 +294,9 @@
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
     
-    if (_mouseDragFunction) {
+    if (_mouseDragged) {
         [self pushContext];
-        [[_jstalk jsController] callJSFunction:_mouseDragFunction withArguments:[NSArray arrayWithObject:event]];
+        [_jstalk callJSFunction:[_mouseDragged JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];
         [self popContext];
         [self setNeedsDisplay:YES];
     }
@@ -323,15 +307,14 @@
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];
     
-    if (_mouseMoveFunction) {
+    if (_mouseMoved) {
         [self pushContext];
-        [[_jstalk jsController] callJSFunction:_mouseMoveFunction withArguments:[NSArray arrayWithObject:event]];
+        [_jstalk callJSFunction:[_mouseMoved JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];
         [self popContext];
         [self setNeedsDisplay:YES];
     }
     
 }
-*/
 
 - (BOOL)isFlipped {
     return _flipped;
@@ -400,7 +383,9 @@
     [self setNeedsDisplay:YES];
 }
 
-
+- (void)sketcherWhatever:(id)ctx {
+    debug(@"ctx: %@", ctx);
+}
 
 @end
 
