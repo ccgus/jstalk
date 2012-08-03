@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MochaDefines.h"
 
 
 /*!
@@ -17,12 +18,11 @@
  * @constant MOObjCOwnershipRuleRetain      Retained
  * @constant MOObjCOwnershipRuleCopy        Copied/retained
  */
-enum {
+typedef MOCHA_ENUM(NSUInteger, MOObjCOwnershipRule) {
     MOObjCOwnershipRuleAssign = 0,
     MOObjCOwnershipRuleRetain,
     MOObjCOwnershipRuleCopy,
 };
-typedef NSUInteger MOObjCOwnershipRule;
 
 
 /*!

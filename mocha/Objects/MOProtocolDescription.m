@@ -28,7 +28,7 @@
 }
 
 + (MOProtocolDescription *)descriptionForProtocol:(Protocol *)protocol {
-    return [[[self alloc] initWithProtocol:protocol] autorelease];
+    return [[self alloc] initWithProtocol:protocol];
 }
 
 + (MOProtocolDescription *)allocateDescriptionForProtocolWithName:(NSString *)name {
@@ -36,7 +36,7 @@
     if (protocol == NULL) {
         return nil;
     }
-    return [[[self alloc] initWithProtocol:protocol] autorelease];
+    return [[self alloc] initWithProtocol:protocol];
 }
 
 - (id)initWithProtocol:(Protocol *)protocol {
@@ -184,7 +184,7 @@
             objc_property_t property = properties[i];
             NSString *name = [NSString stringWithUTF8String:property_getName(property)];
             
-            MOPropertyDescription *propertyDesc = [[[MOPropertyDescription alloc] init] autorelease];
+            MOPropertyDescription *propertyDesc = [[MOPropertyDescription alloc] init];
             propertyDesc.name = name;
             
             unsigned int attributeCount = 0;
@@ -372,7 +372,7 @@
 
 - (NSArray *)protocols {
     unsigned int count;
-    Protocol **protocols = protocol_copyProtocolList(_protocol, &count);
+    Protocol *__unsafe_unretained *protocols = protocol_copyProtocolList(_protocol, &count);
     
     if (protocols == NULL) {
         return [NSArray array];

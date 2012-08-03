@@ -38,7 +38,7 @@
 }
 
 + (MOClassDescription *)descriptionForClass:(Class)aClass {
-    return [[[self alloc] initWithClass:aClass registered:YES] autorelease];
+    return [[self alloc] initWithClass:aClass registered:YES];
 }
 
 + (MOClassDescription *)allocateDescriptionForClassWithName:(NSString *)name superclass:(Class)superclass {
@@ -57,7 +57,7 @@
         return nil;
     }
     
-    return [[[self alloc] initWithClass:aClass registered:NO] autorelease];
+    return [[self alloc] initWithClass:aClass registered:NO];
 }
 
 - (id)initWithClass:(Class)aClass registered:(BOOL)isRegistered {
@@ -67,11 +67,6 @@
         _registered = isRegistered;
     }
     return self;
-}
-
-- (void)dealloc {
-    
-    [super dealloc];
 }
 
 - (Class)registerClass {
@@ -152,13 +147,23 @@
     const char * nameString = [name UTF8String];
     const char * typeString = [typeEncoding UTF8String];
     
-    uint8_t alignment = [MOFunctionArgument alignmentOfTypeEncoding:typeString[0]];
+    size_t alignment = 0;
     size_t size = 0;
+    BOOL success = YES;
+    
+    success = [MOFunctionArgument getAlignment:&alignment ofTypeEncoding:typeString[0]];
+    if (!success) {
+        @throw [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to get storage alignment for argument type %c", typeString[0]] userInfo:nil];
+    }
+    
     if (typeString[0] == _C_STRUCT_B) {
         size = [MOFunctionArgument sizeOfStructureTypeEncoding:typeEncoding];
     }
     else {
-        size = [MOFunctionArgument sizeOfTypeEncoding:typeString[0]];
+        success = [MOFunctionArgument getSize:&size ofTypeEncoding:typeString[0]];
+        if (!success) {
+            @throw [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to get storage size for argument type %c", typeString[0]] userInfo:nil];
+        }
     }
     
     return class_addIvar(_class, nameString, size, alignment, typeString);
@@ -227,7 +232,7 @@
     }
     
     const char * typeEncodingString = [typeEncoding UTF8String];
-    IMP implementation = imp_implementationWithBlock(block);
+    IMP implementation = imp_implementationWithBlock((__bridge void *)(block));
     
     return class_addMethod(aClass, selector, implementation, typeEncodingString);
 }
@@ -280,7 +285,7 @@
             objc_property_t property = properties[i];
             NSString *name = [NSString stringWithUTF8String:property_getName(property)];
             
-            MOPropertyDescription *propertyDesc = [[[MOPropertyDescription alloc] init] autorelease];
+            MOPropertyDescription *propertyDesc = [[MOPropertyDescription alloc] init];
             propertyDesc.name = name;
             
             unsigned int attributeCount = 0;
@@ -489,7 +494,7 @@
 
 - (NSArray *)protocols {
     unsigned int count;
-    Protocol **protocols = class_copyProtocolList(_class, &count);
+    Protocol *__unsafe_unretained *protocols = class_copyProtocolList(_class, &count);
     
     if (protocols == NULL) {
         return [NSArray array];

@@ -143,7 +143,6 @@ NSArray *TE_tabStopArrayForFontAndTabWidth(NSFont *font, unsigned tabWidth) {
         for (i = 1; i <= 100; i++) {
             NSTextTab *tab = [[NSTextTab alloc] initWithType:NSLeftTabStopType location:widthOfTab * i];
             [array addObject:tab];
-            [tab release];
         }
         currentWidthOfTab = widthOfTab;
     }
@@ -289,7 +288,7 @@ NSAttributedString *TE_attributedStringByIndentingParagraphs(NSAttributedString 
         }
     }
     
-    return [newString autorelease];
+    return newString;
 }
 
 // ********************** Brace matching utilities **********************
@@ -314,14 +313,12 @@ static void initBraces() {
 
         defStr = [defaults objectForKey:@"TEOpeningBracesCharacters"];
         if (defStr) {
-            openingBraces = [defStr retain];
+            openingBraces = defStr;
             defStr = [defaults objectForKey:@"TEClosingBracesCharacters"];
-            closingBraces = [defStr retain];
+            closingBraces = defStr;
             if (!closingBraces || ([openingBraces length] != [closingBraces length])) {
                 NSLog(@"TextExtras: Values for user defaults keys TEOpeningBracesCharacters and TEClosingBracesCharacters must both be present and the same length if either one is set.");
-                [openingBraces release];
                 openingBraces = nil;
-                [closingBraces release];
                 closingBraces = nil;
             }
         }

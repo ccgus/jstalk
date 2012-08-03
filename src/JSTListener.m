@@ -55,7 +55,6 @@
     }
     else {
         NSLog(@"JSTalk could not listen on port %@", port);
-        [_conn release];
         _conn = nil;
     }
 }

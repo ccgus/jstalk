@@ -102,7 +102,7 @@
  * 
  * @result A Class object, or Nil
  */
-@property (readonly) Class descriptedClass;
+@property (unsafe_unretained, readonly) Class descriptedClass;
 
 /*!
  * @property superclass
@@ -110,7 +110,7 @@
  * 
  * @result An MOClassDescription object, or nil
  */
-@property (readonly) MOClassDescription *superclass;
+@property (weak, readonly) MOClassDescription *superclass;
 
 
 /*!

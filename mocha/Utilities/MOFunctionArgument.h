@@ -47,15 +47,14 @@
 
 // Support
 
-+ (int)alignmentOfTypeEncoding:(char)encoding;
++ (BOOL)getAlignment:(size_t *)alignment ofTypeEncoding:(char)encoding;
++ (BOOL)getSize:(size_t *)size ofTypeEncoding:(char)encoding;
 + (ffi_type *)ffiTypeForTypeEncoding:(char)encoding;
-+ (int)sizeOfTypeEncoding:(char)encoding;
-+ (int)alignmentOfTypeEncoding:(char)encoding;
 
 + (NSString *)descriptionOfTypeEncoding:(char)encoding;
 + (NSString *)descriptionOfTypeEncoding:(char)typeEncoding fullTypeEncoding:(NSString *)fullTypeEncoding;
 
-+ (int)sizeOfStructureTypeEncoding:(NSString *)encoding;
++ (size_t)sizeOfStructureTypeEncoding:(NSString *)encoding;
 + (NSString *)structureNameFromStructureTypeEncoding:(NSString *)encoding;
 + (NSString *)structureTypeEncodingDescription:(NSString *)structureTypeEncoding;
 + (NSString *)structureFullTypeEncodingFromStructureTypeEncoding:(NSString *)encoding;
@@ -70,6 +69,5 @@
 + (NSInteger)structureFromJSObject:(JSObjectRef)object inContext:(JSContextRef)ctx inParentJSValueRef:(JSValueRef)parentValue cString:(char *)c storage:(void **)ptr;
 + (NSInteger)structureToJSValue:(JSValueRef *)value inContext:(JSContextRef)ctx cString:(char *)c storage:(void **)ptr;
 + (NSInteger)structureToJSValue:(JSValueRef *)value inContext:(JSContextRef)ctx cString:(char *)c storage:(void **)ptr initialValues:(JSValueRef *)initialValues initialValueCount:(NSInteger)initialValueCount convertedValueCount:(NSInteger *)convertedValueCount;
-
 
 @end

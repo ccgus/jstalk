@@ -11,8 +11,8 @@
 
 @class Mocha;
 @interface JSTalk : NSObject {
-    id _printController;
-    id _errorController;
+    __unsafe_unretained id _printController;
+    __unsafe_unretained id _errorController;
     NSMutableDictionary *_env;
     BOOL _shouldPreprocess;
     Mocha *_mochaRuntime;

@@ -10,28 +10,20 @@
 
 
 @implementation MOBridgeSupportLibrary {
-	NSMutableArray *_dependencies;
-	NSMutableDictionary *_symbols;
+    NSMutableArray *_dependencies;
+    NSMutableDictionary *_symbols;
 }
 
 @synthesize name=_name;
 @synthesize URL=_URL;
 
 - (id)init {
-	self = [super init];
-	if (self) {
-		_dependencies = [[NSMutableArray alloc] init];
-		_symbols = [[NSMutableDictionary alloc] init];
-	}
-	return self;
-}
-
-- (void)dealloc {
-	[_name release];
-	[_URL release];
-	[_dependencies release];
-	[_symbols release];
-	[super dealloc];
+    self = [super init];
+    if (self) {
+        _dependencies = [[NSMutableArray alloc] init];
+        _symbols = [[NSMutableDictionary alloc] init];
+    }
+    return self;
 }
 
 
@@ -39,23 +31,23 @@
 #pragma mark Dependencies
 
 - (NSArray *)dependencies {
-	return _dependencies;
+    return _dependencies;
 }
 
 - (void)setDependencies:(NSArray *)dependencies {
-	[_dependencies setArray:dependencies];
+    [_dependencies setArray:dependencies];
 }
 
 - (void)addDependency:(NSString *)dependency {
-	if (![_dependencies containsObject:dependency]) {
-		[_dependencies addObject:dependency];
-	}
+    if (![_dependencies containsObject:dependency]) {
+        [_dependencies addObject:dependency];
+    }
 }
 
 - (void)removeDependency:(NSString *)dependency {
-	if ([_dependencies containsObject:dependency]) {
-		[_dependencies removeObject:dependency];
-	}
+    if ([_dependencies containsObject:dependency]) {
+        [_dependencies removeObject:dependency];
+    }
 }
 
 
@@ -63,23 +55,23 @@
 #pragma mark Symbols
 
 - (NSDictionary *)symbols {
-	return _symbols;
+    return _symbols;
 }
 
 - (void)setSymbols:(NSDictionary *)symbols {
-	[_symbols setDictionary:symbols];
+    [_symbols setDictionary:symbols];
 }
 
 - (MOBridgeSupportSymbol *)symbolWithName:(NSString *)name {
-	return [_symbols objectForKey:name];
+    return [_symbols objectForKey:name];
 }
 
 - (void)setSymbol:(MOBridgeSupportSymbol *)symbol forName:(NSString *)name {
-	[_symbols setObject:symbol forKey:name];
+    [_symbols setObject:symbol forKey:name];
 }
 
 - (void)removeSymbolForName:(NSString *)name {
-	[_symbols removeObjectForKey:name];
+    [_symbols removeObjectForKey:name];
 }
 
 @end
