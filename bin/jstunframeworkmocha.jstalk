@@ -1,0 +1,102 @@
+#!/usr/bin/env jstalk
+
+var fm = [NSFileManager defaultManager];
+var baseDir = [[[NSProcessInfo processInfo] environment] objectForKey:"PWD"];
+srcDir = baseDir + "/mocha/";
+
+function getFile(path) {
+    
+    var s = [NSMutableString stringWithContentsOfFile:(srcDir + path) encoding:NSUTF8StringEncoding error:null]
+    
+    if (!s) {
+        print("WHOA WHOA WHOA COULDN'T FIND " + path)
+    }
+    
+    return s;
+}
+
+function remove(s, r) {
+    [s replaceOccurrencesOfString:r withString:'' options:0 range:NSMakeRange(0, [s length])]
+}
+
+function replace(s, a, b) {
+    [s replaceOccurrencesOfString:a withString:b options:0 range:NSMakeRange(0, [s length])]
+}
+
+function writeTo(path, file) {
+    [[file dataUsingEncoding:NSUTF8StringEncoding] writeToFile:(srcDir + path) atomically:true];
+}
+
+
+function fixUp(path) {
+    var f = getFile(path);
+    replace(f, "<Mocha/MochaRuntime.h>", '"MochaRuntime.h"');
+    replace(f, '<Mocha/MochaDefines.h>', '"MochaDefines.h"');
+    replace(f, '<Mocha/MOMethod.h>', '"MOMethod.h"');
+    replace(f, '<Mocha/MOUndefined.h>', '"MOUndefined.h"');
+    replace(f, '<Mocha/MOClassDescription.h>', '"MOClassDescription.h"');
+    replace(f, '<Mocha/MOInstanceVariableDescription.h>', '"MOInstanceVariableDescription.h"');
+    replace(f, '<Mocha/MOMethodDescription.h>', '"MOMethodDescription.h"');
+    replace(f, '<Mocha/MOPropertyDescription.h>', '"MOPropertyDescription.h"');
+    replace(f, '<Mocha/MOProtocolDescription.h>', '"MOProtocolDescription.h"');
+    replace(f, '<Mocha/MOClosure.h>', '"MOClosure.h"');
+    replace(f, '<Mocha/MOObjCRuntime.h>', '"MOObjCRuntime.h"');
+    
+    writeTo(path, f);
+}
+
+fixUp("BridgeSupport/MOBridgeSupportController.h")
+fixUp("BridgeSupport/MOBridgeSupportController.m")
+fixUp("BridgeSupport/MOBridgeSupportLibrary.h")
+fixUp("BridgeSupport/MOBridgeSupportLibrary.m")
+fixUp("BridgeSupport/MOBridgeSupportParser.h")
+fixUp("BridgeSupport/MOBridgeSupportParser.m")
+fixUp("BridgeSupport/MOBridgeSupportSymbol.h")
+fixUp("BridgeSupport/MOBridgeSupportSymbol.m")
+fixUp("Categories/NSArray+MochaAdditions.h")
+fixUp("Categories/NSArray+MochaAdditions.m")
+fixUp("Categories/NSDictionary+MochaAdditions.h")
+fixUp("Categories/NSDictionary+MochaAdditions.m")
+fixUp("Categories/NSObject+MochaAdditions.h")
+fixUp("Categories/NSObject+MochaAdditions.m")
+fixUp("Categories/NSOrderedSet+MochaAdditions.h")
+fixUp("Categories/NSOrderedSet+MochaAdditions.m")
+fixUp("Mocha.h")
+fixUp("Mocha.m")
+fixUp("MochaDefines.h")
+fixUp("MochaRuntime.h")
+fixUp("MochaRuntime.m")
+fixUp("MochaRuntime_Private.h")
+fixUp("Objects/MOBox.h")
+fixUp("Objects/MOBox.m")
+fixUp("Objects/MOClassDescription.h")
+fixUp("Objects/MOClassDescription.m")
+fixUp("Objects/MOClosure.h")
+fixUp("Objects/MOClosure.m")
+fixUp("Objects/MOClosure_Private.h")
+fixUp("Objects/MOInstanceVariableDescription.h")
+fixUp("Objects/MOInstanceVariableDescription.m")
+fixUp("Objects/MOInstanceVariableDescription_Private.h")
+fixUp("Objects/MOJavaScriptObject.h")
+fixUp("Objects/MOJavaScriptObject.m")
+fixUp("Objects/MOMethod.h")
+fixUp("Objects/MOMethod.m")
+fixUp("Objects/MOMethod_Private.h")
+fixUp("Objects/MOMethodDescription.h")
+fixUp("Objects/MOMethodDescription.m")
+fixUp("Objects/MOMethodDescription_Private.h")
+fixUp("Objects/MOObjCRuntime.h")
+fixUp("Objects/MOObjCRuntime.m")
+fixUp("Objects/MOPropertyDescription.h")
+fixUp("Objects/MOPropertyDescription.m")
+fixUp("Objects/MOProtocolDescription.h")
+fixUp("Objects/MOProtocolDescription.m")
+fixUp("Objects/MOProtocolDescription_Private.h")
+fixUp("Objects/MOStruct.h")
+fixUp("Objects/MOStruct.m")
+fixUp("Objects/MOUndefined.h")
+fixUp("Objects/MOUndefined.m")
+fixUp("Utilities/MOFunctionArgument.h")
+fixUp("Utilities/MOFunctionArgument.m")
+fixUp("Utilities/MOUtilities.h")
+fixUp("Utilities/MOUtilities.m")

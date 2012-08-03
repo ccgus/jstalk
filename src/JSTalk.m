@@ -294,9 +294,24 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     return resultObj;
 }
 
+- (BOOL)hasFunctionNamed:(NSString*)name {
+    
+    JSValueRef exception = nil;
+    JSStringRef jsFunctionName = JSStringCreateWithUTF8CString([name UTF8String]);
+    JSValueRef jsFunctionValue = JSObjectGetProperty([_mochaRuntime context], JSContextGetGlobalObject([_mochaRuntime context]), jsFunctionName, &exception);
+    JSStringRelease(jsFunctionName);
+    
+    
+    return jsFunctionValue && (JSValueGetType([_mochaRuntime context], jsFunctionValue) == kJSTypeObject);
+}
+
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
+    [self pushAsCurrentJSTalk];
+    
     id foo = [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
+    
+    [self popAsCurrentJSTalk];
     
     if (foo == [MOUndefined undefined]) {
         return nil;
@@ -307,7 +322,10 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 
 - (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments {
-    return [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    [self pushAsCurrentJSTalk];
+    JSValueRef r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    [self popAsCurrentJSTalk];
+    return r;
 }
 
 // JavaScriptCore isn't safe for recursion.  So calling this function from

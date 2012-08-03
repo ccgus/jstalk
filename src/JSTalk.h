@@ -29,6 +29,7 @@
 
 - (JSGlobalContextRef)context;
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
+- (BOOL)hasFunctionNamed:(NSString*)name;
 
 - (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments;
 

@@ -194,6 +194,12 @@
     
     [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
     
+    
+    if ([jstalk hasFunctionNamed:@"fmain"]) {
+        debug(@"HEY THERE'S A MAIN FUNCTION.");
+        [jstalk callFunctionNamed:@"fmain" withArguments:nil];
+    }
+    
     [jstalk release];
     
 }

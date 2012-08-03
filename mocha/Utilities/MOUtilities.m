@@ -61,7 +61,7 @@ JSValueRef MOJSValueToType(JSContextRef ctx, JSObjectRef objectJS, JSType type, 
         return value;
     }
     
-    return JSValueMakeNull(ctx);
+    return NULL;
 }
 
 NSString * MOJSValueToString(JSContextRef ctx, JSValueRef value, JSValueRef *exception) {
@@ -449,6 +449,7 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
 #else
             typeEncoding = [argument type];
 #endif
+            
             MOFunctionArgument *arg = MOFunctionArgumentForTypeEncoding(typeEncoding);
             [args addObject:arg];
         }

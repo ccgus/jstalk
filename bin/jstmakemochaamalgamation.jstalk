@@ -1,0 +1,356 @@
+#!/usr/bin/env jstalk
+
+var fm = [NSFileManager defaultManager];
+var baseDir = [[[NSProcessInfo processInfo] environment] objectForKey:"PWD"];
+srcDir = baseDir + "/src/";
+
+function getFile(path) {
+    
+    var s = [NSString stringWithContentsOfFile:(srcDir + path) encoding:NSUTF8StringEncoding error:null]
+    
+    
+    if (!s) {
+        s = [NSString stringWithContentsOfFile:(baseDir + "/mocha/" + path) encoding:NSUTF8StringEncoding error:null]
+    }
+    
+    if (!s) {
+        print("WHOA WHOA WHOA COULDN'T FIND " + path)
+    }
+    
+    return s;
+}
+
+function remove(s, r) {
+    [s replaceOccurrencesOfString:r withString:'' options:0 range:NSMakeRange(0, [s length])]
+}
+
+function replace(s, a, b) {
+    [s replaceOccurrencesOfString:a withString:b options:0 range:NSMakeRange(0, [s length])]
+}
+
+function removeSecondOccur(s, r) {
+
+    var firstRange = [s rangeOfString:r];
+    
+    var newRange = firstRange;
+    newRange.location += [r length];
+    newRange.length = [s length] - newRange.location;
+    
+    
+    [s replaceOccurrencesOfString:r withString:'' options:0 range:newRange]
+}
+
+
+
+function makeParseKit() {
+    
+    var headers = [NSMutableString string];
+    var implementations = [NSMutableString string];
+    
+    var files = ['TDTokenizer', 'TDReader', 'TDTokenizerState', 'TDQuoteState', 'TDMultiLineCommentState', 'TDCommentState', 'TDSymbolState', 'TDNumberState', 'TDWhitespaceState', 'TDWordState',
+                 'TDSingleLineCommentState', 'TDToken', 'TDSymbolNode', 'TDSymbolRootNode']
+    
+    for (fileIdx in files) {
+        file = files[fileIdx];
+        
+        var hFile = file + ".h"
+        var mFile = file + ".m"
+        
+        var hcontents = [NSMutableString stringWithContentsOfFile:(baseDir + "/src/todparsekit/" + hFile) encoding:NSUTF8StringEncoding error:null]
+        var mcontents = [NSMutableString stringWithContentsOfFile:(baseDir + "/src/todparsekit/" + mFile) encoding:NSUTF8StringEncoding error:null]
+        
+        
+        if (file === 'TDCommentState') {
+            replace(hcontents, "@end", "@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@property (nonatomic, retain) TDSingleLineCommentState *singleLineState;\n@property (nonatomic, retain) TDMultiLineCommentState *multiLineState;\n@end");
+        }
+        
+        if (file === 'TDMultiLineCommentState') {
+            
+            replace(hcontents, "@end", """- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@property (nonatomic, retain) NSMutableArray *startSymbols;
+@property (nonatomic, retain) NSMutableArray *endSymbols;
+@property (nonatomic, copy) NSString *currentStartSymbol;
+@end""");
+
+        }
+        
+        
+        [headers appendString:hcontents];
+        [headers appendString:"\n"];
+        
+        [implementations appendString:mcontents];
+        [implementations appendString:"\n"];
+        
+    }
+    
+    // special cases.
+    remove(implementations, '@interface TDTokenizerState ()\n- (void)reset;\n- (void)append:(NSInteger)c;\n- (NSString *)bufferedString;\n@end');
+    remove(implementations, '@interface TDTokenizerState ()\n- (void)reset;\n- (void)append:(NSInteger)c;\n- (void)appendString:(NSString *)s;\n- (NSString *)bufferedString;\n@end');
+    
+    remove(implementations, '@interface TDCommentState ()\n@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@end');
+    remove(implementations, '@interface TDCommentState ()\n@property (nonatomic, retain) TDSymbolRootNode *rootNode;\n@property (nonatomic, retain) TDSingleLineCommentState *singleLineState;\n@property (nonatomic, retain) TDMultiLineCommentState *multiLineState;\n@end')
+    
+    remove(implementations, """@interface TDMultiLineCommentState ()
+- (void)addStartSymbol:(NSString *)start endSymbol:(NSString *)end;
+- (void)removeStartSymbol:(NSString *)start;
+@property (nonatomic, retain) NSMutableArray *startSymbols;
+@property (nonatomic, retain) NSMutableArray *endSymbols;
+@property (nonatomic, copy) NSString *currentStartSymbol;
+@end""")
+    
+    remove(implementations, "@interface TDSymbolNode ()\n@property (nonatomic, retain) NSMutableDictionary *children;\n@end");
+    
+    removeSecondOccur(implementations, @'@interface TDSingleLineCommentState ()\n- (void)addStartSymbol:(NSString *)start;\n- (void)removeStartSymbol:(NSString *)start;\n@property (nonatomic, retain) NSMutableArray *startSymbols;\n@property (nonatomic, retain) NSString *currentStartSymbol;\n@end\n');
+    
+    
+    [headers appendString:implementations];
+    
+    var strippedOutIncludes = [NSMutableString string];
+    
+    var allTogetherNow = headers;
+    
+    var lines = [headers componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+    
+    for (i = 0; i < [lines length]; i++) {
+        
+        var line = lines[i];
+        
+        if ([line hasPrefix:'#import "TD']) {
+            continue;
+        }
+        
+        [strippedOutIncludes appendString:line];
+        [strippedOutIncludes appendString:@"\n"];
+    }
+    
+    return strippedOutIncludes;
+    
+}
+
+var jsth         = getFile("JSTalk.h")
+var JSTalkm      = getFile("JSTalk.m")
+var JSTExtrasm   = getFile("JSTExtras.m")
+var JSTListenerm = getFile("JSTListener.m")
+var JSTListenerh = getFile("JSTListener.h")
+var JSTTextVievm = getFile("JSTTextView.m")
+var JSTTextVievh = getFile("JSTTextView.h")
+var TETextUtilsm = getFile("TETextUtils.m")
+var TETextUtilsh = getFile("TETextUtils.h")
+var MarkerLineNumberViewm = getFile("MarkerLineNumberView.m")
+var MarkerLineNumberViewh = getFile("MarkerLineNumberView.h")
+var NoodleLineNumberViewm = getFile("NoodleLineNumberView.m")
+var NoodleLineNumberViewh = getFile("NoodleLineNumberView.h")
+var NoodleLineNumberMarkerm = getFile("NoodleLineNumberMarker.m")
+var NoodleLineNumberMarkerh = getFile("NoodleLineNumberMarker.h")
+
+var JSTPreprocessorm = getFile("JSTPreprocessor.m")
+var JSTPreprocessorh = getFile("JSTPreprocessor.h")
+
+
+var MOBridgeSupportControllerh = getFile("BridgeSupport/MOBridgeSupportController.h");
+var MOBridgeSupportControllerm = getFile("BridgeSupport/MOBridgeSupportController.m");
+var MOBridgeSupportLibraryh = getFile("BridgeSupport/MOBridgeSupportLibrary.h");
+var MOBridgeSupportLibrarym = getFile("BridgeSupport/MOBridgeSupportLibrary.m");
+var MOBridgeSupportParserh = getFile("BridgeSupport/MOBridgeSupportParser.h");
+var MOBridgeSupportParserm = getFile("BridgeSupport/MOBridgeSupportParser.m");
+var MOBridgeSupportSymbolh = getFile("BridgeSupport/MOBridgeSupportSymbol.h");
+var MOBridgeSupportSymbolm = getFile("BridgeSupport/MOBridgeSupportSymbol.m");
+var NSArrayMochaAdditionsh = getFile("Categories/NSArray+MochaAdditions.h");
+var NSArrayMochaAdditionsm = getFile("Categories/NSArray+MochaAdditions.m");
+var NSDictionaryMochaAdditionsh = getFile("Categories/NSDictionary+MochaAdditions.h");
+var NSDictionaryMochaAdditionsm = getFile("Categories/NSDictionary+MochaAdditions.m");
+var NSObjectMochaAdditionsh = getFile("Categories/NSObject+MochaAdditions.h");
+var NSObjectMochaAdditionsm = getFile("Categories/NSObject+MochaAdditions.m");
+var NSOrderedSetMochaAdditionsh = getFile("Categories/NSOrderedSet+MochaAdditions.h");
+var NSOrderedSetMochaAdditionsm = getFile("Categories/NSOrderedSet+MochaAdditions.m");
+var Mochah = getFile("Mocha.h");
+var Mocham = getFile("Mocha.m");
+var MochaDefinesh = getFile("MochaDefines.h");
+var MochaRuntimeh = getFile("MochaRuntime.h");
+var MochaRuntimem = getFile("MochaRuntime.m");
+var MochaRuntime_Privateh = getFile("MochaRuntime_Private.h");
+var MOBoxh = getFile("Objects/MOBox.h");
+var MOBoxm = getFile("Objects/MOBox.m");
+var MOClassDescriptionh = getFile("Objects/MOClassDescription.h");
+var MOClassDescriptionm = getFile("Objects/MOClassDescription.m");
+var MOClosureh = getFile("Objects/MOClosure.h");
+var MOClosurem = getFile("Objects/MOClosure.m");
+var MOClosure_Privateh = getFile("Objects/MOClosure_Private.h");
+var MOInstanceVariableDescriptionh = getFile("Objects/MOInstanceVariableDescription.h");
+var MOInstanceVariableDescriptionm = getFile("Objects/MOInstanceVariableDescription.m");
+var MOInstanceVariableDescription_Privateh = getFile("Objects/MOInstanceVariableDescription_Private.h");
+var MOJavaScriptObjecth = getFile("Objects/MOJavaScriptObject.h");
+var MOJavaScriptObjectm = getFile("Objects/MOJavaScriptObject.m");
+var MOMethodh = getFile("Objects/MOMethod.h");
+var MOMethodm = getFile("Objects/MOMethod.m");
+var MOMethod_Privateh = getFile("Objects/MOMethod_Private.h");
+var MOMethodDescriptionh = getFile("Objects/MOMethodDescription.h");
+var MOMethodDescriptionm = getFile("Objects/MOMethodDescription.m");
+var MOMethodDescription_Privateh = getFile("Objects/MOMethodDescription_Private.h");
+var MOObjCRuntimeh = getFile("Objects/MOObjCRuntime.h");
+var MOObjCRuntimem = getFile("Objects/MOObjCRuntime.m");
+var MOPropertyDescriptionh = getFile("Objects/MOPropertyDescription.h");
+var MOPropertyDescriptionm = getFile("Objects/MOPropertyDescription.m");
+var MOProtocolDescriptionh = getFile("Objects/MOProtocolDescription.h");
+var MOProtocolDescriptionm = getFile("Objects/MOProtocolDescription.m");
+var MOProtocolDescription_Privateh = getFile("Objects/MOProtocolDescription_Private.h");
+var MOStructh = getFile("Objects/MOStruct.h");
+var MOStructm = getFile("Objects/MOStruct.m");
+var MOUndefinedh = getFile("Objects/MOUndefined.h");
+var MOUndefinedm = getFile("Objects/MOUndefined.m");
+var MOFunctionArgumenth = getFile("Utilities/MOFunctionArgument.h");
+var MOFunctionArgumentm = getFile("Utilities/MOFunctionArgument.m");
+var MOUtilitiesh = getFile("Utilities/MOUtilities.h");
+var MOUtilitiesm = getFile("Utilities/MOUtilities.m");
+
+var TDParseKit = makeParseKit();
+
+var a = "#ifndef debug\n#define debug(...)\n#endif\n#define JSTPrefs [NSUserDefaults standardUserDefaults]\n" +
+'#pragma clang diagnostic push\n' + 
+'#pragma clang diagnostic ignored "-Wunused-variable"\n' + 
+'#pragma clang diagnostic ignored "-Wmissing-prototypes"\n' + 
+'#pragma clang diagnostic ignored "-Wdeprecated-declarations"\n' + 
+'#pragma clang diagnostic ignored "-Wunused-function"\n' + 
+'#pragma clang diagnostic ignored "-Wshadow"\n' + 
+'#ifndef __clang_analyzer__\n' + 
+
+        // start with the headers.
+        JSTListenerh + 
+        JSTPreprocessorh +
+        JSTTextVievh + 
+        NoodleLineNumberViewh + 
+        MarkerLineNumberViewh +
+        NoodleLineNumberMarkerh + 
+        TETextUtilsh + 
+        
+        MOBridgeSupportControllerh +
+        MOBridgeSupportLibraryh +
+        MOBridgeSupportParserh +
+        MOBridgeSupportSymbolh +
+        NSArrayMochaAdditionsh +
+        NSDictionaryMochaAdditionsh +
+        NSObjectMochaAdditionsh +
+        NSOrderedSetMochaAdditionsh +
+        Mochah +
+        MochaDefinesh +
+        MochaRuntimeh +
+        MochaRuntime_Privateh +
+        MOBoxh +
+        MOClassDescriptionh +
+        MOClosureh +
+        MOClosure_Privateh +
+        MOInstanceVariableDescriptionh +
+        MOInstanceVariableDescription_Privateh +
+        MOJavaScriptObjecth +
+        MOMethodh +
+        MOMethod_Privateh +
+        MOMethodDescriptionh +
+        MOMethodDescription_Privateh +
+        MOObjCRuntimeh +
+        MOPropertyDescriptionh +
+        MOProtocolDescriptionh +
+        MOProtocolDescription_Privateh +
+        MOStructh +
+        MOUndefinedh +
+        MOFunctionArgumenth +
+        MOUtilitiesh +
+
+
+        
+        TDParseKit + 
+        
+        // then the implementations
+        MOBridgeSupportControllerm +
+        MOBridgeSupportLibrarym +
+        MOBridgeSupportParserm +
+        MOBridgeSupportSymbolm +
+        NSArrayMochaAdditionsm +
+        NSDictionaryMochaAdditionsm +
+        NSObjectMochaAdditionsm +
+        NSOrderedSetMochaAdditionsm +
+        Mocham +
+        MochaRuntimem +
+        MOBoxm +
+        MOClassDescriptionm +
+        MOClosurem +
+        MOInstanceVariableDescriptionm +
+        MOJavaScriptObjectm +
+        MOMethodm +
+        MOMethodDescriptionm +
+        MOObjCRuntimem +
+        MOPropertyDescriptionm +
+        MOProtocolDescriptionm +
+        MOStructm +
+        MOUndefinedm +
+        MOFunctionArgumentm +
+        MOUtilitiesm +
+        
+        JSTExtrasm + 
+        JSTListenerm + 
+        JSTPreprocessorm +
+        JSTTextVievm + 
+        MarkerLineNumberViewm + 
+        NoodleLineNumberViewm + 
+        NoodleLineNumberMarkerm + 
+        TETextUtilsm + 
+        JSTalkm + 
+        '#endif\n' + // telling clang-sa to ignore everything
+        '#pragma clang diagnostic pop\n'
+
+var alg = [NSMutableString stringWithString:a];
+
+remove(alg, '#import "JSTListener.h"');
+remove(alg, '#import "JSTExtras.h"');
+remove(alg, '#import "JSTTextView.h"');
+remove(alg, '#import "JSTPreprocessor.h"');
+remove(alg, '#import "TETextUtils.h"');
+remove(alg, '#import "MarkerLineNumberView.h"');
+remove(alg, '#import "NoodleLineNumberMarker.h"');
+remove(alg, '#import "NoodleLineNumberView.h"');
+remove(alg, '#import "MOBridgeSupportController.h"');
+remove(alg, '#import "MOBridgeSupportLibrary.h"');
+remove(alg, '#import "MOBridgeSupportSymbol.h"');
+remove(alg, '#import "MOBridgeSupportParser.h"');
+remove(alg, '#import "MochaRuntime.h"');
+remove(alg, '#import "MochaDefines.h"');
+remove(alg, '#import "MOMethod.h"');
+remove(alg, '#import "MOUndefined.h"');
+remove(alg, '#import "MOClassDescription.h"');
+remove(alg, '#import "MOInstanceVariableDescription.h"');
+remove(alg, '#import "MOMethodDescription.h"');
+remove(alg, '#import "MOPropertyDescription.h"');
+remove(alg, '#import "MOProtocolDescription.h"');
+remove(alg, '#import "MOClosure.h"');
+remove(alg, '#import "MOObjCRuntime.h"');
+remove(alg, '#import "NSArray+MochaAdditions.h"');
+remove(alg, '#import "NSDictionary+MochaAdditions.h"');
+remove(alg, '#import "NSObject+MochaAdditions.h"');
+remove(alg, '#import "NSOrderedSet+MochaAdditions.h"');
+remove(alg, '#import "Mocha.h"');
+remove(alg, '#import "MochaRuntime_Private.h"');
+remove(alg, '#import "MOBox.h"');
+remove(alg, '#import "MOMethod_Private.h"');
+remove(alg, '#import "MOClosure_Private.h"');
+remove(alg, '#import "MOJavaScriptObject.h"');
+remove(alg, '#import "MOUtilities.h"');
+remove(alg, '#import "MOFunctionArgument.h"');
+remove(alg, '#import "MOInstanceVariableDescription_Private.h"');
+remove(alg, '#import "MOMethodDescription_Private.h"');
+remove(alg, '#import "MOProtocolDescription_Private.h"');
+remove(alg, '#import "MOStruct.h"');
+
+remove(alg, '#import "TDTokenizer.h"')
+remove(alg, '#import "TDToken.h"')
+remove(alg, '#import "TDWhitespaceState.h"')
+remove(alg, '#import "TDCommentState.h"')
+remove(alg, '#import "TDParseKit.h"')
+
+replace(alg, 'float f = [arg floatValue];', 'float f = [(NSNumber*)arg floatValue];')
+replace(alg, 'float val = [object floatValue];', 'float val = [(NSNumber*)object floatValue];')
+
+var algPath = srcDir + "JSTalkAmalgamation.m"
+
+[alg writeToFile:algPath atomically:true encoding:NSUTF8StringEncoding error:null]
+
+print("-framework AppKit -framework JavaScriptCore src/JSTalkAmalgamation.m");

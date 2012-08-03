@@ -863,7 +863,7 @@ typedef	struct { char a; BOOL b; } struct_C_BOOL;
                 *value = [runtime JSValueForObject:[NSNull null]];
             }
             else {
-                void* pointer = *(void**)ptr;
+				void* pointer = *(void**)ptr;
                 NSValue *object = [NSValue valueWithPointer:pointer];
                 *value = [runtime JSValueForObject:object];
             }
