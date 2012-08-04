@@ -16,7 +16,7 @@ __kernel void clDesaturate(image2d_t src, image2d_t dst, int width, int height) 
 }
 """;
 
-var context = [JSTOpenCLContext new];
+var context = [[JSTOpenCLContext new] autorelease];
 var program = [context programWithSource:src];
 [program build];
 
