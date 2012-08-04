@@ -13,7 +13,7 @@ __kernel void test2(image2d_t img) {
 var w = 400;
 var h = 400;
 
-var context = [JSTOpenCLContext instance];
+var context = [JSTOpenCLContext new];
 var program = [context programWithSource:src];
 [program build];
 

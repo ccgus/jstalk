@@ -1,0 +1,35 @@
+var src = """
+
+__kernel void clDesaturate(image2d_t src, image2d_t dst, int width, int height) {
+    
+    int2 coord = (int2)(get_global_id(0), get_global_id(1));
+    
+    if (coord.x >= width || coord.y >= height) {
+        return;
+    }
+    
+    float4 color = read_imagef(src, CLK_FILTER_NEAREST, coord);
+    float lum = (0.30f * color.x + 0.59f * color.y + 0.11f * color.z);
+    float4 val = (float4)(lum, lum, lum, color.w);
+    
+    write_imagef(dst, coord, val);
+}
+""";
+
+var context = [JSTOpenCLContext new];
+var program = [context programWithSource:src];
+[program build];
+
+var kernel    = [program createKernel:"clDesaturate"];
+var inBuffer  = [JSTOpenCLImageBuffer instanceWithContext:context usingImageAtPath:@"/Volumes/srv/Users/gus/Desktop/uhcorn.png"];
+var outBuffer = [JSTOpenCLImageBuffer instanceWithContext:context width:[inBuffer width] height:[inBuffer height]];
+
+[kernel setArgument:0 buffer:inBuffer];
+[kernel setArgument:1 buffer:outBuffer];
+[kernel setIntArgumentAtIndex:2 value:[inBuffer width]];
+[kernel setIntArgumentAtIndex:3 value:[inBuffer height]];
+
+[kernel enqueueCallWithGlobalSizeX:[inBuffer width] Y:[inBuffer height]];
+[context finish];
+
+[JSTImageTools viewImageBuffer:outBuffer inWindowNamed:"OpenCL"];
