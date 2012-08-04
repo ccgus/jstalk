@@ -19,12 +19,11 @@
     JSValueProtect(ctx, jsObject);
     object.JSObject = jsObject;
     object.JSContext = ctx;
-    return [object autorelease];
+    return object;
 }
 
 - (void)dealloc {
     JSValueUnprotect(_JSContext, _JSObject);
-    [super dealloc];
 }
 
 @end

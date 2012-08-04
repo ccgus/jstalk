@@ -22,13 +22,6 @@
 @synthesize readOnly=_readOnly;
 @synthesize weak=_weak;
 
-- (void)dealloc {
-    [_name release];
-    [_typeEncoding release];
-    [_ivarName release];
-    [super dealloc];
-}
-
 - (NSString *)description {
     NSMutableArray *attributeValues = [NSMutableArray array];
     

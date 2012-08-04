@@ -13,39 +13,13 @@
 
 @implementation MOObjCRuntime
 
-static MOObjCRuntime * sharedRuntime = nil;
-
 + (MOObjCRuntime *)sharedRuntime {
+    static MOObjCRuntime * sharedRuntime = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedRuntime = [[self alloc] init];
     });
     return sharedRuntime;
-}
-
-+ (id)allocWithZone:(NSZone *)zone {
-    if (sharedRuntime == nil) {
-        return [super allocWithZone:zone];
-    }
-    else {
-        return sharedRuntime;
-    }
-}
-
-- (id)retain {
-    return self;
-}
-
-- (oneway void)release {
-    // no-op
-}
-
-- (id)autorelease {
-    return self;
-}
-
-- (NSUInteger)retainCount {
-    return NSUIntegerMax;
 }
 
 - (id)init {
@@ -79,7 +53,7 @@ static MOObjCRuntime * sharedRuntime = nil;
 
 - (NSArray *)protocols {
     unsigned int count;
-    Protocol **protocolList = objc_copyProtocolList(&count);
+    Protocol *__unsafe_unretained *protocolList = objc_copyProtocolList(&count);
     NSMutableArray *protocols = [NSMutableArray arrayWithCapacity:count];
     for (NSUInteger i=0; i<count; i++) {
         Protocol *protocol = protocolList[i];

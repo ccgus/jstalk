@@ -11,7 +11,7 @@
 
 @interface MOMethod ()
 
-@property (readwrite) id target;
+@property (unsafe_unretained, readwrite) id target;
 @property (readwrite) SEL selector;
 
 @property (copy, readwrite) id block;

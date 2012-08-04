@@ -52,17 +52,13 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    [_lineNumberView release];
-    [_lastAutoInsert release];
-    
-    [super dealloc];
 }
 
 
 - (void)setupLineViewAndStuff {
     
-    _lineNumberView = [[NoodleLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
-    [[self enclosingScrollView] setVerticalRulerView:_lineNumberView];
+    NoodleLineNumberView *numberView = [[NoodleLineNumberView alloc] initWithScrollView:[self enclosingScrollView]];
+    [[self enclosingScrollView] setVerticalRulerView:numberView];
     [[self enclosingScrollView] setHasHorizontalRuler:NO];
     [[self enclosingScrollView] setHasVerticalRuler:YES];
     [[self enclosingScrollView] setRulersVisible:YES];
@@ -445,15 +441,14 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
                             if ([self shouldChangeTextInRange:leadingSpaceRange replacementString:replaceString]) {
                                 NSDictionary *newTypingAttributes;
                                 if (charRange.location < [string length]) {
-                                    newTypingAttributes = [[text attributesAtIndex:charRange.location effectiveRange:NULL] retain];
+                                    newTypingAttributes = [text attributesAtIndex:charRange.location effectiveRange:NULL];
                                 } else {
-                                    newTypingAttributes = [[text attributesAtIndex:(charRange.location - 1) effectiveRange:NULL] retain];
+                                    newTypingAttributes = [text attributesAtIndex:(charRange.location - 1) effectiveRange:NULL];
                                 }
                                 
                                 [text replaceCharactersInRange:leadingSpaceRange withString:replaceString];
                                 
                                 [self setTypingAttributes:newTypingAttributes];
-                                [newTypingAttributes release];
                                 
                                 [self didChangeText];
                             }

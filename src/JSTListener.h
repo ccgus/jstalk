@@ -15,7 +15,7 @@
     
     NSConnection *_conn;
     
-    id _rootObject;
+    __unsafe_unretained id _rootObject;
     
 }
 

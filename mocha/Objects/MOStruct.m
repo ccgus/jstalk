@@ -19,7 +19,7 @@
 @synthesize memberNames=_memberNames;
 
 + (MOStruct *)structureWithName:(NSString *)name memberNames:(NSArray *)memberNames {
-    return [[[self alloc] initWithName:name memberNames:memberNames] autorelease];
+    return [[self alloc] initWithName:name memberNames:memberNames];
 }
 
 - (id)initWithName:(NSString *)name memberNames:(NSArray *)memberNames {
@@ -34,13 +34,6 @@
 
 - (id)init {
     return [self initWithName:nil memberNames:nil];
-}
-
-- (void)dealloc {
-    [_name release];
-    [_memberNames release];
-    [_memberValues release];
-    [super dealloc];
 }
 
 - (NSString *)descriptionWithIndent:(NSUInteger)indent {

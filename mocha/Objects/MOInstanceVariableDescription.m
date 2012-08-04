@@ -16,7 +16,7 @@
 @synthesize typeEncoding=_typeEncoding;
 
 + (MOInstanceVariableDescription *)instanceVariableWithName:(NSString *)name typeEncoding:(NSString *)typeEncoding {
-    return [[[self alloc] initWithName:name typeEncoding:typeEncoding] autorelease];
+    return [[self alloc] initWithName:name typeEncoding:typeEncoding];
 }
 
 - (id)initWithName:(NSString *)name typeEncoding:(NSString *)typeEncoding {
@@ -28,11 +28,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_name release];
-    [_typeEncoding release];
-    [super dealloc];
-}
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@: %p : name=%@, typeEncoding=%@>", [self class], self, self.name, self.typeEncoding];

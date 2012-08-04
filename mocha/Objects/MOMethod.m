@@ -20,18 +20,13 @@
     MOMethod *method = [[self alloc] init];
     method.target = target;
     method.selector = selector;
-    return [method autorelease];
+    return method;
 }
 
 + (MOMethod *)methodWithBlock:(id)block {
     MOMethod *method = [[self alloc] init];
     method.block = block;
-    return [method autorelease];
-}
-
-- (void)dealloc {
-    [_block release];
-    [super dealloc];
+    return method;
 }
 
 - (NSString *)description {

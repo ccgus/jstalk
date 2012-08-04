@@ -16,7 +16,7 @@
 @synthesize typeEncoding=_typeEncoding;
 
 + (MOMethodDescription *)methodWithSelector:(SEL)selector typeEncoding:(NSString *)typeEncoding {
-    return [[[self alloc] initWithSelector:selector typeEncoding:typeEncoding] autorelease];
+    return [[self alloc] initWithSelector:selector typeEncoding:typeEncoding];
 }
 
 - (id)initWithSelector:(SEL)selector typeEncoding:(NSString *)typeEncoding {
@@ -28,10 +28,6 @@
     return self;
 }
 
-- (void)dealloc {
-    [_typeEncoding release];
-    [super dealloc];
-}
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@: %p : selector=%@, typeEncoding=%@>", [self class], self, NSStringFromSelector(self.selector), self.typeEncoding];

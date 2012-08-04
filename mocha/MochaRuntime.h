@@ -57,7 +57,7 @@
  * 
  * @result An object conforming to the MochaDelegate protocol
  */
-@property (assign) id <MochaDelegate> delegate;
+@property (unsafe_unretained) id <MochaDelegate> delegate;
 
 
 /*!

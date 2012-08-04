@@ -59,7 +59,7 @@
     
     NSString *appleScriptString = [NSString stringWithFormat:@"tell application \"System Events\"\nkeystroke \"%@\"\nend tell", keys];
     
-    NSAppleScript *as = [[[NSAppleScript alloc] initWithSource:appleScriptString] autorelease];
+    NSAppleScript *as = [[NSAppleScript alloc] initWithSource:appleScriptString];
     
     [self modifiers:using down:YES];
     
@@ -80,7 +80,7 @@
 
     NSString *appleScriptString = [NSString stringWithFormat:@"tell application \"System Events\"\nkey code %@\nend tell", keys];
     
-    NSAppleScript *as = [[[NSAppleScript alloc] initWithSource:appleScriptString] autorelease];
+    NSAppleScript *as = [[NSAppleScript alloc] initWithSource:appleScriptString];
     
     [self modifiers:using down:YES];
     
@@ -228,6 +228,7 @@
 
 + (NSDictionary*)JSTAXStuff {
     
+    /*
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
     
@@ -292,7 +293,8 @@
     CFRelease(uiElement);
     
     return d;
-    
+    */
+    return nil;
 }
 
 + (void)JSTAXSetSelectedTextAttributeOnFocusedElement:(NSString*)s {
@@ -304,7 +306,7 @@
     
     if (focusedUIElement) {
         
-        AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextAttribute, s);
+        AXUIElementSetAttributeValue(focusedUIElement, kAXSelectedTextAttribute, (__bridge CFTypeRef)(s));
         
         CFRelease(focusedUIElement);
     }

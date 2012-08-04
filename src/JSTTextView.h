@@ -11,7 +11,6 @@
 @class NoodleLineNumberView;
 
 @interface JSTTextView : NSTextView <NSTextStorageDelegate>{
-    NoodleLineNumberView	*_lineNumberView;
     NSDictionary            *_keywords;
     
     NSString                *_lastAutoInsert;

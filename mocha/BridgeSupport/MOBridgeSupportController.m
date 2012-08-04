@@ -15,38 +15,30 @@
 
 
 @implementation MOBridgeSupportController {
-	NSMutableArray *_loadedURLs;
-	NSMutableArray *_loadedLibraries;
-	NSMutableDictionary *_symbols;
-	MOBridgeSupportParser *_parser;
+    NSMutableArray *_loadedURLs;
+    NSMutableArray *_loadedLibraries;
+    NSMutableDictionary *_symbols;
+    MOBridgeSupportParser *_parser;
 }
 
 + (MOBridgeSupportController *)sharedController {
-	static MOBridgeSupportController *sharedController = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		sharedController = [[self alloc] init];
-	});
-	return sharedController;
+    static MOBridgeSupportController *sharedController = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedController = [[self alloc] init];
+    });
+    return sharedController;
 }
 
 - (id)init {
-	self = [super init];
-	if (self) {
-		_loadedURLs = [[NSMutableArray alloc] init];
-		_loadedLibraries = [[NSMutableArray alloc] init];
-		_symbols = [[NSMutableDictionary alloc] init];
-		_parser = [[MOBridgeSupportParser alloc] init];
-	}
-	return self;
-}
-
-- (void)dealloc {
-	[_loadedURLs release];
-	[_loadedLibraries release];
-	[_symbols release];
-	[_parser release];
-	[super dealloc];
+    self = [super init];
+    if (self) {
+        _loadedURLs = [[NSMutableArray alloc] init];
+        _loadedLibraries = [[NSMutableArray alloc] init];
+        _symbols = [[NSMutableDictionary alloc] init];
+        _parser = [[MOBridgeSupportParser alloc] init];
+    }
+    return self;
 }
 
 
@@ -54,33 +46,33 @@
 #pragma mark Loading
 
 - (BOOL)isBridgeSupportLoadedForURL:(NSURL *)aURL {
-	return [_loadedURLs containsObject:aURL];
+    return [_loadedURLs containsObject:aURL];
 }
 
 - (BOOL)loadBridgeSupportAtURL:(NSURL *)aURL error:(NSError **)outError {
-	if ([self isBridgeSupportLoadedForURL:aURL]) {
-		return YES;
-	}
-	
-	MOBridgeSupportLibrary *library = [_parser libraryWithBridgeSupportURL:aURL error:outError];
-	if (library == nil) {
-		return NO;
-	}
-	
-	[_loadedURLs addObject:aURL];
-	[_loadedLibraries addObject:library];
-	
-	for (NSString *name in library.symbols) {
-		MOBridgeSupportSymbol *symbol = [library.symbols objectForKey:name];
-		if ([_symbols objectForKey:name] == nil) {
-			[_symbols setObject:symbol forKey:name];
-		}
-		else {
-			//NSLog(@"Symbol with name \"%@\" is already loaded.", name);
-		}
-	}
-	
-	return YES;
+    if ([self isBridgeSupportLoadedForURL:aURL]) {
+        return YES;
+    }
+    
+    MOBridgeSupportLibrary *library = [_parser libraryWithBridgeSupportURL:aURL error:outError];
+    if (library == nil) {
+        return NO;
+    }
+    
+    [_loadedURLs addObject:aURL];
+    [_loadedLibraries addObject:library];
+    
+    for (NSString *name in library.symbols) {
+        MOBridgeSupportSymbol *symbol = [library.symbols objectForKey:name];
+        if ([_symbols objectForKey:name] == nil) {
+            [_symbols setObject:symbol forKey:name];
+        }
+        else {
+            //NSLog(@"Symbol with name \"%@\" is already loaded.", name);
+        }
+    }
+    
+    return YES;
 }
 
 
@@ -105,7 +97,7 @@
 }
 
 - (id)performQueryForSymbolName:(NSString *)name {
-	return [_symbols objectForKey:name];
+    return [_symbols objectForKey:name];
 }
 
 - (id)performQueryForSymbolName:(NSString *)name ofType:(Class)klass {

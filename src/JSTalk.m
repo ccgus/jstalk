@@ -75,14 +75,9 @@ static NSMutableArray *JSTalkPluginList;
         JSGarbageCollect([_mochaRuntime context]);
     }
     
-    
-    [_mochaRuntime release];
     _mochaRuntime = nil;
-    
-    [_env release];
     _env = nil;
     
-    [super dealloc];
 }
 
 
@@ -155,7 +150,6 @@ static NSMutableArray *JSTalkPluginList;
 }
 
 + (void)resetPlugins {
-    [JSTalkPluginList release];
     JSTalkPluginList = nil;
 }
 
@@ -175,7 +169,7 @@ static NSMutableArray *JSTalkPluginList;
         }
     }
     
-    JSTalkPluginList = [[NSMutableArray array] retain];
+    JSTalkPluginList = [NSMutableArray array];
     
     NSString *appSupport = @"Library/Application Support/JSTalk/Plug-ins";
     NSString *appPath    = [[NSBundle mainBundle] builtInPlugInsPath];

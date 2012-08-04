@@ -11,6 +11,6 @@
 
 @interface MOProtocolDescription ()
 
-@property (readonly) Protocol *protocol;
+@property (unsafe_unretained, readonly) Protocol *protocol;
 
 @end

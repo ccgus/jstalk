@@ -35,7 +35,7 @@ struct Block_literal {
 };
 
 + (MOClosure *)closureWithBlock:(id)block {
-    return [[[self alloc] initWithBlock:block] autorelease];
+    return [[self alloc] initWithBlock:block];
 }
 
 - (id)initWithBlock:(id)block {
@@ -46,17 +46,12 @@ struct Block_literal {
     return self;
 }
 
-- (void)dealloc {
-    [_block release];
-    [super dealloc];
-}
-
 - (void *)callAddress {
-    return ((struct Block_literal *)_block)->invoke;
+    return ((__bridge struct Block_literal *)_block)->invoke;
 }
 
 - (const char *)typeEncoding {
-    struct Block_literal *block = (struct Block_literal *)_block;
+    struct Block_literal *block = (__bridge struct Block_literal *)_block;
     struct Block_descriptor *descriptor = block->descriptor;
     
     int copyDisposeFlag = 1 << 25;

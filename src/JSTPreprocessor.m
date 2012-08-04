@@ -126,7 +126,7 @@
         
         if ([tok isSymbol] && [self isOpenSymbol:[tok stringValue]]) {
             
-            JSTPSymbolGroup *nextGroup  = [[[JSTPSymbolGroup alloc] init] autorelease];
+            JSTPSymbolGroup *nextGroup  = [[JSTPSymbolGroup alloc] init];
             
             nextGroup.parent            = currentGroup;
             currentGroup                = nextGroup;
@@ -177,7 +177,7 @@
 - (id)init {
 	self = [super init];
 	if (self != nil) {
-		_args = [[NSMutableArray array] retain];
+		_args = [NSMutableArray array];
 	}
     
 	return self;
@@ -185,9 +185,7 @@
 
 
 - (void)dealloc {
-    [_args release];
-    [_parent release];
-    [super dealloc];
+
 }
 
 - (void)addSymbol:(id)aSymbol {
@@ -204,7 +202,7 @@
     
     int count = 0;
     
-    for (id f in ar) {
+    for (__strong id f in ar) {
         
         f = [[f description] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
