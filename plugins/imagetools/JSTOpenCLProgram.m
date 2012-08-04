@@ -16,7 +16,7 @@ static int FloorPow2(int n);
 
 @interface JSTOpenCLKernel ()
 @property (readwrite) cl_kernel computeKernel;
-@property (readwrite) int workGroupSize;
+@property (readwrite) size_t workGroupSize;
 @end
 
 @implementation JSTOpenCLProgram
@@ -225,16 +225,11 @@ static int FloorPow2(int n)
     
     int err = 0;
     
-    if (NO) {
-        computeBuffer = clCreateBuffer(context.computeContext, attributes, size, _bitmapData, &err);
-    }
-    else {
-        cl_image_format format;
-        format.image_channel_order = CL_RGBA;
-        format.image_channel_data_type = CL_FLOAT;
-        
-        computeBuffer = clCreateImage2D(context.computeContext, attributes, &format, _width, _height, _bytesPerRow, _bitmapData, &err);
-    }
+    cl_image_format format;
+    format.image_channel_order = CL_RGBA;
+    format.image_channel_data_type = CL_FLOAT;
+    
+    computeBuffer = clCreateImage2D(context.computeContext, attributes, &format, _width, _height, _bytesPerRow, _bitmapData, &err);
     
     if (!computeBuffer) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
@@ -242,6 +237,63 @@ static int FloorPow2(int n)
 		[self release];
 		return nil;
 	}
+    
+    return self;
+}
+
++ (id)instanceWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
+    return [[[self alloc] initWithContext:theContext usingImageAtPath:path] autorelease];
+}
+
+- (id)initWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
+    
+    CGImageSourceRef imageSourceRef = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], nil);
+    
+    if (!imageSourceRef) {
+        NSLog(@"Could not turn the file into an image");
+        return nil;
+    }
+    
+    
+    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(imageSourceRef, 0, (CFDictionaryRef)[NSDictionary dictionary]);
+    
+    _width = CGImageGetWidth(imageRef);
+    _height = CGImageGetHeight(imageRef);
+    
+    debug(@"_width: %ld", _width);
+    debug(@"_height: %ld", _height);
+    
+    
+    self = [self initWithContext:theContext width:_width height:_height];
+	if (!self) {
+        CFRelease(imageRef);
+        CFRelease(imageSourceRef);
+        return nil;
+    }
+    
+    
+    CFRelease(imageSourceRef);
+    
+    CGColorSpaceRef cs = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGBLinear);
+    
+    CGContextRef bcontext = CGBitmapContextCreate(_bitmapData, _width, _height, 32, _bytesPerRow, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast | kCGBitmapByteOrder32Host);
+    
+    if (!bcontext) {
+        NSLog(@"Could not create a context for drawing");
+        [self release];
+        CFRelease(imageRef);
+        return nil;
+    }
+	
+    CGContextSetBlendMode(bcontext, kCGBlendModeCopy);
+    CGContextDrawImage(bcontext, CGRectMake(0, 0, _width, _height), imageRef);
+    
+    CGContextRelease(bcontext);
+    CFRelease(imageRef);
+    
+    debug(@"hurray!");
+    
+    debug(@"[self width]: %ld", [self width]);
     
     return self;
 }
