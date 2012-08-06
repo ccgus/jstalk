@@ -304,6 +304,18 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     return returnObject;
 }
 
+- (BOOL)hasFunctionNamed:(NSString*)name {
+    
+    JSCocoaController *jsController = [self jsController];
+    JSValueRef exception = nil;
+    JSStringRef jsFunctionName = JSStringCreateWithUTF8CString([name UTF8String]);
+    JSValueRef jsFunctionValue = JSObjectGetProperty([jsController ctx], JSContextGetGlobalObject([jsController ctx]), jsFunctionName, &exception);
+    JSStringRelease(jsFunctionName);
+    
+    
+    return jsFunctionValue && (JSValueGetType([jsController ctx], jsFunctionValue) == kJSTypeObject);
+}
+
 - (void)include:(NSString*)fileName {
     
     if (![fileName hasPrefix:@"/"] && [_env objectForKey:@"scriptURL"]) {

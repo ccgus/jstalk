@@ -30,6 +30,7 @@
 
 - (JSCocoaController*)jsController;
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
+- (BOOL)hasFunctionNamed:(NSString*)name;
 
 + (void)listen;
 + (void)resetPlugins;
