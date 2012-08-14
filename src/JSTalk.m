@@ -239,6 +239,13 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     JSStringRelease(jsName);  
 }
 
+- (void)JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+    
+    if (_errorController && [_errorController respondsToSelector:@selector(JSTalk:hadError:onLineNumber:atSourceURL:)]) {
+        [_errorController JSTalk:self hadError:error onLineNumber:lineNumber atSourceURL:url];
+    }
+}
+
 
 - (id)executeString:(NSString*)str {
     
@@ -257,6 +264,11 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     id resultObj = 0x00;
     
     @try {
+    
+        if (![_jsController delegate]) {
+            [_jsController setDelegate:self];
+        }
+    
         [_jsController setUseAutoCall:NO];
         [_jsController setUseJSLint:NO];
         resultRef = [_jsController evalJSString:[NSString stringWithFormat:@"function print(s) { jstalk.print_(s); } var nil=null; %@", str]];

@@ -41,3 +41,7 @@
 + (JSTalk*)currentJSTalk;
 
 @end
+
+@interface NSObject (JSTalkDelegate)
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+@end
