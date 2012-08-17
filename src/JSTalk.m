@@ -299,19 +299,29 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
-    JSCocoaController *jsController = [self jsController];
-    JSContextRef ctx                = [jsController ctx];
-    
-    JSValueRef exception            = 0x00;   
-    JSStringRef functionName        = JSStringCreateWithUTF8CString([name UTF8String]);
-    JSValueRef functionValue        = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), functionName, &exception);
-    
-    JSStringRelease(functionName);  
-    
-    JSValueRef returnValue = [jsController callJSFunction:functionValue withArguments:args];
-    
     id returnObject;
-    [JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&returnObject inContext:ctx];
+    
+    @try {
+        [self pushAsCurrentJSTalk];
+        JSCocoaController *jsController = [self jsController];
+        JSContextRef ctx                = [jsController ctx];
+        
+        JSValueRef exception            = 0x00;
+        JSStringRef functionName        = JSStringCreateWithUTF8CString([name UTF8String]);
+        JSValueRef functionValue        = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), functionName, &exception);
+        
+        JSStringRelease(functionName);
+        
+        JSValueRef returnValue = [jsController callJSFunction:functionValue withArguments:args];
+        
+        [JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&returnObject inContext:ctx];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        [self print:[e description]];
+    }
+    
+    [self popAsCurrentJSTalk];
     
     return returnObject;
 }
