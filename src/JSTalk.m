@@ -301,17 +301,26 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args {
     
-    [self pushAsCurrentJSTalk];
+    id returnValue = nil;
     
-    id foo = [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
+    @try {
+        
+        [self pushAsCurrentJSTalk];
+        
+        returnValue = [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
+        
+        if (returnValue == [MOUndefined undefined]) {
+            returnValue = nil;
+        }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        [self print:[e description]];
+    }
     
     [self popAsCurrentJSTalk];
     
-    if (foo == [MOUndefined undefined]) {
-        return nil;
-    }
-    
-    return foo;
+    return returnValue;
 }
 
 
