@@ -30,6 +30,7 @@ enum {
 @protocol ACBitmapTool;
 @protocol ACImageIOProvider;
 @protocol ACImageFilter;
+@protocol ACLayer;
 
 @protocol ACPluginManager
 
@@ -89,6 +90,19 @@ enum {
  NSNumber is used to be friendly with scripting languages.
  */
 - (NSNumber*)worksOnShapeLayers:(id)userObject;
+
+
+/*
+ How about a more general type of "do you work on this type of layer" question:
+ 
+ return [NSNumber numberWithBool:YES];
+ 
+ NSNumber is used to be friendly with scripting languages.
+ 
+ Added in version 3.5
+ 
+ */
+- (NSNumber*)validateForLayer:(id<ACLayer>)layer;
 
 @end
 

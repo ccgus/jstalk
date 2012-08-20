@@ -6,11 +6,14 @@
 #import "JSEnablerPlugIn.h"
 #import "ACPlugin.h"
 #import "JSTalk.h"
+#import "JSCocoa.h"
+#import <JavaScriptCore/JavaScriptCore.h>
 
 #define ACScriptMenuTitleKey @"ACScriptMenuTitle"
 #define ACScriptSuperMenuTitleKey @"ACScriptSuperMenuTitle"
 #define ACShortcutKeyKey @"ACShortcutKey"
 #define ACShortcutMaskKey @"ACShortcutMask"
+#define ACIsActionKey @"ACIsAction"
 
 @interface JSEnablerPlugIn (SuperSecret)
 - (void)findJSCocoaScriptsForPluginManager:(id<ACPluginManager>)pluginManager;
@@ -48,12 +51,13 @@
     [s replaceOccurrencesOfString:@"\r" withString:@"\n" options:0 range:NSMakeRange(0, [s length])];
     
     NSMutableDictionary *d              = [NSMutableDictionary dictionary];
-    NSString *menuTitle                 = 0x00;
+    NSString *menuTitle                 = nil;
     NSString *shortcutKey               = @"";
     NSString *superMenuTitle            = nil;
-    int shortcutMask                    = 0x00;
+    int shortcutMask                    = 0;
     NSEnumerator *enumerator            = [[s componentsSeparatedByString:@"\n"] objectEnumerator];
     NSString *line;
+    BOOL isAction                       = NO;
     
     while ((line = [enumerator nextObject])) {
     	
@@ -79,6 +83,14 @@
             if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
                 shortcutKey = [[line substringFromIndex:eqIdx+1]
                                stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            }
+        }
+        else if ([line hasPrefix:ACIsActionKey]) {
+            int eqIdx = [line rangeOfString:@"="].location;
+            if (eqIdx != NSNotFound && [line length] > eqIdx + 1) {
+                NSString *val = [[line substringFromIndex:eqIdx+1]
+                               stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                isAction = [val boolValue];
             }
         }
         else if ([line hasPrefix:ACShortcutMaskKey]) {
@@ -119,6 +131,7 @@
     }
     
     [d setObject:[NSNumber numberWithInt:shortcutMask] forKey:ACShortcutMaskKey];
+    [d setObject:[NSNumber numberWithBool:isAction] forKey:ACIsActionKey];
     
     return d;
 }
@@ -153,13 +166,25 @@
         NSUInteger shortcutMask             = [[scriptProperties objectForKey:ACShortcutMaskKey] unsignedIntegerValue];
         
         
-        [pluginManager addFilterMenuTitle:menuTitle
-                       withSuperMenuTitle:superMenuTitle
-                                   target:self
-                                   action:@selector(executeScriptForImage:scriptPath:)
-                            keyEquivalent:shortcutKey
-                keyEquivalentModifierMask:shortcutMask
-                               userObject:[pluginDir stringByAppendingPathComponent:fileName]];
+        if ([[scriptProperties objectForKey:ACIsActionKey] boolValue]) {
+            [pluginManager addActionMenuTitle:menuTitle
+                           withSuperMenuTitle:superMenuTitle
+                                       target:self
+                                       action:@selector(executeScriptForImage:scriptPath:)
+                                keyEquivalent:shortcutKey
+                    keyEquivalentModifierMask:shortcutMask
+                                   userObject:[pluginDir stringByAppendingPathComponent:fileName]];
+        }
+        else {
+            
+            [pluginManager addFilterMenuTitle:menuTitle
+                           withSuperMenuTitle:superMenuTitle
+                                       target:self
+                                       action:@selector(executeScriptForImage:scriptPath:)
+                                keyEquivalent:shortcutKey
+                    keyEquivalentModifierMask:shortcutMask
+                                   userObject:[pluginDir stringByAppendingPathComponent:fileName]];
+        }
     }
 }
 
@@ -192,10 +217,27 @@
     
     id document = [(id)currentLayer valueForKey:@"document"]; // shh!
     
-    return [jstalk callFunctionNamed:@"main" withArguments:[NSArray arrayWithObjects:image, document, currentLayer, nil]];
+    JSValueRef returnValue = [[jstalk jsController] callJSFunctionNamed:@"main" withArguments:image, document, currentLayer, nil];
+    
+    // Hurray?
+    // The main() method should be returning a value at this point, so we're going to 
+    // put it back into a cocoa object.  If it's not there, then it'll be nil and that's 
+    // ok for our purposes.
+    CIImage *acornReturnValue = 0x00;
+    
+    if (![JSCocoaFFIArgument unboxJSValueRef:returnValue toObject:&acornReturnValue inContext:[[jstalk jsController] ctx]]) {
+        return nil;
+    }
+    
+    // fin.
+    return acornReturnValue;
 }
 
 - (NSNumber*)worksOnShapeLayers:(id)userObject {
+    return [NSNumber numberWithBool:YES];
+}
+
+- (NSNumber*)validateForLayer:(id)userObject {
     return [NSNumber numberWithBool:YES];
 }
 
