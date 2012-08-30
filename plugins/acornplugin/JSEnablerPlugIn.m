@@ -189,6 +189,14 @@
 }
 
 
+- (void)setInt:(int)val withName:(NSString*)name jstalk:(JSTalk*)jstalk {
+    [jstalk executeString:[NSString stringWithFormat:@"var %@=%d;", name, val]];
+}
+
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+    NSLog(@"Error executing script on line %ld", (long)lineNumber);
+    NSLog(@"%@", error);
+}
 
 - (CIImage*)executeScriptForImage:(id<ACLayer>)currentLayer scriptPath:(NSString*)scriptPath {
     
@@ -204,6 +212,35 @@
     CIImage *image = [currentLayer CIImage];
     
     JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
+    
+    [jstalk setErrorController:self];
+    
+    // gen_bridge_metadata -c '-I.' ACPlugin.h > Acorn.bridgesupport
+    /*
+    NSURL *acornBridgesupportURL = [[NSBundle bundleForClass:[self class]] URLForResource:@"Acorn" withExtension:@"bridgesupport"];
+    if (acornBridgesupportURL) {
+        [JSTalk loadBridgeSupportFileAtURL:acornBridgesupportURL];
+    }
+    else {
+        NSLog(@"Acorn.bridgesupport is missing");
+    }*/
+    
+    // add some defines that are around in the ACPlugin.h header.  This should really be in a bridge support
+    // xml file, but it's grabbing the values as Objects right now.  I'll have to figure out what's going on
+    // and bring this back in some day.
+    /*
+    [self setInt:ACBitmapLayer withName:@"ACBitmapLayer" jstalk:jstalk];
+    [self setInt:ACBitmapLayer withName:@"ACShapeLayer"  jstalk:jstalk];
+    [self setInt:ACGroupLayer  withName:@"ACGroupLayer"  jstalk:jstalk];
+    
+    [self setInt:ACRectangleGraphic  withName:@"ACRectangleGraphic" jstalk:jstalk];
+    [self setInt:ACOvalGraphic       withName:@"ACOvalGraphic"      jstalk:jstalk];
+    [self setInt:ACLineGraphic       withName:@"ACLineGraphic"      jstalk:jstalk];
+    [self setInt:ACTextGraphic       withName:@"ACTextGraphic"      jstalk:jstalk];
+    [self setInt:ACImageGraphic      withName:@"ACImageGraphic"     jstalk:jstalk];
+    [self setInt:ACBezierGraphic     withName:@"ACBezierGraphic"    jstalk:jstalk];
+    */
+    
     
     [jstalk executeString:theJavaScript];
     

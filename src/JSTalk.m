@@ -47,6 +47,10 @@ static NSMutableArray *JSTalkPluginList;
     JSTalkShouldLoadJSTPlugins = b;
 }
 
++ (void)loadBridgeSupportFileAtURL:(NSURL*)url {
+    [[BridgeSupportController sharedController] loadBridgeSupport:[url path]];
+}
+
 - (id)init {
 	self = [super init];
 	if ((self != nil)) {

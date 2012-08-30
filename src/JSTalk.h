@@ -32,6 +32,7 @@
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 - (BOOL)hasFunctionNamed:(NSString*)name;
 
++ (void)loadBridgeSupportFileAtURL:(NSURL*)url;
 + (void)listen;
 + (void)resetPlugins;
 + (void)loadPlugins;

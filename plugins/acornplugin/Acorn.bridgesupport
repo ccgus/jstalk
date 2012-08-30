@@ -1,0 +1,222 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='1.0'>
+<enum name='ACBezierGraphic' value='6'/>
+<enum name='ACBitmapLayer' value='1'/>
+<enum name='ACGroupLayer' value='3'/>
+<enum name='ACImageGraphic' value='5'/>
+<enum name='ACLineGraphic' value='3'/>
+<enum name='ACOvalGraphic' value='2'/>
+<enum name='ACPLUGIN_SUPPORT' value='1'/>
+<enum name='ACRectangleGraphic' value='1'/>
+<enum name='ACShapeLayer' value='2'/>
+<enum name='ACTextGraphic' value='4'/>
+<class name='CIImage'>
+<method selector='writeToURL:withUTI:'>
+<retval type='B'/>
+</method>
+</class>
+<class name='NSObject'>
+<method selector='addActionMenuTitle:withSuperMenuTitle:target:action:keyEquivalent:keyEquivalentModifierMask:userObject:'>
+<retval type='B'/>
+</method>
+<method selector='addFilterMenuTitle:withSuperMenuTitle:target:action:keyEquivalent:keyEquivalentModifierMask:userObject:'>
+<retval type='B'/>
+</method>
+<method selector='crushPNGData:toPath:'>
+<retval type='B'/>
+</method>
+<method selector='drawsFill'>
+<retval type='B'/>
+</method>
+<method selector='drawsStroke'>
+<retval type='B'/>
+</method>
+<method selector='hasCornerRadius'>
+<retval type='B'/>
+</method>
+<method selector='hasShadow'>
+<retval type='B'/>
+</method>
+<method selector='isEnabled'>
+<retval type='B'/>
+</method>
+<method selector='isLayerStyle' class_method='true'>
+<retval type='B'/>
+</method>
+<method selector='readImageForDocument:fromURL:ofType:error:'>
+<retval type='B'/>
+</method>
+<method selector='setDrawsFill:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setDrawsStroke:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setHasCornerRadius:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setHasShadow:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setIsEnabled:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='setVisible:'>
+<arg type='B' index='0'/>
+</method>
+<method selector='visible'>
+<retval type='B'/>
+</method>
+<method selector='writeDocument:toURL:ofType:forSaveOperation:error:'>
+<retval type='B'/>
+</method>
+</class>
+<informal_protocol name='ACBitmapLayer'>
+<method type='v12@0:4@8' selector='applyCIImageFromFilter:' type64='v24@0:8@16'/>
+<method type='v24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='commitFrameOfDrawableContext:' type64='v48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='{_NSPoint=ff}8@0:4' selector='drawDelta' type64='{CGPoint=dd}16@0:8'/>
+<method type='^{CGContext=}8@0:4' selector='drawableContext' type64='^{CGContext=}16@0:8'/>
+<method type='{_NSPoint=ff}8@0:4' selector='frameOrigin' type64='{CGPoint=dd}16@0:8'/>
+<method type='{_NSPoint=ff}12@0:4@8' selector='layerPointFromEvent:' type64='{CGPoint=dd}24@0:8@16'/>
+<method type='v16@0:4{_NSPoint=ff}8' selector='setDrawDelta:' type64='v32@0:8{CGPoint=dd}16'/>
+<method type='v16@0:4{_NSPoint=ff}8' selector='setFrameOrigin:' type64='v32@0:8{CGPoint=dd}16'/>
+<method type='v24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='setNeedsDisplayInRect:' type64='v48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='v12@0:4@8' selector='setPreviewCIImage:' type64='v24@0:8@16'/>
+</informal_protocol>
+<informal_protocol name='ACBitmapTool'>
+<method type='v20@0:4@8@12@16' selector='mouseDown:onCanvas:toLayer:' type64='v40@0:8@16@24@32'/>
+<method type='@12@0:4f8' selector='toolCursorAtScale:' type64='@24@0:8d16'/>
+<method type='@8@0:4' selector='toolName' type64='@16@0:8'/>
+<method type='@8@0:4' selector='toolPaletteView' type64='@16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACDocument'>
+<method type='v8@0:4' selector='askToCommitCurrentAccessory' type64='v16@0:8'/>
+<method type='@8@0:4' selector='baseGroup' type64='@16@0:8'/>
+<method type='v24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='beginCroppingWithRect:' type64='v48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='{_NSSize=ff}8@0:4' selector='canvasSize' type64='{CGSize=dd}16@0:8'/>
+<method type='^{CGColorSpace=}8@0:4' selector='colorSpace' type64='^{CGColorSpace=}16@0:8'/>
+<method type='v24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='cropToRect:' type64='v48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='@8@0:4' selector='currentLayer' type64='@16@0:8'/>
+<method type='{_NSSize=ff}8@0:4' selector='dpi' type64='{CGSize=dd}16@0:8'/>
+<method type='@12@0:4@8' selector='firstLayerWithName:' type64='@24@0:8@16'/>
+<method type='@8@0:4' selector='layers' type64='@16@0:8'/>
+<method type='v16@0:4{_NSSize=ff}8' selector='resizeImageToSize:' type64='v32@0:8{CGSize=dd}16'/>
+<method type='v12@0:4f8' selector='scaleImageToHeight:' type64='v24@0:8d16'/>
+<method type='v16@0:4{_NSSize=ff}8' selector='scaleImageToSize:' type64='v32@0:8{CGSize=dd}16'/>
+<method type='v12@0:4f8' selector='scaleImageToWidth:' type64='v24@0:8d16'/>
+<method type='v16@0:4{_NSSize=ff}8' selector='setCanvasSize:' type64='v32@0:8{CGSize=dd}16'/>
+<method type='v20@0:4{_NSSize=ff}8@16' selector='setCanvasSize:usingAnchor:' type64='v40@0:8{CGSize=dd}16@32'/>
+<method type='v16@0:4{_NSSize=ff}8' selector='setDpi:' type64='v32@0:8{CGSize=dd}16'/>
+</informal_protocol>
+<informal_protocol name='ACFilterWindowController'>
+<method type='v12@0:4@8' selector='setNeedsToUpdateImageForFilterController:' type64='v24@0:8@16'/>
+</informal_protocol>
+<informal_protocol name='ACGraphic'>
+<method type='@8@0:4' selector='bezierPath' type64='@16@0:8'/>
+<method type='{_NSRect={_NSPoint=ff}{_NSSize=ff}}8@0:4' selector='bounds' type64='{CGRect={CGPoint=dd}{CGSize=dd}}16@0:8'/>
+<method type='f8@0:4' selector='cornerRadius' type64='d16@0:8'/>
+<method type='B8@0:4' selector='drawsFill' type64='B16@0:8'/>
+<method type='B8@0:4' selector='drawsStroke' type64='B16@0:8'/>
+<method type='@8@0:4' selector='fillColor' type64='@16@0:8'/>
+<method type='i8@0:4' selector='graphicType' type64='i16@0:8'/>
+<method type='B8@0:4' selector='hasCornerRadius' type64='B16@0:8'/>
+<method type='B8@0:4' selector='hasShadow' type64='B16@0:8'/>
+<method type='v12@0:4f8' selector='setCornerRadius:' type64='v24@0:8d16'/>
+<method type='v12@0:4B8' selector='setDrawsFill:' type64='v20@0:8B16'/>
+<method type='v12@0:4B8' selector='setDrawsStroke:' type64='v20@0:8B16'/>
+<method type='v12@0:4@8' selector='setFillColor:' type64='v24@0:8@16'/>
+<method type='v12@0:4B8' selector='setHasCornerRadius:' type64='v20@0:8B16'/>
+<method type='v12@0:4B8' selector='setHasShadow:' type64='v20@0:8B16'/>
+<method type='v12@0:4f8' selector='setShadowBlurRadius:' type64='v24@0:8d16'/>
+<method type='v16@0:4{_NSSize=ff}8' selector='setShadowOffset:' type64='v32@0:8{CGSize=dd}16'/>
+<method type='v12@0:4@8' selector='setStrokeColor:' type64='v24@0:8@16'/>
+<method type='v12@0:4f8' selector='setStrokeLineWidth:' type64='v24@0:8d16'/>
+<method type='f8@0:4' selector='shadowBlurRadius' type64='d16@0:8'/>
+<method type='{_NSSize=ff}8@0:4' selector='shadowOffset' type64='{CGSize=dd}16@0:8'/>
+<method type='@8@0:4' selector='strokeColor' type64='@16@0:8'/>
+<method type='f8@0:4' selector='strokeLineWidth' type64='d16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACGroupLayer'>
+<method type='@8@0:4' selector='addBitmapLayer' type64='@16@0:8' class_method='true'/>
+<method type='@8@0:4' selector='addGroupLayer' type64='@16@0:8' class_method='true'/>
+<method type='v16@0:4@8i12' selector='addLayer:atIndex:' type64='v32@0:8@16q24'/>
+<method type='@8@0:4' selector='addShapeLayer' type64='@16@0:8' class_method='true'/>
+<method type='@20@0:4^{CGImage=}8I12@16' selector='insertCGImage:atIndex:withName:' type64='@40@0:8^{CGImage=}16Q24@32'/>
+<method type='@8@0:4' selector='layers' type64='@16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACImageFilter'>
+<method type='v12@0:4@8' selector='assignFilterWindowController:' type64='v24@0:8@16'/>
+<method type='@8@0:4' selector='copy' type64='@16@0:8'/>
+<method type='@12@0:4f8' selector='copyWithScale:' type64='@24@0:8d16'/>
+<method type='@12@0:4@8' selector='imageFilterWithName:' type64='@24@0:8@16' class_method='true'/>
+<method type='@16@0:4@8@12' selector='imageFilterWithName:parameters:' type64='@32@0:8@16@24' class_method='true'/>
+<method type='B8@0:4' selector='isEnabled' type64='B16@0:8'/>
+<method type='B8@0:4' selector='isLayerStyle' type64='B16@0:8' class_method='true'/>
+<method type='@8@0:4' selector='localizedName' type64='@16@0:8'/>
+<method type='@12@0:4@8' selector='localizedNameForFilterName:' type64='@24@0:8@16' class_method='true'/>
+<method type='@8@0:4' selector='name' type64='@16@0:8'/>
+<method type='@8@0:4' selector='outputImage' type64='@16@0:8'/>
+<method type='@8@0:4' selector='parametersForSaving' type64='@16@0:8'/>
+<method type='v12@0:4@8' selector='setInputImage:' type64='v24@0:8@16'/>
+<method type='v12@0:4B8' selector='setIsEnabled:' type64='v20@0:8B16'/>
+<method type='v8@0:4' selector='unloadViewController' type64='v16@0:8'/>
+<method type='f8@0:4' selector='updateExpansion' type64='d16@0:8'/>
+<method type='@8@0:4' selector='viewController' type64='@16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACImageIOProvider'>
+<method type='B24@0:4@8@12@16^@20' selector='readImageForDocument:fromURL:ofType:error:' type64='B48@0:8@16@24@32^@40'/>
+<method type='B28@0:4@8@12@16I20^@24' selector='writeDocument:toURL:ofType:forSaveOperation:error:' type64='B56@0:8@16@24@32Q40^@48'/>
+</informal_protocol>
+<informal_protocol name='ACLayer'>
+<method type='@8@0:4' selector='CIImage' type64='@16@0:8'/>
+<method type='i8@0:4' selector='compositingMode' type64='i16@0:8'/>
+<method type='@8@0:4' selector='layerName' type64='@16@0:8'/>
+<method type='i8@0:4' selector='layerType' type64='i16@0:8'/>
+<method type='f8@0:4' selector='opacity' type64='f16@0:8'/>
+<method type='{_NSRect={_NSPoint=ff}{_NSSize=ff}}8@0:4' selector='opaqueBounds' type64='{CGRect={CGPoint=dd}{CGSize=dd}}16@0:8'/>
+<method type='v12@0:4i8' selector='setCompositingMode:' type64='v20@0:8i16'/>
+<method type='v12@0:4@8' selector='setLayerName:' type64='v24@0:8@16'/>
+<method type='v12@0:4f8' selector='setOpacity:' type64='v20@0:8f16'/>
+<method type='v12@0:4B8' selector='setVisible:' type64='v20@0:8B16'/>
+<method type='B8@0:4' selector='visible' type64='B16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACPlugin'>
+<method type='v8@0:4' selector='didRegister' type64='v16@0:8'/>
+<method type='@8@0:4' selector='plugin' type64='@16@0:8' class_method='true'/>
+<method type='@12@0:4@8' selector='validateForLayer:' type64='@24@0:8@16'/>
+<method type='v12@0:4@8' selector='willRegister:' type64='v24@0:8@16'/>
+<method type='@12@0:4@8' selector='worksOnShapeLayers:' type64='@24@0:8@16'/>
+</informal_protocol>
+<informal_protocol name='ACPluginManager'>
+<method type='B36@0:4@8@12@16:20@24I28@32' selector='addActionMenuTitle:withSuperMenuTitle:target:action:keyEquivalent:keyEquivalentModifierMask:userObject:' type64='B72@0:8@16@24@32:40@48Q56@64'/>
+<method type='B36@0:4@8@12@16:20@24I28@32' selector='addFilterMenuTitle:withSuperMenuTitle:target:action:keyEquivalent:keyEquivalentModifierMask:userObject:' type64='B72@0:8@16@24@32:40@48Q56@64'/>
+<method type='v16@0:4@8#12' selector='registerFilterName:constructor:' type64='v32@0:8@16#24'/>
+<method type='v16@0:4@8@12' selector='registerIOProviderForReading:forUTI:' type64='v32@0:8@16@24'/>
+<method type='v16@0:4@8@12' selector='registerIOProviderForWriting:forUTI:' type64='v32@0:8@16@24'/>
+</informal_protocol>
+<informal_protocol name='ACShapeLayer'>
+<method type='@12@0:4@8' selector='addBezierPath:' type64='@24@0:8@16'/>
+<method type='@24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='addOvalWithBounds:' type64='@48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='@24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='addRectangleWithBounds:' type64='@48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='@24@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8' selector='addTextWithBounds:' type64='@48@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16'/>
+<method type='@8@0:4' selector='graphics' type64='@16@0:8'/>
+<method type='@8@0:4' selector='selectedGraphics' type64='@16@0:8'/>
+</informal_protocol>
+<informal_protocol name='ACTextGraphic'>
+<method type='v12@0:4@8' selector='setHTMLString:' type64='v24@0:8@16'/>
+</informal_protocol>
+<informal_protocol name='ACToolPalette'>
+<method type='@8@0:4' selector='backColor' type64='@16@0:8'/>
+<method type='@8@0:4' selector='frontColor' type64='@16@0:8'/>
+<method type='v12@0:4@8' selector='setBackColor:' type64='v24@0:8@16'/>
+<method type='v12@0:4@8' selector='setFrontColor:' type64='v24@0:8@16'/>
+</informal_protocol>
+<informal_protocol name='ACUtilities'>
+<method type='B16@0:4@8@12' selector='crushPNGData:toPath:' type64='B32@0:8@16@24'/>
+</informal_protocol>
+<informal_protocol name='TSGradientTrustMeItsThere'>
+<method type='v28@0:4{_NSRect={_NSPoint=ff}{_NSSize=ff}}8f24' selector='fillRect:angle:' type64='v56@0:8{CGRect={CGPoint=dd}{CGSize=dd}}16d48'/>
+<method type='@16@0:4@8@12' selector='gradientWithBeginningColor:endingColor:' type64='@32@0:8@16@24' class_method='true'/>
+</informal_protocol>
+</signatures>

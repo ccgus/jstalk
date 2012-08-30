@@ -70,6 +70,7 @@
 		CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */; };
 		CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */; };
 		CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */ = {isa = PBXBuildFile; fileRef = CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */; };
+		CC8CD6FB15EF262E00ABC795 /* Acorn.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC8CD6FA15EF262E00ABC795 /* Acorn.bridgesupport */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -213,6 +214,7 @@
 		CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEnablerPlugIn.m; sourceTree = "<group>"; };
 		CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsenabler_Prefix.pch; sourceTree = "<group>"; };
 		CC726DF80F156BE500EB02AF /* ACPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACPlugin.h; sourceTree = "<group>"; };
+		CC8CD6FA15EF262E00ABC795 /* Acorn.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Acorn.bridgesupport; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -255,6 +257,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CC8CD6FA15EF262E00ABC795 /* Acorn.bridgesupport */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -493,6 +496,7 @@
 				CC168C681253B0D20072FE99 /* jslint-jscocoa.js in Resources */,
 				CC168C691253B0D20072FE99 /* class.js in Resources */,
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				CC8CD6FB15EF262E00ABC795 /* Acorn.bridgesupport in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
