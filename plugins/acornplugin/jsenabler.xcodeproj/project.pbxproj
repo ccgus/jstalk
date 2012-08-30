@@ -61,6 +61,7 @@
 		CC168C5F1253B0920072FE99 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC168C321253B0920072FE99 /* TDWordState.m */; };
 		CC2FDC9F0EB68C40005267D1 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */; };
 		CC2FDCB00EB68CF4005267D1 /* libffi.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */; };
+		CC47491B15EF2BDE0086F421 /* Acorn.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC47491A15EF2BDE0086F421 /* Acorn.bridgesupport */; };
 		CC726D6C0F1568BC00EB02AF /* JSEnablerPlugIn.m in Sources */ = {isa = PBXBuildFile; fileRef = CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */; };
 		CC75A83815BCBB3400A3864C /* MOBridgeSupportController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80215BCBB3400A3864C /* MOBridgeSupportController.m */; };
 		CC75A83915BCBB3400A3864C /* MOBridgeSupportLibrary.m in Sources */ = {isa = PBXBuildFile; fileRef = CC75A80415BCBB3400A3864C /* MOBridgeSupportLibrary.m */; };
@@ -210,6 +211,7 @@
 		CC168C321253B0920072FE99 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
 		CC2FDC9E0EB68C40005267D1 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CC2FDCAF0EB68CF4005267D1 /* libffi.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libffi.dylib; path = usr/lib/libffi.dylib; sourceTree = SDKROOT; };
+		CC47491A15EF2BDE0086F421 /* Acorn.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Acorn.bridgesupport; sourceTree = "<group>"; };
 		CC726D6A0F1568BC00EB02AF /* JSEnablerPlugIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSEnablerPlugIn.h; sourceTree = "<group>"; };
 		CC726D6B0F1568BC00EB02AF /* JSEnablerPlugIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSEnablerPlugIn.m; sourceTree = "<group>"; };
 		CC726D6D0F1568C700EB02AF /* jsenabler_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsenabler_Prefix.pch; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CC47491A15EF2BDE0086F421 /* Acorn.bridgesupport */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				089C167DFE841241C02AAC07 /* InfoPlist.strings */,
 			);
@@ -587,6 +590,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D5B49B0048680CD000E48DA /* InfoPlist.strings in Resources */,
+				CC47491B15EF2BDE0086F421 /* Acorn.bridgesupport in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

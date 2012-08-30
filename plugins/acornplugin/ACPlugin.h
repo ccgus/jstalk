@@ -35,20 +35,20 @@ enum {
 @protocol ACPluginManager
 
 - (BOOL)addFilterMenuTitle:(NSString*)menuTitle
-        withSuperMenuTitle:(NSString*)superMenuTitle
-                    target:(id)target
-                    action:(SEL)selector
-             keyEquivalent:(NSString*)keyEquivalent
- keyEquivalentModifierMask:(NSUInteger)mask
-                userObject:(id)userObject;
+         withSuperMenuTitle:(NSString*)superMenuTitle
+                     target:(id)target
+                     action:(SEL)selector
+              keyEquivalent:(NSString*)keyEquivalent
+  keyEquivalentModifierMask:(NSUInteger)mask
+                 userObject:(id)userObject;
 
 - (BOOL)addActionMenuTitle:(NSString*)menuTitle
-        withSuperMenuTitle:(NSString*)superMenuTitle
-                    target:(id)target
-                    action:(SEL)selector
-             keyEquivalent:(NSString*)keyEquivalent
- keyEquivalentModifierMask:(NSUInteger)mask
-                userObject:(id)userObject;
+         withSuperMenuTitle:(NSString*)superMenuTitle
+                     target:(id)target
+                     action:(SEL)selector
+              keyEquivalent:(NSString*)keyEquivalent
+  keyEquivalentModifierMask:(NSUInteger)mask
+                 userObject:(id)userObject;
 
 
 - (void)registerIOProviderForReading:(id<ACImageIOProvider>)provider forUTI:(NSString*)uti;
@@ -91,7 +91,6 @@ enum {
  */
 - (NSNumber*)worksOnShapeLayers:(id)userObject;
 
-
 /*
  How about a more general type of "do you work on this type of layer" question:
  
@@ -103,6 +102,7 @@ enum {
  
  */
 - (NSNumber*)validateForLayer:(id<ACLayer>)layer;
+
 
 @end
 
@@ -118,9 +118,12 @@ enum {
  */
 - (int)layerType;
 
-
 // grab a CIImage representation of the layer.
 - (CIImage*)CIImage;
+
+// opaqueBounds returns the bounds of the image, not counting any 100% transparent pixels along the edges.  If you have a layer style that expands the image size (such as a drop shadow) this is not included in this calculation.
+// Added in 3.5
+- (NSRect)opaqueBounds;
 
 @property (assign) BOOL visible;
 @property (assign) float opacity;
@@ -139,6 +142,9 @@ enum {
 - (id)addRectangleWithBounds:(NSRect)bounds;
 - (id)addOvalWithBounds:(NSRect)bounds;
 - (id)addTextWithBounds:(NSRect)bounds;
+
+/* added in 3.2.2 */
+- (id)addBezierPath:(NSBezierPath*)path;
 
 @end
 
@@ -187,6 +193,11 @@ enum {
 
 - (id<ACBitmapLayer>)insertCGImage:(CGImageRef)img atIndex:(NSUInteger)idx withName:(NSString*)layerName;
 
++ (id<ACShapeLayer>)addShapeLayer;
++ (id<ACBitmapLayer>)addBitmapLayer;
++ (id<ACGroupLayer>)addGroupLayer;
+
+
 @end
 
 @protocol ACGraphic <NSObject>
@@ -231,6 +242,13 @@ enum {
 
 @end
 
+@protocol ACTextGraphic <ACGraphic>
+
+// added in 3.0.1
+- (void)setHTMLString:(NSString*)html;
+
+@end
+
 @protocol ACDocument <NSObject> // this inherits from NSDocument
 
 // grab an array of layers in the document.
@@ -270,11 +288,12 @@ enum {
 
 
 - (CGColorSpaceRef)colorSpace;
-- (void)setColorSpace:(CGColorSpaceRef)newColorSpace;
-
 
 // new in 2.2:
 - (void)askToCommitCurrentAccessory;
+
+// new in 3.3:
+- (id<ACLayer>)firstLayerWithName:(NSString*)layerName;
 
 @end
 
@@ -345,6 +364,7 @@ enum {
 - (void)unloadViewController;
 - (void)assignFilterWindowController:(id<ACFilterWindowController>)filterWindowController; // don't retain this guy!
 - (CGFloat)updateExpansion;
+- (id<ACImageFilter>)copyWithScale:(CGFloat)scale;
 @end
 
 
@@ -367,6 +387,9 @@ enum {
 @interface CIImage (PXNSImageAdditions)
 - (NSImage *)NSImageFromRect:(CGRect)r;
 - (NSImage *)NSImage;
+
+// new in Acorn 3.5
+- (BOOL)writeToURL:(NSURL*)fileURL withUTI:(NSString*)uti;
 @end
 
 @interface NSImage (PXNSImageAdditions)
@@ -375,6 +398,7 @@ enum {
 
 @interface NSDocumentController (ACNSDocumentControllerAdditions)
 - (id)makeUntitledDocumentWithData:(NSData*)data;
+- (id)makeUntitledDocumentWithSize:(NSSize)s;
 @end
 
 

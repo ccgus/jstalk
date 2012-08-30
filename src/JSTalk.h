@@ -33,6 +33,7 @@
 
 - (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments;
 
++ (void)loadBridgeSupportFileAtURL:(NSURL*)url;
 + (void)listen;
 + (void)resetPlugins;
 + (void)loadPlugins;

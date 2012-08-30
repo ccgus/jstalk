@@ -222,6 +222,13 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
++ (void)loadBridgeSupportFileAtURL:(NSURL*)url {
+    NSError *outErr = nil;
+    if (![[MOBridgeSupportController sharedController] loadBridgeSupportAtURL:url error:&outErr]) {
+        NSLog(@"Could not load bridge support file at %@", url);
+    }
+}
+
 NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 + (JSTalk*)currentJSTalk {
