@@ -41,6 +41,7 @@ function fixUp(path) {
     replace(f, '<Mocha/MOProtocolDescription.h>', '"MOProtocolDescription.h"');
     replace(f, '<Mocha/MOClosure.h>', '"MOClosure.h"');
     replace(f, '<Mocha/MOObjCRuntime.h>', '"MOObjCRuntime.h"');
+    replace(f, '<Mocha/MOPointer.h>', '"MOPointer.h"');
     
     writeTo(path, f);
 }
@@ -100,3 +101,4 @@ fixUp("Utilities/MOFunctionArgument.h")
 fixUp("Utilities/MOFunctionArgument.m")
 fixUp("Utilities/MOUtilities.h")
 fixUp("Utilities/MOUtilities.m")
+fixUp("Objects/MOPointer_Private.h")
