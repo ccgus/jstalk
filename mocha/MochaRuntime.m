@@ -61,6 +61,7 @@ static JSObjectRef  MOConstructor_callAsConstructor(JSContextRef ctx, JSObjectRe
 
 static JSValueRef   MOFunction_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception);
 
+static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name);
 
 NSString * const MORuntimeException = @"MORuntimeException";
 NSString * const MOJavaScriptException = @"MOJavaScriptException";
@@ -1200,6 +1201,14 @@ static bool MOBoxedObject_hasProperty(JSContextRef ctx, JSObjectRef objectJS, JS
         return YES;
     }
     
+    if ([object isKindOfClass:[NSString class]]) {
+        // special case bridging of NSString w/ JS string functions
+        
+        if (MOStringPrototypeFunction(ctx, propertyName)) {
+            return YES;
+        }
+    }
+    
     return NO;
 }
 
@@ -1321,6 +1330,18 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
                 return JSValueMakeNull(ctx);
             }
         }
+        
+        if ([object isKindOfClass:[NSString class]]) {
+            // special case bridging of NSString w/ JS string functions
+            
+            JSValueRef jsPropertyValue = MOStringPrototypeFunction(ctx, propertyName);
+            
+            if (jsPropertyValue) {
+                return jsPropertyValue;
+            }
+        }
+        
+        
         
 //        if (exception != NULL) {
 //            NSString *reason = nil;
@@ -1527,4 +1548,28 @@ static JSValueRef MOFunction_callAsFunction(JSContextRef ctx, JSObjectRef functi
     }
     
     return value;
+}
+
+
+static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name) {
+    
+    
+    JSValueRef exception = nil;
+    JSStringRef jsPropertyName = JSStringCreateWithUTF8CString("String");
+    JSValueRef jsPropertyValue = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsPropertyName, &exception);
+    
+    jsPropertyName = JSStringCreateWithUTF8CString("prototype");
+    jsPropertyValue = JSObjectGetProperty(ctx, JSValueToObject(ctx, jsPropertyValue, nil), jsPropertyName, &exception);
+    JSStringRelease(jsPropertyName);
+    
+    jsPropertyName = JSStringCreateWithUTF8CString([name UTF8String]);
+    jsPropertyValue = JSObjectGetProperty(ctx, JSValueToObject(ctx, jsPropertyValue, nil), jsPropertyName, &exception);
+    JSStringRelease(jsPropertyName);
+    
+    if (jsPropertyValue && JSValueGetType(ctx, jsPropertyValue) == kJSTypeObject) {
+        // OK, there's a JS String method with the same name as propertyName.  Let's use that.
+        return jsPropertyValue;
+    }
+    
+    return nil;
 }
