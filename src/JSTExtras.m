@@ -353,4 +353,30 @@
 
 
 
+@implementation NSGradient (JSTExtras)
+
+
++ (id)gradientWithColors:(NSArray*)colors locationArray:(NSArray*)arLocs colorSpace:(NSColorSpace *)colorSpace {
+    
+    
+    CGFloat *locs = malloc(sizeof(CGFloat) * [arLocs count]);
+    
+    [arLocs enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        locs[idx] = [obj doubleValue];
+    }];
+    
+    
+    
+    if (!colorSpace) {
+        colorSpace = [NSColorSpace genericRGBColorSpace];
+    }
+    
+    
+    NSGradient *g = [[NSGradient alloc] initWithColors:colors atLocations:locs colorSpace:colorSpace];
+    
+    return g;
+}
+
+@end
+
 
