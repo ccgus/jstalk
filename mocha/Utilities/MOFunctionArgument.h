@@ -20,8 +20,12 @@
 #endif
 
 
+@class MOPointer;
+
+
 @interface MOFunctionArgument : NSObject
 
+// Type encodings
 @property char typeEncoding;
 - (void)setTypeEncoding:(char)typeEncoding withCustomStorage:(void *)storagePtr;
 
@@ -31,18 +35,21 @@
 @property (copy) NSString *structureTypeEncoding;
 - (void)setStructureTypeEncoding:(NSString *)structureTypeEncoding withCustomStorage:(void *)storagePtr;
 
-@property (getter=isOutArgument) BOOL outArgument;
+@property (strong) MOPointer *pointer;
 @property (getter=isReturnValue) BOOL returnValue;
 
+// Storage
 @property (readonly) ffi_type *ffiType;
 @property (readonly) void** storage;
-@property (readonly) void** rawStoragePointer;
 @property (copy, readonly) NSString *typeDescription;
 
-- (void *)allocateStorage;
-
+// Values
 - (JSValueRef)getValueAsJSValueInContext:(JSContextRef)ctx;
 - (void)setValueAsJSValue:(JSValueRef)value context:(JSContextRef)ctx;
+
+// Pointers
+- (JSValueRef)getValueAsJSValueInContext:(JSContextRef)ctx dereference:(BOOL)dereference;
+- (void)setValueAsJSValue:(JSValueRef)value context:(JSContextRef)ctx dereference:(BOOL)dereference;
 
 
 // Support

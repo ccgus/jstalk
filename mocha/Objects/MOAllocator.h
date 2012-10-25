@@ -16,13 +16,14 @@
  * @discussion
  * Some Cocoa classes do not play well when the result of -alloc
  * is sent messages other than an initializer. As such, this object
- * serves as a proxy to delay allocate of the object until it is sent
+ * serves as a proxy to delay allocation of the object until it is sent
  * its initialization message.
  * 
  * Any unimplemented message sent to this class will be forwarded to
- * the target object class.
+ * the target object class. This will always be something along the lines
+ * of -init or -initWith*:
  */
-@interface MOAllocator : NSProxy
+@interface MOAllocator : NSObject
 
 /*!
  * @method allocator

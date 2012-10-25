@@ -33,14 +33,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [_externalEditorFileWatcher release];
-    _externalEditorFileWatcher = nil;
-    
-    [_previousOutputTypingAttributes release];
-    _previousOutputTypingAttributes = nil;
-    
-    [super dealloc];
 }
 
 + (BOOL)autosavesInPlace {
@@ -77,8 +69,8 @@
         [self readFromFile:[self fileURL]];
     }
     
-    NSToolbar *toolbar  = [[[NSToolbar alloc] initWithIdentifier:@"JSTalkDocument"] autorelease];
-    _toolbarItems       = [[NSMutableDictionary dictionary] retain];
+    NSToolbar *toolbar  = [[NSToolbar alloc] initWithIdentifier:@"JSTalkDocument"];
+    _toolbarItems       = [NSMutableDictionary dictionary];
     
     JSTAddToolbarItem(_toolbarItems, @"Run", @"Run", @"Run", @"Run the script", nil, @selector(setImage:), [NSImage imageNamed:@"Play.tiff"], @selector(executeScript:), nil);
     JSTAddToolbarItem(_toolbarItems, @"Clear", @"Clear", @"Clear", @"Clear the console", nil, @selector(setImage:), [NSImage imageNamed:@"Clear.tiff"], @selector(clearConsole:), nil);
@@ -199,9 +191,6 @@
         debug(@"HEY THERE'S A MAIN FUNCTION.");
         [jstalk callFunctionNamed:@"fmain" withArguments:nil];
     }
-    
-    [jstalk release];
-    
 }
 
 - (void)executeScript:(id)sender {
@@ -307,7 +296,6 @@
     
     if (_externalEditorFileWatcher) {
         /// wait, what?  Should we care?
-        [_externalEditorFileWatcher release];
         _externalEditorFileWatcher = nil;
     }
     
@@ -376,7 +364,7 @@
     
     // We create and autorelease a new NSToolbarItem, and then go through the process of setting up its
     // attributes from the master toolbar item matching that identifier in our dictionary of items.
-    NSToolbarItem *newItem  = [[[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier] autorelease];
+    NSToolbarItem *newItem  = [[NSToolbarItem alloc] initWithItemIdentifier:itemIdentifier];
     NSToolbarItem *item     = [_toolbarItems objectForKey:itemIdentifier];
     
     [newItem setLabel:[item label]];
@@ -451,7 +439,7 @@ NSToolbarItem *JSTAddToolbarItem(NSMutableDictionary *theDict,
 {
     NSMenuItem *mItem;
     // here we create the NSToolbarItem and setup its attributes in line with the parameters
-    NSToolbarItem *item = [[[NSToolbarItem alloc] initWithItemIdentifier:identifier] autorelease];
+    NSToolbarItem *item = [[NSToolbarItem alloc] initWithItemIdentifier:identifier];
     [item setLabel:label];
     [item setPaletteLabel:paletteLabel];
     [item setToolTip:toolTip];
@@ -466,7 +454,7 @@ NSToolbarItem *JSTAddToolbarItem(NSMutableDictionary *theDict,
     // so we create a dummy NSMenuItem that has our real menu as a submenu.
     if (menu!=NULL) {
         // we actually need an NSMenuItem here, so we construct one
-        mItem=[[[NSMenuItem alloc] init] autorelease];
+        mItem=[[NSMenuItem alloc] init];
         [mItem setSubmenu: menu];
         [mItem setTitle:[menu title]];
         [item setMenuFormRepresentation:mItem];

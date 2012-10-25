@@ -67,17 +67,7 @@ static NSMutableArray *JSTalkPluginList;
 
 
 - (void)dealloc {
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    
-    if ([_mochaRuntime context]) {
-        JSGarbageCollect([_mochaRuntime context]);
-    }
-    
-    _mochaRuntime = nil;
-    _env = nil;
-    
 }
 
 

@@ -25,31 +25,12 @@
  * @abstract The shared runtime instance
  * 
  * @discussion
- * Additional runtimes can be created by calling -init or -initWithGlobalContext:
+ * Additional runtimes can be created by calling -init
  * 
  * @result A Mocha object
  */
 + (Mocha *)sharedRuntime;
 
-/*!
- * @method initWithGlobalContext:
- * @abstract Creates a new runtime
- * 
- * @param ctx
- * The JSGlobalContext on which to base the runtime
- * 
- * @result A Mocha object
- */
-- (id)initWithGlobalContext:(JSGlobalContextRef)ctx;
-
-
-/*!
- * @property context
- * @abstract Gets the JSGlobalContext backing the runtime
- * 
- * @result A JSGlobalContextRef value
- */
-@property (readonly) JSGlobalContextRef context;
 
 /*!
  * @property delegate
@@ -126,7 +107,7 @@
 
 /*!
  * @method loadFrameworkWithName:
- * @abstract Loads BridgeSupport info and symbols a specified framework
+ * @abstract Loads BridgeSupport info and symbols for a specified framework
  * 
  * @param frameworkName
  * The name of the framework to load
@@ -142,7 +123,7 @@
 
 /*!
  * @method loadFrameworkWithName:inDirectory:
- * @abstract Loads BridgeSupport info and symbols a specified framework
+ * @abstract Loads BridgeSupport info and symbols for a specified framework
  * 
  * @param frameworkName
  * The name of the framework to load
@@ -158,6 +139,17 @@
  * @result A BOOL value
  */
 - (BOOL)loadFrameworkWithName:(NSString *)frameworkName inDirectory:(NSString *)directory;
+
+/*!
+ * @method loadBridgeSupportFilesAtPath:
+ * @abstract Loads BridgeSupport info and symbols at a specified location
+ *
+ * @param path
+ * The path to load
+ *
+ * @result A BOOL value
+ */
+- (BOOL)loadBridgeSupportFilesAtPath:(NSString *)path;
 
 /*!
  * @property frameworkSearchPaths
@@ -212,6 +204,8 @@
  * @abstract Instructs the JavaScript garbage collector to perform a collection
  */
 - (void)garbageCollect;
+
+- (JSGlobalContextRef)context;
 
 @end
 

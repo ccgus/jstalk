@@ -10,13 +10,12 @@
 
 
 @interface JSTFileWatcher : NSObject {
-    id _delegate;
-    NSString *_path;
+
     FSEventStreamRef streamRef;
 }
 
 
-@property (assign) id delegate;
+@property (weak) id delegate;
 @property (retain) NSString *path;
 
 + (id) fileWatcherWithPath:(NSString*)filePath delegate:(id)delegate;

@@ -9,9 +9,14 @@
 #import "MochaRuntime.h"
 
 
+
 @interface Mocha ()
 
 + (Mocha *)runtimeWithContext:(JSContextRef)ctx;
+
+- (id)initWithGlobalContext:(JSGlobalContextRef)ctx;
+
+@property (readonly) JSGlobalContextRef context;
 
 // JSValue <-> id
 + (JSValueRef)JSValueForObject:(id)object inContext:(JSContextRef)ctx;
@@ -54,6 +59,6 @@
 // Support
 - (void)installBuiltins;
 - (void)cleanUp;
-- (void)unlinkAllReferences;
+//- (void)unlinkAllReferences;
 
 @end

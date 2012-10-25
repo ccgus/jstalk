@@ -112,6 +112,14 @@
  */
 @property (weak, readonly) MOClassDescription *superclass;
 
+/*!
+ * @property ancestors
+ * @abstract The description of each superclass in the class's superclass chain
+ * 
+ * @result An NSArray of MOClassDescription objects
+ */
+@property (copy, readonly) NSArray *ancestors;
+
 
 /*!
  * @property instanceVariables

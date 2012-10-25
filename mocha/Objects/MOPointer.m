@@ -2,42 +2,24 @@
 //  MOPointer.m
 //  Mocha
 //
-//  Created by Logan Collins on 7/26/12.
+//  Created by Logan Collins on 7/31/12.
 //  Copyright (c) 2012 Sunflower Softworks. All rights reserved.
 //
 
 #import "MOPointer.h"
-
-
-@interface MOPointer ()
-
-@property (readwrite) void * pointerValue;
-@property (copy, readwrite) NSString *typeEncoding;
-
-@end
+#import "MOPointer_Private.h"
 
 
 @implementation MOPointer
 
-@synthesize pointerValue=_pointerValue;
-@synthesize typeEncoding=_typeEncoding;
+@synthesize value=_value;
 
-- (id)initWithPointerValue:(void *)pointerValue typeEncoding:(NSString *)typeEncoding {
+- (id)initWithValue:(id)value {
     self = [super init];
     if (self) {
-        self.pointerValue = pointerValue;
-        self.typeEncoding = typeEncoding;
+        self.value = value;
     }
     return self;
-}
-
-- (NSString *)description {
-    if ([self.typeEncoding length] > 0) {
-        return [NSString stringWithFormat:@"<%p type=%@>", self.pointerValue, self.typeEncoding];
-    }
-    else {
-        return [NSString stringWithFormat:@"<%p>", self.pointerValue];
-    }
 }
 
 @end

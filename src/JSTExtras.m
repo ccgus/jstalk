@@ -130,7 +130,7 @@
 
 - (NSInteger)displayDialog:(NSString*)msg withTitle:(NSString*) title {
     
-    NSAlert *alert = [NSAlert alertWithMessageText:title defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:msg];
+    NSAlert *alert = [NSAlert alertWithMessageText:title defaultButton:nil alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", msg];
     
     NSInteger button = [alert runModal];
     

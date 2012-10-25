@@ -9,21 +9,36 @@
 #import "MOJavaScriptObject.h"
 
 
-@implementation MOJavaScriptObject
-
-@synthesize JSObject=_JSObject;
-@synthesize JSContext=_JSContext;
+@implementation MOJavaScriptObject {
+    JSObjectRef _JSObject;
+    JSContextRef _JSContext;
+}
 
 + (MOJavaScriptObject *)objectWithJSObject:(JSObjectRef)jsObject context:(JSContextRef)ctx {
     MOJavaScriptObject *object = [[MOJavaScriptObject alloc] init];
-    JSValueProtect(ctx, jsObject);
-    object.JSObject = jsObject;
-    object.JSContext = ctx;
+    [object setJSObject:jsObject JSContext:ctx];
     return object;
 }
 
 - (void)dealloc {
-    JSValueUnprotect(_JSContext, _JSObject);
+    if (_JSObject != NULL) {
+        JSValueUnprotect(_JSContext, _JSObject);
+    }
+}
+
+- (JSObjectRef)JSObject {
+    return _JSObject;
+}
+
+- (void)setJSObject:(JSObjectRef)JSObject JSContext:(JSContextRef)JSContext {
+    if (_JSObject != NULL) {
+        JSValueUnprotect(_JSContext, _JSObject);
+    }
+    _JSObject = JSObject;
+    _JSContext = JSContext;
+    if (_JSObject != NULL) {
+        JSValueProtect(_JSContext, _JSObject);
+    }
 }
 
 @end

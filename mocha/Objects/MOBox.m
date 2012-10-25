@@ -13,5 +13,6 @@
 
 @synthesize representedObject=_representedObject;
 @synthesize JSObject=_JSObject;
+@synthesize runtime=_runtime;
 
 @end

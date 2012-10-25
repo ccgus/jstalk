@@ -15,13 +15,11 @@
 
 
 @implementation JSTFileWatcher
-@synthesize delegate=_delegate;
-@synthesize path=_path;
 
 
 + (id) fileWatcherWithPath:(NSString*)filePath delegate:(id)delegate {
     
-    JSTFileWatcher *fw = [[[self alloc] init] autorelease];
+    JSTFileWatcher *fw = [self new];
     
     fw.path = filePath;
     fw.delegate = delegate;
@@ -40,9 +38,6 @@
         FSEventStreamRelease(streamRef);
     }
     
-    
-    [_path release];
-    [super dealloc];
 }
 
 
@@ -58,13 +53,13 @@ static void fsevents_callback(FSEventStreamRef streamRef, JSTFileWatcher *fw, in
 
 - (void)setupEventStreamRef {
     
-    FSEventStreamContext  context = {0, (void *)self, NULL, NULL, NULL};
+    FSEventStreamContext  context = {0, (__bridge void *)self, NULL, NULL, NULL};
     NSArray              *pathsToWatch = [NSArray arrayWithObject:[_path stringByDeletingLastPathComponent]];
     
     streamRef = FSEventStreamCreate(kCFAllocatorDefault,
                                     (FSEventStreamCallback)&fsevents_callback,
                                     &context,
-                                    (CFArrayRef)pathsToWatch,
+                                    (CFArrayRef)CFBridgingRetain(pathsToWatch),
                                     kFSEventStreamEventIdSinceNow,
                                     2,
                                     0);

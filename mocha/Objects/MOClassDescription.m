@@ -104,6 +104,19 @@
     return nil;
 }
 
+- (NSArray *)ancestors {
+    NSMutableArray *array = [NSMutableArray array];
+    Class superclass = class_getSuperclass(_class);
+    while (superclass != Nil) {
+        MOClassDescription *description = [MOClassDescription descriptionForClass:superclass];
+        if (description != nil) {
+            [array addObject:description];
+        }
+        superclass = class_getSuperclass(superclass);
+    }
+    return array;
+}
+
 
 #pragma mark -
 #pragma mark Instance Variables
@@ -232,7 +245,7 @@
     }
     
     const char * typeEncodingString = [typeEncoding UTF8String];
-    IMP implementation = imp_implementationWithBlock((__bridge void *)(block));
+    IMP implementation = imp_implementationWithBlock(block);
     
     return class_addMethod(aClass, selector, implementation, typeEncodingString);
 }

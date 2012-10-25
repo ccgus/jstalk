@@ -220,7 +220,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 }
 
 - (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
-    _serviceError = [error retain];
+    _serviceError = error;
 }
 
 
@@ -250,9 +250,6 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
         result = [[jstalk executeString:script] description];
         
         [[[NSThread currentThread] threadDictionary] removeObjectForKey:@"org.jstalk.currentJSTalkContext"];
-        
-        [jstalk release];
-        
     }
     @catch (NSException *e) {
         *error = [e reason];
@@ -268,8 +265,6 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     if (result) {
         [pb writeObjects:[NSArray arrayWithObject:result]];
     }
-    
-    [_serviceError autorelease];
 }
 
 @end

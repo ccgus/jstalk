@@ -36,7 +36,7 @@
  * 
  * @result An object
  */
-@property (unsafe_unretained, readonly) id target;
+@property (strong, readonly) id target;
 
 /*!
  * @property selector

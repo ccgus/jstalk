@@ -11,7 +11,7 @@
 
 /*!
  * @class MOUndefined
- * @abstract Represents an "undefined" value, as passed from JavaScript to ObjC
+ * @abstract Represents an "undefined" value, as passed from JavaScript to Objective-C
  * 
  * @discussion
  * Syntactically, the undefined value represents the return value of a function that returns 'void' in C.

@@ -9,6 +9,7 @@
 #import "MochaDefines.h"
 #import "MochaRuntime.h"
 #import "MOMethod.h"
+#import "MOPointer.h"
 #import "MOUndefined.h"
 
 #import "MOClassDescription.h"

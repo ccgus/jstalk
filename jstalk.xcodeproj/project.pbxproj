@@ -165,6 +165,11 @@
 		CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725EB81238026D00EA83BF /* TETextUtils.m */; };
 		CC7576B40F6DF3B7003AE279 /* JSTFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */; };
 		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
+		CC90125B1639DBE00067BB78 /* MOPointerValue.h in Headers */ = {isa = PBXBuildFile; fileRef = CC9012571639DBE00067BB78 /* MOPointerValue.h */; };
+		CC90125C1639DBE00067BB78 /* MOPointerValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012581639DBE00067BB78 /* MOPointerValue.m */; };
+		CC90125E1639DC2F0067BB78 /* MOPointer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CC90125D1639DC2F0067BB78 /* MOPointer_Private.h */; };
+		CC9012611639DC4A0067BB78 /* MOMapTable.h in Headers */ = {isa = PBXBuildFile; fileRef = CC90125F1639DC4A0067BB78 /* MOMapTable.h */; };
+		CC9012621639DC4A0067BB78 /* MOMapTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012601639DC4A0067BB78 /* MOMapTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */ = {isa = PBXBuildFile; fileRef = CC94E0510F4A616300208BE0 /* JSTalk.icns */; };
 		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
@@ -411,6 +416,11 @@
 		CC725EB81238026D00EA83BF /* TETextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TETextUtils.m; path = src/TETextUtils.m; sourceTree = "<group>"; };
 		CC7576B20F6DF3B7003AE279 /* JSTFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTFileWatcher.h; path = src/JSTFileWatcher.h; sourceTree = "<group>"; };
 		CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTFileWatcher.m; path = src/JSTFileWatcher.m; sourceTree = "<group>"; };
+		CC9012571639DBE00067BB78 /* MOPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOPointerValue.h; sourceTree = "<group>"; };
+		CC9012581639DBE00067BB78 /* MOPointerValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOPointerValue.m; sourceTree = "<group>"; };
+		CC90125D1639DC2F0067BB78 /* MOPointer_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOPointer_Private.h; sourceTree = "<group>"; };
+		CC90125F1639DC4A0067BB78 /* MOMapTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOMapTable.h; sourceTree = "<group>"; };
+		CC9012601639DC4A0067BB78 /* MOMapTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOMapTable.m; sourceTree = "<group>"; };
 		CC94E0510F4A616300208BE0 /* JSTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalk.icns; path = res/images/JSTalk.icns; sourceTree = "<group>"; };
 		CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = src/JSTPreprocessor.h; sourceTree = "<group>"; };
 		CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = src/JSTPreprocessor.m; sourceTree = "<group>"; };
@@ -841,6 +851,7 @@
 		CCEC36B115BA5E44008D8460 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				CC90125D1639DC2F0067BB78 /* MOPointer_Private.h */,
 				CCFF84EA15CC5CDF00CC42F7 /* MOAllocator.h */,
 				CCFF84EB15CC5CDF00CC42F7 /* MOAllocator.m */,
 				CCFF84E615CC5CD000CC42F7 /* MOPointer.h */,
@@ -868,6 +879,8 @@
 				CCEC36C615BA5E44008D8460 /* MOPropertyDescription.h */,
 				CCEC36C715BA5E44008D8460 /* MOPropertyDescription.m */,
 				CCEC36C815BA5E44008D8460 /* MOProtocolDescription.h */,
+				CC9012571639DBE00067BB78 /* MOPointerValue.h */,
+				CC9012581639DBE00067BB78 /* MOPointerValue.m */,
 				CCEC36C915BA5E44008D8460 /* MOProtocolDescription.m */,
 				CCEC36CA15BA5E44008D8460 /* MOProtocolDescription_Private.h */,
 				CCEC36CB15BA5E44008D8460 /* MOStruct.h */,
@@ -881,6 +894,8 @@
 		CCEC36CF15BA5E44008D8460 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				CC90125F1639DC4A0067BB78 /* MOMapTable.h */,
+				CC9012601639DC4A0067BB78 /* MOMapTable.m */,
 				CCEC36D015BA5E44008D8460 /* MOFunctionArgument.h */,
 				CCEC36D115BA5E44008D8460 /* MOFunctionArgument.m */,
 				CCEC36D415BA5E44008D8460 /* MOUtilities.h */,
@@ -939,6 +954,9 @@
 				CCEC370F15BA5E44008D8460 /* MOUtilities.h in Headers */,
 				CCFF84E815CC5CD000CC42F7 /* MOPointer.h in Headers */,
 				CCFF84EC15CC5CDF00CC42F7 /* MOAllocator.h in Headers */,
+				CC90125B1639DBE00067BB78 /* MOPointerValue.h in Headers */,
+				CC90125E1639DC2F0067BB78 /* MOPointer_Private.h in Headers */,
+				CC9012611639DC4A0067BB78 /* MOMapTable.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1182,6 +1200,8 @@
 				CCEC371015BA5E44008D8460 /* MOUtilities.m in Sources */,
 				CCFF84E915CC5CD000CC42F7 /* MOPointer.m in Sources */,
 				CCFF84EE15CC5CDF00CC42F7 /* MOAllocator.m in Sources */,
+				CC90125C1639DBE00067BB78 /* MOPointerValue.m in Sources */,
+				CC9012621639DC4A0067BB78 /* MOMapTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1342,10 +1362,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = (
-					x86_64,
-					i386,
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
 				INFOPLIST_FILE = res/Info.plist;
@@ -1358,34 +1374,29 @@
 		C05733CC08A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 			};
 			name = Debug;
 		};
 		C05733CD08A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 			};
 			name = Release;
 		};

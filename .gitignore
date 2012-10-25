@@ -3,3 +3,33 @@
 *.pyc
 
 .DS_Store
+automator/jstalk-automator.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+automator/jstalk-automator.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+automator/jstalk-automator.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTAutomator.xcscheme
+automator/jstalk-automator.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/xcschememanagement.plist
+experimental/experimental.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+experimental/experimental.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+experimental/tests/preprocess/testPreprocess-1junk.jstpc
+jstalk.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+jstalk.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+jstalk.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/WorkspaceSettings.xcsettings
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/jstalk command line.xcscheme
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTalk Editor.xcscheme
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTalk Framework.xcscheme
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTalkRunner.xcscheme
+jstalk.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/xcschememanagement.plist
+mocha/Utilities/MOUtilities.m
+plugins/acornplugin/jsenabler.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+plugins/acornplugin/jsenabler.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+plugins/acornplugin/jsenabler.xcodeproj/xcuserdata/gus.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+plugins/acornplugin/jsenabler.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTalk.xcscheme
+plugins/acornplugin/jsenabler.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/xcschememanagement.plist
+plugins/imagetools/ImageTools.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+plugins/imagetools/ImageTools.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+plugins/imagetools/ImageTools.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/ImageTools.xcscheme
+plugins/imagetools/ImageTools.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/xcschememanagement.plist
+plugins/voodoopadplugin/VPJSTalkPlugin.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+plugins/voodoopadplugin/VPJSTalkPlugin.xcodeproj/project.xcworkspace/xcuserdata/gus.xcuserdatad/UserInterfaceState.xcuserstate
+plugins/voodoopadplugin/VPJSTalkPlugin.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/JSTalk.xcscheme
+plugins/voodoopadplugin/VPJSTalkPlugin.xcodeproj/xcuserdata/gus.xcuserdatad/xcschemes/xcschememanagement.plist

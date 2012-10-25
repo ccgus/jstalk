@@ -16,6 +16,8 @@
 #import "MOFunctionArgument.h"
 #import "MOUndefined.h"
 #import "MOJavaScriptObject.h"
+#import "MOPointerValue.h"
+#import "MOPointer_Private.h"
 
 #import "MOBridgeSupportController.h"
 #import "MOBridgeSupportSymbol.h"
@@ -109,17 +111,6 @@ JSValueRef MOSelectorInvoke(id target, SEL selector, JSContextRef ctx, size_t ar
         if ([object isKindOfClass:[MOBox class]]) {
             __unsafe_unretained id value = [object representedObject];
             [invocation setArgument:&value atIndex:argIndex];
-            //id representedObject = [object representedObject];
-            //if ([representedObject isKindOfClass:[MOBox class]]) {
-            //}
-            //else if ([object isKindOfClass:[MOFunction class]]) {
-            //    SEL selector = [(MOFunction *)object selector];
-            //    [invocation setArgument:&selector atIndex:argIndex];
-            //}
-            //else if ([[(MOPrivateObject *)object type] isEqualToString:@"pointer"]) {
-            //    void * pointer = [[(MOPrivateObject *)object object] pointerValue];
-            //    [invocation setArgument:&pointer atIndex:argIndex];
-            //}
         }
         
         // NSNumber
@@ -201,25 +192,16 @@ JSValueRef MOSelectorInvoke(id target, SEL selector, JSContextRef ctx, size_t ar
         SEL selector = NULL;
         [invocation getReturnValue:&selector];
         
-        JSObjectRef object = [mocha newPrivateObject];
-        MOPrivateObject *private = JSObjectGetPrivate(object);
-        private.type = @"selector";
-        private.selector = selector;
-        
         returnValue = object;
     }*/
     // void *
-    /*else if (strcmp(returnType, @encode(void *)) == 0) {
+    else if (strcmp(returnType, @encode(void *)) == 0) {
         void *pointer = NULL;
         [invocation getReturnValue:&pointer];
         
-        JSObjectRef object = [mocha newPrivateObject];
-        MOPrivateObject *private = JSObjectGetPrivate(object);
-        private.type = @"pointer";
-        private.object = [NSValue valueWithPointer:pointer];
-        
-        returnValue = object;
-    }*/
+        MOPointerValue * __autoreleasing object = [[MOPointerValue alloc] initWithPointerValue:pointer typeEncoding:nil];
+        returnValue = (__bridge void *)object;
+    }
     // bool
     else if (strcmp(returnType, @encode(bool)) == 0
              || strcmp(returnType, @encode(_Bool)) == 0) {
@@ -285,9 +267,9 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
     JSValueRef value = NULL;
     BOOL objCCall = NO;
     BOOL blockCall = NO;
-    NSArray *argumentEncodings = nil;
+    NSMutableArray *argumentEncodings = nil;
     MOFunctionArgument *returnValue = nil;
-    void *callAddress = NULL;
+    void* callAddress = NULL;
     NSUInteger callAddressArgumentCount = 0;
     BOOL variadic = NO;
     
@@ -305,16 +287,23 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         selector = [function selector];
         Class klass = [target class];
         
-        if (selector == @selector(alloc)) {
+        // Override for Distributed Objects
+        if ([klass isSubclassOfClass:[NSDistantObject class]]) {
+            return MOSelectorInvoke(target, selector, ctx, argumentCount, arguments, exception);
+        }
+        
+        // Override for Allocators
+        if (selector == @selector(alloc)
+            || selector == @selector(allocWithZone:))
+        {
             // Override for -alloc
             MOAllocator *allocator = [MOAllocator allocator];
             allocator.objectClass = klass;
             return [runtime JSValueForObject:allocator];
         }
-        
-        if ([klass isSubclassOfClass:[NSProxy class]]) {
-            // Override for Distributed Objects
-            return MOSelectorInvoke(target, selector, ctx, argumentCount, arguments, exception);
+        if ([target isKindOfClass:[MOAllocator class]]) {
+            klass = [target objectClass];
+            target = [[target objectClass] alloc];
         }
         
         Method method = NULL;
@@ -322,16 +311,16 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         
         // Determine the method type
         if (classMethod) {
-            method = class_getClassMethod([target class], selector);
+            method = class_getClassMethod(klass, selector);
         }
         else {
-            method = class_getInstanceMethod([target class], selector);
+            method = class_getInstanceMethod(klass, selector);
         }
         
         variadic = MOSelectorIsVariadic(klass, selector);
         
         if (method == NULL) {
-            NSException *e = [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to locate method %@ of class %@", NSStringFromSelector(selector), [target class]] userInfo:nil];
+            NSException *e = [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to locate method %@ of class %@", NSStringFromSelector(selector), klass] userInfo:nil];
             if (exception != NULL) {
                 *exception = [runtime JSValueForObject:e];
             }
@@ -339,10 +328,10 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         }
         
         const char *encoding = method_getTypeEncoding(method);
-        argumentEncodings = MOParseObjCMethodEncoding(encoding);
+        argumentEncodings = [MOParseObjCMethodEncoding(encoding) mutableCopy];
         
         if (argumentEncodings == nil) {
-            NSException *e = [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to parse method encoding for method %@ of class %@", NSStringFromSelector(selector), [target class]] userInfo:nil];
+            NSException *e = [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to parse method encoding for method %@ of class %@", NSStringFromSelector(selector), klass] userInfo:nil];
             if (exception != NULL) {
                 *exception = [runtime JSValueForObject:e];
             }
@@ -356,7 +345,7 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         callAddress = MOInvocationGetObjCCallAddressForArguments(argumentEncodings);
         
         if (variadic) {
-            if (argumentCount > 0 && !JSValueIsNull(ctx, arguments[argumentCount - 1])) {
+            if (argumentCount > 0) {
                 // add an argument for NULL
                 argumentCount++;
             }
@@ -382,7 +371,7 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         callAddress = [function callAddress];
         
         const char *typeEncoding = [(MOClosure *)function typeEncoding];
-        argumentEncodings = MOParseObjCMethodEncoding(typeEncoding);
+        argumentEncodings = [MOParseObjCMethodEncoding(typeEncoding) mutableCopy];
         
         if (argumentEncodings == nil) {
             NSException *e = [NSException exceptionWithName:MORuntimeException reason:[NSString stringWithFormat:@"Unable to parse method encoding for method %@ of class %@", NSStringFromSelector(selector), [target class]] userInfo:nil];
@@ -462,7 +451,7 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
             [args addObject:arg];
         }
         
-        argumentEncodings = args;
+        argumentEncodings = [args mutableCopy];
         
         // Function arguments are all arguments minus return value
         callAddressArgumentCount = [args count] - 1;
@@ -501,17 +490,16 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
         
         NSUInteger j = 0;
         
-        // ObjC calls include the target and selector as the first two arguments
         if (objCCall) {
+            // ObjC calls include the target and selector as the first two arguments
             args[0] = &ffi_type_pointer;
             args[1] = &ffi_type_pointer;
             values[0] = (void *)&target;
             values[1] = (void *)&selector;
             j = 2;
         }
-        
-        // Block calls include the block as the first argument
-        if (blockCall) {
+        else if (blockCall) {
+            // Block calls include the block as the first argument
             args[0] = &ffi_type_pointer;
             values[0] = (void *)&block;
             j = 1;
@@ -524,11 +512,12 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
             if (variadic && i >= callAddressArgumentCount) {
                 arg = [[MOFunctionArgument alloc] init];
                 [arg setTypeEncoding:_C_ID];
+                [argumentEncodings addObject:arg];
             }
             else {
-                arg = [argumentEncodings objectAtIndex:j+1];
+                arg = [argumentEncodings objectAtIndex:(j + 1)];
             }
-                
+            
             if (objCCall && variadic && i == argumentCount - 1) {
                 // The last variadic argument in ObjC calls is nil (the sentinel value)
                 jsValue = NULL;
@@ -537,11 +526,24 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
                 jsValue = arguments[i];
             }
             
-            if ([arg typeEncoding] == _C_PTR) {
-                [arg allocateStorage];
+            if (jsValue != NULL) {
+                id object = [runtime objectForJSValue:jsValue];
+                
+                // Handle pointers
+                if ([object isKindOfClass:[MOPointer class]]) {
+                    [arg setPointer:object];
+                    
+                    id objValue = [(MOPointer *)object value];
+                    JSValueRef jsValue = [runtime JSValueForObject:objValue];
+                    [arg setValueAsJSValue:jsValue context:ctx dereference:YES];
+                }
+                else {
+                    [arg setValueAsJSValue:jsValue context:ctx];
+                }
             }
-            
-            [arg setValueAsJSValue:jsValue context:ctx];
+            else {
+                [arg setValueAsJSValue:NULL context:ctx];
+            }
             
             args[j] = [arg ffiType];
             values[j] = [arg storage];
@@ -553,11 +555,6 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
     
     // Prep
     ffi_status prep_status = ffi_prep_cif(&cif, FFI_DEFAULT_ABI, (unsigned int)effectiveArgumentCount, [returnValue ffiType], args);
-    
-    // Allocate return value storage if it's a pointer
-    if ([returnValue typeEncoding] == _C_PTR) {
-        [returnValue allocateStorage];
-    }
     
     // Call
     if (prep_status == FFI_OK) {
@@ -591,6 +588,16 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
             *exception = [runtime JSValueForObject:e];
         }
         return NULL;
+    }
+    
+    // Populate the value of pointers
+    for (MOFunctionArgument *arg in argumentEncodings) {
+        if ([arg pointer] != nil) {
+            MOPointer *pointer = [arg pointer];
+            JSValueRef value = [arg getValueAsJSValueInContext:ctx dereference:YES];
+            id object = [runtime objectForJSValue:value];
+            pointer.value = object;
+        }
     }
     
     // If the return type is void, the return value should be undefined
@@ -843,7 +850,8 @@ NSString * MOPropertyNameToSetterName(NSString *propertyName) {
     if ([propertyName length] > 0) {
         // Capitalize first character and append "set" and "_"
         // title -> setTitle_
-        return [[@"set" stringByAppendingString:[propertyName capitalizedString]] stringByAppendingString:@"_"];
+        NSString *capitalizedName = [NSString stringWithFormat:@"%@%@", [[propertyName substringToIndex:1] capitalizedString], [propertyName substringFromIndex:1]];
+        return [[@"set" stringByAppendingString:capitalizedName] stringByAppendingString:@"_"];
     }
     else {
         return nil;

@@ -1,0 +1,3 @@
+foo[a + 2];
+
+foo[[arg getNumb:1] + 2];
