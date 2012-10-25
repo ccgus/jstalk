@@ -1557,6 +1557,7 @@ static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name) {
     JSValueRef exception = nil;
     JSStringRef jsPropertyName = JSStringCreateWithUTF8CString("String");
     JSValueRef jsPropertyValue = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsPropertyName, &exception);
+    JSStringRelease(jsPropertyName);
     
     jsPropertyName = JSStringCreateWithUTF8CString("prototype");
     jsPropertyValue = JSObjectGetProperty(ctx, JSValueToObject(ctx, jsPropertyValue, nil), jsPropertyName, &exception);
