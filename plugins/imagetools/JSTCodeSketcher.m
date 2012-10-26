@@ -42,13 +42,13 @@
     static NSMutableDictionary *JSTSketchers = nil;
     
     if (!JSTSketchers) {
-        JSTSketchers = [[NSMutableDictionary dictionary] retain];
+        JSTSketchers = [NSMutableDictionary dictionary];
     }
     
     JSTCodeSketcher *cs = [JSTSketchers objectForKey:name];
     
     if (!cs) {
-        cs = [[[JSTCodeSketcher alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)] autorelease];
+        cs = [[JSTCodeSketcher alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
         [cs setLookupName:name];
         [JSTSketchers setObject:cs forKey:name];
     }
@@ -76,16 +76,10 @@
 
 
 - (void)dealloc {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
-    
-    [_lookupName release];
     
     if (_context) {
         CGContextRelease(_context);
     }
-    [_nsContext release];
-    
-    [super dealloc];
 }
 
 - (void)resizeContext {
@@ -114,29 +108,19 @@
 - (void)stop {
     
     [_redrawTimer invalidate];
-    [_redrawTimer release];
     _redrawTimer = nil;
     
-    [_drawRect release];
     _drawRect = nil;
     
-    [_setup release];
     _setup = nil;
     
-    [_mouseMoved release];
     _mouseMoved = nil;
     
-    [_mouseUp release];
     _mouseUp = nil;
     
-    [_mouseDown release];
     _mouseDown = nil;
     
-    [_mouseDragged release];
     _mouseDragged = nil;
-    
-    
-    
 }
 
 - (void)start {
@@ -164,7 +148,7 @@
     }
     
     if (_frameRate > 0) {
-        _redrawTimer = [[NSTimer scheduledTimerWithTimeInterval:(1.0 / _frameRate) target:self selector:@selector(fpsTimerHit:) userInfo:nil repeats:YES] retain];
+        _redrawTimer = [NSTimer scheduledTimerWithTimeInterval:(1.0 / _frameRate) target:self selector:@selector(fpsTimerHit:) userInfo:nil repeats:YES];
     }
 }
 
@@ -414,7 +398,7 @@
 
 + (id)rectWithRect:(NSRect)rect {
     
-    JSTFakeRect *r = [[[JSTFakeRect alloc] init] autorelease];
+    JSTFakeRect *r = [JSTFakeRect new];
     
     r.origin.x      = rect.origin.x;
     r.origin.y      = rect.origin.y;

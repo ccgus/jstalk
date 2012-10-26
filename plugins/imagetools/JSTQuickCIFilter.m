@@ -15,24 +15,18 @@
 
 + (id)quickFilterWithKernel:(NSString*)kernel {
     
-    JSTQuickCIFilter *f = [[[JSTQuickCIFilter alloc] init] autorelease];
+    JSTQuickCIFilter *f = [JSTQuickCIFilter new];
     
-    [f setTheKernel:[[[CIKernel kernelsWithString:kernel] objectAtIndex:0] retain]];
+    [f setTheKernel:[[CIKernel kernelsWithString:kernel] objectAtIndex:0]];
     [f setKernelArgs:[NSMutableArray array]];
     return f;
-}
-
-- (void)dealloc {
-    [_theKernel release];
-    [_kernelArgs release];
-    [super dealloc];
 }
 
 - (void)addKernelArgument:(id)obj {
     
     // Convenience stuff.
     if ([obj isKindOfClass:[NSColor class]]) {
-        obj = [[[CIColor alloc] initWithColor:obj] autorelease];
+        obj = [[CIColor alloc] initWithColor:obj];
     }
     else if ([obj isKindOfClass:[CIImage class]]) {
         obj = [CISampler samplerWithImage:obj];

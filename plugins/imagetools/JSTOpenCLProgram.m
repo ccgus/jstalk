@@ -34,11 +34,7 @@ static int FloorPow2(int n);
 
 - (void)dealloc;
 {
-	[computeKernels release];	
 	clReleaseProgram( computeProgram );
-	
-	[sourceCode release];
-	[super dealloc];
 }
 
 - (void)build;
@@ -86,7 +82,6 @@ static int FloorPow2(int n);
 	if (!kernelInfo.computeKernel || err != CL_SUCCESS)
 	{
 		NSLog( @"Error: Failed to create compute kernel!" );
-		[kernelInfo release];
 		return nil;
 	}
     
@@ -97,7 +92,6 @@ static int FloorPow2(int n);
 	if (err != CL_SUCCESS)
 	{
 		NSLog( @"Error: Failed to retrieve kernel work group info! %d", err);
-        [kernelInfo release];
 		return nil;
 	}
 	
@@ -105,7 +99,7 @@ static int FloorPow2(int n);
 	
 	[computeKernels setObject: kernelInfo forKey: kernelName];
 
-	return [kernelInfo autorelease];
+	return kernelInfo;
 }
 
 - (JSTOpenCLKernel*) kernelWithName: (NSString*) name;
@@ -145,7 +139,6 @@ static int FloorPow2(int n)
 	computeBuffer = clCreateBuffer(context.computeContext, attributes, size, memory, &err);
 	if (!computeBuffer) {
 		NSLog( @"clCreateBuffer failed: %d", err );
-		[self release];
 		return nil;
 	}
 
@@ -166,9 +159,6 @@ static int FloorPow2(int n)
 
 - (void)dealloc {
 	clReleaseMemObject( computeBuffer );
-    
-    
-	[super dealloc];
 }
 
 
@@ -185,7 +175,7 @@ static int FloorPow2(int n)
 
 
 + (id)instanceWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
-    return [[[self alloc] initWithContext:theContext width:w height:h] autorelease];
+    return [[self alloc] initWithContext:theContext width:w height:h];
 }
 
 - (id)initWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
@@ -218,7 +208,6 @@ static int FloorPow2(int n)
     if (!_bitmapData) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
 		NSLog(@"creating the bitmap data failed!");
-		[self release];
 		return nil;
     }
     
@@ -234,7 +223,6 @@ static int FloorPow2(int n)
     if (!computeBuffer) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
 		NSLog(@"clCreateBuffer failed: %d", err);
-		[self release];
 		return nil;
 	}
     
@@ -242,12 +230,12 @@ static int FloorPow2(int n)
 }
 
 + (id)instanceWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
-    return [[[self alloc] initWithContext:theContext usingImageAtPath:path] autorelease];
+    return [[self alloc] initWithContext:theContext usingImageAtPath:path];
 }
 
 - (id)initWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
     
-    CGImageSourceRef imageSourceRef = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], nil);
+    CGImageSourceRef imageSourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:path], nil);
     
     if (!imageSourceRef) {
         NSLog(@"Could not turn the file into an image");
@@ -255,7 +243,7 @@ static int FloorPow2(int n)
     }
     
     
-    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(imageSourceRef, 0, (CFDictionaryRef)[NSDictionary dictionary]);
+    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(imageSourceRef, 0, (__bridge CFDictionaryRef)[NSDictionary dictionary]);
     
     _width = CGImageGetWidth(imageRef);
     _height = CGImageGetHeight(imageRef);
@@ -280,7 +268,6 @@ static int FloorPow2(int n)
     
     if (!bcontext) {
         NSLog(@"Could not create a context for drawing");
-        [self release];
         CFRelease(imageRef);
         return nil;
     }
@@ -304,8 +291,6 @@ static int FloorPow2(int n)
     if (_bitmapData) {
         free(_bitmapData);
     }
-    
-	[super dealloc];
 }
 
 @end
@@ -326,7 +311,6 @@ static int FloorPow2(int n)
 
 - (void)dealloc {
 	clReleaseKernel(computeKernel);
-	[super dealloc];
 }
 
 

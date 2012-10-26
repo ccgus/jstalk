@@ -20,7 +20,6 @@
     }
     
     if ([self setupContext] == NO) {
-        [self release];
         return nil;
     }
     
@@ -29,7 +28,6 @@
 
 - (void)dealloc {
     clReleaseCommandQueue(computeCommands);
-    [super dealloc];
 }
 
 - (BOOL)setupContext {
@@ -103,17 +101,17 @@
 - (JSTOpenCLProgram*)programWithSource:(NSString*) sourceCode; {
     JSTOpenCLProgram *program = [[JSTOpenCLProgram alloc] initWithContext:self];
     program.sourceCode = sourceCode;
-    return [program autorelease];
+    return program;
 }
 
 - (JSTOpenCLBuffer*)bufferWithSize:(size_t) size attributes:(cl_bitfield)attribs {
     JSTOpenCLBuffer *buffer = [[JSTOpenCLBuffer alloc] initWithContext:self memory:NULL size:size attributes:attribs];
-    return [buffer autorelease];
+    return buffer;
 }
 
 - (JSTOpenCLBuffer*)bufferWithMemory:(void*)memory size:(size_t)size attributes:(cl_bitfield)attribs {
     JSTOpenCLBuffer *buffer = [[JSTOpenCLBuffer alloc] initWithContext: self memory:memory size:size attributes:attribs];
-    return [buffer autorelease];
+    return buffer;
 }
 
 - (void)finish { // waits until all processing has finished

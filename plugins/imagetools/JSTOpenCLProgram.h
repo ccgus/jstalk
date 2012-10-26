@@ -114,7 +114,7 @@ typedef struct _JSTOCLFloatPixel {
 
 - (void)setArgument: (cl_uint) argIndex size: (size_t) argumentSize value: (void*) value;
 - (void)setArgument: (cl_uint) argIndex buffer: (JSTOpenCLBuffer*) buffer;
-- (void)setArgument: (cl_uint) argIndex int:(size_t)v;
+//- (void)setArgument: (cl_uint) argIndex int:(size_t)v;
 
 
 - (void)enqueueCallWithDimensions: (cl_uint) workDimension globalSizes: (const size_t*) globalWorkSize localSizes: (const size_t*) localWorkSize;

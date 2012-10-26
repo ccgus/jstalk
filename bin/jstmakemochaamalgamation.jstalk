@@ -199,10 +199,17 @@ var MOStructh = getFile("Objects/MOStruct.h");
 var MOStructm = getFile("Objects/MOStruct.m");
 var MOUndefinedh = getFile("Objects/MOUndefined.h");
 var MOUndefinedm = getFile("Objects/MOUndefined.m");
+var MOPointerm = getFile("Objects/MOPointer.m");
+var MOPointerh = getFile("Objects/MOPointer.h");
+var MOAllocatorm = getFile("Objects/MOAllocator.m");
+var MOAllocatorh = getFile("Objects/MOAllocator.h");
 var MOFunctionArgumenth = getFile("Utilities/MOFunctionArgument.h");
 var MOFunctionArgumentm = getFile("Utilities/MOFunctionArgument.m");
+var MOMapTableh = getFile("Utilities/MOMapTable.h");
+var MOMapTablem = getFile("Utilities/MOMapTable.m");
 var MOUtilitiesh = getFile("Utilities/MOUtilities.h");
 var MOUtilitiesm = getFile("Utilities/MOUtilities.m");
+
 
 var TDParseKit = makeParseKit();
 
@@ -255,7 +262,9 @@ var a = "#ifndef debug\n#define debug(...)\n#endif\n#define JSTPrefs [NSUserDefa
         MOUndefinedh +
         MOFunctionArgumenth +
         MOUtilitiesh +
-
+        MOPointerh +
+        MOAllocatorh +
+        MOMapTableh +
 
         
         TDParseKit + 
@@ -285,6 +294,9 @@ var a = "#ifndef debug\n#define debug(...)\n#endif\n#define JSTPrefs [NSUserDefa
         MOUndefinedm +
         MOFunctionArgumentm +
         MOUtilitiesm +
+        MOPointerm +
+        MOAllocatorm +
+        MOMapTablem + 
         
         JSTExtrasm + 
         JSTListenerm + 
@@ -339,6 +351,9 @@ remove(alg, '#import "MOInstanceVariableDescription_Private.h"');
 remove(alg, '#import "MOMethodDescription_Private.h"');
 remove(alg, '#import "MOProtocolDescription_Private.h"');
 remove(alg, '#import "MOStruct.h"');
+remove(alg, '#import "MOPointer.h"');
+remove(alg, '#import "MOAllocator.h"');
+remove(alg, '#import "MOMapTable.h"');
 
 remove(alg, '#import "TDTokenizer.h"')
 remove(alg, '#import "TDToken.h"')
@@ -353,4 +368,4 @@ var algPath = srcDir + "JSTalkAmalgamation.m"
 
 [alg writeToFile:algPath atomically:true encoding:NSUTF8StringEncoding error:null]
 
-print("-framework AppKit -framework JavaScriptCore src/JSTalkAmalgamation.m");
+print("-framework AppKit -framework JavaScriptCore -fobjc-arc src/JSTalkAmalgamation.m");

@@ -13,7 +13,7 @@
 
 @implementation NSImage (JSTExtras)
 + (id)imageWithSize:(NSSize)s {
-    return [[[self alloc] initWithSize:s] autorelease];
+    return [[self alloc] initWithSize:s];
 }
 
 @end
@@ -38,13 +38,6 @@
     
     return img;
     
-    CGImageDestinationRef imageDestination = CGImageDestinationCreateWithURL((CFURLRef)[NSURL fileURLWithPath:@"/tmp/bob.tiff"], kUTTypeTIFF, 1, NULL);
-    CGImageDestinationAddImage(imageDestination, img, (CFDictionaryRef)[NSDictionary dictionary]);
-    CGImageDestinationFinalize(imageDestination);
-    CFRelease(imageDestination);
-    
-    CGImageRelease(img);
-    
 }
 
 + (NSData*)tiffDataFromImageBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
@@ -54,8 +47,8 @@
     if (img) {
         
         NSMutableData *data = [NSMutableData data];
-        CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((CFMutableDataRef)data, kUTTypeTIFF, 1, nil);
-        CGImageDestinationAddImage(imageDestination, img, (CFDictionaryRef)[NSDictionary dictionary]);
+        CGImageDestinationRef imageDestination = CGImageDestinationCreateWithData((__bridge CFMutableDataRef)data, kUTTypeTIFF, 1, nil);
+        CGImageDestinationAddImage(imageDestination, img, (__bridge CFDictionaryRef)[NSDictionary dictionary]);
         CGImageDestinationFinalize(imageDestination);
         CFRelease(imageDestination);
         CGImageRelease(img);
@@ -74,7 +67,7 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
 + (NSWindow*)getImageViewWindowNamed:(NSString*)winName defaultSize:(NSSize)s {
     
     if (!JSTImageViewWindows) {
-        JSTImageViewWindows = [[NSMutableDictionary dictionary] retain];
+        JSTImageViewWindows = [NSMutableDictionary dictionary];
     }
     
     NSWindow *w = [JSTImageViewWindows objectForKey:winName];
@@ -82,14 +75,14 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
     if (!w) {
         NSRect r = NSMakeRect(0, 0, s.width, s.height);
         
-        w = [[[NSWindow alloc] initWithContentRect:r styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:NO] autorelease];
+        w = [[NSWindow alloc] initWithContentRect:r styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask backing:NSBackingStoreBuffered defer:NO];
         
         [w center];
         [w setShowsResizeIndicator:YES];
         [w makeKeyAndOrderFront:self];
         [w setReleasedWhenClosed:NO]; // we retain it in the dictionary.
         
-        NSImageView *iv = [[[NSImageView alloc] initWithFrame:r] autorelease];
+        NSImageView *iv = [[NSImageView alloc] initWithFrame:r];
         [iv setImageAlignment:NSImageAlignCenter];
         [iv setImageScaling:NSImageScaleProportionallyDown];
         [iv setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
@@ -122,7 +115,7 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
     
     NSImageView *imageView = [[[w contentView] subviews] lastObject];
     
-    NSImage *i = [[[NSImage alloc] initWithCGImage:img size:NSMakeSize(CGImageGetWidth(img), CGImageGetHeight(img))] autorelease];
+    NSImage *i = [[NSImage alloc] initWithCGImage:img size:NSMakeSize(CGImageGetWidth(img), CGImageGetHeight(img))];
     
     [imageView setImage:i];
     
@@ -174,7 +167,7 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
 + (void)viewCIImage:(CIImage*)img inWindowNamed:(NSString*)winName extent:(CGRect)extent {
     
     if (!JSTCIWindows) {
-        JSTCIWindows = [[NSMutableDictionary dictionary] retain];
+        JSTCIWindows = [NSMutableDictionary dictionary];
     }
     
     NSWindow *w = [JSTCIWindows objectForKey:winName];
@@ -187,10 +180,10 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
         winRect.size.height += bottomBorderHeight;
         
         
-        w = [[[NSWindow alloc] initWithContentRect:winRect
-                                         styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
-                                           backing:NSBackingStoreBuffered
-                                             defer:NO] autorelease];
+        w = [[NSWindow alloc] initWithContentRect:winRect
+                                        styleMask:NSTitledWindowMask | NSClosableWindowMask | NSMiniaturizableWindowMask | NSResizableWindowMask
+                                          backing:NSBackingStoreBuffered
+                                            defer:NO];
         
         [w center];
         [w setShowsResizeIndicator:YES];
@@ -201,7 +194,7 @@ static NSMutableDictionary *JSTCIWindows = 0x00;
         //[w setColorSpace:[NSColorSpace genericRGBColorSpace]];
         extent.origin.y += bottomBorderHeight;
         
-        JSTSimpleCIView *iv = [[[JSTSimpleCIView alloc] initWithFrame:extent] autorelease];
+        JSTSimpleCIView *iv = [[JSTSimpleCIView alloc] initWithFrame:extent];
         [iv setAutoresizingMask:NSViewHeightSizable | NSViewWidthSizable];
         [[w contentView] addSubview:iv];
         [w setTitle:winName];
@@ -239,17 +232,12 @@ static BOOL JSTImageToolsCISWRender = NO;
 @implementation JSTSimpleCIView
 @synthesize theImage=_theImage;
 
-- (void)dealloc {
-    [_theImage release];
-    [super dealloc];
-}
-
 - (void)drawRect:(NSRect)r {
     
     static CIFilter *kCheckerFilter = 0x00;
     
     if (!kCheckerFilter) {
-        kCheckerFilter = [[CIFilter filterWithName:@"CICheckerboardGenerator"] retain];
+        kCheckerFilter = [CIFilter filterWithName:@"CICheckerboardGenerator"];
         [kCheckerFilter setDefaults];
         
         [kCheckerFilter setValue:[CIColor colorWithRed:0.9f green:0.9f blue:0.9f] forKey:@"inputColor1"];
@@ -259,7 +247,7 @@ static BOOL JSTImageToolsCISWRender = NO;
     CGColorSpaceRef cs = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
     
     NSMutableDictionary *contextOptions = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                           (id)cs, kCIContextWorkingColorSpace,
+                                           (__bridge id)cs, kCIContextWorkingColorSpace,
                                            [NSNumber numberWithBool:JSTImageToolsCISWRender], kCIContextUseSoftwareRenderer,
                                            nil];
     

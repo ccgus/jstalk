@@ -33,7 +33,7 @@
         return;
     }
     
-    JSTalk *jstalk = [[[JSTalk alloc] init] autorelease];
+    JSTalk *jstalk = [[JSTalk alloc] init];
     
     [jstalk executeString:src];
 }
