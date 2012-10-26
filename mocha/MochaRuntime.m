@@ -1258,25 +1258,6 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
             }
         }
         
-        // Property
-        objc_property_t property = class_getProperty(objectClass, [propertyName UTF8String]);
-        if (property != NULL) {
-            SEL selector = NULL;
-            char * getterValue = property_copyAttributeValue(property, "G");
-            if (getterValue != NULL) {
-                selector = NSSelectorFromString([NSString stringWithUTF8String:getterValue]);
-                free(getterValue);
-            }
-            else {
-                selector = NSSelectorFromString(propertyName);
-            }
-            
-            if ([object respondsToSelector:selector] && ![objectClass isSelectorExcludedFromMochaScript:selector]) {
-                MOMethod *method = [MOMethod methodWithTarget:object selector:selector];
-                JSValueRef value = MOFunctionInvoke(method, ctx, 0, NULL, exception);
-                return value;
-            }
-        }
         
         // Association object
         id value = objc_getAssociatedObject(object, (__bridge const void *)(propertyName));
@@ -1305,6 +1286,26 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
             if (implements) {
                 MOMethod *function = [MOMethod methodWithTarget:object selector:selector];
                 return [runtime JSValueForObject:function];
+            }
+        }
+        
+        // Property
+        objc_property_t property = class_getProperty(objectClass, [propertyName UTF8String]);
+        if (property != NULL) {
+            SEL selector = NULL;
+            char * getterValue = property_copyAttributeValue(property, "G");
+            if (getterValue != NULL) {
+                selector = NSSelectorFromString([NSString stringWithUTF8String:getterValue]);
+                free(getterValue);
+            }
+            else {
+                selector = NSSelectorFromString(propertyName);
+            }
+            
+            if ([object respondsToSelector:selector] && ![objectClass isSelectorExcludedFromMochaScript:selector]) {
+                MOMethod *method = [MOMethod methodWithTarget:object selector:selector];
+                JSValueRef value = MOFunctionInvoke(method, ctx, 0, NULL, exception);
+                return value;
             }
         }
         

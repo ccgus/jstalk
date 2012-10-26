@@ -100,6 +100,10 @@
     sleep(s);
 }
 
+- (void)system:(NSString*)s {
+    system([s UTF8String]);
+}
+
 
 @end
 
