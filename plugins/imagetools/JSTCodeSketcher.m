@@ -234,12 +234,13 @@
     CGContextRef screenContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     CGImageRef img = CGBitmapContextCreateImage(_context);
-    CGContextDrawImage(screenContext, [self bounds], img);
+    CGContextDrawImage(screenContext, CGRectMake(0, 0, CGImageGetWidth(img), CGImageGetHeight(img)), img);
     CGImageRelease(img);
 }
 
 - (void)viewDidEndLiveResize {
     [self resizeContext];
+    [self setNeedsDisplay:YES];
 }
 
 

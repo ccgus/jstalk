@@ -14,7 +14,7 @@ sketcher.mouseDown = function() {
     m1 = m2 = m3 = m4 = null;
 };
 
-sketcher.mouseDrag = function() {
+sketcher.mouseDragged = function() {
     
     var m0 = [sketcher mouseLocation];
     
