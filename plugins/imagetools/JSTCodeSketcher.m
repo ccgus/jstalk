@@ -99,8 +99,6 @@ static NSMutableDictionary *JSTSketchers = nil;
     // using float components because it helps with premultiplication.
     _context = CGBitmapContextCreate(nil, mySize.width, mySize.height, 32, 0, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast);
     
-    debug(@"made new context: %p / %@", _context, _context);
-    
     [self setNsContext:[NSGraphicsContext graphicsContextWithGraphicsPort:_context flipped:_flipped]];
     
 }
@@ -246,7 +244,7 @@ static NSMutableDictionary *JSTSketchers = nil;
 
 
 - (void)mouseDown:(NSEvent *)event {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     _mousePressed = YES;
     
     _pmouseLocation = _mouseLocation;

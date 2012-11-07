@@ -35,7 +35,7 @@
         }
         
         if ([scanner scanString:tok intoString:nil]) {
-            if ([scanner scanString:tok intoString: nil]) {
+            if ([scanner scanString:tok intoString:nil]) {
                 continue;
             }
             else if ([scanner scanUpToString:tok intoString:&quot] && [scanner scanString:tok intoString: nil]) {
@@ -107,6 +107,25 @@
     return [tag isEqualToString:@"]"] || [tag isEqualToString:@")"];
 }
 
++ (NSString*)fixTypeToVar:(NSString*)type {
+    
+    if ([type isEqualToString:@"double"]      ||
+        [type isEqualToString:@"float"]       ||
+        [type isEqualToString:@"CGFloat"]     ||
+        [type isEqualToString:@"long"]        ||
+        [type isEqualToString:@"NSInteger"]   ||
+        [type isEqualToString:@"NSUInteger"]  ||
+        [type isEqualToString:@"id"]          ||
+        [type isEqualToString:@"bool"]        ||
+        [type isEqualToString:@"BOOL"]        ||
+        [type isEqualToString:@"int"])
+    {
+        return @"var";
+    }
+    
+    return type;
+}
+
 + (NSString*)preprocessForObjCMessagesToJS:(NSString*)sourceString {
     
     NSMutableString *buffer = [NSMutableString string];
@@ -122,7 +141,7 @@
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
-        //debug(@"tok: '%@' %d", [tok description], tok.word);
+        // debug(@"tok: '%@' %d", [tok description], tok.word);
         
         if ([tok isSymbol] && [self isOpenSymbol:[tok stringValue]]) {
             
@@ -132,7 +151,7 @@
             currentGroup                = nextGroup;
 
         }
-        else if (tok.isSymbol && [self isCloseSymbol:tok.stringValue]) {
+        else if ([tok isSymbol] && [self isCloseSymbol:tok.stringValue]) {
             
             if (currentGroup.parent) {
                 [currentGroup.parent addSymbol:currentGroup];
@@ -150,7 +169,12 @@
             [currentGroup addSymbol:tok];
         }
         else {
-            [buffer appendString:[tok stringValue]];
+            
+            NSString *s = [tok stringValue];
+            
+            s = [self fixTypeToVar:s];
+            
+            [buffer appendString:s];
         }
     }
     
