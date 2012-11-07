@@ -11,15 +11,14 @@
 
 @class Mocha;
 @interface JSTalk : NSObject {
-    __unsafe_unretained id _printController;
-    __unsafe_unretained id _errorController;
+
     NSMutableDictionary *_env;
     BOOL _shouldPreprocess;
     Mocha *_mochaRuntime;
 }
 
-@property (assign) id printController;
-@property (assign) id errorController;
+@property (weak) id printController;
+@property (weak) id errorController;
 @property (retain) NSMutableDictionary *env;
 @property (assign) BOOL shouldPreprocess;
 

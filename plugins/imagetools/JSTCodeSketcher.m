@@ -35,11 +35,11 @@
 @synthesize mouseDown = _mouseDown;
 @synthesize mouseDragged = _mouseDragged;
 
-
+static NSMutableDictionary *JSTSketchers = nil;
 
 + (id)codeSketcherWithName:(NSString*)name {
     
-    static NSMutableDictionary *JSTSketchers = nil;
+    
     
     if (!JSTSketchers) {
         JSTSketchers = [NSMutableDictionary dictionary];
@@ -76,7 +76,7 @@
 
 
 - (void)dealloc {
-    
+    debug(@"%s:%d", __FUNCTION__, __LINE__);
     if (_context) {
         CGContextRelease(_context);
     }
@@ -194,8 +194,8 @@
         [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:_mwindow queue:nil usingBlock:^(NSNotification *arg1) {
             
             dispatch_async(dispatch_get_main_queue(),^ {
-                
-                debug(@"Wow, we're just leaking here.");
+                [JSTSketchers removeObjectForKey:[self lookupName]];
+                debug(@"done?");
             });
         }];
         
@@ -252,7 +252,6 @@
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];;
     
-    debug(@"_mouseDown:%@", _mouseDown);
     if (_mouseDown) {
         [self pushContext];
         [_jstalk callJSFunction:[_mouseDown JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];

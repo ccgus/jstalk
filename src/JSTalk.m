@@ -274,7 +274,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         }
         
         NSLog(@"Exception: %@", [e userInfo]);
-        [self print:[e description]];
+        [self printException:e];
     }
     @finally {
         //
@@ -312,7 +312,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        [self print:[e description]];
+        [self printException:e];
     }
     
     [self popAsCurrentJSTalk];
@@ -323,7 +323,16 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 - (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments {
     [self pushAsCurrentJSTalk];
-    JSValueRef r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    JSValueRef r = nil;
+    @try {
+        r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        NSLog(@"Info: %@", [e userInfo]);
+        [self printException:e];
+    }
+    
     [self popAsCurrentJSTalk];
     return r;
 }
@@ -354,6 +363,21 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     
     [_mochaRuntime evalString:str];
+}
+
+- (void)printException:(NSException*)e {
+    
+    NSMutableString *s = [NSMutableString string];
+    
+    [s appendFormat:@"%@\n", e];
+    
+    NSDictionary *d = [e userInfo];
+    
+    for (id o in [d allKeys]) {
+        [s appendFormat:@"%@: %@\n", o, [d objectForKey:o]];
+    }
+    
+    [self print:s];
 }
 
 - (void)print:(NSString*)s {
