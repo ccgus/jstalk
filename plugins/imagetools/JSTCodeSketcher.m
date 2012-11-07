@@ -99,8 +99,6 @@
     // using float components because it helps with premultiplication.
     _context = CGBitmapContextCreate(nil, mySize.width, mySize.height, 32, 0, cs, kCGBitmapFloatComponents | kCGImageAlphaPremultipliedLast);
     
-    debug(@"made new context: %p / %@", _context, _context);
-    
     [self setNsContext:[NSGraphicsContext graphicsContextWithGraphicsPort:_context flipped:_flipped]];
     
 }
@@ -246,13 +244,12 @@
 
 
 - (void)mouseDown:(NSEvent *)event {
-    debug(@"%s:%d", __FUNCTION__, __LINE__);
+    
     _mousePressed = YES;
     
     _pmouseLocation = _mouseLocation;
     _mouseLocation = [self convertPoint:[event locationInWindow] fromView:nil];;
     
-    debug(@"_mouseDown:%@", _mouseDown);
     if (_mouseDown) {
         [self pushContext];
         [_jstalk callJSFunction:[_mouseDown JSObject] withArgumentsInArray:[NSArray arrayWithObject:event]];
