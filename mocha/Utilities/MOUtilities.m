@@ -306,6 +306,12 @@ JSValueRef MOFunctionInvoke(id function, JSContextRef ctx, size_t argumentCount,
             target = [[target objectClass] alloc];
         }
         
+        // Make sure autorelease is ignored, since we do our own reference counting.
+        if (selector == NSSelectorFromString(@"autorelease")) {
+            NSLog(@"Ignoring autorelease call on %@", target);
+            return [runtime JSValueForObject:target];
+        }
+        
         Method method = NULL;
         BOOL classMethod = (target == klass);
         
