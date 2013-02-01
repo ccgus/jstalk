@@ -46,8 +46,6 @@ void runREPL(JSTalk *t) {
         if (o) {
             printf("%s\n", [[o description] UTF8String]);
         }
-        
-        [s release];
     
     }
     
@@ -57,11 +55,9 @@ void runREPL(JSTalk *t) {
 
 int main(int argc, char *argv[]) {
     
-    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+    JSTalk *t = [[JSTalk alloc] init];
     
-    JSTalk *t = [[[JSTalk alloc] init] autorelease];
-    
-    [t setErrorController:[[[JSCErrorHandler alloc] init] autorelease]];
+    [t setErrorController:[[JSCErrorHandler alloc] init]];
     
     if (argc < 2) {
         runREPL(t);
@@ -101,8 +97,6 @@ int main(int argc, char *argv[]) {
     if (o) {
         printf("%s\n", [[o description] UTF8String]);
     }
-    
-    [pool release];
     
     return 0;
 }

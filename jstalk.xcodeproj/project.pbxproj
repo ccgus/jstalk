@@ -18,53 +18,56 @@
 		CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1322E60F23F2380032FEB8 /* NoodleLineNumberMarker.m */; };
 		CC0FEEE810867411008FF7DD /* NoodleLineNumberView.h in Headers */ = {isa = PBXBuildFile; fileRef = CC1322E70F23F2380032FEB8 /* NoodleLineNumberView.h */; };
 		CC0FEEE910867412008FF7DD /* NoodleLineNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1322E50F23F2380032FEB8 /* NoodleLineNumberView.m */; };
+		CC131C0A16BC8B38004F5117 /* MOMapTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012601639DC4A0067BB78 /* MOMapTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC131C0B16BC8B5C004F5117 /* MOPointerValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012581639DBE00067BB78 /* MOPointerValue.m */; };
+		CC131C0C16BC8B62004F5117 /* MOPointer.m in Sources */ = {isa = PBXBuildFile; fileRef = CCFF84E715CC5CD000CC42F7 /* MOPointer.m */; };
 		CC1323850F24FF9D0032FEB8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
 		CC1324300F2504F00032FEB8 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
-		CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D220F48BB2C007A2941 /* TDAlternation.m */; };
-		CC1C7DDC0F48BB2C007A2941 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D240F48BB2C007A2941 /* TDAny.m */; };
-		CC1C7DDD0F48BB2C007A2941 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D260F48BB2C007A2941 /* TDAssembly.m */; };
-		CC1C7DDE0F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */; };
-		CC1C7DDF0F48BB2C007A2941 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2A0F48BB2C007A2941 /* TDChar.m */; };
-		CC1C7DE00F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */; };
-		CC1C7DE10F48BB2C007A2941 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */; };
-		CC1C7DE20F48BB2C007A2941 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D300F48BB2C007A2941 /* TDComment.m */; };
-		CC1C7DE30F48BB2C007A2941 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D320F48BB2C007A2941 /* TDCommentState.m */; };
-		CC1C7DE40F48BB2C007A2941 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D340F48BB2C007A2941 /* TDDigit.m */; };
-		CC1C7DE50F48BB2C007A2941 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D360F48BB2C007A2941 /* TDEmpty.m */; };
-		CC1C7DE60F48BB2C007A2941 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D380F48BB2C007A2941 /* TDLetter.m */; };
-		CC1C7DE70F48BB2C007A2941 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */; };
-		CC1C7DE80F48BB2C007A2941 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */; };
-		CC1C7DE90F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */; };
-		CC1C7DEA0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */; };
-		CC1C7DEB0F48BB2C007A2941 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D420F48BB2C007A2941 /* TDNum.m */; };
-		CC1C7DEC0F48BB2C007A2941 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D440F48BB2C007A2941 /* TDNumberState.m */; };
-		CC1C7DED0F48BB2C007A2941 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D470F48BB2C007A2941 /* TDParser.m */; };
-		CC1C7DEE0F48BB2C007A2941 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */; };
-		CC1C7DEF0F48BB2C007A2941 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */; };
-		CC1C7DF00F48BB2C007A2941 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4D0F48BB2C007A2941 /* TDReader.m */; };
-		CC1C7DF10F48BB2C007A2941 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */; };
-		CC1C7DF20F48BB2C007A2941 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */; };
-		CC1C7DF30F48BB2C007A2941 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */; };
-		CC1C7DF40F48BB2C007A2941 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D550F48BB2C007A2941 /* TDSequence.m */; };
-		CC1C7DF60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */; };
-		CC1C7DF70F48BB2C007A2941 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */; };
-		CC1C7DF80F48BB2C007A2941 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */; };
-		CC1C7DF90F48BB2C007A2941 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */; };
-		CC1C7DFA0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */; };
-		CC1C7DFB0F48BB2C007A2941 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */; };
-		CC1C7DFC0F48BB2C007A2941 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D650F48BB2C007A2941 /* TDTerminal.m */; };
-		CC1C7DFD0F48BB2C007A2941 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D670F48BB2C007A2941 /* TDToken.m */; };
-		CC1C7DFE0F48BB2C007A2941 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */; };
-		CC1C7DFF0F48BB2C007A2941 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */; };
-		CC1C7E000F48BB2C007A2941 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */; };
-		CC1C7E010F48BB2C007A2941 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */; };
-		CC1C7E020F48BB2C007A2941 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D710F48BB2C007A2941 /* TDTrack.m */; };
-		CC1C7E030F48BB2C007A2941 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D730F48BB2C007A2941 /* TDTrackException.m */; };
-		CC1C7E040F48BB2C007A2941 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */; };
-		CC1C7E050F48BB2C007A2941 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */; };
-		CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D790F48BB2C007A2941 /* TDWord.m */; };
-		CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */; };
-		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; };
+		CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D220F48BB2C007A2941 /* TDAlternation.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DDC0F48BB2C007A2941 /* TDAny.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D240F48BB2C007A2941 /* TDAny.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DDD0F48BB2C007A2941 /* TDAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D260F48BB2C007A2941 /* TDAssembly.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DDE0F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D280F48BB2C007A2941 /* TDCaseInsensitiveLiteral.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DDF0F48BB2C007A2941 /* TDChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2A0F48BB2C007A2941 /* TDChar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE00F48BB2C007A2941 /* TDCharacterAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2C0F48BB2C007A2941 /* TDCharacterAssembly.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE10F48BB2C007A2941 /* TDCollectionParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D2E0F48BB2C007A2941 /* TDCollectionParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE20F48BB2C007A2941 /* TDComment.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D300F48BB2C007A2941 /* TDComment.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE30F48BB2C007A2941 /* TDCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D320F48BB2C007A2941 /* TDCommentState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE40F48BB2C007A2941 /* TDDigit.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D340F48BB2C007A2941 /* TDDigit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE50F48BB2C007A2941 /* TDEmpty.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D360F48BB2C007A2941 /* TDEmpty.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE60F48BB2C007A2941 /* TDLetter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D380F48BB2C007A2941 /* TDLetter.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE70F48BB2C007A2941 /* TDLiteral.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3A0F48BB2C007A2941 /* TDLiteral.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE80F48BB2C007A2941 /* TDLowercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3C0F48BB2C007A2941 /* TDLowercaseWord.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DE90F48BB2C007A2941 /* TDMultiLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D3E0F48BB2C007A2941 /* TDMultiLineCommentState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DEA0F48BB2C007A2941 /* TDNonReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D400F48BB2C007A2941 /* TDNonReservedWord.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DEB0F48BB2C007A2941 /* TDNum.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D420F48BB2C007A2941 /* TDNum.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DEC0F48BB2C007A2941 /* TDNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D440F48BB2C007A2941 /* TDNumberState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DED0F48BB2C007A2941 /* TDParser.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D470F48BB2C007A2941 /* TDParser.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DEE0F48BB2C007A2941 /* TDQuotedString.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D490F48BB2C007A2941 /* TDQuotedString.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DEF0F48BB2C007A2941 /* TDQuoteState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4B0F48BB2C007A2941 /* TDQuoteState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF00F48BB2C007A2941 /* TDReader.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4D0F48BB2C007A2941 /* TDReader.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF10F48BB2C007A2941 /* TDRepetition.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D4F0F48BB2C007A2941 /* TDRepetition.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF20F48BB2C007A2941 /* TDReservedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D510F48BB2C007A2941 /* TDReservedWord.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF30F48BB2C007A2941 /* TDScientificNumberState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D530F48BB2C007A2941 /* TDScientificNumberState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF40F48BB2C007A2941 /* TDSequence.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D550F48BB2C007A2941 /* TDSequence.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF60F48BB2C007A2941 /* TDSingleLineCommentState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D590F48BB2C007A2941 /* TDSingleLineCommentState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF70F48BB2C007A2941 /* TDSpecificChar.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5B0F48BB2C007A2941 /* TDSpecificChar.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF80F48BB2C007A2941 /* TDSymbol.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5D0F48BB2C007A2941 /* TDSymbol.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DF90F48BB2C007A2941 /* TDSymbolNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D5F0F48BB2C007A2941 /* TDSymbolNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFA0F48BB2C007A2941 /* TDSymbolRootNode.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D610F48BB2C007A2941 /* TDSymbolRootNode.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFB0F48BB2C007A2941 /* TDSymbolState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D630F48BB2C007A2941 /* TDSymbolState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFC0F48BB2C007A2941 /* TDTerminal.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D650F48BB2C007A2941 /* TDTerminal.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFD0F48BB2C007A2941 /* TDToken.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D670F48BB2C007A2941 /* TDToken.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFE0F48BB2C007A2941 /* TDTokenArraySource.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D690F48BB2C007A2941 /* TDTokenArraySource.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7DFF0F48BB2C007A2941 /* TDTokenAssembly.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6B0F48BB2C007A2941 /* TDTokenAssembly.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E000F48BB2C007A2941 /* TDTokenizer.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6D0F48BB2C007A2941 /* TDTokenizer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E010F48BB2C007A2941 /* TDTokenizerState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D6F0F48BB2C007A2941 /* TDTokenizerState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E020F48BB2C007A2941 /* TDTrack.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D710F48BB2C007A2941 /* TDTrack.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E030F48BB2C007A2941 /* TDTrackException.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D730F48BB2C007A2941 /* TDTrackException.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E040F48BB2C007A2941 /* TDUppercaseWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D750F48BB2C007A2941 /* TDUppercaseWord.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E050F48BB2C007A2941 /* TDWhitespaceState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D770F48BB2C007A2941 /* TDWhitespaceState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E060F48BB2C007A2941 /* TDWord.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D790F48BB2C007A2941 /* TDWord.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E070F48BB2C007A2941 /* TDWordOrReservedState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7B0F48BB2C007A2941 /* TDWordOrReservedState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CC1C7E080F48BB2C007A2941 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E3F0F48C34D007A2941 /* Play.tiff */; };
 		CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */ = {isa = PBXBuildFile; fileRef = CC1C7E570F48C76B007A2941 /* Clear.tiff */; };
 		CC3A9B0115BC8F070075F377 /* MOFunctionArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36D115BA5E44008D8460 /* MOFunctionArgument.m */; };
@@ -1274,8 +1277,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC5FB7DB0F1FDE2500F4ECC2 /* JSTalk.m in Sources */,
+				CC131C0B16BC8B5C004F5117 /* MOPointerValue.m in Sources */,
 				CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */,
+				CC131C0C16BC8B62004F5117 /* MOPointer.m in Sources */,
 				CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */,
+				CC131C0A16BC8B38004F5117 /* MOMapTable.m in Sources */,
 				CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */,
 				CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
 				CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */,
