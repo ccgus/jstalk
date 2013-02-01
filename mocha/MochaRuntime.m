@@ -61,7 +61,7 @@ static JSObjectRef  MOConstructor_callAsConstructor(JSContextRef ctx, JSObjectRe
 
 static JSValueRef   MOFunction_callAsFunction(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef *exception);
 
-static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name);
+static JSValueRef MOJSPrototypeForOBJCInstance(JSContextRef ctx, id instance, NSString *name);
 
 NSString * const MORuntimeException = @"MORuntimeException";
 NSString * const MOJavaScriptException = @"MOJavaScriptException";
@@ -1201,13 +1201,21 @@ static bool MOBoxedObject_hasProperty(JSContextRef ctx, JSObjectRef objectJS, JS
         return YES;
     }
     
-    if ([object isKindOfClass:[NSString class]]) {
-        // special case bridging of NSString w/ JS string functions
+    
+    if ([object isKindOfClass:[NSString class]] || [object isKindOfClass:[NSArray class]]) {
+        // special case bridging of NSString & NSArray w/ JS functions
         
-        if (MOStringPrototypeFunction(ctx, propertyName)) {
+        if (MOJSPrototypeForOBJCInstance(ctx, object, propertyName)) {
             return YES;
         }
+        
+        if ([object isKindOfClass:[NSArray class]]) {
+            if ([propertyName isEqualToString:@"length"]) {
+                return YES;
+            }
+        }
     }
+    
     
     return NO;
 }
@@ -1332,13 +1340,22 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
             }
         }
         
-        if ([object isKindOfClass:[NSString class]]) {
-            // special case bridging of NSString w/ JS string functions
+        if ([object isKindOfClass:[NSString class]] || [object isKindOfClass:[NSArray class]]) {
+            // special case bridging of NSString & NSArray w/ JS functions
             
-            JSValueRef jsPropertyValue = MOStringPrototypeFunction(ctx, propertyName);
-            
+            JSValueRef jsPropertyValue = MOJSPrototypeForOBJCInstance(ctx, object, propertyName);
             if (jsPropertyValue) {
                 return jsPropertyValue;
+            }
+            
+            
+            if ([object isKindOfClass:[NSArray class]]) {
+                
+                // special case this property.
+                if ([propertyName isEqualToString:@"length"]) {
+                    MOMethod *method = [MOMethod methodWithTarget:object selector:@selector(count)];
+                    return MOFunctionInvoke(method, ctx, 0, NULL, exception);
+                }
             }
         }
         
@@ -1552,11 +1569,22 @@ static JSValueRef MOFunction_callAsFunction(JSContextRef ctx, JSObjectRef functi
 }
 
 
-static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name) {
+static JSValueRef MOJSPrototypeForOBJCInstance(JSContextRef ctx, id instance, NSString *name) {
     
+    char *propName = nil;
+    if ([instance isKindOfClass:[NSString class]]) {
+        propName = "String";
+    }
+    else if ([instance isKindOfClass:[NSArray class]]) {
+        propName = "Array";
+    }
+    
+    if (!propName) {
+        return NO;
+    }
     
     JSValueRef exception = nil;
-    JSStringRef jsPropertyName = JSStringCreateWithUTF8CString("String");
+    JSStringRef jsPropertyName = JSStringCreateWithUTF8CString(propName);
     JSValueRef jsPropertyValue = JSObjectGetProperty(ctx, JSContextGetGlobalObject(ctx), jsPropertyName, &exception);
     JSStringRelease(jsPropertyName);
     
