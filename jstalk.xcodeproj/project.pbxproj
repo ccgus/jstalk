@@ -1043,9 +1043,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8D15AC270486D014006FF6A4 /* Cocoa Script Editor */ = {
+		8D15AC270486D014006FF6A4 /* JSTalk Editor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "Cocoa Script Editor" */;
+			buildConfigurationList = C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "JSTalk Editor" */;
 			buildPhases = (
 				8D15AC2B0486D014006FF6A4 /* Resources */,
 				8D15AC300486D014006FF6A4 /* Sources */,
@@ -1057,7 +1057,7 @@
 			dependencies = (
 				CC5064E60F4A164D00F4A952 /* PBXTargetDependency */,
 			);
-			name = "Cocoa Script Editor";
+			name = "JSTalk Editor";
 			productInstallPath = "$(HOME)/Applications";
 			productName = JSTalk;
 			productReference = 8D15AC370486D014006FF6A4 /* JSTalk Editor.app */;
@@ -1120,7 +1120,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D15AC270486D014006FF6A4 /* Cocoa Script Editor */,
+				8D15AC270486D014006FF6A4 /* JSTalk Editor */,
 				CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */,
 				CC4143190F25254200E46669 /* JSTalk Framework */,
 			);
@@ -1565,7 +1565,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "Cocoa Script Editor" */ = {
+		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "JSTalk Editor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C05733C808A9546B00998B17 /* Debug */,

@@ -8,14 +8,17 @@
 
 #import "JSTAutomator.h"
 #import <JSTalk/JSTalk.h>
-#import <JSTalk/JSCocoa.h>
 
 @implementation JSTAutomator
 
-- (void) setupJSTalkEnv:(JSTalk *)jstalk {
+- (void)setupJSTalkEnv:(JSTalk *)jstalk {
+    /*
     JSCocoaController *jsController = [jstalk jsController];
     jsController.delegate = self;
-    jstalk.printController = self;
+    */
+    
+    [jstalk setErrorController:self];
+    [jstalk setPrintController:self];
     
 }
 
@@ -48,7 +51,7 @@
 }
 
 
-- (void) JSCocoa:(JSCocoaController*)controller hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     lineNumber -= 1;
     

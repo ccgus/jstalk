@@ -110,16 +110,8 @@ function buildTarget {
 
 buildTarget "JSTalk Framework"
 buildTarget "jstalk command line"
-buildTarget "JSTalkRunner"
 buildTarget "JSTalk Editor"
 
-
-cd /tmp/jstalk/plugins/acornplugin
-$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
-if [ $? != 0 ]; then
-    echo "****** Bad build for acorn plugin ********"
-    exit
-fi
 
 cd /tmp/jstalk/plugins/sqlite-fmdb-jstplugin
 $xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS="" -target fmdbextra
@@ -128,13 +120,6 @@ if [ $? != 0 ]; then
     exit
 fi
 
-
-cd /tmp/jstalk/plugins/imagetools
-$xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
-if [ $? != 0 ]; then
-    echo "****** Bad build for Image Tools ********"
-    exit
-fi
 
 cd /tmp/jstalk/plugins/GTMScriptRunner-jstplugin
 $xcodebuild -configuration Release OBJROOT=/tmp/jstalk/build SYMROOT=/tmp/jstalk/build OTHER_CFLAGS=""
@@ -174,10 +159,10 @@ cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 mkdir JSTalkFoo/plugins
 mkdir -p JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns
 
-cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
-cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
+#cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
+#cp -r JSTalk.vpplugin       JSTalkFoo/plugins/.
 cp -r FMDB.jstplugin        JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
-cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
+#cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 cp -r GTMScriptRunner.jstplugin JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 
 mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
@@ -192,13 +177,6 @@ mv JSTalk ~/cvsbuilds/.
 if [ $appStore = 1 ]; then
     
     cd ~/cvsbuilds/JSTalk
-    
-    cd JSTalk\ Editor.app/Contents/Resources/JSTalkRunner.app/Contents/Frameworks/JSTalk.framework/Versions/A/Resources/
-    
-    # app loader doesn't like multipe frameworks with the same id in it.
-    sed -e "s/org.jstalk.JSTalk/org.jstalk.JSTalkRunnerF/g"  Info.plist > Info.plist.tmp
-    mv Info.plist.tmp Info.plist
-    
     
     cd ~/cvsbuilds/JSTalk
     cd JSTalk\ Editor.app/Contents/Frameworks/JSTalk.framework/Versions/A/Resources/
