@@ -8,6 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
+#import <JSTalk/JSTalk.h>
+#import <JSTalk/MOJavaScriptObject.h>
 
 @interface JSTQuickCIFilter : CIFilter {
     CIKernel *_theKernel;
@@ -16,6 +18,9 @@
 
 @property (retain) CIKernel *theKernel;
 @property (retain) NSMutableArray *kernelArgs;
+
+@property (strong) MOJavaScriptObject *roiMethod;
+@property (strong) MOJavaScriptObject *outputImageMethod;
 
 @end
 

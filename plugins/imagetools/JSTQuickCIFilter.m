@@ -8,10 +8,7 @@
 
 #import "JSTQuickCIFilter.h"
 
-
 @implementation JSTQuickCIFilter
-@synthesize theKernel=_theKernel;
-@synthesize kernelArgs=_kernelArgs;
 
 + (id)quickFilterWithKernel:(NSString*)kernel {
     
@@ -20,6 +17,10 @@
     [f setTheKernel:[[CIKernel kernelsWithString:kernel] objectAtIndex:0]];
     [f setKernelArgs:[NSMutableArray array]];
     return f;
+}
+
+- (CGRect)xregionOf:(int)sampler destRect:(CGRect)rect userInfo:(id)ui {
+    return CGRectInfinite;
 }
 
 - (void)addKernelArgument:(id)obj {
@@ -35,7 +36,30 @@
     [_kernelArgs addObject:obj];
 }
 
+- (CGRect)regionOf:(int)sampler destRect:(CGRect)rect userInfo:(id)ui {
+    
+    NSValue *v = [[JSTalk currentJSTalk] callJSFunction:[_roiMethod JSObject] withArgumentsInArray:nil];
+    
+    debug(@"[v rectValue]: %@", NSStringFromRect([v rectValue]));
+    
+    return [v rectValue];
+}
+
+- (CIImage*)applyWithArguments:(NSArray *)args options:(NSDictionary *)dict {
+    return [self apply:_theKernel arguments:args options:dict];
+}
+
 - (CIImage *)outputImage {
+    
+    if (_roiMethod && [JSTalk currentJSTalk]) {
+        [_theKernel setROISelector:@selector(regionOf:destRect:userInfo:)];
+    }
+    
+    if (_outputImageMethod && [JSTalk currentJSTalk]) {
+        CIImage *i = [[JSTalk currentJSTalk] callJSFunction:[_outputImageMethod JSObject] withArgumentsInArray:nil];
+        return i;
+    }
+    
 	return [self apply:_theKernel arguments:_kernelArgs options:[NSDictionary dictionary]];
 }
 

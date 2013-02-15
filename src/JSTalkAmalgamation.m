@@ -7287,25 +7287,6 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
             }
         }
         
-        // Property
-        objc_property_t property = class_getProperty(objectClass, [propertyName UTF8String]);
-        if (property != NULL) {
-            SEL selector = NULL;
-            char * getterValue = property_copyAttributeValue(property, "G");
-            if (getterValue != NULL) {
-                selector = NSSelectorFromString([NSString stringWithUTF8String:getterValue]);
-                free(getterValue);
-            }
-            else {
-                selector = NSSelectorFromString(propertyName);
-            }
-            
-            if ([object respondsToSelector:selector] && ![objectClass isSelectorExcludedFromMochaScript:selector]) {
-                MOMethod *method = [MOMethod methodWithTarget:object selector:selector];
-                JSValueRef value = MOFunctionInvoke(method, ctx, 0, NULL, exception);
-                return value;
-            }
-        }
         
         // Association object
         id value = objc_getAssociatedObject(object, (__bridge const void *)(propertyName));
@@ -7334,6 +7315,26 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
             if (implements) {
                 MOMethod *function = [MOMethod methodWithTarget:object selector:selector];
                 return [runtime JSValueForObject:function];
+            }
+        }
+        
+        // Property
+        objc_property_t property = class_getProperty(objectClass, [propertyName UTF8String]);
+        if (property != NULL) {
+            SEL selector = NULL;
+            char * getterValue = property_copyAttributeValue(property, "G");
+            if (getterValue != NULL) {
+                selector = NSSelectorFromString([NSString stringWithUTF8String:getterValue]);
+                free(getterValue);
+            }
+            else {
+                selector = NSSelectorFromString(propertyName);
+            }
+            
+            if ([object respondsToSelector:selector] && ![objectClass isSelectorExcludedFromMochaScript:selector]) {
+                MOMethod *method = [MOMethod methodWithTarget:object selector:selector];
+                JSValueRef value = MOFunctionInvoke(method, ctx, 0, NULL, exception);
+                return value;
             }
         }
         
@@ -7602,7 +7603,8 @@ static JSValueRef MOStringPrototypeFunction(JSContextRef ctx, NSString *name) {
     }
     
     return nil;
-}//
+}
+//
 //  MOBox.m
 //  Mocha
 //
@@ -11348,6 +11350,10 @@ static CFHashCode MOObjectHash(const void * value) {
     sleep(s);
 }
 
+- (void)system:(NSString*)s {
+    system([s UTF8String]);
+}
+
 
 @end
 
@@ -11727,7 +11733,7 @@ static CFHashCode MOObjectHash(const void * value) {
         }
         
         if ([scanner scanString:tok intoString:nil]) {
-            if ([scanner scanString:tok intoString: nil]) {
+            if ([scanner scanString:tok intoString:nil]) {
                 continue;
             }
             else if ([scanner scanUpToString:tok intoString:&quot] && [scanner scanString:tok intoString: nil]) {
@@ -11799,6 +11805,25 @@ static CFHashCode MOObjectHash(const void * value) {
     return [tag isEqualToString:@"]"] || [tag isEqualToString:@")"];
 }
 
++ (NSString*)fixTypeToVar:(NSString*)type {
+    
+    if ([type isEqualToString:@"double"]      ||
+        [type isEqualToString:@"float"]       ||
+        [type isEqualToString:@"CGFloat"]     ||
+        [type isEqualToString:@"long"]        ||
+        [type isEqualToString:@"NSInteger"]   ||
+        [type isEqualToString:@"NSUInteger"]  ||
+        [type isEqualToString:@"id"]          ||
+        [type isEqualToString:@"bool"]        ||
+        [type isEqualToString:@"BOOL"]        ||
+        [type isEqualToString:@"int"])
+    {
+        return @"var";
+    }
+    
+    return type;
+}
+
 + (NSString*)preprocessForObjCMessagesToJS:(NSString*)sourceString {
     
     NSMutableString *buffer = [NSMutableString string];
@@ -11814,7 +11839,7 @@ static CFHashCode MOObjectHash(const void * value) {
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
-        //debug(@"tok: '%@' %d", [tok description], tok.word);
+        // debug(@"tok: '%@' %d", [tok description], tok.word);
         
         if ([tok isSymbol] && [self isOpenSymbol:[tok stringValue]]) {
             
@@ -11824,7 +11849,7 @@ static CFHashCode MOObjectHash(const void * value) {
             currentGroup                = nextGroup;
 
         }
-        else if (tok.isSymbol && [self isCloseSymbol:tok.stringValue]) {
+        else if ([tok isSymbol] && [self isCloseSymbol:tok.stringValue]) {
             
             if (currentGroup.parent) {
                 [currentGroup.parent addSymbol:currentGroup];
@@ -11842,7 +11867,12 @@ static CFHashCode MOObjectHash(const void * value) {
             [currentGroup addSymbol:tok];
         }
         else {
-            [buffer appendString:[tok stringValue]];
+            
+            NSString *s = [tok stringValue];
+            
+            s = [self fixTypeToVar:s];
+            
+            [buffer appendString:s];
         }
     }
     
@@ -12119,7 +12149,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
     [[self textStorage] setDelegate:self];
     
     /*
-     var s = "break case catch continue default delete do else finally for function if in instanceof new return switch this throw try typeof var void while with abstract boolean byte char class const debugger double enum export extends final float goto implements import int interface long native package private protected public short static super synchronized throws transient volatile null true false nil"
+     var s = "break case catch continue default delete do else finally for function if in instanceof new return switch this throw try typeof var void while with abstract boolean byte char class const debugger double enum export extends final float goto implements import int interface long native package private protected public short static super synchronized throws transient volatile null true false nil id CGFloat NSInteger NSUInteger bool BOOL"
      
      words = s.split(" ")
      var i = 0;
@@ -12132,7 +12162,8 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
      print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];")
      */
     
-    NSArray *blueWords = [NSArray arrayWithObjects:@"break", @"case", @"catch", @"continue", @"default", @"delete", @"do", @"else", @"finally", @"for", @"function", @"if", @"in", @"instanceof", @"new", @"return", @"switch", @"this", @"throw", @"try", @"typeof", @"var", @"void", @"while", @"with", @"abstract", @"boolean", @"byte", @"char", @"class", @"const", @"debugger", @"double", @"enum", @"export", @"extends", @"final", @"float", @"goto", @"implements", @"import", @"int", @"interface", @"long", @"native", @"package", @"private", @"protected", @"public", @"short", @"static", @"super", @"synchronized", @"throws", @"transient", @"volatile", @"null", @"true", @"false", @"nil",  nil];
+    NSArray *blueWords = [NSArray arrayWithObjects:@"break", @"case", @"catch", @"continue", @"default", @"delete", @"do", @"else", @"finally", @"for", @"function", @"if", @"in", @"instanceof", @"new", @"return", @"switch", @"this", @"throw", @"try", @"typeof", @"var", @"void", @"while", @"with", @"abstract", @"boolean", @"byte", @"char", @"class", @"const", @"debugger", @"double", @"enum", @"export", @"extends", @"final", @"float", @"goto", @"implements", @"import", @"int", @"interface", @"long", @"native", @"package", @"private", @"protected", @"public", @"short", @"static", @"super", @"synchronized", @"throws", @"transient", @"volatile", @"null", @"true", @"false", @"nil", @"id", @"CGFloat", @"NSInteger", @"NSUInteger", @"bool", @"BOOL", nil];
+
     
     NSMutableDictionary *keywords = [NSMutableDictionary dictionary];
     
@@ -14291,7 +14322,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         }
         
         NSLog(@"Exception: %@", [e userInfo]);
-        [self print:[e description]];
+        [self printException:e];
     }
     @finally {
         //
@@ -14329,7 +14360,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        [self print:[e description]];
+        [self printException:e];
     }
     
     [self popAsCurrentJSTalk];
@@ -14340,7 +14371,16 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 - (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments {
     [self pushAsCurrentJSTalk];
-    JSValueRef r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    JSValueRef r = nil;
+    @try {
+        r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        NSLog(@"Info: %@", [e userInfo]);
+        [self printException:e];
+    }
+    
     [self popAsCurrentJSTalk];
     return r;
 }
@@ -14371,6 +14411,21 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     }
     
     [_mochaRuntime evalString:str];
+}
+
+- (void)printException:(NSException*)e {
+    
+    NSMutableString *s = [NSMutableString string];
+    
+    [s appendFormat:@"%@\n", e];
+    
+    NSDictionary *d = [e userInfo];
+    
+    for (id o in [d allKeys]) {
+        [s appendFormat:@"%@: %@\n", o, [d objectForKey:o]];
+    }
+    
+    [self print:s];
 }
 
 - (void)print:(NSString*)s {

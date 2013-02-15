@@ -30,7 +30,7 @@
 - (id)callFunctionNamed:(NSString*)name withArguments:(NSArray*)args;
 - (BOOL)hasFunctionNamed:(NSString*)name;
 
-- (JSValueRef)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments;
+- (id)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments;
 
 + (void)loadBridgeSupportFileAtURL:(NSURL*)url;
 + (void)listen;
