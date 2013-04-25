@@ -122,11 +122,13 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
     TDToken *tok = nil;
     
     [[self textStorage] beginEditing];
-    
+    [self.numberRanges removeAllObjects];
     NSUInteger sourceLoc = 0;
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
+		NSUInteger strLen = [[tok stringValue] length];
+		NSRange tokenRange = NSMakeRange(sourceLoc, strLen);
         NSColor *fontColor = [NSColor blackColor];
         
         if ([tok isQuotedString]) {
@@ -134,9 +136,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
         }
         else if ([tok isNumber]) {
             fontColor = [NSColor blueColor];
-			NSRange numberRange = NSMakeRange(sourceLoc, [[tok stringValue] length]);
-
-			[self setNumberString:[tok stringValue] forRange:numberRange];
+			[self setNumberString:[tok stringValue] forRange:tokenRange];
         }
         else if ([tok isComment]) {
             fontColor = [NSColor redColor];
@@ -146,17 +146,16 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
             fontColor = c ? c : fontColor;
         }
         
-        NSUInteger strLen = [[tok stringValue] length];
         
         if (fontColor) {
-            [[self textStorage] addAttribute:NSForegroundColorAttributeName value:fontColor range:NSMakeRange(sourceLoc, strLen)];
+            [[self textStorage] addAttribute:NSForegroundColorAttributeName value:fontColor range:tokenRange];
         }
         
         if ([tok isQuotedString]) {
-            [[self textStorage] addAttribute:JSTQuotedStringAttributeName value:[NSNumber numberWithBool:YES] range:NSMakeRange(sourceLoc, strLen)];
+            [[self textStorage] addAttribute:JSTQuotedStringAttributeName value:[NSNumber numberWithBool:YES] range:tokenRange];
         }
         else {
-            [[self textStorage] removeAttribute:JSTQuotedStringAttributeName range:NSMakeRange(sourceLoc, strLen)];
+            [[self textStorage] removeAttribute:JSTQuotedStringAttributeName range:tokenRange];
         }
         
         sourceLoc += strLen;
@@ -671,14 +670,9 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 	NSString *wholeText = [self string];
 	self.initialNumberRange = self.currentlyHighlightedRange;
 	
-//	NSString *originalCommand = [self currentCommandForRange:self.currentlyHighlightedRange];
+
 	NSRange originalCommandRange = [wholeText lineRangeForRange:self.currentlyHighlightedRange];
-//
-//	self.initialDragCommandString = originalCommand;
 	self.initialDragCommandRange = originalCommandRange;
-//	self.initialDragCommandStart = self.commandStart;
-//	
-//	self.initialDragRangeInOriginalCommand = NSMakeRange(self.currentlyHighlightedRange.location - originalCommandRange.location, self.currentlyHighlightedRange.length);
 }
 
 
@@ -690,13 +684,10 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 		return;
 	}
 	
-	NSLog(@"mouse dragged, current range is: %@", NSStringFromRange(self.currentlyHighlightedRange));
-	
-	//NSRange numberRange = [self numberStringRangeForCharacterIndex:self.currentlyHighlightedRange.location];
 	NSRange numberRange = [self rangeForNumberNearestToIndex:self.currentlyHighlightedRange.location];
 	NSString *numberString = [[self string] substringWithRange:numberRange];
 	
-	NSLog(@"Dragging...current number is: %@", numberString);
+
 	NSNumber *number = [self numberFromString:numberString];
 	
 	if (nil == number) {
