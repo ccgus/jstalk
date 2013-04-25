@@ -16,7 +16,6 @@
 		CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC32EFD112034FDF0090827E /* OpenCL.framework */; };
 		CC32EFD5120350040090827E /* JSTOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC32EFD4120350040090827E /* JSTOpenCLProgram.m */; };
 		CC34F6441209F5FB00DE493B /* OpenCL.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */; };
-		CCC6E7D5146FAA7A008E4DED /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */; };
 		CCC9CAB91209F1C6007EED57 /* JSTQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */; };
 		CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */; };
 		CCCFCCAE13494A7400752BB0 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCA513494A7400752BB0 /* ccgus.jpg */; };
@@ -29,7 +28,32 @@
 		CCCFCCB513494A7400752BB0 /* mask4.png in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAC13494A7400752BB0 /* mask4.png */; };
 		CCCFCCB613494A7400752BB0 /* rail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCCFCCAD13494A7400752BB0 /* rail.jpg */; };
 		CCCFCCBF13494AAA00752BB0 /* JSTCIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCFCCBE13494AAA00752BB0 /* JSTCIImageAdditions.m */; };
+		CD466EA11728D84600BAA1CF /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD466EA01728D83E00BAA1CF /* JSTalk.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CD466E9B1728D83E00BAA1CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8D15AC370486D014006FF6A4;
+			remoteInfo = "JSTalk Editor";
+		};
+		CD466E9D1728D83E00BAA1CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CC5FB7C20F1FDCCC00F4ECC2;
+			remoteInfo = "jstalk command line";
+		};
+		CD466E9F1728D83E00BAA1CF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = CC41431A0F25254200E46669;
+			remoteInfo = "JSTalk Framework";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		089C1672FE841209C02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -50,7 +74,6 @@
 		CC32EFD3120350040090827E /* JSTOpenCLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCLProgram.h; sourceTree = "<group>"; };
 		CC32EFD4120350040090827E /* JSTOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTOpenCLProgram.m; sourceTree = "<group>"; };
 		CC34F6431209F5FB00DE493B /* OpenCL.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OpenCL.bridgesupport; sourceTree = "<group>"; };
-		CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSTalk.framework; path = ../../../../../../../../private/tmp/jstalk/build/Release/JSTalk.framework; sourceTree = "<group>"; };
 		CCC9CAB71209F1C6007EED57 /* JSTQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTQuickCIFilter.h; sourceTree = "<group>"; };
 		CCC9CAB81209F1C6007EED57 /* JSTQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTQuickCIFilter.m; sourceTree = "<group>"; };
 		CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -65,6 +88,7 @@
 		CCCFCCAD13494A7400752BB0 /* rail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = rail.jpg; path = res/rail.jpg; sourceTree = "<group>"; };
 		CCCFCCBD13494AAA00752BB0 /* JSTCIImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTCIImageAdditions.h; sourceTree = "<group>"; };
 		CCCFCCBE13494AAA00752BB0 /* JSTCIImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTCIImageAdditions.m; sourceTree = "<group>"; };
+		CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = jstalk.xcodeproj; path = ../../jstalk.xcodeproj; sourceTree = "<group>"; };
 		D2F7E65807B2D6F200F64583 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -73,11 +97,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD466EA11728D84600BAA1CF /* JSTalk.framework in Frameworks */,
 				8D5B49B4048680CD000E48DA /* Cocoa.framework in Frameworks */,
 				CC32EFD212034FDF0090827E /* OpenCL.framework in Frameworks */,
 				CCC9CABB1209F1F5007EED57 /* QuartzCore.framework in Frameworks */,
 				CC03335E146DF17600CDE6FD /* JavaScriptCore.framework in Frameworks */,
-				CCC6E7D5146FAA7A008E4DED /* JSTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,6 +151,7 @@
 		08FB77AFFE84173DC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */,
 				CC32EF6212034B230090827E /* JSTImageTools.h */,
 				CC32EF6312034B230090827E /* JSTImageTools.m */,
 				CC32EFCD12034F170090827E /* JSTOpenCLContext.h */,
@@ -146,7 +171,6 @@
 		1058C7ACFEA557BF11CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				CCC6E7D4146FAA7A008E4DED /* JSTalk.framework */,
 				CC03335D146DF17600CDE6FD /* JavaScriptCore.framework */,
 				CCC9CABA1209F1F5007EED57 /* QuartzCore.framework */,
 				1058C7ADFEA557BF11CA2CBB /* Cocoa.framework */,
@@ -179,6 +203,16 @@
 				CC32EF6112034B230090827E /* JSTOpenCL_Prefix.pch */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		CD466E961728D83E00BAA1CF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CD466E9C1728D83E00BAA1CF /* JSTalk Editor.app */,
+				CD466E9E1728D83E00BAA1CF /* jstalk */,
+				CD466EA01728D83E00BAA1CF /* JSTalk.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -222,12 +256,42 @@
 			);
 			mainGroup = 089C166AFE841209C02AAC07 /* samplejstalkextra */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = CD466E961728D83E00BAA1CF /* Products */;
+					ProjectRef = CD466E951728D83E00BAA1CF /* jstalk.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				8D5B49AC048680CD000E48DA /* ImageTools */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		CD466E9C1728D83E00BAA1CF /* JSTalk Editor.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = "JSTalk Editor.app";
+			remoteRef = CD466E9B1728D83E00BAA1CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD466E9E1728D83E00BAA1CF /* jstalk */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = jstalk;
+			remoteRef = CD466E9D1728D83E00BAA1CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		CD466EA01728D83E00BAA1CF /* JSTalk.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = JSTalk.framework;
+			remoteRef = CD466E9F1728D83E00BAA1CF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D5B49AF048680CD000E48DA /* Resources */ = {
@@ -300,7 +364,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Debug;
@@ -328,7 +392,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				OTHER_CFLAGS = "-DDEBUG";
 				PRODUCT_NAME = ImageTools;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 				WRAPPER_EXTENSION = jstplugin;
 			};
 			name = Release;
@@ -340,8 +404,9 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.7;
+				SDKROOT = "";
 			};
 			name = Debug;
 		};
@@ -351,7 +416,8 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				SDKROOT = macosx10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				SDKROOT = "";
 			};
 			name = Release;
 		};
