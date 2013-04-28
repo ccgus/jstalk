@@ -647,13 +647,17 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 			// Only change this when it's not already set... skip some work, I suppose.
 			self.currentlyHighlightedRange = range;
 		}
+		[[NSCursor arrowCursor] set];
 		return;
 	}
 	
-	
+	// Found a number under the cursor
 	self.currentlyHighlightedRange = range;
 	NSColor *fontColor = [NSColor colorWithCalibratedRed:0.742 green:0.898 blue:0.397 alpha:1.000];
 	[[self textStorage] addAttribute:NSBackgroundColorAttributeName value:fontColor range:range];
+	
+	// Show we can drag the number
+	[[NSCursor resizeLeftRightCursor] set];
 }
 
 
