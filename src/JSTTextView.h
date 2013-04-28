@@ -10,7 +10,7 @@
 
 @class NoodleLineNumberView;
 
-typedef void (^JSTTextViewDragHandler)(NSTextView *draggedObject);
+typedef void (^JSTTextViewDragHandler)(NSTextView *draggedObject, NSString *draggedLine);
 
 @interface JSTTextView : NSTextView <NSTextStorageDelegate> {
     NSDictionary            *_keywords;

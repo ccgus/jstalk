@@ -712,7 +712,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 	
 	
 	if (self.numberDragHandler) {
-		self.numberDragHandler(self);
+		self.numberDragHandler(self, [self currentLineForRange:self.currentlyHighlightedRange]);
 	}
 }
 

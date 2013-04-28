@@ -86,6 +86,14 @@
     [errorLabel setStringValue:@""];
     
     [self updateFont:nil];
+	
+	__weak __typeof__(self) weakSelf = self;
+	[jsTextView setNumberDragHandler:^(NSTextView *textView, NSString *updatedLine) {
+		dispatch_async(dispatch_get_main_queue(), ^{
+			
+			[weakSelf executeScript:weakSelf];
+		});
+	}];
     
 }
 
