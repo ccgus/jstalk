@@ -705,8 +705,9 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 	NSNumber *updatedNumber = @(offsetValue);
 	NSString *updatedNumberString = [updatedNumber stringValue];
 	
+	[[self textStorage] replaceCharactersInRange:self.currentlyHighlightedRange withString:updatedNumberString];
 	
-	[super insertText:updatedNumberString replacementRange:self.currentlyHighlightedRange];
+	
 	self.currentlyHighlightedRange = NSMakeRange(self.currentlyHighlightedRange.location, [updatedNumberString length]);
 	
 	
