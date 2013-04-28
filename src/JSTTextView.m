@@ -127,8 +127,8 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
     
     while ((tok = [tokenizer nextToken]) != eof) {
         
-		NSUInteger strLen = [[tok stringValue] length];
-		NSRange tokenRange = NSMakeRange(sourceLoc, strLen);
+        NSUInteger strLen = [[tok stringValue] length];
+        NSRange tokenRange = NSMakeRange(sourceLoc, strLen);
         NSColor *fontColor = [NSColor blackColor];
         
         if ([tok isQuotedString]) {
@@ -136,7 +136,7 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
         }
         else if ([tok isNumber]) {
             fontColor = [NSColor blueColor];
-			[self setNumberString:[tok stringValue] forRange:tokenRange];
+            [self setNumberString:[tok stringValue] forRange:tokenRange];
         }
         else if ([tok isComment]) {
             fontColor = [NSColor redColor];
@@ -638,177 +638,177 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 #pragma mark - NSResponder methods
 
 - (void)mouseMoved:(NSEvent *)theEvent {
-	[[self textStorage] removeAttribute:NSBackgroundColorAttributeName range:self.currentlyHighlightedRange];
-	NSUInteger character = [self characterIndexForPoint:[NSEvent mouseLocation]];
-	
-	NSRange range = [self numberStringRangeForCharacterIndex:character];
-	if (range.location == NSNotFound) {
-		if (_currentlyHighlightedRange.location != NSNotFound) {
-			// Only change this when it's not already set... skip some work, I suppose.
-			self.currentlyHighlightedRange = range;
-		}
-		[[NSCursor arrowCursor] set];
-		return;
-	}
-	
-	// Found a number under the cursor
-	self.currentlyHighlightedRange = range;
-	NSColor *fontColor = [NSColor colorWithCalibratedRed:0.742 green:0.898 blue:0.397 alpha:1.000];
-	[[self textStorage] addAttribute:NSBackgroundColorAttributeName value:fontColor range:range];
-	
-	// Show we can drag the number
-	[[NSCursor resizeLeftRightCursor] set];
+    [[self textStorage] removeAttribute:NSBackgroundColorAttributeName range:self.currentlyHighlightedRange];
+    NSUInteger character = [self characterIndexForPoint:[NSEvent mouseLocation]];
+    
+    NSRange range = [self numberStringRangeForCharacterIndex:character];
+    if (range.location == NSNotFound) {
+        if (_currentlyHighlightedRange.location != NSNotFound) {
+            // Only change this when it's not already set... skip some work, I suppose.
+            self.currentlyHighlightedRange = range;
+        }
+        [[NSCursor arrowCursor] set];
+        return;
+    }
+    
+    // Found a number under the cursor
+    self.currentlyHighlightedRange = range;
+    NSColor *fontColor = [NSColor colorWithCalibratedRed:0.742 green:0.898 blue:0.397 alpha:1.000];
+    [[self textStorage] addAttribute:NSBackgroundColorAttributeName value:fontColor range:range];
+    
+    // Show we can drag the number
+    [[NSCursor resizeLeftRightCursor] set];
 }
 
 
 - (void)mouseDown:(NSEvent *)theEvent {
-	if (self.currentlyHighlightedRange.location == NSNotFound) {
-		[super mouseDown:theEvent];
-		return;
-	}
-	
-	self.initialDragPoint = [NSEvent mouseLocation];
-	NSString *initialString = [[self string] substringWithRange:self.currentlyHighlightedRange];
-	self.initialNumber = [self numberFromString:initialString];
-	
-	NSString *wholeText = [self string];
-	self.initialNumberRange = self.currentlyHighlightedRange;
-	
+    if (self.currentlyHighlightedRange.location == NSNotFound) {
+        [super mouseDown:theEvent];
+        return;
+    }
+    
+    self.initialDragPoint = [NSEvent mouseLocation];
+    NSString *initialString = [[self string] substringWithRange:self.currentlyHighlightedRange];
+    self.initialNumber = [self numberFromString:initialString];
+    
+    NSString *wholeText = [self string];
+    self.initialNumberRange = self.currentlyHighlightedRange;
+    
 
-	NSRange originalCommandRange = [wholeText lineRangeForRange:self.currentlyHighlightedRange];
-	self.initialDragCommandRange = originalCommandRange;
+    NSRange originalCommandRange = [wholeText lineRangeForRange:self.currentlyHighlightedRange];
+    self.initialDragCommandRange = originalCommandRange;
 }
 
 
 - (void)mouseDragged:(NSEvent *)theEvent {
-	
-	// Skip it if we're not currently dragging a number
-	if (self.currentlyHighlightedRange.location == NSNotFound) {
-		[super mouseDragged:theEvent];
-		return;
-	}
-	
-	NSRange numberRange = [self rangeForNumberNearestToIndex:self.currentlyHighlightedRange.location];
-	NSString *numberString = [[self string] substringWithRange:numberRange];
-	
+    
+    // Skip it if we're not currently dragging a number
+    if (self.currentlyHighlightedRange.location == NSNotFound) {
+        [super mouseDragged:theEvent];
+        return;
+    }
+    
+    NSRange numberRange = [self rangeForNumberNearestToIndex:self.currentlyHighlightedRange.location];
+    NSString *numberString = [[self string] substringWithRange:numberRange];
+    
 
-	NSNumber *number = [self numberFromString:numberString];
-	
-	if (nil == number) {
-		NSLog(@"Couldn't parse a number out of :%@", numberString);
-		return;
-	}
-	
-	CGPoint screenPoint = [NSEvent mouseLocation];
-	CGFloat x = screenPoint.x - self.initialDragPoint.x;
-	CGFloat y = screenPoint.y - self.initialDragPoint.y;
-	CGSize offset = CGSizeMake(x, y);
-	
-	
-	NSInteger offsetValue = [self.initialNumber integerValue] + (NSInteger)offset.width;
-	NSNumber *updatedNumber = @(offsetValue);
-	NSString *updatedNumberString = [updatedNumber stringValue];
-	
-	[[self textStorage] replaceCharactersInRange:self.currentlyHighlightedRange withString:updatedNumberString];
-	
-	
-	self.currentlyHighlightedRange = NSMakeRange(self.currentlyHighlightedRange.location, [updatedNumberString length]);
-	
-	
-	if (self.numberDragHandler) {
-		self.numberDragHandler(self, [self currentLineForRange:self.currentlyHighlightedRange]);
-	}
+    NSNumber *number = [self numberFromString:numberString];
+    
+    if (nil == number) {
+        NSLog(@"Couldn't parse a number out of :%@", numberString);
+        return;
+    }
+    
+    CGPoint screenPoint = [NSEvent mouseLocation];
+    CGFloat x = screenPoint.x - self.initialDragPoint.x;
+    CGFloat y = screenPoint.y - self.initialDragPoint.y;
+    CGSize offset = CGSizeMake(x, y);
+    
+    
+    NSInteger offsetValue = [self.initialNumber integerValue] + (NSInteger)offset.width;
+    NSNumber *updatedNumber = @(offsetValue);
+    NSString *updatedNumberString = [updatedNumber stringValue];
+    
+    [[self textStorage] replaceCharactersInRange:self.currentlyHighlightedRange withString:updatedNumberString];
+    
+    
+    self.currentlyHighlightedRange = NSMakeRange(self.currentlyHighlightedRange.location, [updatedNumberString length]);
+    
+    
+    if (self.numberDragHandler) {
+        self.numberDragHandler(self, [self currentLineForRange:self.currentlyHighlightedRange]);
+    }
 }
 
 
 - (void)mouseUp:(NSEvent *)theEvent {
-	// Skip it if we're not currently dragging a word
-	if (self.currentlyHighlightedRange.location == NSNotFound) {
-		[super mouseUp:theEvent];
-		return;
-	}
-	
-	// Triggers clearing out our number-dragging state.
-	[self parseCode:nil];
-	[self mouseMoved:theEvent];
-	
-	
-	self.initialNumber = nil;
-	self.initialDragCommandRange = NSMakeRange(NSNotFound, NSNotFound);
+    // Skip it if we're not currently dragging a word
+    if (self.currentlyHighlightedRange.location == NSNotFound) {
+        [super mouseUp:theEvent];
+        return;
+    }
+    
+    // Triggers clearing out our number-dragging state.
+    [self parseCode:nil];
+    [self mouseMoved:theEvent];
+    
+    
+    self.initialNumber = nil;
+    self.initialDragCommandRange = NSMakeRange(NSNotFound, NSNotFound);
 }
 
 
 #pragma mark - Number dragging helpers
 
 - (void)setNumberString:(NSString *)string forRange:(NSRange)numberRange {
-	// Just store the start location of the number, because the length might change (if, say, number goes from 100 -> 99)
-	self.numberRanges[NSStringFromRange(numberRange)] = string;
+    // Just store the start location of the number, because the length might change (if, say, number goes from 100 -> 99)
+    self.numberRanges[NSStringFromRange(numberRange)] = string;
 }
 
 - (NSRange)numberStringRangeForCharacterIndex:(NSUInteger)character {
-	for (NSString *rangeString in self.numberRanges) {
-		NSRange range = NSRangeFromString(rangeString);
-		if (NSLocationInRange(character, range)) {
-			return range;
-		}
-		
-	}
-	return NSMakeRange(NSNotFound, 0);
+    for (NSString *rangeString in self.numberRanges) {
+        NSRange range = NSRangeFromString(rangeString);
+        if (NSLocationInRange(character, range)) {
+            return range;
+        }
+        
+    }
+    return NSMakeRange(NSNotFound, 0);
 }
 
 - (NSNumber *)numberFromString:(NSString *)string {
-	static NSNumberFormatter *formatter = nil;
-	if (nil == formatter) {
-		formatter = [[NSNumberFormatter alloc] init];
-		[formatter setAllowsFloats:YES];
-	}
-	return [formatter numberFromString:string];
+    static NSNumberFormatter *formatter = nil;
+    if (nil == formatter) {
+        formatter = [[NSNumberFormatter alloc] init];
+        [formatter setAllowsFloats:YES];
+    }
+    return [formatter numberFromString:string];
 }
 
 
 - (NSRange)rangeForNumberNearestToIndex:(NSUInteger)index {
-	// parse this out right now...
-	NSRange originalRange = self.initialDragCommandRange;
-	
-	// Gets the line in range as it is currently in the textview's string
-	NSString *currentLine = [self currentLineForRange:originalRange];
-	
-	TDTokenizer *tokenizer = [TDTokenizer tokenizerWithString:currentLine];
-	
-	tokenizer.commentState.reportsCommentTokens = YES;
-	tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
-	
-	
-	TDToken *eof = [TDToken EOFToken];
-	TDToken *token = nil;
-	
-	
-	NSUInteger currentLocation = 0; // in the command!
-	
-	while ((token = [tokenizer nextToken]) != eof) {
-		
-		NSRange numberRange = NSMakeRange(currentLocation + originalRange.location, [[token stringValue] length]);
-		
-		if ([token isNumber]) {
-			if (NSLocationInRange(index, numberRange)) {
-				return numberRange;
-			}
-		}
-		
-		
-		currentLocation += [[token stringValue] length];
-		
-	}
-	return NSMakeRange(NSNotFound, NSNotFound);
+    // parse this out right now...
+    NSRange originalRange = self.initialDragCommandRange;
+    
+    // Gets the line in range as it is currently in the textview's string
+    NSString *currentLine = [self currentLineForRange:originalRange];
+    
+    TDTokenizer *tokenizer = [TDTokenizer tokenizerWithString:currentLine];
+    
+    tokenizer.commentState.reportsCommentTokens = YES;
+    tokenizer.whitespaceState.reportsWhitespaceTokens = YES;
+    
+    
+    TDToken *eof = [TDToken EOFToken];
+    TDToken *token = nil;
+    
+    
+    NSUInteger currentLocation = 0; // in the command!
+    
+    while ((token = [tokenizer nextToken]) != eof) {
+        
+        NSRange numberRange = NSMakeRange(currentLocation + originalRange.location, [[token stringValue] length]);
+        
+        if ([token isNumber]) {
+            if (NSLocationInRange(index, numberRange)) {
+                return numberRange;
+            }
+        }
+        
+        
+        currentLocation += [[token stringValue] length];
+        
+    }
+    return NSMakeRange(NSNotFound, NSNotFound);
 }
 
 
 - (NSString *)currentLineForRange:(NSRange)originalRange {
-	
-	NSString *wholeString = [self string];
-	
-	NSRange lineRange = [wholeString lineRangeForRange:originalRange];
-	return [wholeString substringWithRange:lineRange];
+    
+    NSString *wholeString = [self string];
+    
+    NSRange lineRange = [wholeString lineRangeForRange:originalRange];
+    return [wholeString substringWithRange:lineRange];
 }
 
 
