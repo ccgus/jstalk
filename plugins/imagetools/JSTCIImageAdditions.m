@@ -13,11 +13,8 @@
 
 + (id)jstImageNamed:(NSString*)imageName {
     
-    debug(@"imageName: '%@'", imageName);
-    debug(@"[NSBundle bundleForClass:self]: '%@'", [NSBundle bundleForClass:self]);
     NSURL *url = [[NSBundle bundleForClass:[JSTImageTools class]] URLForImageResource:imageName];
     
-    debug(@"url: '%@'", url);
     
     if (!url) {
        url = [[NSBundle mainBundle] URLForImageResource:imageName];

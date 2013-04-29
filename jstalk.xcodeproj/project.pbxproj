@@ -613,6 +613,7 @@
 			);
 			name = JSTalk;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
