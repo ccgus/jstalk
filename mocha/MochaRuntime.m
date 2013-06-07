@@ -1168,8 +1168,19 @@ static bool MOBoxedObject_hasProperty(JSContextRef ctx, JSObjectRef objectJS, JS
         return YES;
     }
     
+    
+    
+    
+    
     // Method
     SEL selector = MOSelectorFromPropertyName(propertyName);
+    
+    // calling methodSignatureForSelector: on a proxy when it doesn't respond to the selector will throw an exception and we'll crash.
+    // so we'll just look ahead and see if maybe it is because of a missing _
+    if (([object class] == [NSDistantObject class]) && ![object respondsToSelector:selector] && [object respondsToSelector:MOSelectorFromPropertyName([propertyName stringByAppendingString:@"_"])]) {
+        return YES;
+    }
+    
     NSMethodSignature *methodSignature = [object methodSignatureForSelector:selector];
     if (!methodSignature) {
         // Allow the trailing underscore to be left off (issue #7)
@@ -1275,6 +1286,11 @@ static JSValueRef MOBoxedObject_getProperty(JSContextRef ctx, JSObjectRef object
         
         // Method
         SEL selector = MOSelectorFromPropertyName(propertyName);
+        if (([object class] == [NSDistantObject class]) && ![object respondsToSelector:selector] && [object respondsToSelector:MOSelectorFromPropertyName([propertyName stringByAppendingString:@"_"])]) {
+            propertyName = [propertyName stringByAppendingString:@"_"];
+            selector = MOSelectorFromPropertyName(propertyName);
+        }
+        
         NSMethodSignature *methodSignature = [object methodSignatureForSelector:selector];
         if (!methodSignature) {
             // Allow the trailing underscore to be left off (issue #7)
