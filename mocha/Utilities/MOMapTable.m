@@ -26,6 +26,11 @@ static CFStringRef MOObjectCopyDescription(const void * value) {
 }
 
 static Boolean MOObjectEqual(const void * value1, const void * value2) {
+    
+    if ([[(id)value1 class] isSubclassOfClass:[NSDistantObject class]]) {
+        return NO;
+    }
+    
     return (Boolean)[(id)value1 isEqual:(id)value2];
 }
 

@@ -36,11 +36,9 @@
     [_kernelArgs addObject:obj];
 }
 
-- (CGRect)regionOf:(int)sampler destRect:(CGRect)rect userInfo:(id)ui {
+- (CGRect)xxregionOf:(int)sampler destRect:(CGRect)rect userInfo:(id)ui {
     
     NSValue *v = [[JSTalk currentJSTalk] callJSFunction:[_roiMethod JSObject] withArgumentsInArray:nil];
-    
-    debug(@"[v rectValue]: %@", NSStringFromRect([v rectValue]));
     
     return [v rectValue];
 }
