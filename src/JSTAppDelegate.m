@@ -132,9 +132,26 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
 }
 
 - (void)openPanelDidEndForExternalEditor:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    if (returnCode) {
+    
+}
+
+- (void)chooseExternalEditor:(id)sender {
+    
+    NSOpenPanel *p = [NSOpenPanel openPanel];
+    
+    [p setCanChooseFiles:YES];
+    [p setCanChooseDirectories:NO];
+    [p setAllowsMultipleSelection:NO];
+    
+    [p setAllowedFileTypes:[NSArray arrayWithObjects:@"app", @"APPL", nil]];
+    
+    [p beginSheetModalForWindow:prefsWindow completionHandler:^(NSInteger result) {
         
-        NSString *path = [[sheet URL] path];
+        if (!result) {
+            return;
+        }
+            
+        NSString *path = [[p URL] path];
         
         NSBundle *appBundle = [NSBundle bundleWithPath:path];
         NSString *bundleId  = [appBundle bundleIdentifier];
@@ -148,25 +165,8 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
         [[NSUserDefaults standardUserDefaults] setObject:bundleId forKey:@"externalEditor"];
         
         [self loadExternalEditorPrefs];
-        
-    }
-}
-
-- (void)chooseExternalEditor:(id)sender {
+    }];
     
-    NSOpenPanel *p = [NSOpenPanel openPanel];
-    
-    [p setCanChooseFiles:YES];
-    [p setCanChooseDirectories:NO];
-    [p setAllowsMultipleSelection:NO];
-    
-    [p beginSheetForDirectory:@"/Applications"
-                         file:nil
-                        types:[NSArray arrayWithObjects:@"app", @"APPL", nil]
-               modalForWindow:prefsWindow
-                modalDelegate:self
-               didEndSelector:@selector(openPanelDidEndForExternalEditor:returnCode:contextInfo:)
-                  contextInfo:nil];
 }
 
 - (void)prefsChoosefont:(id)sender {
