@@ -80,6 +80,8 @@ if [ $checkout == 1 ]; then
     
     echo "doing remote checkout ($revision) upload($upload)"
     git clone git://github.com/ccgus/jstalk.git
+    cd jstalk
+    git checkout Mocha
 else
     echo "Copying local tree"
     cp -r $SRC_DIR /tmp/jstalk
@@ -156,7 +158,6 @@ cp -R JSTalk.framework JSTalkFoo/.
 cp -R /tmp/jstalk/example_scripts JSTalkFoo/examples
 cp -R /tmp/jstalk/plugins/sqlite-fmdb-jstplugin/fmdb.jstalk JSTalkFoo/examples/.
 
-mkdir JSTalkFoo/plugins
 mkdir -p JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns
 
 #cp -r JSTalk.acplugin       JSTalkFoo/plugins/.
@@ -164,10 +165,6 @@ mkdir -p JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns
 cp -r FMDB.jstplugin        JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 #cp -r ImageTools.jstplugin  JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
 cp -r GTMScriptRunner.jstplugin JSTalkFoo/JSTalk\ Editor.app/Contents/PlugIns/.
-
-mv /tmp/jstalk/plugins/proxitask/JSTalkProxiTask.bundle JSTalkFoo/plugins/.
-
-cp /tmp/jstalk/plugins/README.txt JSTalkFoo/plugins/.
 
 mv JSTalkFoo JSTalk
 
