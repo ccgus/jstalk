@@ -23,7 +23,6 @@ static NSString *JSTQuotedStringAttributeName = @"JSTQuotedString";
 @property (strong) NSNumber *initialNumber;
 @property (strong) NSMutableDictionary *numberRanges;
 
-- (void)setupLineView;
 @end
 
 

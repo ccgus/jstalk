@@ -437,9 +437,20 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     NSString *bundleId  = [appBundle bundleIdentifier];
     
     // make sure it's running
-	NSArray *runningApps = [[[NSWorkspace sharedWorkspace] launchedApplications] valueForKey:@"NSApplicationBundleIdentifier"];
+	NSArray *runningApps = [[NSWorkspace sharedWorkspace] runningApplications];
     
-	if (![runningApps containsObject:bundleId]) {
+    BOOL found = NO;
+    
+    for (NSRunningApplication *rapp in runningApps) {
+        
+        if ([[rapp bundleIdentifier] isEqualToString:bundleId]) {
+            found = YES;
+            break;
+        }
+        
+    }
+    
+	if (!found) {
         BOOL launched = [[NSWorkspace sharedWorkspace] launchAppWithBundleIdentifier:bundleId
                                                                              options:NSWorkspaceLaunchWithoutActivation | NSWorkspaceLaunchAsync
                                                       additionalEventParamDescriptor:nil
