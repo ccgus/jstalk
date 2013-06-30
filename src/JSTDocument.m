@@ -436,6 +436,8 @@
 @end
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
 
 NSToolbarItem *JSTAddToolbarItem(NSMutableDictionary *theDict,
                               NSString *identifier,
@@ -478,7 +480,7 @@ NSToolbarItem *JSTAddToolbarItem(NSMutableDictionary *theDict,
     return item;
 }
 
-
+#pragma clang diagnostic pop
 
 
 
