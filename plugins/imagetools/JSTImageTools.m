@@ -94,11 +94,9 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
         
         [[NSNotificationCenter defaultCenter] addObserverForName:NSWindowWillCloseNotification object:w queue:nil usingBlock:^(NSNotification *arg1) {
             
-            NSWindow *win = [arg1 object];
-            
             dispatch_async(dispatch_get_main_queue(),^ {
                 // remove our ref to it in a sec.  Otherwise, it'll be released early and then boom
-                [JSTImageViewWindows removeObjectForKey:[win title]];
+                [JSTImageViewWindows removeObjectForKey:winName];
             });
         }];
         
