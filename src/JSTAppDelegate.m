@@ -131,9 +131,6 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     [externalEditorField setStringValue:appName];
 }
 
-- (void)openPanelDidEndForExternalEditor:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    
-}
 
 - (void)chooseExternalEditor:(id)sender {
     

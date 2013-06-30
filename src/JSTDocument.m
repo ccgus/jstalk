@@ -241,41 +241,6 @@
 }
 
 
-- (void)savePanelDidEndForApplicationSave:(NSSavePanel *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    
-    NSString *fileName = [[sheet URL] path];
-    if (!fileName) {
-        return;
-    }
-    
-    if ([[NSFileManager defaultManager] fileExistsAtPath:fileName]) {
-        if (![[NSFileManager defaultManager] removeItemAtPath:fileName error:nil]) {
-            NSRunAlertPanel(@"Could not remove file", @"Sorry, but I could not remove the old file in order to save your application.", @"OK", nil, nil);
-            NSBeep();
-            return;
-        }
-    }
-    
-    NSString *runnerPath = [[NSBundle mainBundle] pathForResource:@"JSTalkRunner" ofType:@"app"];
-    
-    if (![[NSFileManager defaultManager] copyItemAtPath:runnerPath toPath:fileName error:nil]) {
-        NSRunAlertPanel(@"Could not save", @"Sorry, but I could not save the application to the folder", @"OK", nil, nil);
-        return;
-    }
-    
-    NSString *sourcePath = [[[fileName stringByAppendingPathComponent:@"Contents"]
-                                      stringByAppendingPathComponent:@"Resources"]
-                                      stringByAppendingPathComponent:@"main.jstalk"];
-    
-    NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
-    NSError *err = nil;
-    [[[jsTextView textStorage] string] writeToURL:sourceURL atomically:NO encoding:NSUTF8StringEncoding error:&err];
-    
-    if (err) {
-        NSLog(@"err: %@", err);
-    }
-}
-
 - (void)saveAsApplication:(id)sender {
     
     NSSavePanel *savePanel = [NSSavePanel savePanel];
@@ -288,7 +253,45 @@
     
     [savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"app"]];
     
-    [savePanel beginSheetForDirectory:nil file:appName modalForWindow:[splitView window] modalDelegate:self didEndSelector:@selector(savePanelDidEndForApplicationSave:returnCode:contextInfo:) contextInfo:nil];
+    [savePanel beginSheetModalForWindow:[splitView window] completionHandler:^(NSInteger result) {
+        
+        if (!result) {
+            return;
+        }
+        
+        NSString *fileName = [[savePanel URL] path];
+        if (!fileName) {
+            return;
+        }
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:fileName]) {
+            if (![[NSFileManager defaultManager] removeItemAtPath:fileName error:nil]) {
+                NSRunAlertPanel(@"Could not remove file", @"Sorry, but I could not remove the old file in order to save your application.", @"OK", nil, nil);
+                NSBeep();
+                return;
+            }
+        }
+        
+        NSString *runnerPath = [[NSBundle mainBundle] pathForResource:@"JSTalkRunner" ofType:@"app"];
+        
+        if (![[NSFileManager defaultManager] copyItemAtPath:runnerPath toPath:fileName error:nil]) {
+            NSRunAlertPanel(@"Could not save", @"Sorry, but I could not save the application to the folder", @"OK", nil, nil);
+            return;
+        }
+        
+        NSString *sourcePath = [[[fileName stringByAppendingPathComponent:@"Contents"]
+                                 stringByAppendingPathComponent:@"Resources"]
+                                stringByAppendingPathComponent:@"main.jstalk"];
+        
+        NSURL *sourceURL = [NSURL fileURLWithPath:sourcePath];
+        NSError *err = nil;
+        [[[jsTextView textStorage] string] writeToURL:sourceURL atomically:NO encoding:NSUTF8StringEncoding error:&err];
+        
+        if (err) {
+            NSLog(@"err: %@", err);
+        }
+    }];
+    
     
 }
 
