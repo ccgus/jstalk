@@ -218,7 +218,18 @@ static int FloorPow2(int n)
     format.image_channel_order = CL_RGBA;
     format.image_channel_data_type = CL_FLOAT;
     
-    computeBuffer = clCreateImage2D(context.computeContext, attributes, &format, _width, _height, _bytesPerRow, _bitmapData, &err);
+    cl_image_desc imageDescription;
+    imageDescription.image_type = CL_MEM_OBJECT_IMAGE2D;
+    imageDescription.image_width = _width;
+    imageDescription.image_height = _height;
+    imageDescription.image_array_size = 1;
+    imageDescription.image_row_pitch = _bytesPerRow;
+    imageDescription.image_slice_pitch = 0; //_height;
+    imageDescription.num_mip_levels = 0;
+    imageDescription.num_samples = 0;
+    imageDescription.image_depth = 0;
+    
+    computeBuffer = clCreateImage(context.computeContext, attributes, &format, &imageDescription, _bitmapData, &err);
     
     if (!computeBuffer) {
         NSLog(@"%s:%d", __FUNCTION__, __LINE__);
