@@ -224,7 +224,7 @@ static int FloorPow2(int n)
     imageDescription.image_height = _height;
     imageDescription.image_array_size = 1;
     imageDescription.image_row_pitch = _bytesPerRow;
-    imageDescription.image_slice_pitch = 0; //_height;
+    imageDescription.image_slice_pitch = _height;
     imageDescription.num_mip_levels = 0;
     imageDescription.num_samples = 0;
     imageDescription.image_depth = 0;
