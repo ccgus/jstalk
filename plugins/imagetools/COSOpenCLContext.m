@@ -1,11 +1,11 @@
-#import "JSTOpenCLContext.h"
-#import "JSTOpenCLProgram.h"
+#import "COSOpenCLContext.h"
+#import "COSOpenCLProgram.h"
 
-@interface JSTOpenCLContext ()
+@interface COSOpenCLContext ()
 - (BOOL)setupContext;
 @end
 
-@implementation JSTOpenCLContext
+@implementation COSOpenCLContext
 
 @synthesize computeContext;
 @synthesize computeCommands;
@@ -98,8 +98,8 @@
     return YES;
 }
 
-- (JSTOpenCLProgram*)programWithSource:(NSString*) sourceCode; {
-    JSTOpenCLProgram *program = [[JSTOpenCLProgram alloc] initWithContext:self];
+- (COSOpenCLProgram*)programWithSource:(NSString*) sourceCode; {
+    COSOpenCLProgram *program = [[COSOpenCLProgram alloc] initWithContext:self];
     program.sourceCode = sourceCode;
     return program;
 }

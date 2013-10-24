@@ -6,7 +6,7 @@
 //  Copyright 2009 Kickingbear. All rights reserved.
 //
 
-#import "JSTOpenCLProgram.h"
+#import "COSOpenCLProgram.h"
 
 @interface NSObject (JSTalkPrintController)
 - (id)printController;
@@ -19,10 +19,10 @@ static int FloorPow2(int n);
 @property (readwrite) size_t workGroupSize;
 @end
 
-@implementation JSTOpenCLProgram
+@implementation COSOpenCLProgram
 
 
-- (id)initWithContext: (JSTOpenCLContext*) theContext {
+- (id)initWithContext: (COSOpenCLContext*) theContext {
 	self = [super init];
 	if ( !self ) return nil;
 	
@@ -125,7 +125,7 @@ static int FloorPow2(int n)
 @synthesize computeBuffer;
 @synthesize size;
 
-- (id)initWithContext: (JSTOpenCLContext*)theContext memory:(void*)memory size:(size_t)theSize attributes:(cl_bitfield)theFlags {
+- (id)initWithContext: (COSOpenCLContext*)theContext memory:(void*)memory size:(size_t)theSize attributes:(cl_bitfield)theFlags {
 	self = [super init];
 	if (!self) {
         return nil;
@@ -174,11 +174,11 @@ static int FloorPow2(int n)
 @synthesize bytesPerRow=_bytesPerRow;
 
 
-+ (id)instanceWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
++ (id)instanceWithContext:(COSOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
     return [[self alloc] initWithContext:theContext width:w height:h];
 }
 
-- (id)initWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
+- (id)initWithContext:(COSOpenCLContext*)theContext width:(size_t)w height:(size_t)h {
     
     self = [super init];
 	if (!self) {
@@ -240,11 +240,11 @@ static int FloorPow2(int n)
     return self;
 }
 
-+ (id)instanceWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
++ (id)instanceWithContext:(COSOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
     return [[self alloc] initWithContext:theContext usingImageAtPath:path];
 }
 
-- (id)initWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
+- (id)initWithContext:(COSOpenCLContext*)theContext usingImageAtPath:(NSString*)path {
     
     CGImageSourceRef imageSourceRef = CGImageSourceCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:path], nil);
     
@@ -309,7 +309,7 @@ static int FloorPow2(int n)
 
 @implementation  JSTOpenCLKernel
 
-- (id)initWithProgram:(JSTOpenCLProgram*) theProgram {
+- (id)initWithProgram:(COSOpenCLProgram*) theProgram {
 	self = [super init];
 	if (!self) {
         return nil;

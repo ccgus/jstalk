@@ -8,21 +8,21 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "JSTOpenCLContext.h"
+#import "COSOpenCLContext.h"
 
 @class JSTOpenCLKernel;
 
-@interface JSTOpenCLProgram : NSObject
+@interface COSOpenCLProgram : NSObject
 {
-	JSTOpenCLContext *context;
+	COSOpenCLContext *context;
 	NSString *sourceCode;
 	cl_program computeProgram;
 	NSMutableDictionary *computeKernels;
 }
 
-- (id)initWithContext: (JSTOpenCLContext*) theContext;
+- (id)initWithContext: (COSOpenCLContext*) theContext;
 
-@property (readonly) JSTOpenCLContext *context;
+@property (readonly) COSOpenCLContext *context;
 @property (copy) NSString *sourceCode;
 
 - (void)build;
@@ -33,13 +33,13 @@
 
 @interface JSTOpenCLBuffer : NSObject
 {
-	JSTOpenCLContext *context;
+	COSOpenCLContext *context;
 	size_t size;
 	cl_bitfield attributes;
 	cl_mem computeBuffer;
 }
 
-- (id)initWithContext: (JSTOpenCLContext*) theContext memory: (void*) memory size: (size_t) theSize attributes: (cl_bitfield) theFlags;
+- (id)initWithContext: (COSOpenCLContext*) theContext memory: (void*) memory size: (size_t) theSize attributes: (cl_bitfield) theFlags;
 
 @property (readonly) cl_bitfield attributes;
 @property (readonly) cl_mem computeBuffer;
@@ -88,9 +88,9 @@ typedef struct _JSTOCLFloatPixel {
 @property (readonly) cl_float4 *bitmapData;
 @property (readonly) size_t bytesPerRow;
 
-- (id)initWithContext:(JSTOpenCLContext*)theContext width:(size_t)w height:(size_t)h;
+- (id)initWithContext:(COSOpenCLContext*)theContext width:(size_t)w height:(size_t)h;
 
-- (id)initWithContext:(JSTOpenCLContext*)theContext usingImageAtPath:(NSString*)path;
+- (id)initWithContext:(COSOpenCLContext*)theContext usingImageAtPath:(NSString*)path;
 
 
 @end
@@ -102,12 +102,12 @@ typedef struct _JSTOCLFloatPixel {
 
 @interface JSTOpenCLKernel : NSObject
 {
-	JSTOpenCLProgram *program;
+	COSOpenCLProgram *program;
 	cl_kernel computeKernel;
 	size_t workGroupSize;
 }
 
-- (id)initWithProgram: (JSTOpenCLProgram*) theProgram;
+- (id)initWithProgram: (COSOpenCLProgram*) theProgram;
 
 @property (readonly) cl_kernel computeKernel;
 @property (readonly) size_t workGroupSize;

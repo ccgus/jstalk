@@ -6,9 +6,9 @@
 //  Copyright 2009 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTImageTools.h"
-#import "JSTOpenCLProgram.h"
-#import "JSTCodeSketcher.h"
+#import "COSImageTools.h"
+#import "COSOpenCLProgram.h"
+#import "COSCodeSketcher.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation NSImage (JSTExtras)
@@ -19,7 +19,7 @@
 @end
 
 
-@implementation JSTImageTools
+@implementation COSImageTools
 
 + (CGImageRef)createImageRefFromBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
     

@@ -10,7 +10,7 @@
 #import <JSTalk/COScript.h>
 #import <JSTalk/MOJavaScriptObject.h>
 
-@interface JSTCodeSketcher : NSView {
+@interface COSCodeSketcher : NSView {
     
     COScript *_jstalk;
     

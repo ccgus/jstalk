@@ -162,19 +162,19 @@
 		CC725EB91238026D00EA83BF /* TETextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = CC725EB71238026D00EA83BF /* TETextUtils.h */; };
 		CC725EBA1238026D00EA83BF /* TETextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CC725EB81238026D00EA83BF /* TETextUtils.m */; };
 		CC7576B40F6DF3B7003AE279 /* JSTFileWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */; };
-		CC8642EA163B287800908427 /* JSTCIImageAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C4163B287800908427 /* JSTCIImageAdditions.h */; };
-		CC8642EB163B287800908427 /* JSTCIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C5163B287800908427 /* JSTCIImageAdditions.m */; };
-		CC8642EC163B287800908427 /* JSTCodeSketcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C6163B287800908427 /* JSTCodeSketcher.h */; };
-		CC8642ED163B287800908427 /* JSTCodeSketcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C7163B287800908427 /* JSTCodeSketcher.m */; };
-		CC8642EE163B287800908427 /* JSTImageTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C8163B287800908427 /* JSTImageTools.h */; };
-		CC8642EF163B287800908427 /* JSTImageTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C9163B287800908427 /* JSTImageTools.m */; };
+		CC8642EA163B287800908427 /* COSCIImageAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C4163B287800908427 /* COSCIImageAdditions.h */; };
+		CC8642EB163B287800908427 /* COSCIImageAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C5163B287800908427 /* COSCIImageAdditions.m */; };
+		CC8642EC163B287800908427 /* COSCodeSketcher.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C6163B287800908427 /* COSCodeSketcher.h */; };
+		CC8642ED163B287800908427 /* COSCodeSketcher.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C7163B287800908427 /* COSCodeSketcher.m */; };
+		CC8642EE163B287800908427 /* COSImageTools.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642C8163B287800908427 /* COSImageTools.h */; };
+		CC8642EF163B287800908427 /* COSImageTools.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642C9163B287800908427 /* COSImageTools.m */; };
 		CC8642F0163B287800908427 /* JSTOpenCL_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CA163B287800908427 /* JSTOpenCL_Prefix.pch */; };
-		CC8642F1163B287800908427 /* JSTOpenCLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CB163B287800908427 /* JSTOpenCLContext.h */; };
-		CC8642F2163B287800908427 /* JSTOpenCLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642CC163B287800908427 /* JSTOpenCLContext.m */; };
-		CC8642F3163B287800908427 /* JSTOpenCLProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CD163B287800908427 /* JSTOpenCLProgram.h */; };
-		CC8642F4163B287800908427 /* JSTOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642CE163B287800908427 /* JSTOpenCLProgram.m */; };
-		CC8642F5163B287800908427 /* JSTQuickCIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CF163B287800908427 /* JSTQuickCIFilter.h */; };
-		CC8642F6163B287800908427 /* JSTQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642D0163B287800908427 /* JSTQuickCIFilter.m */; };
+		CC8642F1163B287800908427 /* COSOpenCLContext.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CB163B287800908427 /* COSOpenCLContext.h */; };
+		CC8642F2163B287800908427 /* COSOpenCLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642CC163B287800908427 /* COSOpenCLContext.m */; };
+		CC8642F3163B287800908427 /* COSOpenCLProgram.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CD163B287800908427 /* COSOpenCLProgram.h */; };
+		CC8642F4163B287800908427 /* COSOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642CE163B287800908427 /* COSOpenCLProgram.m */; };
+		CC8642F5163B287800908427 /* COSQuickCIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CF163B287800908427 /* COSQuickCIFilter.h */; };
+		CC8642F6163B287800908427 /* COSQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642D0163B287800908427 /* COSQuickCIFilter.m */; };
 		CC8642F7163B287800908427 /* OpenCL.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D1163B287800908427 /* OpenCL.bridgesupport */; };
 		CC8642F8163B287800908427 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D3163B287800908427 /* ccgus.jpg */; };
 		CC8642F9163B287800908427 /* clouds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D4163B287800908427 /* clouds.jpg */; };
@@ -420,19 +420,19 @@
 		CC725EB81238026D00EA83BF /* TETextUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TETextUtils.m; path = src/TETextUtils.m; sourceTree = "<group>"; };
 		CC7576B20F6DF3B7003AE279 /* JSTFileWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTFileWatcher.h; path = src/JSTFileWatcher.h; sourceTree = "<group>"; };
 		CC7576B30F6DF3B7003AE279 /* JSTFileWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTFileWatcher.m; path = src/JSTFileWatcher.m; sourceTree = "<group>"; };
-		CC8642C4163B287800908427 /* JSTCIImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTCIImageAdditions.h; sourceTree = "<group>"; };
-		CC8642C5163B287800908427 /* JSTCIImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTCIImageAdditions.m; sourceTree = "<group>"; };
-		CC8642C6163B287800908427 /* JSTCodeSketcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTCodeSketcher.h; sourceTree = "<group>"; };
-		CC8642C7163B287800908427 /* JSTCodeSketcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTCodeSketcher.m; sourceTree = "<group>"; };
-		CC8642C8163B287800908427 /* JSTImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTImageTools.h; sourceTree = "<group>"; };
-		CC8642C9163B287800908427 /* JSTImageTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTImageTools.m; sourceTree = "<group>"; };
+		CC8642C4163B287800908427 /* COSCIImageAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSCIImageAdditions.h; sourceTree = "<group>"; };
+		CC8642C5163B287800908427 /* COSCIImageAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSCIImageAdditions.m; sourceTree = "<group>"; };
+		CC8642C6163B287800908427 /* COSCodeSketcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSCodeSketcher.h; sourceTree = "<group>"; };
+		CC8642C7163B287800908427 /* COSCodeSketcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSCodeSketcher.m; sourceTree = "<group>"; };
+		CC8642C8163B287800908427 /* COSImageTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSImageTools.h; sourceTree = "<group>"; };
+		CC8642C9163B287800908427 /* COSImageTools.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSImageTools.m; sourceTree = "<group>"; };
 		CC8642CA163B287800908427 /* JSTOpenCL_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCL_Prefix.pch; sourceTree = "<group>"; };
-		CC8642CB163B287800908427 /* JSTOpenCLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCLContext.h; sourceTree = "<group>"; };
-		CC8642CC163B287800908427 /* JSTOpenCLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTOpenCLContext.m; sourceTree = "<group>"; };
-		CC8642CD163B287800908427 /* JSTOpenCLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTOpenCLProgram.h; sourceTree = "<group>"; };
-		CC8642CE163B287800908427 /* JSTOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTOpenCLProgram.m; sourceTree = "<group>"; };
-		CC8642CF163B287800908427 /* JSTQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSTQuickCIFilter.h; sourceTree = "<group>"; };
-		CC8642D0163B287800908427 /* JSTQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSTQuickCIFilter.m; sourceTree = "<group>"; };
+		CC8642CB163B287800908427 /* COSOpenCLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSOpenCLContext.h; sourceTree = "<group>"; };
+		CC8642CC163B287800908427 /* COSOpenCLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSOpenCLContext.m; sourceTree = "<group>"; };
+		CC8642CD163B287800908427 /* COSOpenCLProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSOpenCLProgram.h; sourceTree = "<group>"; };
+		CC8642CE163B287800908427 /* COSOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSOpenCLProgram.m; sourceTree = "<group>"; };
+		CC8642CF163B287800908427 /* COSQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSQuickCIFilter.h; sourceTree = "<group>"; };
+		CC8642D0163B287800908427 /* COSQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSQuickCIFilter.m; sourceTree = "<group>"; };
 		CC8642D1163B287800908427 /* OpenCL.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = OpenCL.bridgesupport; sourceTree = "<group>"; };
 		CC8642D3163B287800908427 /* ccgus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ccgus.jpg; sourceTree = "<group>"; };
 		CC8642D4163B287800908427 /* clouds.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = clouds.jpg; sourceTree = "<group>"; };
@@ -839,19 +839,19 @@
 		CC8642BD163B287800908427 /* imagetools */ = {
 			isa = PBXGroup;
 			children = (
-				CC8642C4163B287800908427 /* JSTCIImageAdditions.h */,
-				CC8642C5163B287800908427 /* JSTCIImageAdditions.m */,
-				CC8642C6163B287800908427 /* JSTCodeSketcher.h */,
-				CC8642C7163B287800908427 /* JSTCodeSketcher.m */,
-				CC8642C8163B287800908427 /* JSTImageTools.h */,
-				CC8642C9163B287800908427 /* JSTImageTools.m */,
+				CC8642C4163B287800908427 /* COSCIImageAdditions.h */,
+				CC8642C5163B287800908427 /* COSCIImageAdditions.m */,
+				CC8642C6163B287800908427 /* COSCodeSketcher.h */,
+				CC8642C7163B287800908427 /* COSCodeSketcher.m */,
+				CC8642C8163B287800908427 /* COSImageTools.h */,
+				CC8642C9163B287800908427 /* COSImageTools.m */,
 				CC8642CA163B287800908427 /* JSTOpenCL_Prefix.pch */,
-				CC8642CB163B287800908427 /* JSTOpenCLContext.h */,
-				CC8642CC163B287800908427 /* JSTOpenCLContext.m */,
-				CC8642CD163B287800908427 /* JSTOpenCLProgram.h */,
-				CC8642CE163B287800908427 /* JSTOpenCLProgram.m */,
-				CC8642CF163B287800908427 /* JSTQuickCIFilter.h */,
-				CC8642D0163B287800908427 /* JSTQuickCIFilter.m */,
+				CC8642CB163B287800908427 /* COSOpenCLContext.h */,
+				CC8642CC163B287800908427 /* COSOpenCLContext.m */,
+				CC8642CD163B287800908427 /* COSOpenCLProgram.h */,
+				CC8642CE163B287800908427 /* COSOpenCLProgram.m */,
+				CC8642CF163B287800908427 /* COSQuickCIFilter.h */,
+				CC8642D0163B287800908427 /* COSQuickCIFilter.m */,
 				CC8642D1163B287800908427 /* OpenCL.bridgesupport */,
 				CC8642D2163B287800908427 /* res */,
 			);
@@ -1031,13 +1031,13 @@
 				CC90125B1639DBE00067BB78 /* MOPointerValue.h in Headers */,
 				CC90125E1639DC2F0067BB78 /* MOPointer_Private.h in Headers */,
 				CC9012611639DC4A0067BB78 /* MOMapTable.h in Headers */,
-				CC8642EA163B287800908427 /* JSTCIImageAdditions.h in Headers */,
-				CC8642EC163B287800908427 /* JSTCodeSketcher.h in Headers */,
-				CC8642EE163B287800908427 /* JSTImageTools.h in Headers */,
+				CC8642EA163B287800908427 /* COSCIImageAdditions.h in Headers */,
+				CC8642EC163B287800908427 /* COSCodeSketcher.h in Headers */,
+				CC8642EE163B287800908427 /* COSImageTools.h in Headers */,
 				CC8642F0163B287800908427 /* JSTOpenCL_Prefix.pch in Headers */,
-				CC8642F1163B287800908427 /* JSTOpenCLContext.h in Headers */,
-				CC8642F3163B287800908427 /* JSTOpenCLProgram.h in Headers */,
-				CC8642F5163B287800908427 /* JSTQuickCIFilter.h in Headers */,
+				CC8642F1163B287800908427 /* COSOpenCLContext.h in Headers */,
+				CC8642F3163B287800908427 /* COSOpenCLProgram.h in Headers */,
+				CC8642F5163B287800908427 /* COSQuickCIFilter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1264,12 +1264,12 @@
 				CCFF84EE15CC5CDF00CC42F7 /* MOAllocator.m in Sources */,
 				CC90125C1639DBE00067BB78 /* MOPointerValue.m in Sources */,
 				CC9012621639DC4A0067BB78 /* MOMapTable.m in Sources */,
-				CC8642EB163B287800908427 /* JSTCIImageAdditions.m in Sources */,
-				CC8642ED163B287800908427 /* JSTCodeSketcher.m in Sources */,
-				CC8642EF163B287800908427 /* JSTImageTools.m in Sources */,
-				CC8642F2163B287800908427 /* JSTOpenCLContext.m in Sources */,
-				CC8642F4163B287800908427 /* JSTOpenCLProgram.m in Sources */,
-				CC8642F6163B287800908427 /* JSTQuickCIFilter.m in Sources */,
+				CC8642EB163B287800908427 /* COSCIImageAdditions.m in Sources */,
+				CC8642ED163B287800908427 /* COSCodeSketcher.m in Sources */,
+				CC8642EF163B287800908427 /* COSImageTools.m in Sources */,
+				CC8642F2163B287800908427 /* COSOpenCLContext.m in Sources */,
+				CC8642F4163B287800908427 /* COSOpenCLProgram.m in Sources */,
+				CC8642F6163B287800908427 /* COSQuickCIFilter.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

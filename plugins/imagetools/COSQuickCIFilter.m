@@ -6,7 +6,7 @@
 //  Copyright 2010 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTQuickCIFilter.h"
+#import "COSQuickCIFilter.h"
 
 #pragma message "FIXME: Gus- you can get CI kernel errors like so: http://stackoverflow.com/questions/13754997/how-do-you-debug-syntax-errors-in-a-core-image-kernel"
 /*
@@ -35,11 +35,11 @@
 
  */
 
-@implementation JSTQuickCIFilter
+@implementation COSQuickCIFilter
 
 + (id)quickFilterWithKernel:(NSString*)kernel {
     
-    JSTQuickCIFilter *f = [JSTQuickCIFilter new];
+    COSQuickCIFilter *f = [COSQuickCIFilter new];
     
     [f setTheKernel:[[CIKernel kernelsWithString:kernel] objectAtIndex:0]];
     [f setKernelArgs:[NSMutableArray array]];

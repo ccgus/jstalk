@@ -4,10 +4,10 @@
 #import <Cocoa/Cocoa.h>
 #import <OpenCL/OpenCL.h>
 
-@class JSTOpenCLProgram;
+@class COSOpenCLProgram;
 @class JSTOpenCLBuffer;
 
-@interface JSTOpenCLContext : NSObject {
+@interface COSOpenCLContext : NSObject {
     
 	cl_context computeContext;
 	cl_command_queue computeCommands;
@@ -25,7 +25,7 @@
 @property (readonly) NSUInteger maximum2DImageWidth;
 @property (readonly) NSUInteger maximum2DImageHeight;
 
-- (JSTOpenCLProgram*)programWithSource:(NSString*)sourceCode;
+- (COSOpenCLProgram*)programWithSource:(NSString*)sourceCode;
 - (JSTOpenCLBuffer*)bufferWithSize:(size_t)size attributes:(cl_bitfield) attribs;
 - (JSTOpenCLBuffer*)bufferWithMemory:(void*)memory size:(size_t)size attributes:(cl_bitfield)attribs;
 

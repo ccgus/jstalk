@@ -6,18 +6,18 @@
 //  Copyright (c) 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "JSTCodeSketcher.h"
+#import "COSCodeSketcher.h"
 
 @interface COScript (Private)
 
 @end
 
-@interface JSTCodeSketcher()
+@interface COSCodeSketcher()
 - (void)setupWindow;
 - (void)resizeContext;
 @end
 
-@implementation JSTCodeSketcher
+@implementation COSCodeSketcher
 
 @synthesize jstalk = _jstalk;
 @synthesize mouseLocation = _mouseLocation;
@@ -45,10 +45,10 @@ static NSMutableDictionary *JSTSketchers = nil;
         JSTSketchers = [NSMutableDictionary dictionary];
     }
     
-    JSTCodeSketcher *cs = [JSTSketchers objectForKey:name];
+    COSCodeSketcher *cs = [JSTSketchers objectForKey:name];
     
     if (!cs) {
-        cs = [[JSTCodeSketcher alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
+        cs = [[COSCodeSketcher alloc] initWithFrame:NSMakeRect(0, 0, 10, 10)];
         [cs setLookupName:name];
         [JSTSketchers setObject:cs forKey:name];
     }

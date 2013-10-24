@@ -6,14 +6,14 @@
 //  Copyright 2011 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTCIImageAdditions.h"
-#import "JSTImageTools.h"
+#import "COSCIImageAdditions.h"
+#import "COSImageTools.h"
 
-@implementation CIImage (JSTCIImageAdditions)
+@implementation CIImage (COSCIImageAdditions)
 
 + (id)jstImageNamed:(NSString*)imageName {
     
-    NSURL *url = [[NSBundle bundleForClass:[JSTImageTools class]] URLForImageResource:imageName];
+    NSURL *url = [[NSBundle bundleForClass:[COSImageTools class]] URLForImageResource:imageName];
     
     
     if (!url) {

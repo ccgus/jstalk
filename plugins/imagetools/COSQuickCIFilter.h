@@ -11,7 +11,7 @@
 #import <JSTalk/COScript.h>
 #import <JSTalk/MOJavaScriptObject.h>
 
-@interface JSTQuickCIFilter : CIFilter {
+@interface COSQuickCIFilter : CIFilter {
     CIKernel *_theKernel;
     NSMutableArray *_kernelArgs;
 }
