@@ -55,7 +55,7 @@
                                                 <fragment>
                                                     <string key="content">var message = "Hello World!";
 
-[[JSTalk application:"Cocoa Script Editor"] displayDialog:message];</string>
+[[COScript application:"Cocoa Script Editor"] displayDialog:message];</string>
                                                     <attributes>
                                                         <font key="NSFont" size="13" name="Menlo-Regular"/>
                                                         <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural"/>

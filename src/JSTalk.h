@@ -10,10 +10,9 @@
 #import <JavaScriptCore/JavaScriptCore.h>
 
 @class Mocha;
-@interface JSTalk : NSObject {
+@class JSTalk;
+@interface COScript : NSObject {
 
-    NSMutableDictionary *_env;
-    BOOL _shouldPreprocess;
     Mocha *_mochaRuntime;
 }
 
@@ -43,6 +42,13 @@
 
 @end
 
-@interface NSObject (JSTalkErrorControllerMethods)
-- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+@interface NSObject (COScriptErrorControllerMethods)
+- (void)coscript:(COScript*)coscript hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+@end
+
+
+@interface JSTalk : COScript {
+
+}
+
 @end

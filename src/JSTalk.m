@@ -33,11 +33,7 @@ static NSMutableArray *JSTalkPluginList;
 @end
 
 
-@implementation JSTalk
-@synthesize printController=_printController;
-@synthesize errorController=_errorController;
-@synthesize env=_env;
-@synthesize shouldPreprocess=_shouldPreprocess;
+@implementation COScript
 
 + (void)listen {
     [JSTListener listen];
@@ -56,8 +52,8 @@ static NSMutableArray *JSTalkPluginList;
 	if ((self != nil)) {
         _mochaRuntime = [[Mocha alloc] init];
         
-        self.env = [NSMutableDictionary dictionary];
-        _shouldPreprocess = YES;
+        [self setEnv:[NSMutableDictionary dictionary]];
+        [self setShouldPreprocess:YES];
         
         [self addExtrasToRuntime];
 	}
@@ -249,7 +245,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         [JSTalk loadPlugins];
     }
     
-    if (_shouldPreprocess) {
+    if ([self shouldPreprocess]) {
         str = [JSTPreprocessor preprocessCode:str];
     }
     
@@ -269,8 +265,8 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         
         NSDictionary *d = [e userInfo];
         if ([d objectForKey:@"line"]) {
-            if ([_errorController respondsToSelector:@selector(JSTalk:hadError:onLineNumber:atSourceURL:)]) {
-                [_errorController JSTalk:self hadError:[e reason] onLineNumber:[[d objectForKey:@"line"] integerValue] atSourceURL:nil];
+            if ([_errorController respondsToSelector:@selector(coscript:hadError:onLineNumber:atSourceURL:)]) {
+                [_errorController coscript:self hadError:[e reason] onLineNumber:[[d objectForKey:@"line"] integerValue] atSourceURL:nil];
             }
         }
         
@@ -477,5 +473,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 @end
 
+@implementation JSTalk
 
+@end
 
