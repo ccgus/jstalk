@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface JSTPreprocessor : NSObject {
+@interface COSPreprocessor : NSObject {
 
 }
 

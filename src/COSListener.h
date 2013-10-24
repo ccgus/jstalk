@@ -9,7 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface JSTListener : NSObject {
+@interface COSListener : NSObject {
     
     CFMessagePortRef messagePort;
     
@@ -21,7 +21,7 @@
 
 @property (assign) id rootObject;
 
-+ (JSTListener*)sharedListener;
++ (COSListener*)sharedListener;
 
 + (void)listen;
 + (void)listenWithRootObject:(id)rootObject;

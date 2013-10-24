@@ -8,9 +8,9 @@
 
 #import "JSTDocument.h"
 #import "JSTAppDelegate.h"
-#import "JSTListener.h"
+#import "COSListener.h"
 #import "COScript.h"
-#import "JSTPreprocessor.h"
+#import "COSPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
 - (void)updateFont:(id)sender;
@@ -231,7 +231,7 @@
 
 - (void)preprocessCodeAction:(id)sender {
     
-    NSString *code = [JSTPreprocessor preprocessCode:[[jsTextView textStorage] string]];
+    NSString *code = [COSPreprocessor preprocessCode:[[jsTextView textStorage] string]];
     
     [[[outputTextView textStorage] mutableString] setString:code];
     

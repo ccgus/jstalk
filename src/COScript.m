@@ -7,8 +7,8 @@
 //
 
 #import "COScript.h"
-#import "JSTListener.h"
-#import "JSTPreprocessor.h"
+#import "COSListener.h"
+#import "COSPreprocessor.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 #import "MochaRuntime.h"
 #import "MOMethod.h"
@@ -36,7 +36,7 @@ static NSMutableArray *JSTalkPluginList;
 @implementation COScript
 
 + (void)listen {
-    [JSTListener listen];
+    [COSListener listen];
 }
 
 + (void)setShouldLoadExtras:(BOOL)b {
@@ -246,7 +246,7 @@ NSString *currentCOScriptThreadIdentifier = @"org.jstalk.currentCOScriptHack";
     }
     
     if ([self shouldPreprocess]) {
-        str = [JSTPreprocessor preprocessCode:str];
+        str = [COSPreprocessor preprocessCode:str];
     }
     
     [self pushAsCurrentCOScript];
@@ -361,7 +361,7 @@ NSString *currentCOScriptThreadIdentifier = @"org.jstalk.currentCOScriptHack";
     }
     
     if (_shouldPreprocess) {
-        str = [JSTPreprocessor preprocessCode:str];
+        str = [COSPreprocessor preprocessCode:str];
     }
     
     [_mochaRuntime evalString:str];

@@ -6,21 +6,21 @@
 //  Copyright 2009 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTListener.h"
+#import "COSListener.h"
 
-@interface JSTListener (Private)
+@interface COSListener (Private)
 - (void)setupListener;
 @end
 
 
-@implementation JSTListener
+@implementation COSListener
 
 @synthesize rootObject=_rootObject;
 
 + (id)sharedListener {
-    static JSTListener *me = nil;
+    static COSListener *me = nil;
     if (!me) {
-        me = [[JSTListener alloc] init];
+        me = [[COSListener alloc] init];
     }
     
     return me;
@@ -31,7 +31,7 @@
 }
 
 + (void)listenWithRootObject:(id)rootObject; {
-    ((JSTListener*)[self sharedListener]).rootObject = rootObject;
+    ((COSListener*)[self sharedListener]).rootObject = rootObject;
     [self listen];
 }
 

@@ -6,13 +6,13 @@
 //  Copyright 2009 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTPreprocessor.h"
+#import "COSPreprocessor.h"
 #import "TDTokenizer.h"
 #import "TDToken.h"
 #import "TDWhitespaceState.h"
 #import "TDCommentState.h"
 
-@implementation JSTPreprocessor
+@implementation COSPreprocessor
 
 + (NSString*)processMultilineStrings:(NSString*)sourceString {
     

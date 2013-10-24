@@ -1,12 +1,5 @@
-//
-//  JSTExtras.m
-//  jsenabler
-//
-//  Created by August Mueller on 1/15/09.
-//  Copyright 2009 Flying Meat Inc. All rights reserved.
-//
 
-#import "JSTExtras.h"
+#import "COSExtras.h"
 #import "COScript.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
@@ -107,7 +100,7 @@
 
 @end
 
-@implementation NSApplication (JSTExtras)
+@implementation NSApplication (COSExtras)
 
 - (id)open:(NSString*)pathToFile {
     

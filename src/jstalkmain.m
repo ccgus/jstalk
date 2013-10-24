@@ -1,5 +1,5 @@
 #import <Cocoa/Cocoa.h>
-#import "JSTListener.h"
+#import "COSListener.h"
 #import "COScript.h"
 
 BOOL JSCErrorHandlerExitOnError = YES;

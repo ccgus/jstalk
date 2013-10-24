@@ -142,20 +142,20 @@
 		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC41433B0F25259400E46669 /* COScript.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* COScript.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* COScript.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* COScript.m */; };
-		CC41433D0F25259500E46669 /* JSTListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B95A0F1EFCFE00126722 /* JSTListener.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		CC41433E0F25259500E46669 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* JSTListener.m */; };
+		CC41433D0F25259500E46669 /* COSListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B95A0F1EFCFE00126722 /* COSListener.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		CC41433E0F25259500E46669 /* COSListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* COSListener.m */; };
 		CC4143500F25261000E46669 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1323840F24FF9D0032FEB8 /* Carbon.framework */; };
 		CC4143510F25261100E46669 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC4143520F25261200E46669 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CC4143530F25261300E46669 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC4143620F2527CD00E46669 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
 		CC4143660F2527E400E46669 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
-		CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
-		CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CC4143C10F2529F200E46669 /* JSTExtras.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC4143C20F2529F200E46669 /* COSExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* COSExtras.m */; };
+		CC4143C30F2529F200E46669 /* COSExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CC4143C10F2529F200E46669 /* COSExtras.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */; };
 		CC5EDD531237F71300E0D965 /* JSTalkStatusIconAlt.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */; };
 		CC5FB7DB0F1FDE2500F4ECC2 /* COScript.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* COScript.m */; };
-		CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* JSTListener.m */; };
+		CC5FB7DC0F1FDE2600F4ECC2 /* COSListener.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC5B95B0F1EFCFE00126722 /* COSListener.m */; };
 		CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */; };
 		CC5FB7DF0F1FDE3800F4ECC2 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 		CC5FB7E00F1FDE3900F4ECC2 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
@@ -187,16 +187,16 @@
 		CC864300163B287800908427 /* rail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642DB163B287800908427 /* rail.jpg */; };
 		CC86430D163B29E600908427 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86430C163B29E600908427 /* QuartzCore.framework */; };
 		CC86430F163B29F500908427 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86430E163B29F500908427 /* OpenCL.framework */; };
-		CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* JSTExtras.m */; };
+		CC8CF98F0F46521000C32090 /* COSExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* COSExtras.m */; };
 		CC90125B1639DBE00067BB78 /* MOPointerValue.h in Headers */ = {isa = PBXBuildFile; fileRef = CC9012571639DBE00067BB78 /* MOPointerValue.h */; };
 		CC90125C1639DBE00067BB78 /* MOPointerValue.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012581639DBE00067BB78 /* MOPointerValue.m */; };
 		CC90125E1639DC2F0067BB78 /* MOPointer_Private.h in Headers */ = {isa = PBXBuildFile; fileRef = CC90125D1639DC2F0067BB78 /* MOPointer_Private.h */; };
 		CC9012611639DC4A0067BB78 /* MOMapTable.h in Headers */ = {isa = PBXBuildFile; fileRef = CC90125F1639DC4A0067BB78 /* MOMapTable.h */; };
 		CC9012621639DC4A0067BB78 /* MOMapTable.m in Sources */ = {isa = PBXBuildFile; fileRef = CC9012601639DC4A0067BB78 /* MOMapTable.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */ = {isa = PBXBuildFile; fileRef = CC94E0510F4A616300208BE0 /* JSTalk.icns */; };
-		CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
-		CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */; };
+		CC975BC80F47E5BD00097108 /* COSPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* COSPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC975BC90F47E5BD00097108 /* COSPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* COSPreprocessor.m */; };
+		CC975BCA0F47E5BD00097108 /* COSPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* COSPreprocessor.m */; };
 		CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BA0F1EFA9700126722 /* JSTDocument.xib */; };
 		CCC5B8C90F1EFA9700126722 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BE0F1EFA9700126722 /* MainMenu.xib */; };
@@ -403,8 +403,8 @@
 		CC1C7E3F0F48C34D007A2941 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = res/images/Play.tiff; sourceTree = "<group>"; };
 		CC1C7E570F48C76B007A2941 /* Clear.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Clear.tiff; path = res/images/Clear.tiff; sourceTree = "<group>"; };
 		CC41431A0F25254200E46669 /* JSTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CC4143C00F2529F200E46669 /* JSTExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTExtras.m; path = src/JSTExtras.m; sourceTree = "<group>"; };
-		CC4143C10F2529F200E46669 /* JSTExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTExtras.h; path = src/JSTExtras.h; sourceTree = "<group>"; };
+		CC4143C00F2529F200E46669 /* COSExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSExtras.m; path = src/COSExtras.m; sourceTree = "<group>"; };
+		CC4143C10F2529F200E46669 /* COSExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSExtras.h; path = src/COSExtras.h; sourceTree = "<group>"; };
 		CC41440F0F252D0700E46669 /* JSTalkFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkFramework-Info.plist"; path = "res/JSTalkFramework-Info.plist"; sourceTree = "<group>"; };
 		CC43C0EC0F4BBB2F0044BA41 /* JSTRunnerApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTRunnerApplication.h; path = src/JSTRunnerApplication.h; sourceTree = "<group>"; };
 		CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRunnerApplication.m; path = src/JSTRunnerApplication.m; sourceTree = "<group>"; };
@@ -451,8 +451,8 @@
 		CC90125F1639DC4A0067BB78 /* MOMapTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOMapTable.h; sourceTree = "<group>"; };
 		CC9012601639DC4A0067BB78 /* MOMapTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MOMapTable.m; sourceTree = "<group>"; };
 		CC94E0510F4A616300208BE0 /* JSTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalk.icns; path = res/images/JSTalk.icns; sourceTree = "<group>"; };
-		CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPreprocessor.h; path = src/JSTPreprocessor.h; sourceTree = "<group>"; };
-		CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPreprocessor.m; path = src/JSTPreprocessor.m; sourceTree = "<group>"; };
+		CC975BC60F47E5BD00097108 /* COSPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSPreprocessor.h; path = src/COSPreprocessor.h; sourceTree = "<group>"; };
+		CC975BC70F47E5BD00097108 /* COSPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSPreprocessor.m; path = src/COSPreprocessor.m; sourceTree = "<group>"; };
 		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CCC5B8B00F1EFA9700126722 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; name = Info.plist; path = res/Info.plist; sourceTree = "<group>"; };
 		CCC5B8BB0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/JSTDocument.xib; sourceTree = "<group>"; };
@@ -464,8 +464,8 @@
 		CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTDocument.h; path = src/JSTDocument.h; sourceTree = "<group>"; };
 		CCC5B94C0F1EFC4500126722 /* JSTAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTAppDelegate.h; path = src/JSTAppDelegate.h; sourceTree = "<group>"; };
 		CCC5B94D0F1EFC4500126722 /* JSTAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTAppDelegate.m; path = src/JSTAppDelegate.m; sourceTree = "<group>"; };
-		CCC5B95A0F1EFCFE00126722 /* JSTListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTListener.h; path = src/JSTListener.h; sourceTree = "<group>"; };
-		CCC5B95B0F1EFCFE00126722 /* JSTListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTListener.m; path = src/JSTListener.m; sourceTree = "<group>"; };
+		CCC5B95A0F1EFCFE00126722 /* COSListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSListener.h; path = src/COSListener.h; sourceTree = "<group>"; };
+		CCC5B95B0F1EFCFE00126722 /* COSListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSListener.m; path = src/COSListener.m; sourceTree = "<group>"; };
 		CCE16C3C12188AE500F6D312 /* JSTPluginMover.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTPluginMover.h; path = src/JSTPluginMover.h; sourceTree = "<group>"; };
 		CCE16C3D12188AE500F6D312 /* JSTPluginMover.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTPluginMover.m; path = src/JSTPluginMover.m; sourceTree = "<group>"; };
 		CCE16C8112188F5000F6D312 /* JSTDocumentController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTDocumentController.h; path = src/JSTDocumentController.h; sourceTree = "<group>"; };
@@ -663,12 +663,12 @@
 				CC1C7D200F48BB2C007A2941 /* todparsekit */,
 				CC5FB7D60F1FDDE900F4ECC2 /* COScript.h */,
 				CC5FB7D70F1FDDE900F4ECC2 /* COScript.m */,
-				CC4143C10F2529F200E46669 /* JSTExtras.h */,
-				CC4143C00F2529F200E46669 /* JSTExtras.m */,
-				CCC5B95A0F1EFCFE00126722 /* JSTListener.h */,
-				CCC5B95B0F1EFCFE00126722 /* JSTListener.m */,
-				CC975BC60F47E5BD00097108 /* JSTPreprocessor.h */,
-				CC975BC70F47E5BD00097108 /* JSTPreprocessor.m */,
+				CC4143C10F2529F200E46669 /* COSExtras.h */,
+				CC4143C00F2529F200E46669 /* COSExtras.m */,
+				CCC5B95A0F1EFCFE00126722 /* COSListener.h */,
+				CCC5B95B0F1EFCFE00126722 /* COSListener.m */,
+				CC975BC60F47E5BD00097108 /* COSPreprocessor.h */,
+				CC975BC70F47E5BD00097108 /* COSPreprocessor.m */,
 			);
 			name = Framework;
 			sourceTree = "<group>";
@@ -987,10 +987,10 @@
 			files = (
 				CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */,
 				CC41433B0F25259400E46669 /* COScript.h in Headers */,
-				CC41433D0F25259500E46669 /* JSTListener.h in Headers */,
-				CC4143C30F2529F200E46669 /* JSTExtras.h in Headers */,
+				CC41433D0F25259500E46669 /* COSListener.h in Headers */,
+				CC4143C30F2529F200E46669 /* COSExtras.h in Headers */,
 				CCEC36F815BA5E44008D8460 /* MOJavaScriptObject.h in Headers */,
-				CC975BC80F47E5BD00097108 /* JSTPreprocessor.h in Headers */,
+				CC975BC80F47E5BD00097108 /* COSPreprocessor.h in Headers */,
 				CC0FEEE21086740F008FF7DD /* JSTTextView.h in Headers */,
 				CC0FEEE410867410008FF7DD /* MarkerLineNumberView.h in Headers */,
 				CC0FEEE610867410008FF7DD /* NoodleLineNumberMarker.h in Headers */,
@@ -1183,9 +1183,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC41433C0F25259400E46669 /* COScript.m in Sources */,
-				CC41433E0F25259500E46669 /* JSTListener.m in Sources */,
-				CC4143C20F2529F200E46669 /* JSTExtras.m in Sources */,
-				CC975BC90F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
+				CC41433E0F25259500E46669 /* COSListener.m in Sources */,
+				CC4143C20F2529F200E46669 /* COSExtras.m in Sources */,
+				CC975BC90F47E5BD00097108 /* COSPreprocessor.m in Sources */,
 				CC0FEEE31086740F008FF7DD /* JSTTextView.m in Sources */,
 				CC0FEEE510867410008FF7DD /* MarkerLineNumberView.m in Sources */,
 				CC0FEEE710867411008FF7DD /* NoodleLineNumberMarker.m in Sources */,
@@ -1279,12 +1279,12 @@
 			files = (
 				CC5FB7DB0F1FDE2500F4ECC2 /* COScript.m in Sources */,
 				CC131C0B16BC8B5C004F5117 /* MOPointerValue.m in Sources */,
-				CC5FB7DC0F1FDE2600F4ECC2 /* JSTListener.m in Sources */,
+				CC5FB7DC0F1FDE2600F4ECC2 /* COSListener.m in Sources */,
 				CC131C0C16BC8B62004F5117 /* MOPointer.m in Sources */,
 				CC5FB7DD0F1FDE2900F4ECC2 /* jstalkmain.m in Sources */,
 				CC131C0A16BC8B38004F5117 /* MOMapTable.m in Sources */,
-				CC8CF98F0F46521000C32090 /* JSTExtras.m in Sources */,
-				CC975BCA0F47E5BD00097108 /* JSTPreprocessor.m in Sources */,
+				CC8CF98F0F46521000C32090 /* COSExtras.m in Sources */,
+				CC975BCA0F47E5BD00097108 /* COSPreprocessor.m in Sources */,
 				CC1C7DDB0F48BB2C007A2941 /* TDAlternation.m in Sources */,
 				CC1C7DDC0F48BB2C007A2941 /* TDAny.m in Sources */,
 				CC1C7DDD0F48BB2C007A2941 /* TDAssembly.m in Sources */,
