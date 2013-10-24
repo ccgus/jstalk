@@ -148,8 +148,8 @@
 		CC4143510F25261100E46669 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC0EC3280F226F550094F69D /* ScriptingBridge.framework */; };
 		CC4143520F25261200E46669 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CC4143530F25261300E46669 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
-		CC4143620F2527CD00E46669 /* JSTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
-		CC4143660F2527E400E46669 /* JSTalk.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* JSTalk.framework */; };
+		CC4143620F2527CD00E46669 /* CocoaScript.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* CocoaScript.framework */; };
+		CC4143660F2527E400E46669 /* CocoaScript.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = CC41431A0F25254200E46669 /* CocoaScript.framework */; };
 		CC4143C20F2529F200E46669 /* COSExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* COSExtras.m */; };
 		CC4143C30F2529F200E46669 /* COSExtras.h in Headers */ = {isa = PBXBuildFile; fileRef = CC4143C10F2529F200E46669 /* COSExtras.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */; };
@@ -286,7 +286,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				CC4143660F2527E400E46669 /* JSTalk.framework in Copy Frameworks */,
+				CC4143660F2527E400E46669 /* CocoaScript.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,7 +402,7 @@
 		CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDWordState.m; sourceTree = "<group>"; };
 		CC1C7E3F0F48C34D007A2941 /* Play.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Play.tiff; path = res/images/Play.tiff; sourceTree = "<group>"; };
 		CC1C7E570F48C76B007A2941 /* Clear.tiff */ = {isa = PBXFileReference; lastKnownFileType = image.tiff; name = Clear.tiff; path = res/images/Clear.tiff; sourceTree = "<group>"; };
-		CC41431A0F25254200E46669 /* JSTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JSTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC41431A0F25254200E46669 /* CocoaScript.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CocoaScript.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC4143C00F2529F200E46669 /* COSExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSExtras.m; path = src/COSExtras.m; sourceTree = "<group>"; };
 		CC4143C10F2529F200E46669 /* COSExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSExtras.h; path = src/COSExtras.h; sourceTree = "<group>"; };
 		CC41440F0F252D0700E46669 /* JSTalkFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkFramework-Info.plist"; path = "res/JSTalkFramework-Info.plist"; sourceTree = "<group>"; };
@@ -412,7 +412,7 @@
 		CC43C14B0F4BC20C0044BA41 /* JSTalkRunner-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkRunner-Info.plist"; path = "res/JSTalkRunner-Info.plist"; sourceTree = "<group>"; };
 		CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalkStatusIcon.png; path = res/images/JSTalkStatusIcon.png; sourceTree = "<group>"; };
 		CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalkStatusIconAlt.png; path = res/images/JSTalkStatusIconAlt.png; sourceTree = "<group>"; };
-		CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jstalk; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC5FB7C20F1FDCCC00F4ECC2 /* coscript */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = coscript; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = jstalkmain.m; path = src/jstalkmain.m; sourceTree = "<group>"; };
 		CC5FB7D60F1FDDE900F4ECC2 /* COScript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COScript.h; path = src/COScript.h; sourceTree = "<group>"; };
 		CC5FB7D70F1FDDE900F4ECC2 /* COScript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COScript.m; path = src/COScript.m; sourceTree = "<group>"; };
@@ -541,7 +541,7 @@
 				CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */,
 				CC0EC3290F226F550094F69D /* ScriptingBridge.framework in Frameworks */,
 				CC1323850F24FF9D0032FEB8 /* Carbon.framework in Frameworks */,
-				CC4143620F2527CD00E46669 /* JSTalk.framework in Frameworks */,
+				CC4143620F2527CD00E46669 /* CocoaScript.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,8 +594,8 @@
 			isa = PBXGroup;
 			children = (
 				8D15AC370486D014006FF6A4 /* Cocoa Script Editor.app */,
-				CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */,
-				CC41431A0F25254200E46669 /* JSTalk.framework */,
+				CC5FB7C20F1FDCCC00F4ECC2 /* coscript */,
+				CC41431A0F25254200E46669 /* CocoaScript.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1064,9 +1064,9 @@
 			productReference = 8D15AC370486D014006FF6A4 /* Cocoa Script Editor.app */;
 			productType = "com.apple.product-type.application";
 		};
-		CC4143190F25254200E46669 /* JSTalk Framework */ = {
+		CC4143190F25254200E46669 /* Cocoa Script Framework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "JSTalk Framework" */;
+			buildConfigurationList = CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "Cocoa Script Framework" */;
 			buildPhases = (
 				CC4143150F25254200E46669 /* Headers */,
 				CC4143160F25254200E46669 /* Resources */,
@@ -1077,14 +1077,14 @@
 			);
 			dependencies = (
 			);
-			name = "JSTalk Framework";
+			name = "Cocoa Script Framework";
 			productName = JSTalk;
-			productReference = CC41431A0F25254200E46669 /* JSTalk.framework */;
+			productReference = CC41431A0F25254200E46669 /* CocoaScript.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */ = {
+		CC5FB7C10F1FDCCC00F4ECC2 /* coscript tool */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "jstalk command line" */;
+			buildConfigurationList = CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "coscript tool" */;
 			buildPhases = (
 				CC5FB7BF0F1FDCCC00F4ECC2 /* Sources */,
 				CC5FB7C00F1FDCCC00F4ECC2 /* Frameworks */,
@@ -1093,9 +1093,9 @@
 			);
 			dependencies = (
 			);
-			name = "jstalk command line";
+			name = "coscript tool";
 			productName = "jstalk command";
-			productReference = CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */;
+			productReference = CC5FB7C20F1FDCCC00F4ECC2 /* coscript */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -1122,8 +1122,8 @@
 			projectRoot = "";
 			targets = (
 				8D15AC270486D014006FF6A4 /* Cocoa Script Editor */,
-				CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */,
-				CC4143190F25254200E46669 /* JSTalk Framework */,
+				CC5FB7C10F1FDCCC00F4ECC2 /* coscript tool */,
+				CC4143190F25254200E46669 /* Cocoa Script Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -1363,7 +1363,7 @@
 /* Begin PBXTargetDependency section */
 		CC5064E60F4A164D00F4A952 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = CC4143190F25254200E46669 /* JSTalk Framework */;
+			target = CC4143190F25254200E46669 /* Cocoa Script Framework */;
 			targetProxy = CC5064E50F4A164D00F4A952 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -1489,7 +1489,7 @@
 					AppKit,
 					"-lexpat",
 				);
-				PRODUCT_NAME = JSTalk;
+				PRODUCT_NAME = CocoaScript;
 			};
 			name = Debug;
 		};
@@ -1518,7 +1518,7 @@
 					"-lexpat",
 					"-lffi",
 				);
-				PRODUCT_NAME = JSTalk;
+				PRODUCT_NAME = CocoaScript;
 			};
 			name = Release;
 		};
@@ -1541,7 +1541,7 @@
 					"-framework",
 					AppKit,
 				);
-				PRODUCT_NAME = jstalk;
+				PRODUCT_NAME = coscript;
 			};
 			name = Debug;
 		};
@@ -1561,7 +1561,7 @@
 					"-framework",
 					AppKit,
 				);
-				PRODUCT_NAME = jstalk;
+				PRODUCT_NAME = coscript;
 			};
 			name = Release;
 		};
@@ -1586,7 +1586,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "JSTalk Framework" */ = {
+		CC41431E0F25254200E46669 /* Build configuration list for PBXNativeTarget "Cocoa Script Framework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CC41431C0F25254200E46669 /* Debug */,
@@ -1595,7 +1595,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "jstalk command line" */ = {
+		CC5FB7C60F1FDCFE00F4ECC2 /* Build configuration list for PBXNativeTarget "coscript tool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CC5FB7C40F1FDCCC00F4ECC2 /* Debug */,
