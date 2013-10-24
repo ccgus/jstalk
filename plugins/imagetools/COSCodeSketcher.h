@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JSTalk/COScript.h>
-#import <JSTalk/MOJavaScriptObject.h>
+#import <CocoaScript/COScript.h>
+#import <CocoaScript/MOJavaScriptObject.h>
 
 @interface COSCodeSketcher : NSView {
     

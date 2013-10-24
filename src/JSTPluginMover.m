@@ -7,7 +7,7 @@
 //
 
 #import "JSTPluginMover.h"
-#import <JSTalk/COScript.h>
+#import <CocoaScript/COScript.h>
 
 @implementation JSTPluginMover
 

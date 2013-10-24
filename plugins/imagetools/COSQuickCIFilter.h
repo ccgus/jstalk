@@ -8,8 +8,8 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
-#import <JSTalk/COScript.h>
-#import <JSTalk/MOJavaScriptObject.h>
+#import <CocoaScript/COScript.h>
+#import <CocoaScript/MOJavaScriptObject.h>
 
 @interface COSQuickCIFilter : CIFilter {
     CIKernel *_theKernel;
