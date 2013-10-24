@@ -139,7 +139,7 @@
 		CC3A9B5F15BCB2E00075F377 /* TDWordState.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1C7D7D0F48BB2C007A2941 /* TDWordState.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CC3A9B6315BCB82C0075F377 /* MochaRuntime.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36AF15BA5E44008D8460 /* MochaRuntime.m */; };
 		CC3A9B6415BCB82E0075F377 /* Mocha.m in Sources */ = {isa = PBXBuildFile; fileRef = CCEC36AC15BA5E44008D8460 /* Mocha.m */; };
-		CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
+		CC41432E0F25257C00E46669 /* CocoaScript_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B8CB0F1EFAAA00126722 /* CocoaScript_Prefix.pch */; settings = {ATTRIBUTES = (Private, ); }; };
 		CC41433B0F25259400E46669 /* COScript.h in Headers */ = {isa = PBXBuildFile; fileRef = CC5FB7D60F1FDDE900F4ECC2 /* COScript.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC41433C0F25259400E46669 /* COScript.m in Sources */ = {isa = PBXBuildFile; fileRef = CC5FB7D70F1FDDE900F4ECC2 /* COScript.m */; };
 		CC41433D0F25259500E46669 /* COSListener.h in Headers */ = {isa = PBXBuildFile; fileRef = CCC5B95A0F1EFCFE00126722 /* COSListener.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -406,8 +406,6 @@
 		CC4143C00F2529F200E46669 /* COSExtras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSExtras.m; path = src/COSExtras.m; sourceTree = "<group>"; };
 		CC4143C10F2529F200E46669 /* COSExtras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSExtras.h; path = src/COSExtras.h; sourceTree = "<group>"; };
 		CC41440F0F252D0700E46669 /* JSTalkFramework-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkFramework-Info.plist"; path = "res/JSTalkFramework-Info.plist"; sourceTree = "<group>"; };
-		CC43C0EC0F4BBB2F0044BA41 /* JSTRunnerApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTRunnerApplication.h; path = src/JSTRunnerApplication.h; sourceTree = "<group>"; };
-		CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTRunnerApplication.m; path = src/JSTRunnerApplication.m; sourceTree = "<group>"; };
 		CC43C11D0F4BBDF40044BA41 /* main.jstalk */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jstalk; path = res/main.jstalk; sourceTree = "<group>"; };
 		CC43C14B0F4BC20C0044BA41 /* JSTalkRunner-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "JSTalkRunner-Info.plist"; path = "res/JSTalkRunner-Info.plist"; sourceTree = "<group>"; };
 		CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = JSTalkStatusIcon.png; path = res/images/JSTalkStatusIcon.png; sourceTree = "<group>"; };
@@ -458,7 +456,7 @@
 		CCC5B8BB0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/JSTDocument.xib; sourceTree = "<group>"; };
 		CCC5B8BF0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		CCC5B8C10F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = res/English.lproj/Credits.rtf; sourceTree = "<group>"; };
-		CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTalk_Prefix.pch; path = src/JSTalk_Prefix.pch; sourceTree = "<group>"; };
+		CCC5B8CB0F1EFAAA00126722 /* CocoaScript_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CocoaScript_Prefix.pch; path = src/CocoaScript_Prefix.pch; sourceTree = "<group>"; };
 		CCC5B8CC0F1EFAAA00126722 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = src/main.m; sourceTree = "<group>"; };
 		CCC5B8CE0F1EFABA00126722 /* JSTDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSTDocument.m; path = src/JSTDocument.m; sourceTree = "<group>"; };
 		CCC5B8CF0F1EFABA00126722 /* JSTDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSTDocument.h; path = src/JSTDocument.h; sourceTree = "<group>"; };
@@ -604,7 +602,6 @@
 			isa = PBXGroup;
 			children = (
 				CC43C0CE0F4BBA520044BA41 /* Editor */,
-				CC43C0CD0F4BBA2D0044BA41 /* Runner */,
 				CC0EC3380F2274730094F69D /* Framework */,
 				2A37F4AFFDCFA73011CA2CEA /* Other Sources */,
 				2A37F4B8FDCFA73011CA2CEA /* Resources */,
@@ -618,7 +615,7 @@
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
-				CCC5B8CB0F1EFAAA00126722 /* JSTalk_Prefix.pch */,
+				CCC5B8CB0F1EFAAA00126722 /* CocoaScript_Prefix.pch */,
 				CCC5B8CC0F1EFAAA00126722 /* main.m */,
 				CC5FB7C70F1FDD0B00F4ECC2 /* jstalkmain.m */,
 			);
@@ -783,15 +780,6 @@
 				CC1C7E3F0F48C34D007A2941 /* Play.tiff */,
 			);
 			name = images;
-			sourceTree = "<group>";
-		};
-		CC43C0CD0F4BBA2D0044BA41 /* Runner */ = {
-			isa = PBXGroup;
-			children = (
-				CC43C0EC0F4BBB2F0044BA41 /* JSTRunnerApplication.h */,
-				CC43C0ED0F4BBB2F0044BA41 /* JSTRunnerApplication.m */,
-			);
-			name = Runner;
 			sourceTree = "<group>";
 		};
 		CC43C0CE0F4BBA520044BA41 /* Editor */ = {
@@ -985,7 +973,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC41432E0F25257C00E46669 /* JSTalk_Prefix.pch in Headers */,
+				CC41432E0F25257C00E46669 /* CocoaScript_Prefix.pch in Headers */,
 				CC41433B0F25259400E46669 /* COScript.h in Headers */,
 				CC41433D0F25259500E46669 /* COSListener.h in Headers */,
 				CC4143C30F2529F200E46669 /* COSExtras.h in Headers */,
@@ -1404,7 +1392,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = res/Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -1421,7 +1409,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				INFOPLIST_FILE = res/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1473,7 +1461,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
@@ -1503,7 +1491,7 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_MISSING_PARENTHESES = YES;
@@ -1530,7 +1518,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = (
@@ -1551,7 +1539,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = src/JSTalk_Prefix.pch;
+				GCC_PREFIX_HEADER = src/CocoaScript_Prefix.pch;
 				INSTALL_PATH = /usr/local/bin;
 				OTHER_LDFLAGS = (
 					"-lexpat",

@@ -54,7 +54,7 @@
         //NSLog(@"JSTalk listening on port %@", port);
     }
     else {
-        NSLog(@"JSTalk could not listen on port %@", port);
+        NSLog(@"CocoaScript could not listen on port %@", port);
         _conn = nil;
     }
 }
