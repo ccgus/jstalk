@@ -1,8 +1,8 @@
 /*
-This a sample on how to use the JSTCodeSketcher class, which add experimental processing.org like functionality to JSTalk.
+This a sample on how to use the COSCodeSketcher class, which add experimental processing.org like functionality to Cocoa Script.
 */
 
-var sketcher = [JSTCodeSketcher codeSketcherWithName:"Bezier"];
+var sketcher = [COSCodeSketcher codeSketcherWithName:"Bezier"];
 [sketcher setFlipped:false];
 
 function makePointObject(x, y) {
@@ -89,7 +89,6 @@ sketcher.mouseDragged = function(event) {
         movingPoint.y = loc.y;
     }
     else {
-        print([event deltaX])
         points.forEach(function(p) {
             p.x += [event deltaX];
             p.y -= [event deltaY];

@@ -3,10 +3,9 @@ var s = "break case catch continue default delete do else finally for function i
 words = s.split(" ");
 var i = 0;
 list = "";
-while (i < words.length) {
-    list = list + '@"' + words[i] + '", ';
-    i++
-}
+words.forEach(function(element, index, array) {
+    list = list + '@"' + element + '", ';
+});
 
 print("NSArray *blueWords = [NSArray arrayWithObjects:" + list + " nil];");
 

@@ -1,17 +1,13 @@
 /*
-This a sample on how to use the JSTCodeSketcher class, which add experimental processing.org like functionality to JSTalk.
+This a sample on how to use the COSCodeSketcher class, which add experimental processing.org like functionality to Cocoa Script.
 */
 
-var sketcher = [JSTCodeSketcher codeSketcherWithName:"Draw"];
+var sketcher = [COSCodeSketcher codeSketcherWithName:"Draw"];
 
 sketcher.setup = function() {
     [sketcher setSize:NSMakeSize(600, 300)];
     [sketcher clear];
 };
-
-sketcher.drawRect = function() {
-    [sketcher fillWithColor:[NSColor colorWithCalibratedWhite:1 alpha:.01]];
-}
 
 sketcher.mouseDown = function() {
     // reset our points
@@ -37,5 +33,3 @@ sketcher.mouseDragged = function() {
     m1 = m0;
 };
 
-
-[sketcher setFrameRate:30]
