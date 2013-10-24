@@ -10,7 +10,8 @@
 #import <JavaScriptCore/JavaScriptCore.h>
 
 @class Mocha;
-@class JSTalk;
+@class COScript;
+
 @interface COScript : NSObject {
 
     Mocha *_mochaRuntime;
@@ -38,17 +39,14 @@
 + (void)setShouldLoadJSTPlugins:(BOOL)b;
 + (id)application:(NSString*)app;
 + (id)app:(NSString*)app;
-+ (JSTalk*)currentJSTalk;
++ (COScript*)currentCOScript;
 
 @end
 
 @interface NSObject (COScriptErrorControllerMethods)
-- (void)coscript:(COScript*)coscript hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
+- (void)coscript:(id)coscript hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url;
 @end
 
-
-@interface JSTalk : COScript {
-
-}
+@interface JSTalk : COScript // compatibility
 
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "JSTPluginMover.h"
-#import <JSTalk/JSTalk.h>
+#import <JSTalk/COScript.h>
 
 @implementation JSTPluginMover
 
@@ -77,7 +77,7 @@
             }
             else {
                 
-                [JSTalk resetPlugins];
+                [COScript resetPlugins];
                 
                 
                 NSRunAlertPanel(NSLocalizedString(@"Plug-in Installed.", @"Plug-in Installed."), @"", nil, nil, nil);

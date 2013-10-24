@@ -65,7 +65,7 @@
 
 - (CGRect)xxregionOf:(int)sampler destRect:(CGRect)rect userInfo:(id)ui {
     
-    NSValue *v = [[JSTalk currentJSTalk] callJSFunction:[_roiMethod JSObject] withArgumentsInArray:nil];
+    NSValue *v = [[COScript currentCOScript] callJSFunction:[_roiMethod JSObject] withArgumentsInArray:nil];
     
     return [v rectValue];
 }
@@ -76,12 +76,12 @@
 
 - (CIImage *)outputImage {
     
-    if (_roiMethod && [JSTalk currentJSTalk]) {
+    if (_roiMethod && [COScript currentCOScript]) {
         [_theKernel setROISelector:@selector(regionOf:destRect:userInfo:)];
     }
     
-    if (_outputImageMethod && [JSTalk currentJSTalk]) {
-        CIImage *i = [[JSTalk currentJSTalk] callJSFunction:[_outputImageMethod JSObject] withArgumentsInArray:nil];
+    if (_outputImageMethod && [COScript currentCOScript]) {
+        CIImage *i = [[COScript currentCOScript] callJSFunction:[_outputImageMethod JSObject] withArgumentsInArray:nil];
         return i;
     }
     

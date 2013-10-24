@@ -8,7 +8,7 @@
 
 #import "JSTCodeSketcher.h"
 
-@interface JSTalk (Private)
+@interface COScript (Private)
 
 @end
 
@@ -55,7 +55,7 @@ static NSMutableDictionary *JSTSketchers = nil;
     
     [cs stop];
     
-    [cs setJstalk:[JSTalk currentJSTalk]];
+    [cs setJstalk:[COScript currentCOScript]];
     
     dispatch_async(dispatch_get_main_queue(),^ {
         [cs start];

@@ -9,7 +9,7 @@
 #import "JSTDocument.h"
 #import "JSTAppDelegate.h"
 #import "JSTListener.h"
-#import "JSTalk.h"
+#import "COScript.h"
 #import "JSTPreprocessor.h"
 
 @interface JSTDocument (SuperSecretItsPrivateDontEvenThinkOfUsingTheseMethodsOutsideThisClass)
@@ -140,7 +140,7 @@
     
 }
 
-- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(COScript*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     if (!error) {
         return;
@@ -169,7 +169,7 @@
 
 - (void)runScript:(NSString*)s {
     
-    JSTalk *jstalk = [[JSTalk alloc] init];
+    COScript *jstalk = [[COScript alloc] init];
     
     [[[NSThread currentThread] threadDictionary] setObject:jstalk forKey:@"org.jstalk.currentJSTalkContext"];
     

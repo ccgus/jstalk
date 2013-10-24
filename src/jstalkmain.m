@@ -1,6 +1,6 @@
 #import <Cocoa/Cocoa.h>
 #import "JSTListener.h"
-#import "JSTalk.h"
+#import "COScript.h"
 
 BOOL JSCErrorHandlerExitOnError = YES;
 
@@ -11,7 +11,7 @@ BOOL JSCErrorHandlerExitOnError = YES;
 
 @implementation JSCErrorHandler
 
-- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(COScript*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     
     printf("Error line %d, %s\n", (int)lineNumber, [[error description] UTF8String]);
     
@@ -24,7 +24,7 @@ BOOL JSCErrorHandlerExitOnError = YES;
 @end
 
 
-void runREPL(JSTalk *t) {
+void runREPL(COScript *t) {
     
     // thanks http://tlrobinson.net/blog/2008/10/10/command-line-interpreter-and-repl-for-jscocoa/ !
     
@@ -55,7 +55,7 @@ void runREPL(JSTalk *t) {
 
 int main(int argc, char *argv[]) {
     
-    JSTalk *t = [[JSTalk alloc] init];
+    COScript *t = [[COScript alloc] init];
     
     [t setErrorController:[[JSCErrorHandler alloc] init]];
     

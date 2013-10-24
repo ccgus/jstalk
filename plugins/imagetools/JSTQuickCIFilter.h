@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import <QuartzCore/QuartzCore.h>
-#import <JSTalk/JSTalk.h>
+#import <JSTalk/COScript.h>
 #import <JSTalk/MOJavaScriptObject.h>
 
 @interface JSTQuickCIFilter : CIFilter {

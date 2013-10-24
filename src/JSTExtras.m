@@ -7,10 +7,10 @@
 //
 
 #import "JSTExtras.h"
-#import "JSTalk.h"
+#import "COScript.h"
 #import <ScriptingBridge/ScriptingBridge.h>
 
-@implementation JSTalk (JSTExtras)
+@implementation COScript (JSTExtras)
 
 - (void)exit:(int)termCode {
     exit(termCode);

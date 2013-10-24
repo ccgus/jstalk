@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <JSTalk/JSTalk.h>
+#import <JSTalk/COScript.h>
 
 @interface JSTImageTools : NSObject {
     

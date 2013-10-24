@@ -6,7 +6,7 @@
 //  Copyright 2009 Flying Meat Inc. All rights reserved.
 //
 
-#import "JSTalk.h"
+#import "COScript.h"
 #import "JSTListener.h"
 #import "JSTPreprocessor.h"
 #import <ScriptingBridge/ScriptingBridge.h>
@@ -28,7 +28,7 @@ static NSMutableArray *JSTalkPluginList;
 - (id)objectForJSValue:(JSValueRef)value;
 @end
 
-@interface JSTalk (Private)
+@interface COScript (Private)
 - (void) print:(NSString*)s;
 @end
 
@@ -216,18 +216,18 @@ static NSMutableArray *JSTalkPluginList;
     }
 }
 
-NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
+NSString *currentCOScriptThreadIdentifier = @"org.jstalk.currentCOScriptHack";
 
-+ (JSTalk*)currentJSTalk {
-    return [[[NSThread currentThread] threadDictionary] objectForKey:currentJSTalkThreadIdentifier];
++ (COScript*)currentCOScript {
+    return [[[NSThread currentThread] threadDictionary] objectForKey:currentCOScriptThreadIdentifier];
 }
 
-- (void)pushAsCurrentJSTalk {
-    [[[NSThread currentThread] threadDictionary] setObject:self forKey:currentJSTalkThreadIdentifier];
+- (void)pushAsCurrentCOScript {
+    [[[NSThread currentThread] threadDictionary] setObject:self forKey:currentCOScriptThreadIdentifier];
 }
 
-- (void)popAsCurrentJSTalk {
-    [[[NSThread currentThread] threadDictionary] removeObjectForKey:currentJSTalkThreadIdentifier];
+- (void)popAsCurrentCOScript {
+    [[[NSThread currentThread] threadDictionary] removeObjectForKey:currentCOScriptThreadIdentifier];
 }
 
 - (void)pushObject:(id)obj withName:(NSString*)name  {
@@ -242,14 +242,14 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 - (id)executeString:(NSString*)str {
     
     if (!JSTalkPluginList && JSTalkShouldLoadJSTPlugins) {
-        [JSTalk loadPlugins];
+        [COScript loadPlugins];
     }
     
     if ([self shouldPreprocess]) {
         str = [JSTPreprocessor preprocessCode:str];
     }
     
-    [self pushAsCurrentJSTalk];
+    [self pushAsCurrentCOScript];
     
     id resultObj = nil;
     
@@ -277,7 +277,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         //
     }
     
-    [self popAsCurrentJSTalk];
+    [self popAsCurrentCOScript];
     
     return resultObj;
 }
@@ -299,7 +299,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
     
     @try {
         
-        [self pushAsCurrentJSTalk];
+        [self pushAsCurrentCOScript];
         
         returnValue = [_mochaRuntime callFunctionWithName:name withArgumentsInArray:args];
         
@@ -312,14 +312,14 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         [self printException:e];
     }
     
-    [self popAsCurrentJSTalk];
+    [self popAsCurrentCOScript];
     
     return returnValue;
 }
 
 
 - (id)callJSFunction:(JSObjectRef)jsFunction withArgumentsInArray:(NSArray *)arguments {
-    [self pushAsCurrentJSTalk];
+    [self pushAsCurrentCOScript];
     JSValueRef r = nil;
     @try {
         r = [_mochaRuntime callJSFunction:jsFunction withArgumentsInArray:arguments];
@@ -330,7 +330,7 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
         [self printException:e];
     }
     
-    [self popAsCurrentJSTalk];
+    [self popAsCurrentCOScript];
     
     if (r) {
         return [_mochaRuntime objectForJSValue:r];
@@ -473,7 +473,8 @@ NSString *currentJSTalkThreadIdentifier = @"org.jstalk.currentJSTalkHack";
 
 @end
 
+
+
 @implementation JSTalk
 
 @end
-

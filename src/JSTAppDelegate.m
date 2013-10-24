@@ -7,7 +7,7 @@
 //
 
 #import "JSTAppDelegate.h"
-#import "JSTalk.h"
+#import "COScript.h"
 
 @interface JSTAppDelegate (PrivateStuff)
 - (void)restoreWorkspace;
@@ -43,8 +43,8 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
         [self restoreWorkspace];
     }
     
-    [JSTalk setShouldLoadJSTPlugins:YES];
-    [JSTalk listen];
+    [COScript setShouldLoadJSTPlugins:YES];
+    [COScript listen];
     
     NSSetUncaughtExceptionHandler(JSTUncaughtExceptionHandler);
     
@@ -55,7 +55,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     // have all the services menus get updated.
     //NSUpdateDynamicServices();
     
-    [JSTalk loadPlugins]; // some guys will setup custom UI in the app.
+    [COScript loadPlugins]; // some guys will setup custom UI in the app.
 }
 
 - (IBAction)showPrefs:(id)sender {
@@ -216,7 +216,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     return defaultFont;
 }
 
-- (void)JSTalk:(JSTalk*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
+- (void)JSTalk:(COScript*)jstalk hadError:(NSString*)error onLineNumber:(NSInteger)lineNumber atSourceURL:(id)url {
     _serviceError = error;
 }
 
@@ -238,7 +238,7 @@ void JSTUncaughtExceptionHandler(NSException *exception) {
     
     @try {
         
-        JSTalk *jstalk = [[JSTalk alloc] init];
+        COScript *jstalk = [[COScript alloc] init];
         
         [jstalk setErrorController:self];
         

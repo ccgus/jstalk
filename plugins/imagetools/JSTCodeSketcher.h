@@ -7,12 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JSTalk/JSTalk.h>
+#import <JSTalk/COScript.h>
 #import <JSTalk/MOJavaScriptObject.h>
 
 @interface JSTCodeSketcher : NSView {
     
-    JSTalk *_jstalk;
+    COScript *_jstalk;
     
     MOJavaScriptObject *_drawRect;
     MOJavaScriptObject *_setup;
@@ -44,7 +44,7 @@
 }
 
 @property (assign) CGFloat frameRate;
-@property (retain) JSTalk *jstalk;
+@property (retain) COScript *jstalk;
 @property (assign) NSPoint mouseLocation;
 @property (assign) NSPoint pmouseLocation;
 @property (assign, getter=isMousePressed) BOOL mousePressed;
