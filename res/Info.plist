@@ -11,6 +11,7 @@
 			<array>
 				<string>jstalk</string>
 				<string>js</string>
+				<string>coscript</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>JSTalkDocument.icns</string>
@@ -22,6 +23,8 @@
 			</array>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
+			<key>LSTypeIsPackage</key>
+			<integer>0</integer>
 			<key>NSDocumentClass</key>
 			<string>JSTDocument</string>
 		</dict>
@@ -49,23 +52,23 @@
 		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
-	<string>JSTalk Editor</string>
+	<string>Cocoa Script Editor</string>
 	<key>CFBundleIconFile</key>
 	<string>JSTalk.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.jstalk.JSTalkEditor</string>
+	<string>com.cocoascript.CocoaScript</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>JSTalk Editor</string>
+	<string>Cocoa Script Editor</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2</string>
+	<string>3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2</string>
+	<string>1</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.developer-tools</string>
 	<key>LSMinimumSystemVersion</key>
@@ -85,12 +88,12 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Get Result of JSTalk Script</string>
+				<string>Get Result of Cocoa Script</string>
 			</dict>
 			<key>NSMessage</key>
-			<string>runAsJSTalkScript</string>
+			<string>runAsCocoaScript</string>
 			<key>NSPortName</key>
-			<string>JSTalk Editor</string>
+			<string>Cocoa Script Editor</string>
 			<key>NSReturnTypes</key>
 			<array>
 				<string>NSRTFDPboardType</string>
@@ -145,6 +148,25 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>jstplugin</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>com.netscape.javascript-source</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Cocoa Script JavaScript Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.cocoascript.cocoascript-source</string>
+			<key>UTTypeReferenceURL</key>
+			<string>http://cocoascript.com/</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>coscript</string>
 				</array>
 			</dict>
 		</dict>

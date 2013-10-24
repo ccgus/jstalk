@@ -298,7 +298,7 @@
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		8D15AC370486D014006FF6A4 /* JSTalk Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JSTalk Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D15AC370486D014006FF6A4 /* Cocoa Script Editor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cocoa Script Editor.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC0EC3280F226F550094F69D /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = /System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<absolute>"; };
 		CC1322E20F23F2380032FEB8 /* MarkerLineNumberView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MarkerLineNumberView.h; path = src/MarkerLineNumberView.h; sourceTree = "<group>"; };
 		CC1322E30F23F2380032FEB8 /* NoodleLineNumberMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NoodleLineNumberMarker.h; path = src/NoodleLineNumberMarker.h; sourceTree = "<group>"; };
@@ -593,7 +593,7 @@
 		19C28FB0FE9D524F11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D15AC370486D014006FF6A4 /* JSTalk Editor.app */,
+				8D15AC370486D014006FF6A4 /* Cocoa Script Editor.app */,
 				CC5FB7C20F1FDCCC00F4ECC2 /* jstalk */,
 				CC41431A0F25254200E46669 /* JSTalk.framework */,
 			);
@@ -1044,9 +1044,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8D15AC270486D014006FF6A4 /* JSTalk Editor */ = {
+		8D15AC270486D014006FF6A4 /* Cocoa Script Editor */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "JSTalk Editor" */;
+			buildConfigurationList = C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "Cocoa Script Editor" */;
 			buildPhases = (
 				8D15AC2B0486D014006FF6A4 /* Resources */,
 				8D15AC300486D014006FF6A4 /* Sources */,
@@ -1058,10 +1058,10 @@
 			dependencies = (
 				CC5064E60F4A164D00F4A952 /* PBXTargetDependency */,
 			);
-			name = "JSTalk Editor";
+			name = "Cocoa Script Editor";
 			productInstallPath = "$(HOME)/Applications";
 			productName = JSTalk;
-			productReference = 8D15AC370486D014006FF6A4 /* JSTalk Editor.app */;
+			productReference = 8D15AC370486D014006FF6A4 /* Cocoa Script Editor.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CC4143190F25254200E46669 /* JSTalk Framework */ = {
@@ -1121,7 +1121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D15AC270486D014006FF6A4 /* JSTalk Editor */,
+				8D15AC270486D014006FF6A4 /* Cocoa Script Editor */,
 				CC5FB7C10F1FDCCC00F4ECC2 /* jstalk command line */,
 				CC4143190F25254200E46669 /* JSTalk Framework */,
 			);
@@ -1412,7 +1412,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-lffi";
-				PRODUCT_NAME = "JSTalk Editor";
+				PRODUCT_NAME = "Cocoa Script Editor";
 			};
 			name = Debug;
 		};
@@ -1426,7 +1426,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lffi";
-				PRODUCT_NAME = "JSTalk Editor";
+				PRODUCT_NAME = "Cocoa Script Editor";
 			};
 			name = Release;
 		};
@@ -1441,6 +1441,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx10.8;
 			};
 			name = Debug;
@@ -1455,6 +1456,7 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx10.8;
 			};
 			name = Release;
@@ -1566,7 +1568,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "JSTalk Editor" */ = {
+		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "Cocoa Script Editor" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C05733C808A9546B00998B17 /* Debug */,

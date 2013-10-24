@@ -78,6 +78,7 @@ static NSMutableArray *JSTalkPluginList;
 - (void)addExtrasToRuntime {
     
     [self pushObject:self withName:@"jstalk"];
+    [self pushObject:self withName:@"coscript"];
     [_mochaRuntime evalString:@"var nil=null;\n"];
     [_mochaRuntime setValue:[MOMethod methodWithTarget:self selector:@selector(print:)] forKey:@"print"];
     
