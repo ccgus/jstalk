@@ -1,4 +1,4 @@
-var filter = [JSTQuickCIFilter quickFilterWithKernel:"""
+var filter = [COSQuickCIFilter quickFilterWithKernel:"""
 bool isOdd(int v) {
     float dividend = float(v) / 2.0;
     return dividend != floor(dividend);
@@ -48,5 +48,5 @@ kernel vec4 colorWheel(float radius) {
 
 [filter addKernelArgument:[NSNumber numberWithInt:100]];
 
-[JSTImageTools viewCIImage:[filter outputImage] inWindowNamed:"test" extent:CGRectMake(0, 0, 200, 200)];
+[COSImageTools viewCIImage:[filter outputImage] inWindowNamed:"Color Wheel" extent:CGRectMake(0, 0, 200, 200)];
 

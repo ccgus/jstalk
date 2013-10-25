@@ -75,5 +75,5 @@ drawInImage(both, function() {
 });
 
 
-[JSTImageTools viewNSImage:both inWindowNamed:"buttons"];
+[COSImageTools viewNSImage:both inWindowNamed:"buttons"];
 

@@ -21,7 +21,7 @@
 
 @implementation COSImageTools
 
-+ (CGImageRef)createImageRefFromBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
++ (CGImageRef)createImageRefFromBuffer:(COSOpenCLImageBuffer*)imgBuffer {
     
     CGColorSpaceRef cs = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
     
@@ -40,7 +40,7 @@
     
 }
 
-+ (NSData*)tiffDataFromImageBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
++ (NSData*)tiffDataFromImageBuffer:(COSOpenCLImageBuffer*)imgBuffer {
     
     CGImageRef img = [self createImageRefFromBuffer:imgBuffer];
     
@@ -105,7 +105,7 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
     return w;
 }
 
-+ (void)viewImageBuffer:(JSTOpenCLImageBuffer*)imgBuffer inWindowNamed:(NSString*)winName {
++ (void)viewImageBuffer:(COSOpenCLImageBuffer*)imgBuffer inWindowNamed:(NSString*)winName {
     
     CGImageRef img = [self createImageRefFromBuffer:imgBuffer];
     
@@ -130,7 +130,7 @@ static NSMutableDictionary *JSTImageViewWindows = 0x00;
 }
 
 
-+ (void)dumpPixelsInBuffer:(JSTOpenCLImageBuffer*)imgBuffer {
++ (void)dumpPixelsInBuffer:(COSOpenCLImageBuffer*)imgBuffer {
     
     size_t bpr                  = [imgBuffer bytesPerRow];
     size_t x = 0, y = 0;
@@ -225,6 +225,12 @@ static BOOL JSTImageToolsCISWRender = NO;
     JSTImageToolsCISWRender = b;
 }
 
+
++ (NSString*)pathOfImageNamed:(NSString*)imageName {
+    return [[NSBundle bundleForClass:[self class]] pathForImageResource:imageName];
+}
+
+
 @end
 
 @implementation JSTSimpleCIView
@@ -260,5 +266,7 @@ static BOOL JSTImageToolsCISWRender = NO;
     [cictx drawImage:_theImage inRect:r fromRect:r];
     
 }
+
+
 
 @end

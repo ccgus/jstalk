@@ -1,5 +1,5 @@
 var src = """
-__kernel void test2(image2d_t img) {
+__kernel void test2(write_only image2d_t img) {
     int2 coord = (int2)(get_global_id(0), get_global_id(1));
     float4 val = (float4)(1, 0, 0, 1);
     
@@ -13,17 +13,17 @@ __kernel void test2(image2d_t img) {
 var w = 400;
 var h = 400;
 
-var context = [JSTOpenCLContext new];
+var context = [COSOpenCLContext new];
 var program = [context programWithSource:src];
 [program build];
 
 var kernel = [program createKernel:"test2"];
 
-var buffer = [JSTOpenCLImageBuffer instanceWithContext:context width:w height:h];
+var buffer = [COSOpenCLImageBuffer instanceWithContext:context width:w height:h];
 
 [kernel setArgument:0 buffer:buffer];
 
 [kernel enqueueCallWithGlobalSizeX:w Y:h];
 [context finish];
 
-[JSTImageTools viewImageBuffer:buffer inWindowNamed:"foo"];
+[COSImageTools viewImageBuffer:buffer inWindowNamed:"foo"];

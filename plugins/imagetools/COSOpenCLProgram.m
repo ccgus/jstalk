@@ -165,7 +165,7 @@ static int FloorPow2(int n)
 @end
 
 
-@implementation JSTOpenCLImageBuffer
+@implementation COSOpenCLImageBuffer
 
 
 @synthesize width=_width;

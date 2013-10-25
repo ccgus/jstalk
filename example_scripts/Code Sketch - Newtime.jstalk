@@ -1,4 +1,4 @@
-var sketcher = [JSTCodeSketcher codeSketcherWithName:"Code Sketcher - New Time"];
+var sketcher = [COSCodeSketcher codeSketcherWithName:"Code Sketcher - New Time"];
 [sketcher setFrameRate:60];
 
 var drawFunction = function() {

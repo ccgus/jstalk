@@ -1,5 +1,5 @@
-var filter = [JSTQuickCIFilter quickFilterWithKernel:"""
-kernel vec4 foo(vec4 colorA, vec4 colorB) {
+var filter = [COSQuickCIFilter quickFilterWithKernel:"""
+kernel vec4 mykernel(vec4 colorA, vec4 colorB) {
     vec2 dest = destCoord();
     vec4 ret  = dest.x < 100.0 ? colorA : colorB;
     return premultiply(ret);
@@ -10,5 +10,5 @@ kernel vec4 foo(vec4 colorA, vec4 colorB) {
 
 var img = [filter outputImage];
 
-[JSTImageTools viewCIImage:img inWindowNamed:"test" extent:CGRectMake(0, 0, 400, 200)];
+[COSImageTools viewCIImage:img inWindowNamed:"test" extent:CGRectMake(0, 0, 400, 200)];
 

@@ -73,7 +73,7 @@ typedef struct _JSTOCLFloatPixel {
 
 
 
-@interface JSTOpenCLImageBuffer : JSTOpenCLBuffer {
+@interface COSOpenCLImageBuffer : JSTOpenCLBuffer {
     
     size_t _width;
     size_t _height;

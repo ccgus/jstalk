@@ -11,6 +11,6 @@
 
 @interface CIImage (COSCIImageAdditions)
 
-+ (id)jstImageNamed:(NSString*)imageName;
++ (id)cosImageNamed:(NSString*)imageName;
 
 @end
