@@ -174,15 +174,6 @@
 		CC8642F4163B287800908427 /* COSOpenCLProgram.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642CE163B287800908427 /* COSOpenCLProgram.m */; };
 		CC8642F5163B287800908427 /* COSQuickCIFilter.h in Headers */ = {isa = PBXBuildFile; fileRef = CC8642CF163B287800908427 /* COSQuickCIFilter.h */; };
 		CC8642F6163B287800908427 /* COSQuickCIFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8642D0163B287800908427 /* COSQuickCIFilter.m */; };
-		CC8642F8163B287800908427 /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D3163B287800908427 /* ccgus.jpg */; };
-		CC8642F9163B287800908427 /* clouds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D4163B287800908427 /* clouds.jpg */; };
-		CC8642FA163B287800908427 /* duck.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D5163B287800908427 /* duck.jpg */; };
-		CC8642FB163B287800908427 /* llama.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D6163B287800908427 /* llama.jpg */; };
-		CC8642FC163B287800908427 /* mask1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D7163B287800908427 /* mask1.jpg */; };
-		CC8642FD163B287800908427 /* mask2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D8163B287800908427 /* mask2.jpg */; };
-		CC8642FE163B287800908427 /* mask3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642D9163B287800908427 /* mask3.jpg */; };
-		CC8642FF163B287800908427 /* mask4.png in Resources */ = {isa = PBXBuildFile; fileRef = CC8642DA163B287800908427 /* mask4.png */; };
-		CC864300163B287800908427 /* rail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC8642DB163B287800908427 /* rail.jpg */; };
 		CC86430D163B29E600908427 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86430C163B29E600908427 /* QuartzCore.framework */; };
 		CC86430F163B29F500908427 /* OpenCL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC86430E163B29F500908427 /* OpenCL.framework */; };
 		CC8CF98F0F46521000C32090 /* COSExtras.m in Sources */ = {isa = PBXBuildFile; fileRef = CC4143C00F2529F200E46669 /* COSExtras.m */; };
@@ -195,6 +186,15 @@
 		CC975BC80F47E5BD00097108 /* COSPreprocessor.h in Headers */ = {isa = PBXBuildFile; fileRef = CC975BC60F47E5BD00097108 /* COSPreprocessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CC975BC90F47E5BD00097108 /* COSPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* COSPreprocessor.m */; };
 		CC975BCA0F47E5BD00097108 /* COSPreprocessor.m in Sources */ = {isa = PBXBuildFile; fileRef = CC975BC70F47E5BD00097108 /* COSPreprocessor.m */; };
+		CC99F0EE181A239200F0D48E /* ccgus.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0E5181A239200F0D48E /* ccgus.jpg */; };
+		CC99F0EF181A239200F0D48E /* clouds.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0E6181A239200F0D48E /* clouds.jpg */; };
+		CC99F0F0181A239200F0D48E /* duck.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0E7181A239200F0D48E /* duck.jpg */; };
+		CC99F0F1181A239200F0D48E /* llama.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0E8181A239200F0D48E /* llama.jpg */; };
+		CC99F0F2181A239200F0D48E /* mask1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0E9181A239200F0D48E /* mask1.jpg */; };
+		CC99F0F3181A239200F0D48E /* mask2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0EA181A239200F0D48E /* mask2.jpg */; };
+		CC99F0F4181A239200F0D48E /* mask3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0EB181A239200F0D48E /* mask3.jpg */; };
+		CC99F0F5181A239200F0D48E /* mask4.png in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0EC181A239200F0D48E /* mask4.png */; };
+		CC99F0F6181A239200F0D48E /* rail.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CC99F0ED181A239200F0D48E /* rail.jpg */; };
 		CCC5B8A50F1EFA6D00126722 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */; };
 		CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BA0F1EFA9700126722 /* JSTDocument.xib */; };
 		CCC5B8C90F1EFA9700126722 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = CCC5B8BE0F1EFA9700126722 /* MainMenu.xib */; };
@@ -428,15 +428,6 @@
 		CC8642CE163B287800908427 /* COSOpenCLProgram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSOpenCLProgram.m; sourceTree = "<group>"; };
 		CC8642CF163B287800908427 /* COSQuickCIFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSQuickCIFilter.h; sourceTree = "<group>"; };
 		CC8642D0163B287800908427 /* COSQuickCIFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = COSQuickCIFilter.m; sourceTree = "<group>"; };
-		CC8642D3163B287800908427 /* ccgus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ccgus.jpg; sourceTree = "<group>"; };
-		CC8642D4163B287800908427 /* clouds.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = clouds.jpg; sourceTree = "<group>"; };
-		CC8642D5163B287800908427 /* duck.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = duck.jpg; sourceTree = "<group>"; };
-		CC8642D6163B287800908427 /* llama.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = llama.jpg; sourceTree = "<group>"; };
-		CC8642D7163B287800908427 /* mask1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask1.jpg; sourceTree = "<group>"; };
-		CC8642D8163B287800908427 /* mask2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask2.jpg; sourceTree = "<group>"; };
-		CC8642D9163B287800908427 /* mask3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask3.jpg; sourceTree = "<group>"; };
-		CC8642DA163B287800908427 /* mask4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mask4.png; sourceTree = "<group>"; };
-		CC8642DB163B287800908427 /* rail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rail.jpg; sourceTree = "<group>"; };
 		CC86430C163B29E600908427 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = "<group>"; };
 		CC86430E163B29F500908427 /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = ../../../../../../System/Library/Frameworks/OpenCL.framework; sourceTree = "<group>"; };
 		CC9012571639DBE00067BB78 /* MOPointerValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOPointerValue.h; sourceTree = "<group>"; };
@@ -447,6 +438,15 @@
 		CC94E0510F4A616300208BE0 /* JSTalk.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = JSTalk.icns; path = res/images/JSTalk.icns; sourceTree = "<group>"; };
 		CC975BC60F47E5BD00097108 /* COSPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = COSPreprocessor.h; path = src/COSPreprocessor.h; sourceTree = "<group>"; };
 		CC975BC70F47E5BD00097108 /* COSPreprocessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = COSPreprocessor.m; path = src/COSPreprocessor.m; sourceTree = "<group>"; };
+		CC99F0E5181A239200F0D48E /* ccgus.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ccgus.jpg; sourceTree = "<group>"; };
+		CC99F0E6181A239200F0D48E /* clouds.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = clouds.jpg; sourceTree = "<group>"; };
+		CC99F0E7181A239200F0D48E /* duck.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = duck.jpg; sourceTree = "<group>"; };
+		CC99F0E8181A239200F0D48E /* llama.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = llama.jpg; sourceTree = "<group>"; };
+		CC99F0E9181A239200F0D48E /* mask1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask1.jpg; sourceTree = "<group>"; };
+		CC99F0EA181A239200F0D48E /* mask2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask2.jpg; sourceTree = "<group>"; };
+		CC99F0EB181A239200F0D48E /* mask3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = mask3.jpg; sourceTree = "<group>"; };
+		CC99F0EC181A239200F0D48E /* mask4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mask4.png; sourceTree = "<group>"; };
+		CC99F0ED181A239200F0D48E /* rail.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = rail.jpg; sourceTree = "<group>"; };
 		CCC5B8A40F1EFA6D00126722 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = /System/Library/Frameworks/JavaScriptCore.framework; sourceTree = "<absolute>"; };
 		CCC5B8B00F1EFA9700126722 /* Info.plist */ = {isa = PBXFileReference; explicitFileType = text.xml; fileEncoding = 4; name = Info.plist; path = res/Info.plist; sourceTree = "<group>"; };
 		CCC5B8BB0F1EFA9700126722 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = res/English.lproj/JSTDocument.xib; sourceTree = "<group>"; };
@@ -768,6 +768,7 @@
 		CC1C7E3E0F48C2F3007A2941 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				CC99F0E4181A239200F0D48E /* scriptimages */,
 				CC5EDD4C1237F6DF00E0D965 /* JSTalkStatusIcon.png */,
 				CC5EDD521237F71300E0D965 /* JSTalkStatusIconAlt.png */,
 				CCF68F1D0F4E3E4F00925FCA /* JSTalkDocument.icns */,
@@ -835,26 +836,26 @@
 				CC8642CE163B287800908427 /* COSOpenCLProgram.m */,
 				CC8642CF163B287800908427 /* COSQuickCIFilter.h */,
 				CC8642D0163B287800908427 /* COSQuickCIFilter.m */,
-				CC8642D2163B287800908427 /* res */,
 			);
 			name = imagetools;
 			path = plugins/imagetools;
 			sourceTree = "<group>";
 		};
-		CC8642D2163B287800908427 /* res */ = {
+		CC99F0E4181A239200F0D48E /* scriptimages */ = {
 			isa = PBXGroup;
 			children = (
-				CC8642D3163B287800908427 /* ccgus.jpg */,
-				CC8642D4163B287800908427 /* clouds.jpg */,
-				CC8642D5163B287800908427 /* duck.jpg */,
-				CC8642D6163B287800908427 /* llama.jpg */,
-				CC8642D7163B287800908427 /* mask1.jpg */,
-				CC8642D8163B287800908427 /* mask2.jpg */,
-				CC8642D9163B287800908427 /* mask3.jpg */,
-				CC8642DA163B287800908427 /* mask4.png */,
-				CC8642DB163B287800908427 /* rail.jpg */,
+				CC99F0E5181A239200F0D48E /* ccgus.jpg */,
+				CC99F0E6181A239200F0D48E /* clouds.jpg */,
+				CC99F0E7181A239200F0D48E /* duck.jpg */,
+				CC99F0E8181A239200F0D48E /* llama.jpg */,
+				CC99F0E9181A239200F0D48E /* mask1.jpg */,
+				CC99F0EA181A239200F0D48E /* mask2.jpg */,
+				CC99F0EB181A239200F0D48E /* mask3.jpg */,
+				CC99F0EC181A239200F0D48E /* mask4.png */,
+				CC99F0ED181A239200F0D48E /* rail.jpg */,
 			);
-			path = res;
+			name = scriptimages;
+			path = res/images/scriptimages;
 			sourceTree = "<group>";
 		};
 		CCEC369615BA5E44008D8460 /* mocha */ = {
@@ -1116,12 +1117,21 @@
 			files = (
 				CCC5B8C70F1EFA9700126722 /* JSTDocument.xib in Resources */,
 				CCC5B8C90F1EFA9700126722 /* MainMenu.xib in Resources */,
+				CC99F0EF181A239200F0D48E /* clouds.jpg in Resources */,
 				CCC5B8CA0F1EFA9700126722 /* Credits.rtf in Resources */,
 				CC1C7E400F48C34D007A2941 /* Play.tiff in Resources */,
+				CC99F0F2181A239200F0D48E /* mask1.jpg in Resources */,
+				CC99F0F5181A239200F0D48E /* mask4.png in Resources */,
 				CC1C7E580F48C76B007A2941 /* Clear.tiff in Resources */,
+				CC99F0F4181A239200F0D48E /* mask3.jpg in Resources */,
+				CC99F0EE181A239200F0D48E /* ccgus.jpg in Resources */,
+				CC99F0F1181A239200F0D48E /* llama.jpg in Resources */,
+				CC99F0F3181A239200F0D48E /* mask2.jpg in Resources */,
 				CC94E0520F4A616300208BE0 /* JSTalk.icns in Resources */,
+				CC99F0F6181A239200F0D48E /* rail.jpg in Resources */,
 				CCF68F1E0F4E3E4F00925FCA /* JSTalkDocument.icns in Resources */,
 				CC5EDD4D1237F6DF00E0D965 /* JSTalkStatusIcon.png in Resources */,
+				CC99F0F0181A239200F0D48E /* duck.jpg in Resources */,
 				CC5EDD531237F71300E0D965 /* JSTalkStatusIconAlt.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1130,15 +1140,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CC8642F8163B287800908427 /* ccgus.jpg in Resources */,
-				CC8642F9163B287800908427 /* clouds.jpg in Resources */,
-				CC8642FA163B287800908427 /* duck.jpg in Resources */,
-				CC8642FB163B287800908427 /* llama.jpg in Resources */,
-				CC8642FC163B287800908427 /* mask1.jpg in Resources */,
-				CC8642FD163B287800908427 /* mask2.jpg in Resources */,
-				CC8642FE163B287800908427 /* mask3.jpg in Resources */,
-				CC8642FF163B287800908427 /* mask4.png in Resources */,
-				CC864300163B287800908427 /* rail.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

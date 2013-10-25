@@ -227,7 +227,7 @@ static BOOL JSTImageToolsCISWRender = NO;
 
 
 + (NSString*)pathOfImageNamed:(NSString*)imageName {
-    return [[NSBundle bundleForClass:[self class]] pathForImageResource:imageName];
+    return [[NSBundle mainBundle] pathForImageResource:imageName];
 }
 
 
