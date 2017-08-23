@@ -1,3 +1,5 @@
+*This project has been superceeded by [CocoaScript](https://github.com/ccgus/CocoaScript), and you should head there instead.*
+
 What is JSTalk?
 ===============
 
